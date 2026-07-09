@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" fill="none">
+  <rect width="1280" height="720" fill="#111111"/>
+  <circle cx="640" cy="360" r="72" fill="#ffffff" fill-opacity="0.12"/>
+  <path d="M620 310 L700 360 L620 410 Z" fill="#ffffff" fill-opacity="0.85"/>
+  <text x="640" y="500" text-anchor="middle" fill="#ffffff" fill-opacity="0.45" font-family="system-ui, sans-serif" font-size="28" letter-spacing="0.08em">INTRO VIDEO</text>
+</svg>

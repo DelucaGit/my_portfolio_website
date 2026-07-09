@@ -1,0 +1,204 @@
+.section {
+  padding: clamp(4rem, 8vw, 6rem) clamp(1.25rem, 4vw, 3rem);
+  background: var(--project-bg, var(--color-bg));
+  transition: background-color 0.6s ease;
+}
+
+.showcase {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(2rem, 5vw, 4rem);
+  width: min(100%, 72rem);
+  margin: 0 auto;
+}
+
+.leftColumn {
+  position: relative;
+}
+
+.stickyPanel {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+  padding: clamp(2rem, 5vh, 4rem) 0;
+}
+
+.eyebrow {
+  position: absolute;
+  top: clamp(2rem, 5vh, 4rem);
+  left: 0;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--project-eyebrow, var(--color-text-muted));
+  transition: color 0.6s ease;
+}
+
+.copyArea {
+  position: relative;
+  width: 100%;
+  min-height: 12rem;
+}
+
+.projectCopy {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(1rem);
+  pointer-events: none;
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s ease;
+}
+
+.projectCopyActive {
+  z-index: 1;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.projectTitle {
+  margin-bottom: 1rem;
+  font-size: clamp(2rem, 3.5vw, 2.75rem);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: var(--project-text, var(--color-text));
+  transition: color 0.6s ease;
+}
+
+.projectDescription {
+  max-width: 26rem;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--project-text-muted, var(--color-text-muted));
+  transition: color 0.6s ease;
+}
+
+.progress {
+  position: absolute;
+  bottom: clamp(2rem, 5vh, 4rem);
+  left: 0;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.progressDot {
+  width: 1.5rem;
+  height: 3px;
+  border-radius: 9999px;
+  background: var(--project-dot, var(--color-btn-secondary));
+  transition: background-color 0.3s ease, width 0.3s ease;
+}
+
+.progressDotActive {
+  width: 2.25rem;
+  background: var(--project-dot-active, var(--color-text));
+}
+
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.imagePanel {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2vh 0;
+}
+
+.imageFrame {
+  position: relative;
+  width: 100%;
+  height: 90vh;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  background: #f4f4f5;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.05),
+    0 20px 50px rgba(0, 0, 0, 0.1);
+}
+
+.imageFrame::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  z-index: -1;
+  background: conic-gradient(
+    from 180deg at 50% 50%,
+    #dbeafe 0deg,
+    #fce7f3 90deg,
+    #fef9c3 180deg,
+    #d1fae5 270deg,
+    #dbeafe 360deg
+  );
+  filter: blur(48px);
+  opacity: 0.55;
+}
+
+.image {
+  object-fit: cover;
+}
+
+@media (max-width: 900px) {
+  .showcase {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .stickyPanel {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    height: auto;
+    min-height: 0;
+    padding: 1.5rem 0 1.25rem;
+    background: var(--project-bg, var(--color-bg));
+    transition: background-color 0.6s ease;
+    border-bottom: 1px solid rgba(128,128,128,0.15);
+  }
+
+  .eyebrow {
+    position: static;
+    margin-bottom: 1rem;
+  }
+
+  .copyArea {
+    min-height: 8rem;
+  }
+
+  .projectCopy {
+    justify-content: flex-start;
+  }
+
+  .progress {
+    position: static;
+    margin-top: 1.25rem;
+  }
+
+  .imagePanel {
+    height: auto;
+    min-height: auto;
+    padding: 2rem 0 3rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .projectCopy {
+    transition: none;
+  }
+
+  .progressDot {
+    transition: none;
+  }
+}
