@@ -1,14 +1,35 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, ElementType } from "react";
 import styles from "./hero.module.css";
 
-const HEADLINE =
-  "Crafting digital experiences that feel weightless and intentional.";
 const TYPING_DELAY_MS = 36;
 const START_DELAY_MS = 400;
 
-export default function TypewriterHeadline() {
+// Default hero headline kept as a constant so Hero usage stays unchanged
+const DEFAULT_HEADLINE =
+  "Crafting digital experiences that feel weightless and intentional.";
+
+interface TypewriterHeadlineProps {
+  /** Text to type out. Defaults to the hero headline. */
+  text?: string;
+  /** Class applied to the outer heading element. */
+  className?: string;
+  /** Extra class applied to the blinking cursor element. */
+  cursorClassName?: string;
+  /** HTML tag to render. Defaults to "h1". */
+  as?: ElementType;
+  /** Delay in ms before typing starts. */
+  startDelay?: number;
+}
+
+export default function TypewriterHeadline({
+  text = DEFAULT_HEADLINE,
+  className,
+  cursorClassName,
+  as: Tag = "h1",
+  startDelay = START_DELAY_MS,
+}: TypewriterHeadlineProps) {
   const [displayedText, setDisplayedText] = useState("");
   const [isTyping, setIsTyping] = useState(true);
 
@@ -18,7 +39,7 @@ export default function TypewriterHeadline() {
     ).matches;
 
     if (prefersReducedMotion) {
-      setDisplayedText(HEADLINE);
+      setDisplayedText(text);
       setIsTyping(false);
       return;
     }
@@ -30,32 +51,32 @@ export default function TypewriterHeadline() {
     const startTyping = () => {
       interval = setInterval(() => {
         charIndex += 1;
-        setDisplayedText(HEADLINE.slice(0, charIndex));
+        setDisplayedText(text.slice(0, charIndex));
 
-        if (charIndex >= HEADLINE.length) {
+        if (charIndex >= text.length) {
           clearInterval(interval);
           setIsTyping(false);
         }
       }, TYPING_DELAY_MS);
     };
 
-    typingTimer = setTimeout(startTyping, START_DELAY_MS);
+    typingTimer = setTimeout(startTyping, startDelay);
 
     return () => {
       clearTimeout(typingTimer);
       clearInterval(interval);
     };
-  }, []);
+  }, [text, startDelay]);
 
   return (
-    <h1 className={styles.headline}>
+    <Tag className={className ?? styles.headline}>
       <span className={styles.typewriter} aria-hidden="true">
         {displayedText}
         <span
-          className={`${styles.cursor} ${!isTyping ? styles.cursorIdle : ""}`}
+          className={`${styles.cursor} ${cursorClassName ?? ""} ${!isTyping ? styles.cursorIdle : ""}`}
         />
       </span>
-      <span className={styles.srOnly}>{HEADLINE}</span>
-    </h1>
+      <span className={styles.srOnly}>{text}</span>
+    </Tag>
   );
 }
