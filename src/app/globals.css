@@ -1,18 +1,11 @@
+@import "../theme.css";
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-}
-
-:root {
-  --color-bg: #ffffff;
-  --color-text: #000000;
-  --color-text-muted: #3c4043;
-  --color-btn-secondary: #f1f3f4;
-  --color-btn-secondary-hover: #e8eaed;
-  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
 }
 
 html,
