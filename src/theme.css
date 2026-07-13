@@ -1,0 +1,82 @@
+/**
+ * Portfolio design tokens — colours, fonts, and typography.
+ * Import this file from globals.css when rebuilding the site.
+ */
+
+:root {
+  /* ── Font ── */
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+
+  /* ── Core palette ── */
+  --color-bg: #ffffff;
+  --color-text: #000000;
+  --color-text-muted: #3c4043;
+  --color-heading: #0a0a0f;
+
+  /* ── Surfaces ── */
+  --color-surface: #f7f7f9;
+  --color-surface-hover: #efeff1;
+  --color-surface-input: #f9f9fb;
+
+  /* ── Buttons ── */
+  --color-btn-primary: #000000;
+  --color-btn-primary-hover: #1a1a1a;
+  --color-btn-secondary: #f1f3f4;
+  --color-btn-secondary-hover: #e8eaed;
+  --color-btn-on-primary: #ffffff;
+
+  /* ── Accent & interactive ── */
+  --color-accent: #4a90d9;
+  --color-accent-muted: rgba(74, 144, 217, 0.1);
+  --color-focus: #2e64ff;
+  --color-focus-ring: rgba(46, 100, 255, 0.1);
+  --color-linkedin: #0a66c2;
+
+  /* ── Text opacity variants ── */
+  --color-text-subtle: rgba(10, 10, 15, 0.52);
+  --color-text-faint: rgba(10, 10, 15, 0.4);
+  --color-eyebrow: rgba(0, 0, 0, 0.4);
+
+  /* ── Borders & shadows ── */
+  --color-border: rgba(0, 0, 0, 0.08);
+  --color-border-light: rgba(0, 0, 0, 0.06);
+  --color-border-input: rgba(0, 0, 0, 0.05);
+  --shadow-card:
+    0 12px 32px rgba(0, 0, 0, 0.04),
+    0 2px 4px rgba(0, 0, 0, 0.02);
+  --shadow-image:
+    0 1px 2px rgba(0, 0, 0, 0.05),
+    0 20px 50px rgba(0, 0, 0, 0.1);
+
+  /* ── Dark surfaces (video, media) ── */
+  --color-video-bg: #0a0a0a;
+  --color-video-inner: #111111;
+
+  /* ── Typography scale ── */
+  --text-eyebrow: 0.75rem;
+  --text-body: 1rem;
+  --text-quote: 1.05rem;
+  --text-heading-sm: clamp(2rem, 3.5vw, 2.75rem);
+  --text-heading-md: clamp(2rem, 4vw, 3rem);
+  --text-heading-lg: clamp(2rem, 4vw, 3.5rem);
+  --text-hero: 6em;
+
+  /* ── Font weights ── */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* ── Letter spacing ── */
+  --tracking-eyebrow: 0.15em;
+  --tracking-tight: -0.042em;
+
+  /* ── Line heights ── */
+  --leading-tight: 1.06;
+  --leading-body: 1.6;
+
+  /* ── Project showcase themes (per-project overrides) ── */
+  --project-theme-warm: #f0ebe3;
+  --project-theme-dark: #0f0f0f;
+  --project-theme-cool: #e8f0ff;
+}

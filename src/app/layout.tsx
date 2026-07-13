@@ -9,9 +9,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Malak Portfolio",
+  title: "Marcel Deluca | Full-Stack Web Developer",
   description:
-    "Crafting digital experiences that feel weightless and intentional.",
+    "Full-stack web developer building fast e-commerce sites, price calculators, and AI chatbots.",
 };
 
 export default function RootLayout({
