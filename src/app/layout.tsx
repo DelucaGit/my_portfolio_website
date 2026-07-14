@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { site } from "@/data/site";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -9,9 +10,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Marcel Deluca | Full-Stack Web Developer",
-  description:
-    "Full-stack web developer building fast e-commerce sites, price calculators, and AI chatbots.",
+  title: site.name + " | " + site.title,
+  description: site.description
 };
 
 export default function RootLayout({
