@@ -7,15 +7,15 @@ export const site = {
     "nav": [
         {
             "name": "Home",
-            "url": "/"
+            "href": "/"
         },
         {
             "name": "About",
-            "url": "/about"
+            "href": "/about"
         },
         {
             "name": "Contact",
-            "url": "/contact"
+            "href": "/contact"
         }
     ]
 } as const;
