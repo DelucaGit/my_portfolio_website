@@ -1,0 +1,216 @@
+/* Mobile-first base — scale up from here */
+
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100svh;
+  padding: 4.5rem 1.25rem 3.5rem;
+  overflow: hidden;
+  background: var(--color-bg);
+  text-align: center;
+}
+
+.bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.7;
+  transform-origin: 50% 50%;
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 22rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.concept {
+  margin: 0 0 0.85rem;
+  font-size: var(--text-eyebrow);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-eyebrow);
+  animation: rise 0.65s ease-out both;
+}
+
+.name {
+  margin: 0 0 1rem;
+  font-size: clamp(2.25rem, 10vw, 2.75rem);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-heading);
+  animation: rise 0.65s ease-out 0.08s both;
+}
+
+.promise {
+  margin: 0 0 1.75rem;
+  font-size: 1rem;
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-body);
+  color: var(--color-text-muted);
+  text-wrap: balance;
+  animation: rise 0.65s ease-out 0.16s both;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  width: 100%;
+  animation: rise 0.65s ease-out 0.24s both;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.9rem 1.25rem;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: var(--weight-medium);
+  line-height: 1;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.btnPrimary {
+  background: var(--color-btn-primary);
+  color: var(--color-btn-on-primary);
+}
+
+.btnSecondary {
+  background: var(--color-btn-secondary);
+  color: var(--color-text);
+}
+
+/* Tablet+ */
+@media (min-width: 640px) {
+  .hero {
+    padding: 5.5rem 1.5rem 4.5rem;
+  }
+
+  .bg {
+    opacity: 0.85;
+  }
+
+  .inner {
+    max-width: 36rem;
+  }
+
+  .concept {
+    margin-bottom: 1.1rem;
+    font-size: 0.8rem;
+  }
+
+  .name {
+    margin-bottom: 1.15rem;
+    font-size: clamp(2.75rem, 6vw, 3.75rem);
+  }
+
+  .promise {
+    margin-bottom: 2rem;
+    font-size: 1.05rem;
+    max-width: 32rem;
+  }
+
+  .actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: auto;
+    gap: 0.75rem;
+  }
+
+  .btn {
+    width: auto;
+    padding: 0.85rem 1.4rem;
+  }
+
+  .btn:hover {
+    transform: translateY(-1px);
+  }
+
+  .btnPrimary:hover {
+    background: var(--color-btn-primary-hover);
+  }
+
+  .btnSecondary:hover {
+    background: var(--color-btn-secondary-hover);
+  }
+}
+
+/* Desktop */
+@media (min-width: 960px) {
+  .hero {
+    min-height: 100vh;
+    padding: 6.5rem 2rem 5.5rem;
+  }
+
+  .bg {
+    opacity: 1;
+    animation: drift 28s ease-in-out infinite alternate;
+  }
+
+  .inner {
+    max-width: 42rem;
+  }
+
+  .name {
+    font-size: clamp(3.25rem, 5vw, 4.25rem);
+  }
+
+  .promise {
+    font-size: 1.1rem;
+    max-width: 34rem;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes drift {
+  from {
+    transform: translateY(0) rotate(0deg);
+  }
+  to {
+    transform: translateY(-10px) rotate(1.5deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .concept,
+  .name,
+  .promise,
+  .actions,
+  .bg {
+    animation: none;
+  }
+
+  .btn:hover {
+    transform: none;
+  }
+}

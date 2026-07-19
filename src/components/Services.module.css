@@ -1,0 +1,283 @@
+/* Mobile-first base — scale up from here */
+
+.section {
+  background: var(--color-bg);
+  padding: 3.5rem 1.25rem;
+  transition: background-color 0.6s ease;
+}
+
+.inner {
+  width: 100%;
+  max-width: 22rem;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.65rem;
+  font-size: var(--text-eyebrow);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-eyebrow);
+}
+
+.heading {
+  margin: 0;
+  font-size: clamp(1.75rem, 7vw, 2.25rem);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-heading);
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Hidden on mobile — only used on desktop, see below */
+.stickyText {
+  display: none;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1.25rem;
+}
+
+/* Flip the desktop sticky text to a light color when the active
+   service has a dark background. */
+.section[data-dark="true"] .stickyText .title {
+  color: var(--color-on-dark-heading);
+}
+
+.section[data-dark="true"] .stickyText .description {
+  color: var(--color-on-dark-muted);
+}
+
+.itemText {
+  text-align: center;
+}
+
+.title {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.5rem, 6vw, 1.875rem);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-heading);
+}
+
+.description {
+  margin: 0 auto 1.75rem;
+  max-width: 26rem;
+  font-size: 0.95rem;
+  line-height: var(--leading-body);
+  color: var(--color-text-muted);
+}
+
+/* The image sits on a soft glow of the service's own theme color,
+   drawn behind it with a large blurred pseudo-element. */
+.mediaTrack {
+  position: relative;
+}
+
+.mediaTrack::before {
+  content: "";
+  position: absolute;
+  inset: -12%;
+  background: var(--block-bg, transparent);
+  filter: blur(48px);
+  opacity: 0.55;
+  z-index: 0;
+}
+
+/* A dark theme blurs into a very large, obvious shadow rather than
+   a soft color glow, so keep it but pull it in tighter and lighter. */
+.block[data-dark="true"] .mediaTrack::before {
+  inset: -4%;
+  filter: blur(28px);
+  opacity: 0.35;
+}
+
+.panel {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  border-radius: 1.25rem;
+  padding: 1rem;
+  background-color: var(--color-video-bg);
+  background-image: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.35) 1px,
+    transparent 1px
+  );
+  background-size: 22px 22px;
+  box-shadow: var(--shadow-image);
+}
+
+.screenshot {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: contain;
+  border-radius: 0.75rem;
+  background: var(--color-video-inner);
+}
+
+/* Tablet+ */
+@media (min-width: 640px) {
+  .section {
+    padding: 5rem 1.5rem;
+  }
+
+  .inner {
+    max-width: 40rem;
+  }
+
+  .header {
+    margin-bottom: 1.5rem;
+  }
+
+  .heading {
+    font-size: clamp(2rem, 4vw, 2.75rem);
+  }
+
+  .list {
+    gap: 2rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .description {
+    font-size: 1rem;
+    max-width: 32rem;
+  }
+
+  .panel {
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+  }
+}
+
+/* Desktop */
+@media (min-width: 960px) {
+  .section {
+    padding: 6.5rem 2rem;
+    /* On desktop the whole section carries the active service's
+       theme, instead of each block painting its own background. */
+    background: var(--active-bg, var(--color-bg));
+  }
+
+  .inner {
+    max-width: 56rem;
+  }
+
+  .header {
+    margin-bottom: 2rem;
+  }
+
+  .heading {
+    font-size: var(--text-heading-sm);
+  }
+
+  .layout {
+    flex-direction: row;
+    gap: 3rem;
+  }
+
+  /* The per-item text is only for mobile, where each service sits
+     right above its own image. On desktop the sticky panel below
+     takes over, so this is no longer shown. */
+  .itemText {
+    display: none;
+  }
+
+  .stickyText {
+    display: flex;
+    flex: 0 0 42%;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .stickyTextInner {
+    animation: fadeInText 0.5s ease;
+  }
+
+  @keyframes fadeInText {
+    from {
+      opacity: 0;
+      transform: translateY(0.75rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .title {
+    font-size: clamp(2.25rem, 3vw, 3rem);
+  }
+
+  .description {
+    margin: 0 0 1.25rem;
+    font-size: 1.15rem;
+    max-width: 26rem;
+  }
+
+  .list {
+    flex: 1 1 58%;
+    gap: 1.5rem;
+  }
+
+  .block {
+    display: block;
+    padding: 0;
+  }
+
+  .mediaTrack {
+    min-height: 150vh;
+    display: flex;
+    align-items: flex-start;
+  }
+
+  /* The glow behind the image is mobile-only, since desktop shows
+     the theme on the whole section background instead. */
+  .mediaTrack::before {
+    content: none;
+  }
+
+  .panel {
+    width: 100%;
+    height: 85vh;
+    padding: 2rem;
+    margin-top: 10vh;
+  }
+
+  .screenshot {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+    object-fit: cover;
+  }
+}
