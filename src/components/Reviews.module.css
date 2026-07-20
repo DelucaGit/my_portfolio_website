@@ -3,6 +3,7 @@
 .section {
   background: var(--color-bg);
   padding: 3.5rem 1.25rem;
+  overflow-x: hidden;
 }
 
 .inner {
@@ -11,9 +12,20 @@
   margin: 0 auto;
 }
 
-.header {
+.layout {
+  display: flex;
+  flex-direction: column;
+}
+
+.textCol {
   text-align: center;
   margin-bottom: 2rem;
+}
+
+.reviewCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .eyebrow {
@@ -34,13 +46,24 @@
   color: var(--color-heading);
 }
 
-.card {
+/* Sizing wrapper around the card. Fixed height on desktop lives here
+   so the controls below stay put when quotes change length. */
+.cardGlow {
   width: 100%;
-  margin: 0 auto 1.5rem;
+  margin: 0 auto 2rem;
+  border-radius: 1.25rem;
+}
+
+.card {
+  position: relative;
+  width: 100%;
   padding: 1.5rem;
   border-radius: 1.25rem;
-  background: var(--color-surface);
-  box-shadow: var(--shadow-card);
+  background: var(--color-bg);
+  box-shadow:
+    0 1px 2px rgba(10, 102, 194, 0.04),
+    0 8px 24px rgba(10, 102, 194, 0.1),
+    0 20px 48px rgba(10, 102, 194, 0.08);
   animation: fadeIn 0.35s ease-out both;
 }
 
@@ -175,7 +198,7 @@
     max-width: 40rem;
   }
 
-  .header {
+  .textCol {
     margin-bottom: 2.5rem;
   }
 
@@ -183,8 +206,11 @@
     font-size: clamp(2rem, 4vw, 2.75rem);
   }
 
-  .card {
+  .cardGlow {
     max-width: 28rem;
+  }
+
+  .card {
     padding: 1.75rem;
   }
 
@@ -208,22 +234,57 @@
     max-width: 56rem;
   }
 
-  .header {
-    margin-bottom: 3rem;
-  }
-
   .heading {
     font-size: var(--text-heading-sm);
   }
 
-  .card {
+  /* A fixed height (instead of one that follows each review's length)
+     keeps the card, its buttons, and the section itself from jumping
+     around as visitors switch between short and long reviews. Longer
+     quotes simply scroll inside their own box instead of growing it. */
+  .cardGlow {
     max-width: 34rem;
+    height: 24rem;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     padding: 2rem;
+  }
+
+  .quote {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
   }
 
   .avatar {
     width: 3.25rem;
     height: 3.25rem;
+  }
+
+  /* Title on the left, review card and its swipe controls on the right. */
+  .layout {
+    flex-direction: row;
+    align-items: center;
+    gap: 3rem;
+  }
+
+  .textCol {
+    flex: 0 0 34%;
+    margin-bottom: 0;
+    text-align: left;
+  }
+
+  .reviewCol {
+    flex: 1 1 66%;
+    align-items: flex-start;
+  }
+
+  .controls {
+    justify-content: flex-start;
   }
 }
 

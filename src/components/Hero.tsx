@@ -4,8 +4,8 @@ import SprinkleField from "@/components/SprinkleField";
 import styles from "./Hero.module.css";
 
 export default function Hero() {
-  const contact = site.nav.find((item) => item.name === "Contact");
-  const about = site.nav.find((item) => item.name === "About");
+  const contact = site.nav.find((item) => item.href.includes("contact"));
+  const about = site.nav.find((item) => item.href.includes("about"));
 
   return (
     <section className={styles.hero}>
@@ -37,6 +37,13 @@ export default function Hero() {
           )}
         </div>
       </div>
+
+      <a href="#intro" className={styles.scrollCue}>
+        <span className={styles.scrollCueLabel}>Se mitt ansikte</span>
+        <span className={styles.scrollCueArrow} aria-hidden="true">
+          ↓
+        </span>
+      </a>
     </section>
   );
 }

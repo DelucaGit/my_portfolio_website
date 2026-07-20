@@ -77,7 +77,11 @@ export default function IntroVideo() {
   }
 
   return (
-    <section className={styles.section} aria-labelledby="intro-heading">
+    <section
+      id="intro"
+      className={styles.section}
+      aria-labelledby="intro-heading"
+    >
       <div className={styles.intro}>
         <header className={styles.header}>
           <p className={styles.eyebrow}>{intro.eyebrow}</p>
@@ -115,7 +119,7 @@ export default function IntroVideo() {
                 type="button"
                 className={styles.play}
                 onClick={togglePlay}
-                aria-label={playing ? "Pause introduction video" : "Play introduction video"}
+                aria-label={playing ? "Pausa introfilmen" : "Spela introfilmen"}
               >
                 {playing ? <PauseIcon /> : <PlayIcon />}
               </button>

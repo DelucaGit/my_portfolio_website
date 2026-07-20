@@ -1,62 +1,69 @@
-export type ServiceTheme = {
-    bg: string,
-    dark: boolean,
-};
-
 export type Service = {
-title: string,
-description: string,
-detailDescription: string,
-images: string[],
-imagesAlt: string[],
-slug: string,
-theme: ServiceTheme,
+  slug: string;
+  title: string;
+  price: string;
+  pill: string;
+  description: string;
+  features: string[];
+  icon: "globe" | "spark" | "layers" | "shop" | "shield" | "megaphone";
+  comingSoon?: boolean;
 };
 
 export const services: Service[] = [
-    {
-        title: "Web Development",
-        description: "I build fast e-commerce sites, price calculators, and AI chatbots.",
-        detailDescription: "I build fast e-commerce sites, price calculators, and AI chatbots.",
-        images: [
-            "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=1200&auto=format&fit=crop",
-        ],
-        imagesAlt: ["Laptop screen showing code for a web project", "Close-up of a website layout on screen"],
-        slug: "web-development",
-        theme: {
-            bg: "var(--service-theme-cool)",
-            dark: false,
-        },
-    },
-    {
-        title: "AI Development",
-        description: "I build AI chatbots, image generators, and more.",
-        detailDescription: "I build AI chatbots, image generators, and more.",
-        images: [
-            "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1200&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1200&auto=format&fit=crop",
-        ],
-        imagesAlt: ["Abstract visualization of an AI network", "Chat interface on a laptop screen"],
-        slug: "ai-development",
-        theme: {
-            bg: "var(--service-theme-dark)",
-            dark: true,
-        },
-    },
-    {
-        title: "Custom Software",
-        description: "I build custom software solutions for businesses.",
-        detailDescription: "I build custom software solutions for businesses.",
-        images: [
-            "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200&auto=format&fit=crop",
-        ],
-        imagesAlt: ["Dashboard showing custom software analytics", "Laptop displaying a custom software interface"],
-        slug: "custom-software",
-        theme: {
-            bg: "var(--service-theme-warm)",
-            dark: false,
-        },
-    },
+  {
+    slug: "web-development",
+    title: "Webbutveckling",
+    price: "Offert efter behov",
+    pill: "Kostnadsfritt första samtal",
+    description:
+      "Sajter som berättar vad ni gör — och får besökaren att ta nästa steg.",
+    features: [
+      "Företags- och portfoliosajter",
+      "Priskalkylatorer & formulär",
+      "Byggt för fart och tydlighet",
+    ],
+    icon: "globe",
+  },
+  {
+    slug: "ai-development",
+    title: "AI-utveckling",
+    price: "Offert efter behov",
+    pill: "Anpassat till ert flöde",
+    description:
+      "AI som smyger in i det ni redan gör — chatbots, verktyg och automation.",
+    features: [
+      "Skräddarsydda AI-chattar",
+      "Interna assistenter",
+      "Bild- och innehållsverktyg",
+    ],
+    icon: "spark",
+  },
+  {
+    slug: "custom-software",
+    title: "Skräddarsydd mjukvara",
+    price: "Offert efter behov",
+    pill: "Runt er process",
+    description:
+      "System som tar bort det tråkiga arbetet — så att tiden och pengarna går dit de behövs.",
+    features: [
+      "Dashboards & adminverktyg",
+      "Interna arbetsflöden",
+      "Kopplingar mellan system",
+    ],
+    icon: "layers",
+  },
+  {
+    slug: "ecommerce-tools",
+    title: "E-handelsverktyg",
+    price: "Offert efter behov",
+    pill: "Byggt för säljflödet",
+    description:
+      "Butiker och säljverktyg där köpet känns enkelt — och uppföljningen blir tydlig.",
+    features: [
+      "Produkt- och checkoutflöden",
+      "Order- och lagervyer",
+      "Betalningsintegrationer",
+    ],
+    icon: "shop",
+  },
 ];

@@ -99,10 +99,52 @@
   color: var(--color-text);
 }
 
+.scrollCue {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  z-index: 1;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  transform: translateX(-50%);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  animation: rise 0.65s ease-out 0.4s both;
+}
+
+.scrollCue:hover {
+  color: var(--color-heading);
+}
+
+.scrollCue:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 4px;
+  border-radius: 0.35rem;
+}
+
+.scrollCueLabel {
+  font-size: 0.8rem;
+  font-weight: var(--weight-medium);
+  letter-spacing: 0.04em;
+}
+
+.scrollCueArrow {
+  display: block;
+  font-size: 1.15rem;
+  line-height: 1;
+  animation: bounce 1.8s ease-in-out infinite;
+}
+
 /* Tablet+ */
 @media (min-width: 640px) {
   .hero {
-    padding: 5.5rem 1.5rem 4.5rem;
+    padding: 5.5rem 1.5rem 5.5rem;
+  }
+
+  .scrollCue {
+    bottom: 2rem;
   }
 
   .bg {
@@ -159,7 +201,11 @@
 @media (min-width: 960px) {
   .hero {
     min-height: 100vh;
-    padding: 6.5rem 2rem 5.5rem;
+    padding: 6.5rem 2rem 6rem;
+  }
+
+  .scrollCue {
+    bottom: 2.25rem;
   }
 
   .bg {
@@ -201,12 +247,27 @@
   }
 }
 
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .concept,
   .name,
   .promise,
   .actions,
+  .scrollCue,
   .bg {
+    animation: none;
+  }
+
+  .scrollCueArrow {
     animation: none;
   }
 

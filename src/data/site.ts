@@ -1,28 +1,30 @@
 export const site = {
-    name: "Marcel Deluca",
-    title: "System Designer",
-    description: "I help businesses make the money work for them by creating custom software solutions.",
-    url: "https://marceldeluca.se",
-    email: "marcel@marceldeluca.se",
-    intro: {
-        eyebrow: "Introduction",
-        heading: "A quick look at how I work",
-        description: "Watch a short intro to my approach — building software that makes money work for the business.",
-        video: "/videos/intro.mp4",
-        poster: "/videos/intro-poster.jpg",
+  name: "Marcel Deluca",
+  title: "Systemdesigner",
+  description:
+    "Jag hjälper företag att få pengarna att arbeta mer — genom mjukvara som är byggd kring hur ni faktiskt jobbar.",
+  url: "https://marceldeluca.se",
+  email: "marcel@marceldeluca.se",
+  intro: {
+    eyebrow: "Berättelsen",
+    heading: "Så här brukar det börja",
+    description:
+      "En kort film om hur jag tänker — från första samtalet till system som gör vardagen enklare och affären starkare.",
+    video: "/videos/intro.mp4",
+    poster: "/videos/intro-poster.jpg",
+  },
+  nav: [
+    {
+      name: "Hem",
+      href: "/",
     },
-    nav: [
-        {
-            name: "Home",
-            href: "/"
-        },
-        {
-            name: "About",
-            href: "/about"
-        },
-        {
-            name: "Contact",
-            href: "/contact"
-        }
-    ]
+    {
+      name: "Om mig",
+      href: "/about",
+    },
+    {
+      name: "Kontakt",
+      href: "/#contact",
+    },
+  ],
 } as const;

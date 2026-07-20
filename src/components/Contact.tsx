@@ -4,21 +4,25 @@ import styles from "./Contact.module.css";
 
 export default function Contact() {
   return (
-    <section className={styles.section} aria-labelledby="contact-heading">
+    <section
+      id="contact"
+      className={styles.section}
+      aria-labelledby="contact-heading"
+    >
       <SprinkleField className={styles.bg} />
 
       <div className={styles.inner}>
-        <p className={styles.badge}>Open to new projects</p>
+        <p className={styles.badge}>Öppen för nya uppdrag</p>
 
         <h2 id="contact-heading" className={styles.heading}>
-          <span className={styles.lead}>For businesses</span>
+          <span className={styles.lead}>För företag</span>
           <span className={styles.bold}>
-            Let&apos;s make your software work harder.
+            Låt oss få er mjukvara att arbeta hårdare.
           </span>
         </h2>
 
         <a href={`mailto:${site.email}`} className={styles.btn}>
-          Email me
+          Mejla mig
         </a>
       </div>
     </section>
