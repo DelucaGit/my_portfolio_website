@@ -33,7 +33,6 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./out/
-          # Hostinger serves the domain from domains/<domain>/public_html
-          # (not the account-root public_html)
-          server-dir: ./domains/marceldeluca.se/public_html/
+          # FTP account is already rooted in the site public_html — upload to ./
+          server-dir: ./
           dangerous-clean-slate: true
