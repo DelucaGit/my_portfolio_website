@@ -15,8 +15,8 @@ export default function Services() {
             Mjukvara som hjälper affären att växa.
           </h2>
           <p className={styles.support}>
-            Välj en del — eller flera. Varje pusselbit fungerar själv, och ännu
-            bättre tillsammans.
+            Börja med det ni behöver mest — resten kan växa fram senare. Alla
+            uppdrag prissätts efter behov, och första samtalet är kostnadsfritt.
           </p>
         </header>
 
@@ -39,11 +39,9 @@ function ServiceCard({ service }: { service: Service }) {
         <span className={styles.icon} aria-hidden="true">
           <ServiceIcon name={service.icon} />
         </span>
-        <p className={styles.price}>{service.price}</p>
       </div>
 
       <h3 className={styles.title}>{service.title}</h3>
-      <p className={styles.pill}>{service.pill}</p>
       <p className={styles.description}>{service.description}</p>
 
       <ul className={styles.features}>

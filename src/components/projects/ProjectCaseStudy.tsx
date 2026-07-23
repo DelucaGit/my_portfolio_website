@@ -270,7 +270,7 @@ export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
           <h2 id="project-cta-heading" className={styles.ctaHeading}>
             <span className={styles.ctaLead}>Gillar du det du ser?</span>
             <span className={styles.ctaBold}>
-              Låt oss få er mjukvara att arbeta hårdare.
+              Berätta vad ni behöver, så tittar vi på det tillsammans.
             </span>
           </h2>
           <a href={`mailto:${site.email}`} className={styles.ctaBtn}>

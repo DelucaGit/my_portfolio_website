@@ -1,5 +1,6 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/Navbar";
 import SmoothScroll from "@/components/SmoothScroll";
 import { getDefaultMetadata } from "@/lib/seo";
 
@@ -19,7 +20,10 @@ export default function RootLayout({
   return (
     <html lang="sv">
       <body className={inter.variable}>
-        <SmoothScroll>{children}</SmoothScroll>
+        <SmoothScroll>
+          <Navbar />
+          {children}
+        </SmoothScroll>
       </body>
     </html>
   );

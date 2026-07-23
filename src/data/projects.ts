@@ -108,20 +108,20 @@ export const projects: Project[] = [
         },
         mobile: [
           {
-            src: "/projects/takkoll/mobile-1.jpg",
-            alt: "TakKoll startsida i mobil",
+            src: "/projects/takkoll/mobile-1.png",
+            alt: "TakKoll mobil hero med ROT-avdrag på takrenovering",
           },
           {
-            src: "/projects/takkoll/mobile-2.jpg",
-            alt: "TakKoll tjänster i mobil",
+            src: "/projects/takkoll/mobile-2.png",
+            alt: "TakKoll mobil tjänstekort — takmålning och takomläggning",
           },
           {
-            src: "/projects/takkoll/mobile-3.jpg",
-            alt: "TakKoll bokningsformulär i mobil",
+            src: "/projects/takkoll/mobile-3.png",
+            alt: "TakKoll mobil — därför väljer husägare TakKoll, med kostnadsfri offert",
           },
         ],
         fullPage: {
-          src: "/projects/takkoll/page-home.jpg",
+          src: "/projects/takkoll/page-home.png",
           alt: "Hela TakKoll-startsida från topp till botten",
         },
         fullPageCopy: {
@@ -131,14 +131,14 @@ export const projects: Project[] = [
             "Från hero och ROT till tjänster, FAQ och bokning — dra eller scrolla inne i ramen.",
         },
         desktop: {
-          src: "/projects/takkoll/services-viewport.jpg",
-          alt: "TakKoll tjänstesektion på desktop",
+          src: "/projects/takkoll/safety-viewport.png",
+          alt: "TakKoll taksäkerhet — utrustning enligt Boverkets regler",
         },
         desktopCopy: {
-          eyebrow: "Tjänster",
-          heading: "Tydligt paketerat — så husägaren förstår.",
+          eyebrow: "Trygghet",
+          heading: "Taksäkerhet enligt boken — inte löst prat.",
           support:
-            "Takmålning, omläggning, service och isolering med vad som ingår och varför det behövs.",
+            "Snörasskydd, gångbryggor och livlinefästen, installerat och dokumenterat enligt Boverkets regler.",
         },
       },
       seo: {
@@ -159,8 +159,8 @@ export const projects: Project[] = [
     tags: ["WordPress", "Lokalt", "Leadgen"],
     year: 2025,
     stack: ["WordPress", "Elementor"],
-    image: ph.wide,
-    imageAlt: "Platshållare för BilserviceKoll-startsida",
+    image: "/projects/bilservicekoll/hero-viewport.png",
+    imageAlt: "BilserviceKoll startsida — hero med bilservice och biluppämtning",
     theme: {
       bg: "var(--project-theme-sand)",
       dark: false,
@@ -184,46 +184,33 @@ export const projects: Project[] = [
       industry: "Bilverkstad",
       media: {
         hero: {
-          src: ph.wide,
-          alt: "Platshållare — BilserviceKoll hero",
+          src: "/projects/bilservicekoll/hero-viewport.png",
+          alt: "BilserviceKoll startsida — hero med bilservice och biluppämtning",
         },
         feature: {
-          src: ph.wide,
-          alt: "Platshållare — BilserviceKoll tjänster",
+          src: "/projects/bilservicekoll/services-viewport.png",
+          alt: "BilserviceKoll tjänster — bilservice, oljebyte, besiktning, däckbyte och däckhotell",
         },
-        mobile: [
-          {
-            src: ph.phone,
-            alt: "Platshållare — BilserviceKoll mobil startsida",
-          },
-          {
-            src: ph.phone,
-            alt: "Platshållare — BilserviceKoll mobil tjänster",
-          },
-          {
-            src: ph.phone,
-            alt: "Platshållare — BilserviceKoll mobil bokning",
-          },
-        ],
+        mobile: [],
         fullPage: {
-          src: ph.tall,
-          alt: "Platshållare — hela BilserviceKoll-sidan",
+          src: "/projects/bilservicekoll/page-home.webp",
+          alt: "Hela BilserviceKoll-startsida från topp till botten",
         },
         fullPageCopy: {
           eyebrow: "Hela sidan",
           heading: "Scrolla igenom hela berättelsen.",
           support:
-            "Bilder saknas ännu — byt ut platshållarna när skärmdumpar finns.",
+            "Dra eller scrolla inne i ramen för att se sidan från topp till botten.",
         },
         desktop: {
-          src: ph.wide,
-          alt: "Platshållare — BilserviceKoll desktop",
+          src: "/projects/bilservicekoll/booking-calendar.webp",
+          alt: "Bokningskalender — välj tjänst, datum och tid direkt på sajten",
         },
         desktopCopy: {
-          eyebrow: "Tjänster",
-          heading: "Tydliga block — så kunden ser helheten.",
+          eyebrow: "Bokning",
+          heading: "Ingen telefon behövs — tiden bokas direkt.",
           support:
-            "Service, däck, olja och besiktning i enkla vyer som är lätta att boka.",
+            "Kunden väljer tjänst, datum och tid i en kalender som visar lediga tider live.",
         },
       },
       seo: {
@@ -244,8 +231,8 @@ export const projects: Project[] = [
     tags: ["Frontend", "UX/UI", "Leadgen"],
     year: 2025,
     stack: ["Frontend", "UX & UI-design"],
-    image: ph.wide,
-    imageAlt: "Platshållare för Städkoll-startsida",
+    image: "/projects/stadkoll/hero-viewport.webp",
+    imageAlt: "Städkoll startsida — hero med flyttstädning till fast pris",
     theme: {
       bg: "var(--project-theme-sage)",
       dark: false,
@@ -269,8 +256,8 @@ export const projects: Project[] = [
       industry: "Flyttstädning",
       media: {
         hero: {
-          src: ph.wide,
-          alt: "Platshållare — Städkoll hero",
+          src: "/projects/stadkoll/hero-viewport.webp",
+          alt: "Städkoll startsida — hero med flyttstädning till fast pris",
         },
         feature: {
           src: ph.wide,
@@ -291,14 +278,14 @@ export const projects: Project[] = [
           },
         ],
         fullPage: {
-          src: ph.tall,
-          alt: "Platshållare — hela Städkoll-sidan",
+          src: "/projects/stadkoll/page-home.webp",
+          alt: "Hela Städkoll-startsida från topp till botten",
         },
         fullPageCopy: {
           eyebrow: "Hela sidan",
           heading: "Scrolla igenom hela berättelsen.",
           support:
-            "Bilder saknas ännu — byt ut platshållarna när skärmdumpar finns.",
+            "Dra eller scrolla inne i ramen för att se sidan från topp till botten.",
         },
         desktop: {
           src: ph.wide,
@@ -329,8 +316,8 @@ export const projects: Project[] = [
     tags: ["Frontend", "UX/UI", "Leadgen"],
     year: 2025,
     stack: ["Frontend", "UX & UI-design"],
-    image: ph.wide,
-    imageAlt: "Platshållare för Brand & Säkerhetskoll-startsida",
+    image: "/projects/brand-sakerhetskoll/hero-viewport.webp",
+    imageAlt: "Brand & Säkerhetskoll startsida — hero med brandsläckare och trygghet i hemmet",
     theme: {
       bg: "var(--project-theme-ember)",
       dark: false,
@@ -354,8 +341,8 @@ export const projects: Project[] = [
       industry: "Brandskydd",
       media: {
         hero: {
-          src: ph.wide,
-          alt: "Platshållare — Brand & Säkerhetskoll hero",
+          src: "/projects/brand-sakerhetskoll/hero-viewport.webp",
+          alt: "Brand & Säkerhetskoll startsida — hero med brandsläckare och trygghet i hemmet",
         },
         feature: {
           src: ph.wide,
@@ -376,14 +363,14 @@ export const projects: Project[] = [
           },
         ],
         fullPage: {
-          src: ph.tall,
-          alt: "Platshållare — hela Brand & Säkerhetskoll-sidan",
+          src: "/projects/brand-sakerhetskoll/page-home.webp",
+          alt: "Hela Brand & Säkerhetskoll-startsida från topp till botten",
         },
         fullPageCopy: {
           eyebrow: "Hela sidan",
           heading: "Scrolla igenom hela berättelsen.",
           support:
-            "Bilder saknas ännu — byt ut platshållarna när skärmdumpar finns.",
+            "Dra eller scrolla inne i ramen för att se sidan från topp till botten.",
         },
         desktop: {
           src: ph.wide,
@@ -414,8 +401,8 @@ export const projects: Project[] = [
     tags: ["Frontend", "UX/UI", "SEO"],
     year: 2025,
     stack: ["SEO", "Frontend", "UX & UI-design"],
-    image: ph.wide,
-    imageAlt: "Platshållare för Scooterkoll-startsida",
+    image: "/projects/scooterkoll/hero-viewport.webp",
+    imageAlt: "Scooterkoll startsida — hero med offertformulär och 365+ reparerade scootrar",
     theme: {
       bg: "var(--project-theme-lime)",
       dark: false,
@@ -439,8 +426,8 @@ export const projects: Project[] = [
       industry: "Elscooter-reparation",
       media: {
         hero: {
-          src: ph.wide,
-          alt: "Platshållare — Scooterkoll hero",
+          src: "/projects/scooterkoll/hero-viewport.webp",
+          alt: "Scooterkoll startsida — hero med offertformulär och 365+ reparerade scootrar",
         },
         feature: {
           src: ph.wide,
@@ -461,14 +448,14 @@ export const projects: Project[] = [
           },
         ],
         fullPage: {
-          src: ph.tall,
-          alt: "Platshållare — hela Scooterkoll-sidan",
+          src: "/projects/scooterkoll/page-home.webp",
+          alt: "Hela Scooterkoll-startsida från topp till botten",
         },
         fullPageCopy: {
           eyebrow: "Hela sidan",
           heading: "Scrolla igenom hela berättelsen.",
           support:
-            "Bilder saknas ännu — byt ut platshållarna när skärmdumpar finns.",
+            "Dra eller scrolla inne i ramen för att se sidan från topp till botten.",
         },
         desktop: {
           src: ph.wide,
@@ -499,8 +486,8 @@ export const projects: Project[] = [
     tags: ["GoHighLevel", "UX/UI", "Varumärke"],
     year: 2025,
     stack: ["GoHighLevel", "UX & UI-design"],
-    image: ph.wide,
-    imageAlt: "Platshållare för HalimaPearl-startsida",
+    image: "/projects/halimapearl/hero-viewport.webp",
+    imageAlt: "HalimaPearl startsida — hero med Modesty Is Fashion mot sidentyg",
     theme: {
       bg: "var(--project-theme-peach)",
       dark: false,
@@ -524,8 +511,8 @@ export const projects: Project[] = [
       industry: "Mode & varumärke",
       media: {
         hero: {
-          src: ph.wide,
-          alt: "Platshållare — HalimaPearl hero",
+          src: "/projects/halimapearl/hero-viewport.webp",
+          alt: "HalimaPearl startsida — hero med Modesty Is Fashion mot sidentyg",
         },
         feature: {
           src: ph.wide,
@@ -546,14 +533,14 @@ export const projects: Project[] = [
           },
         ],
         fullPage: {
-          src: ph.tall,
-          alt: "Platshållare — hela HalimaPearl-sidan",
+          src: "/projects/halimapearl/page-collection.webp",
+          alt: "HalimaPearl kimono-kollektion — produktlista från topp till botten",
         },
         fullPageCopy: {
-          eyebrow: "Hela sidan",
-          heading: "Scrolla igenom hela berättelsen.",
+          eyebrow: "Kollektion",
+          heading: "Bläddra i kollektionen, precis som en kund gör.",
           support:
-            "Bilder saknas ännu — byt ut platshållarna när skärmdumpar finns.",
+            "Sök, filtrera och sortera bland kimonos — dra eller scrolla inne i ramen.",
         },
         desktop: {
           src: ph.wide,
@@ -584,8 +571,8 @@ export const projects: Project[] = [
     tags: ["Frontend", "UX/UI", "SEO"],
     year: 2025,
     stack: ["SEO", "Frontend", "UX & UI-design"],
-    image: ph.wide,
-    imageAlt: "Platshållare för Ventilationskoll-startsida",
+    image: "/projects/ventilationskoll/hero-viewport.webp",
+    imageAlt: "Ventilationskoll startsida — hero med pris från 2095 kr och kundomdömen",
     theme: {
       bg: "var(--project-theme-sky)",
       dark: false,
@@ -608,8 +595,8 @@ export const projects: Project[] = [
       industry: "Ventilation",
       media: {
         hero: {
-          src: ph.wide,
-          alt: "Platshållare — Ventilationskoll hero",
+          src: "/projects/ventilationskoll/hero-viewport.webp",
+          alt: "Ventilationskoll startsida — hero med pris från 2095 kr och kundomdömen",
         },
         feature: {
           src: ph.wide,
@@ -630,14 +617,14 @@ export const projects: Project[] = [
           },
         ],
         fullPage: {
-          src: ph.tall,
-          alt: "Platshållare — hela Ventilationskoll-sidan",
+          src: "/projects/ventilationskoll/page-home.webp",
+          alt: "Hela Ventilationskoll-startsida från topp till botten",
         },
         fullPageCopy: {
           eyebrow: "Hela sidan",
           heading: "Scrolla igenom hela berättelsen.",
           support:
-            "Bilder saknas ännu — byt ut platshållarna när skärmdumpar finns.",
+            "Dra eller scrolla inne i ramen för att se sidan från topp till botten.",
         },
         desktop: {
           src: ph.wide,
@@ -668,8 +655,9 @@ export const projects: Project[] = [
     tags: ["Shopify", "E-handel", "Varumärke"],
     year: 2026,
     stack: ["Shopify"],
-    image: ph.wide,
-    imageAlt: "Platshållare för Premium Honey Blends-butik",
+    image: "/projects/premium-honey-blends/hero-viewport.png",
+    imageAlt:
+      "Premium Honey Blends startsida — mörk hero med honungsburkar och Handla nu-knapp",
     theme: {
       bg: "var(--project-theme-honey)",
       dark: false,
@@ -693,40 +681,40 @@ export const projects: Project[] = [
       industry: "E-handel / Livsmedel",
       media: {
         hero: {
-          src: ph.wide,
-          alt: "Platshållare — Premium Honey Blends hero",
+          src: "/projects/premium-honey-blends/hero-viewport.png",
+          alt: "Premium Honey Blends startsida i desktop — hero med honungsburkar mot blomsteräng",
         },
         feature: {
-          src: ph.wide,
-          alt: "Platshållare — Premium Honey Blends produktvy",
+          src: "/projects/premium-honey-blends/feature-product.png",
+          alt: "Produktsektion med Power Honey Blend-burk i naturmiljö och text om naturlig honung och örter",
         },
         mobile: [
           {
-            src: ph.phone,
-            alt: "Platshållare — Premium Honey Blends mobil startsida",
+            src: "/projects/premium-honey-blends/mobile-1.png",
+            alt: "Mobil startsida — hero med honungsburkar och bästsäljare under",
           },
           {
-            src: ph.phone,
-            alt: "Platshållare — Premium Honey Blends mobil produkt",
+            src: "/projects/premium-honey-blends/mobile-2.png",
+            alt: "Mobil produktsida — alla honungsblends listade med pris",
           },
           {
-            src: ph.phone,
-            alt: "Platshållare — Premium Honey Blends mobil kassa",
+            src: "/projects/premium-honey-blends/mobile-3.png",
+            alt: "Mobil kontaktsida — Vi svarar på allt, med kontaktformulär",
           },
         ],
         fullPage: {
-          src: ph.tall,
-          alt: "Platshållare — hela Premium Honey Blends-sidan",
+          src: "/projects/premium-honey-blends/page-full.png",
+          alt: "Premium Honey Blends-sidan från topp till botten",
         },
         fullPageCopy: {
           eyebrow: "Hela sidan",
           heading: "Scrolla igenom hela berättelsen.",
           support:
-            "Bilder saknas ännu — byt ut platshållarna när skärmdumpar finns.",
+            "Dra eller scrolla inne i ramen för att se sidan från topp till botten.",
         },
         desktop: {
-          src: ph.wide,
-          alt: "Platshållare — Premium Honey Blends desktop",
+          src: "/projects/premium-honey-blends/products-viewport.png",
+          alt: "Produktsidan i desktop — tre honungsblends med produktkort under",
         },
         desktopCopy: {
           eyebrow: "Butik",
@@ -754,8 +742,8 @@ export const projects: Project[] = [
     tags: ["WooCommerce", "Polylang", "B2B"],
     year: 2026,
     stack: ["WooCommerce", "Polylang", "PHP"],
-    image: ph.wide,
-    imageAlt: "Platshållare för ALKAMA-butik",
+    image: "/projects/alkama/hero-viewport.png",
+    imageAlt: "ALKAMA startsida — hero med bästsäljare i webbutiken",
     theme: {
       bg: "var(--project-theme-steel)",
       dark: false,
@@ -779,40 +767,13 @@ export const projects: Project[] = [
       industry: "B2B / Industri",
       media: {
         hero: {
-          src: ph.wide,
-          alt: "Platshållare — ALKAMA hero",
+          src: "/projects/alkama/hero-viewport.png",
+          alt: "ALKAMA startsida — hero med bästsäljare i webbutiken",
         },
-        feature: {
-          src: ph.wide,
-          alt: "Platshållare — ALKAMA butik och lokalisering",
-        },
-        mobile: [
-          {
-            src: ph.phone,
-            alt: "Platshållare — ALKAMA mobil startsida",
-          },
-          {
-            src: ph.phone,
-            alt: "Platshållare — ALKAMA mobil produktkatalog",
-          },
-          {
-            src: ph.phone,
-            alt: "Platshållare — ALKAMA mobil kundportal",
-          },
-        ],
-        fullPage: {
-          src: ph.tall,
-          alt: "Platshållare — hela ALKAMA-sidan",
-        },
-        fullPageCopy: {
-          eyebrow: "Hela sidan",
-          heading: "Scrolla igenom hela berättelsen.",
-          support:
-            "Bilder saknas ännu — byt ut platshållarna när skärmdumpar finns.",
-        },
+        mobile: [],
         desktop: {
-          src: ph.wide,
-          alt: "Platshållare — ALKAMA desktop",
+          src: "/projects/alkama/hero-viewport.png",
+          alt: "ALKAMA startsida i desktop — bästsäljare och företagskonto-CTA",
         },
         desktopCopy: {
           eyebrow: "B2B-butik",
@@ -839,8 +800,8 @@ export const projects: Project[] = [
     tags: ["WordPress", "Elementor", "Lokalt"],
     year: 2026,
     stack: ["WordPress", "Elementor"],
-    image: ph.wide,
-    imageAlt: "Platshållare för UniClean-startsida",
+    image: "/projects/uniclean/hero-viewport.png",
+    imageAlt: "UniClean startsida — hero med prisoffertformulär",
     theme: {
       bg: "var(--project-theme-mint)",
       dark: false,
@@ -855,6 +816,7 @@ export const projects: Project[] = [
       ],
       solution: [
         "Jag byggde en hemsida som fungerar som en informationshub dygnet runt. Genom att tydligt visa tjänster, ungefärliga priser och vad kunden kan förvänta sig filtrerar och utbildar sajten blivande kunder automatiskt.",
+        "Riktiga Google-recensioner hämtas in live på sajten, så nya besökare ser betyg och omdömen direkt — utan att teamet behöver uppdatera något för hand.",
       ],
       results: [
         "Onboardingprocessen blev smidigare, företaget sparar administrativ tid — och kundupplevelsen blir klarare redan innan första samtalet.",
@@ -864,46 +826,46 @@ export const projects: Project[] = [
       industry: "Lokal service",
       media: {
         hero: {
-          src: ph.wide,
-          alt: "Platshållare — UniClean hero",
+          src: "/projects/uniclean/hero-viewport.png",
+          alt: "UniClean startsida — hero med prisoffertformulär",
         },
         feature: {
-          src: ph.wide,
-          alt: "Platshållare — UniClean tjänster och priser",
+          src: "/projects/uniclean/booking-viewport.png",
+          alt: "Så bokar du hos UniClean — fyra steg från klick till städning",
         },
         mobile: [
           {
-            src: ph.phone,
-            alt: "Platshållare — UniClean mobil startsida",
+            src: "/projects/uniclean/mobile-1.png",
+            alt: "UniClean mobil startsida — hero med offertformulär och Google-betyg",
           },
           {
-            src: ph.phone,
-            alt: "Platshållare — UniClean mobil tjänster",
+            src: "/projects/uniclean/mobile-2.png",
+            alt: "UniClean mobil — utmärkelse och bild på städare i skolsal",
           },
           {
-            src: ph.phone,
-            alt: "Platshållare — UniClean mobil kontakt",
+            src: "/projects/uniclean/mobile-3.png",
+            alt: "UniClean mobil — mission och vision med fönsterputsning i bild",
           },
         ],
         fullPage: {
-          src: ph.tall,
-          alt: "Platshållare — hela UniClean-sidan",
+          src: "/projects/uniclean/page-full.png",
+          alt: "Hela UniClean-startsidan från topp till botten",
         },
         fullPageCopy: {
           eyebrow: "Hela sidan",
           heading: "Scrolla igenom hela berättelsen.",
           support:
-            "Bilder saknas ännu — byt ut platshållarna när skärmdumpar finns.",
+            "Dra eller scrolla inne i ramen för att se sidan från topp till botten.",
         },
         desktop: {
-          src: ph.wide,
-          alt: "Platshållare — UniClean desktop",
+          src: "/projects/uniclean/reviews-viewport.png",
+          alt: "UniClean recensionssektion — 4.9 i betyg från 58 Google-recensioner, hämtat live",
         },
         desktopCopy: {
-          eyebrow: "Onboarding",
-          heading: "Svaren synliga — innan telefonen ringer.",
+          eyebrow: "Förtroende",
+          heading: "Riktiga omdömen, hämtade live från Google.",
           support:
-            "Tjänster, priser och förväntningar på plats så teamet kan fokusera på leveransen.",
+            "58 recensioner och 4.9 i snittbetyg syns direkt på sajten — utan att någon behöver uppdatera det för hand.",
         },
       },
       seo: {
@@ -925,7 +887,7 @@ export const projects: Project[] = [
     tags: ["WordPress", "Elementor", "Fastighet"],
     year: 2025,
     stack: ["WordPress", "Elementor", "TranslatePress"],
-    image: "/projects/shanasheel/hero-viewport.jpg",
+    image: "/projects/shanasheel/hero-viewport.png",
     imageAlt: "Shanasheel startsida med Akkad Residential City i hero",
     theme: {
       bg: "var(--project-theme-forest)",
@@ -950,29 +912,29 @@ export const projects: Project[] = [
       industry: "Fastighet & hållbarhet",
       media: {
         hero: {
-          src: "/projects/shanasheel/hero-viewport.jpg",
+          src: "/projects/shanasheel/hero-viewport.png",
           alt: "Shanasheel-hero med Akkad Residential City",
         },
         feature: {
-          src: "/projects/shanasheel/story-1.jpg",
-          alt: "Akkad storytelling-bild från Shanasheel-sajten",
+          src: "/projects/shanasheel/realestate-viewport.png",
+          alt: "Shanasheel fastighetssida — Type A, B och C med planlösningar för Akkad",
         },
         mobile: [
           {
-            src: "/projects/shanasheel/mobile-1.jpg",
+            src: "/projects/shanasheel/mobile-1.png",
             alt: "Shanasheel startsida i mobil — Akkad-hero",
           },
           {
-            src: "/projects/shanasheel/mobile-2.jpg",
-            alt: "Shanasheel mobil — hustyper Type A, B och C",
+            src: "/projects/shanasheel/mobile-2.png",
+            alt: "Shanasheel mobil — Type A med planlösning och 300 kvm",
           },
           {
-            src: "/projects/shanasheel/mobile-3.jpg",
-            alt: "Shanasheel tjänstesida i mobil",
+            src: "/projects/shanasheel/mobile-3.png",
+            alt: "Shanasheel mobil — Om Shanasheel Al-Asima och företagets historia",
           },
         ],
         fullPage: {
-          src: "/projects/shanasheel/page-home.jpg",
+          src: "/projects/shanasheel/page-home.png",
           alt: "Hela Shanasheel-startsida från topp till botten",
         },
         fullPageCopy: {
@@ -982,14 +944,14 @@ export const projects: Project[] = [
             "Startsida från hero till footer — dra eller scrolla inne i ramen.",
         },
         desktop: {
-          src: "/projects/shanasheel/services-viewport.jpg",
-          alt: "Shanasheel tjänstesida — hero med nycklar",
+          src: "/projects/shanasheel/journey-viewport.png",
+          alt: "Shanasheel — fastighet, solenergi, jordbruk och återvinning i fyra ikoner",
         },
         desktopCopy: {
-          eyebrow: "Tjänster",
+          eyebrow: "Verksamheten",
           heading: "Fyra spår, en gemensam ton.",
           support:
-            "Fastighet, avfall, solenergi och jordbruk — samma visuella språk på tjänstesidan.",
+            "Fastighet, solenergi, jordbruk och återvinning — samma visuella språk genom hela sajten.",
         },
       },
       seo: {

@@ -33,6 +33,31 @@ export function getDefaultMetadata(): Metadata {
   };
 }
 
+export function getProjectsIndexMetadata(): Metadata {
+  const title = "Projekt";
+  const description =
+    "Alla projekt — case studies om webb, e-handel och system som hjälper företag att växa.";
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: "/projects",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
+    alternates: {
+      canonical: "/projects",
+    },
+  };
+}
+
 export function getProjectMetadata(project: Project): Metadata {
   const title = project.detail.seo.title ?? project.name;
   const description = project.detail.seo.description;

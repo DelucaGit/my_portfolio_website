@@ -22,9 +22,9 @@ export default function Reviews() {
       <div className={styles.inner}>
         <div className={styles.layout}>
           <header className={styles.textCol}>
-            <p className={styles.eyebrow}>Röster från samarbeten</p>
+            <p className={styles.eyebrow}>Omdömen</p>
             <h2 id="reviews-heading" className={styles.heading}>
-              Omdömen
+              Vad kunderna säger om samarbetet.
             </h2>
           </header>
 
