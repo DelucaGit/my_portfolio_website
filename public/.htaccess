@@ -7,17 +7,20 @@
   RewriteCond %{HTTPS} !=on
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
+  # Never add a trailing slash to real files (images, video, css, js, etc.)
+  RewriteCond %{REQUEST_URI} \.[a-zA-Z0-9]{1,8}$
+  RewriteRule ^ - [L]
+
   # If request has no trailing slash and is not a real file/dir, try as directory
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_URI} !/$
   RewriteRule ^(.*)$ /$1/ [L,R=301]
 
-  # Serve index.html inside directories (default on most hosts; kept explicit)
   DirectoryIndex index.html
 </IfModule>
 
-# Cache static assets
+# Cache static assets (short video cache so CDN recovers faster after deploys)
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresByType text/css "access plus 1 year"
@@ -26,6 +29,6 @@
   ExpiresByType image/png "access plus 1 year"
   ExpiresByType image/jpeg "access plus 1 year"
   ExpiresByType image/svg+xml "access plus 1 year"
-  ExpiresByType video/mp4 "access plus 1 year"
+  ExpiresByType video/mp4 "access plus 1 hour"
   ExpiresByType font/woff2 "access plus 1 year"
 </IfModule>
