@@ -33,5 +33,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./out/
-          server-dir: ./public_html/
+          # Hostinger serves the domain from domains/<domain>/public_html
+          # (not the account-root public_html)
+          server-dir: ./domains/marceldeluca.se/public_html/
           dangerous-clean-slate: true
