@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import type { Project } from "@/lib/projects";
 import { getAllProjects } from "@/lib/projects";
 import styles from "./Projects.module.css";
@@ -7,12 +8,16 @@ export default function Projects() {
   const projects = getAllProjects();
 
   return (
-    <section className={styles.section} aria-labelledby="projects-heading">
+    <section
+      id="projects"
+      className={styles.section}
+      aria-labelledby="projects-heading"
+    >
       <div className={styles.inner}>
         <header className={styles.header}>
-          <p className={styles.eyebrow}>Selected work</p>
+          <p className={styles.eyebrow}>Utvalda berättelser</p>
           <h2 id="projects-heading" className={styles.heading}>
-            Projects
+            Projekt
           </h2>
         </header>
 
@@ -30,8 +35,15 @@ export default function Projects() {
 
 function ProjectCard({ project }: { project: Project }) {
   return (
-    <article className={styles.card}>
-      <div className={styles.media} style={{ background: project.theme.bg }}>
+    <article
+      className={`${styles.card} ${project.theme.dark ? styles.cardDark : ""}`}
+      style={
+        {
+          "--project-card-bg": project.theme.bg,
+        } as CSSProperties
+      }
+    >
+      <div className={styles.media}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={project.image}
@@ -64,7 +76,7 @@ function ProjectCard({ project }: { project: Project }) {
         </ul>
 
         <Link href={`/projects/${project.slug}`} className={styles.viewLink}>
-          View project <span aria-hidden="true">→</span>
+          Läs berättelsen <span aria-hidden="true">→</span>
         </Link>
       </div>
     </article>

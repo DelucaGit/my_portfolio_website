@@ -75,17 +75,22 @@
   --leading-tight: 1.06;
   --leading-body: 1.6;
 
-  /* ── Project showcase themes (per-project overrides) ── */
+  /* ── Project showcase themes (one unique tint per project) ── */
   --project-theme-warm: #f0ebe3;
+  --project-theme-green: #e7efe8;
+  --project-theme-blue: #e8eef8;
+  --project-theme-amber: #f3eee4;
   --project-theme-dark: #0f0f0f;
   --project-theme-cool: #e8f0ff;
-
-  /* ── Service section themes (per-service background) ── */
-  --service-theme-cool: #e8f0ff;
-  --service-theme-warm: #f3ece2;
-  --service-theme-dark: #0a0a0a;
-
-  /* ── Text on dark theme backgrounds ── */
-  --color-on-dark-heading: #ffffff;
-  --color-on-dark-muted: rgba(255, 255, 255, 0.72);
+  --project-theme-honey: #f4edd8;
+  --project-theme-steel: #e4e9ef;
+  --project-theme-mint: #e6f1ee;
+  --project-theme-roof: #dfe8f4;
+  --project-theme-sand: #f1ebe3;
+  --project-theme-sage: #e8efe4;
+  --project-theme-ember: #f3e6e3;
+  --project-theme-lime: #e8f2e6;
+  --project-theme-peach: #f4ebe4;
+  --project-theme-sky: #e5eef5;
+  --project-theme-forest: #e4efe6;
 }

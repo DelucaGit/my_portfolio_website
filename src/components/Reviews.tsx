@@ -20,71 +20,80 @@ export default function Reviews() {
   return (
     <section className={styles.section} aria-labelledby="reviews-heading">
       <div className={styles.inner}>
-        <header className={styles.header}>
-          <p className={styles.eyebrow}>What people say</p>
-          <h2 id="reviews-heading" className={styles.heading}>
-            Reviews
-          </h2>
-        </header>
+        <div className={styles.layout}>
+          <header className={styles.textCol}>
+            <p className={styles.eyebrow}>Röster från samarbeten</p>
+            <h2 id="reviews-heading" className={styles.heading}>
+              Omdömen
+            </h2>
+          </header>
 
-        {/* key={activeReview.id} restarts the fade-in animation each
-            time the review changes, and aria-live announces the new
-            review to screen readers. */}
-        <div className={styles.card} key={activeReview.id} aria-live="polite">
-          <div className={styles.cardHeader}>
-            <div className={styles.avatarWrap}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={activeReview.avatar}
-                alt={activeReview.author}
-                className={styles.avatar}
-              />
-              <span className={styles.linkedinBadge} aria-hidden="true">
-                in
-              </span>
+          <div className={styles.reviewCol}>
+            {/* key={activeReview.id} restarts the fade-in when the
+                review changes; aria-live announces it to screen readers. */}
+            <div
+              className={styles.cardGlow}
+              key={activeReview.id}
+              aria-live="polite"
+            >
+              <div className={styles.card}>
+                <div className={styles.cardHeader}>
+                  <div className={styles.avatarWrap}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={activeReview.avatar}
+                      alt={activeReview.author}
+                      className={styles.avatar}
+                    />
+                    <span className={styles.linkedinBadge} aria-hidden="true">
+                      in
+                    </span>
+                  </div>
+
+                  <div>
+                    <p className={styles.author}>{activeReview.author}</p>
+                    <p className={styles.roleCompany}>
+                      {activeReview.role} på {activeReview.company}
+                    </p>
+                  </div>
+                </div>
+
+                <p className={styles.relation}>
+                  {activeReview.relation} · {activeReview.date}
+                </p>
+
+                <div className={styles.quote}>
+                  {activeReview.quote.map((paragraph, index) => (
+                    <p key={index}>{paragraph}</p>
+                  ))}
+                </div>
+              </div>
             </div>
 
-            <div>
-              <p className={styles.author}>{activeReview.author}</p>
-              <p className={styles.roleCompany}>
-                {activeReview.role} at {activeReview.company}
+            <div className={styles.controls}>
+              <button
+                type="button"
+                className={styles.controlBtn}
+                onClick={goToPrevious}
+                aria-label="Föregående omdöme"
+              >
+                ←
+              </button>
+
+              <p className={styles.counter}>
+                {activeIndex + 1} / {reviews.length}
               </p>
+
+              <button
+                type="button"
+                className={styles.controlBtn}
+                onClick={goToNext}
+                aria-label="Nästa omdöme"
+              >
+                →
+              </button>
             </div>
           </div>
-
-          <p className={styles.relation}>
-            {activeReview.relation} · {activeReview.date}
-          </p>
-
-          <div className={styles.quote}>
-            {activeReview.quote.map((paragraph, index) => (
-              <p key={index}>{paragraph}</p>
-            ))}
-          </div>
-        </div>
-
-        <div className={styles.controls}>
-          <button
-            type="button"
-            className={styles.controlBtn}
-            onClick={goToPrevious}
-            aria-label="Previous review"
-          >
-            ←
-          </button>
-
-          <p className={styles.counter}>
-            {activeIndex + 1} / {reviews.length}
-          </p>
-
-          <button
-            type="button"
-            className={styles.controlBtn}
-            onClick={goToNext}
-            aria-label="Next review"
-          >
-            →
-          </button>
         </div>
       </div>
     </section>

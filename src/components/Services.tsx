@@ -1,135 +1,120 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import type { Service } from "@/lib/services";
 import { getAllServices } from "@/lib/services";
 import styles from "./Services.module.css";
 
 export default function Services() {
   const services = getAllServices();
-  // Starts as null so no text shows until an image actually
-  // reaches the center of the screen — the text should arrive
-  // with its image, not before it.
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const trackRefs = useRef<(HTMLDivElement | null)[]>([]);
-
-  // On desktop, the "active" service is whichever image track is
-  // crossing the middle of the screen. Shrinking the observer's
-  // root to a thin band around the vertical center (via rootMargin)
-  // means an image only counts as "intersecting" once it's near
-  // the middle, which is exactly when we want the text to switch.
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const index = Number(entry.target.getAttribute("data-index"));
-            setActiveIndex(index);
-          }
-        });
-      },
-      { rootMargin: "-45% 0px -45% 0px", threshold: 0 }
-    );
-
-    trackRefs.current.forEach((track) => {
-      if (track) observer.observe(track);
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
-  const activeService = activeIndex === null ? null : services[activeIndex];
 
   return (
-    <section
-      className={styles.section}
-      style={
-        {
-          "--active-bg": activeService?.theme.bg ?? "var(--color-bg)",
-        } as React.CSSProperties
-      }
-      data-dark={activeService?.theme.dark ? "true" : undefined}
-      aria-labelledby="services-heading"
-    >
+    <section className={styles.section} aria-labelledby="services-heading">
       <div className={styles.inner}>
         <header className={styles.header}>
-          <p className={styles.eyebrow}>What I do</p>
+          <p className={styles.eyebrow}>Tjänster</p>
           <h2 id="services-heading" className={styles.heading}>
-            Services
+            Mjukvara som hjälper affären att växa.
           </h2>
+          <p className={styles.support}>
+            Välj en del — eller flera. Varje pusselbit fungerar själv, och ännu
+            bättre tillsammans.
+          </p>
         </header>
 
-        <div className={styles.layout}>
-          {/* Desktop only: one fixed text panel whose content swaps
-              as the images scroll past. Hidden on mobile, where each
-              service keeps its own text next to its own image. */}
-          <div className={styles.stickyText} aria-hidden="true">
-            {activeService && (
-              <div
-                key={activeService.slug}
-                className={styles.stickyTextInner}
-              >
-                <h3 className={styles.title}>{activeService.title}</h3>
-                <p className={styles.description}>
-                  {activeService.description}
-                </p>
-              </div>
-            )}
-          </div>
-
-          <ul className={styles.list}>
-            {services.map((service, index) => (
-              <li key={service.slug}>
-                <ServiceBlock
-                  service={service}
-                  onMediaRef={(el) => {
-                    trackRefs.current[index] = el;
-                  }}
-                  mediaIndex={index}
-                />
-              </li>
-            ))}
-          </ul>
-        </div>
+        <ul className={styles.grid}>
+          {services.map((service) => (
+            <li key={service.slug}>
+              <ServiceCard service={service} />
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );
 }
 
-function ServiceBlock({
-  service,
-  onMediaRef,
-  mediaIndex,
-}: {
-  service: Service;
-  onMediaRef: (el: HTMLDivElement | null) => void;
-  mediaIndex: number;
-}) {
+function ServiceCard({ service }: { service: Service }) {
   return (
-    <article
-      className={styles.block}
-      style={{ "--block-bg": service.theme.bg } as React.CSSProperties}
-      data-dark={service.theme.dark ? "true" : undefined}
-    >
-      <div className={styles.itemText}>
-        <h3 className={styles.title}>{service.title}</h3>
-        <p className={styles.description}>{service.description}</p>
+    <article className={styles.card}>
+      <div className={styles.cardTop}>
+        <span className={styles.icon} aria-hidden="true">
+          <ServiceIcon name={service.icon} />
+        </span>
+        <p className={styles.price}>{service.price}</p>
       </div>
 
-      <div
-        ref={onMediaRef}
-        data-index={mediaIndex}
-        className={styles.mediaTrack}
-      >
-        <div className={styles.panel}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={service.images[0]}
-            alt={service.imagesAlt[0]}
-            className={styles.screenshot}
-          />
-        </div>
-      </div>
+      <h3 className={styles.title}>{service.title}</h3>
+      <p className={styles.pill}>{service.pill}</p>
+      <p className={styles.description}>{service.description}</p>
+
+      <ul className={styles.features}>
+        {service.features.map((feature) => (
+          <li key={feature}>{feature}</li>
+        ))}
+      </ul>
+
+      {!service.comingSoon && (
+        <Link href="#contact" className={styles.cta}>
+          Hör av dig <span aria-hidden="true">→</span>
+        </Link>
+      )}
     </article>
   );
+}
+
+function ServiceIcon({ name }: { name: Service["icon"] }) {
+  const props = {
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.75,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    width: 20,
+    height: 20,
+    "aria-hidden": true as const,
+  };
+
+  switch (name) {
+    case "globe":
+      return (
+        <svg {...props}>
+          <circle cx="12" cy="12" r="9" />
+          <path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" />
+        </svg>
+      );
+    case "spark":
+      return (
+        <svg {...props}>
+          <path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8" />
+        </svg>
+      );
+    case "layers":
+      return (
+        <svg {...props}>
+          <path d="M12 3 3 8l9 5 9-5-9-5Z" />
+          <path d="m3 12 9 5 9-5M3 16l9 5 9-5" />
+        </svg>
+      );
+    case "shop":
+      return (
+        <svg {...props}>
+          <path d="M4 8h16l-1.2 11.2a2 2 0 0 1-2 1.8H7.2a2 2 0 0 1-2-1.8L4 8Z" />
+          <path d="M8 8V6a4 4 0 0 1 8 0v2" />
+        </svg>
+      );
+    case "shield":
+      return (
+        <svg {...props}>
+          <path d="M12 3 5 6v5c0 4.5 3 7.8 7 9 4-1.2 7-4.5 7-9V6l-7-3Z" />
+          <path d="m9.5 12 1.8 1.8 3.7-3.7" />
+        </svg>
+      );
+    case "megaphone":
+      return (
+        <svg {...props}>
+          <path d="m4 10 14-5v14L4 14v-4Z" />
+          <path d="M8 14v4.5a1.5 1.5 0 0 0 2.6 1L14 17" />
+        </svg>
+      );
+  }
 }

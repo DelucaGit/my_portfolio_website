@@ -3,6 +3,28 @@ export type ProjectTheme = {
   dark: boolean;
 };
 
+export type ProjectImage = {
+  src: string;
+  alt: string;
+};
+
+export type MediaSectionCopy = {
+  eyebrow: string;
+  heading: string;
+  support: string;
+};
+
+export type ProjectMedia = {
+  hero: ProjectImage;
+  feature?: ProjectImage;
+  /** Phone screenshots — shown in the shared mobile mockup strip */
+  mobile: ProjectImage[];
+  fullPage?: ProjectImage;
+  fullPageCopy?: MediaSectionCopy;
+  desktop?: ProjectImage;
+  desktopCopy?: MediaSectionCopy;
+};
+
 export type Project = {
   slug: string;
   name: string;
@@ -23,7 +45,10 @@ export type Project = {
     challenge?: string[];
     solution?: string[];
     results?: string[];
-    gallery?: { src: string; alt: string }[];
+    role?: string;
+    client?: string;
+    industry?: string;
+    media: ProjectMedia;
     seo: {
       title?: string;
       description: string;
@@ -31,122 +56,946 @@ export type Project = {
   };
 };
 
+const ph = {
+  wide: "/projects/placeholders/wide.svg",
+  tall: "/projects/placeholders/tall.svg",
+  phone: "/projects/placeholders/phone.svg",
+} as const;
+
 export const projects: Project[] = [
   {
-    slug: "ledgerly",
-    name: "Ledgerly",
-    tagline: "Invoicing and cash-flow dashboard for small agencies.",
+    slug: "takkoll",
+    name: "TakKoll",
+    tagline: "Skyddar svenska hem – ett tak i taget.",
     description:
-      "A lightweight finance tool that helps small agencies track invoices, payments, and cash flow in one place.",
-    siteUrl: "https://ledgerly.example.com",
-    githubUrl: "https://github.com/marceldeluca/ledgerly",
-    tags: ["SaaS", "Finance"],
-    year: 2024,
-    stack: ["Next.js", "TypeScript", "PostgreSQL", "Stripe"],
-    image:
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop",
-    imageAlt: "Analytics dashboard showing invoice and revenue charts",
+      "Webbplats för TakKoll: takmålning, omläggning, tvätt, isolering och service — med bokning och ROT synligt från start.",
+    siteUrl: "https://takkoll.se",
+    githubUrl: "",
+    tags: ["WordPress", "Lokalt", "Leadgen"],
+    year: 2025,
+    stack: ["WordPress", "Elementor"],
+    image: "/projects/takkoll/hero-viewport.jpg",
+    imageAlt: "TakKoll startsida — professionella taklösningar",
     theme: {
-      bg: "var(--project-theme-cool)",
+      bg: "var(--project-theme-roof)",
       dark: false,
     },
     detail: {
       overview: [
-        "Ledgerly gives small agencies a single dashboard to send invoices, track payments, and see their cash flow at a glance.",
-        "The client came in with numbers spread across three separate tools — this consolidated everything into one system.",
+        "Ett tak är husets viktigaste skydd. Ändå är det ofta det man skjuter på att ta hand om. TakKoll ville ändra på det.",
+        "De erbjuder allt från taktvätt och målning till omläggning, isolering och serviceavtal. Men deras tidigare sida gjorde det svårt för husägare att förstå vad de faktiskt fick hjälp med — och varför det var smart att agera i tid.",
       ],
       challenge: [
-        "Payments, invoices, and expenses lived in different tools, making it hard to know the real cash position on any given day.",
+        "Husägare förstod inte erbjudandet. Tjänsterna fanns, men sidan förklarade varken vad som ingick eller varför det lönade sig att boka en besiktning innan skadan blev dyr.",
       ],
       solution: [
-        "Built a unified dashboard on Next.js with Stripe for payments and a Postgres ledger that reconciles transactions automatically.",
+        "Vi tog fram en ny lösning: kostnadsfri onlinebokning av takbesiktning där kunden själv väljer datum. Tjänsterna paketerades tydligt — vad de innebär och varför de behövs. ROT-avdraget syns från start, så besökaren ser hur mycket som går att spara. FAQ och guider svarar på vanliga frågor och bygger förtroende.",
       ],
       results: [
-        "Agencies using Ledgerly cut their monthly bookkeeping time in half and catch overdue invoices days earlier.",
+        "Nu möts besökaren av en hemsida som förklarar, förenklar och gör det lätt att boka. TakKoll får in fler förfrågningar — och husägare får bättre skydd för sina hem.",
       ],
-      gallery: [
-        {
-          src: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1600&auto=format&fit=crop",
-          alt: "Ledgerly dashboard on a laptop screen",
+      role: "Design & WordPress-bygge",
+      client: "TakKoll",
+      industry: "Tak & fastighetsservice",
+      media: {
+        hero: {
+          src: "/projects/takkoll/hero-viewport.jpg",
+          alt: "TakKoll-hero med takarbetare och tydlig CTA",
         },
-      ],
+        feature: {
+          src: "/projects/takkoll/services-viewport.jpg",
+          alt: "TakKolls tjänstekort — målning, omläggning, service och isolering",
+        },
+        mobile: [
+          {
+            src: "/projects/takkoll/mobile-1.jpg",
+            alt: "TakKoll startsida i mobil",
+          },
+          {
+            src: "/projects/takkoll/mobile-2.jpg",
+            alt: "TakKoll tjänster i mobil",
+          },
+          {
+            src: "/projects/takkoll/mobile-3.jpg",
+            alt: "TakKoll bokningsformulär i mobil",
+          },
+        ],
+        fullPage: {
+          src: "/projects/takkoll/page-home.jpg",
+          alt: "Hela TakKoll-startsida från topp till botten",
+        },
+        fullPageCopy: {
+          eyebrow: "Hela sidan",
+          heading: "Scrolla igenom hela berättelsen.",
+          support:
+            "Från hero och ROT till tjänster, FAQ och bokning — dra eller scrolla inne i ramen.",
+        },
+        desktop: {
+          src: "/projects/takkoll/services-viewport.jpg",
+          alt: "TakKoll tjänstesektion på desktop",
+        },
+        desktopCopy: {
+          eyebrow: "Tjänster",
+          heading: "Tydligt paketerat — så husägaren förstår.",
+          support:
+            "Takmålning, omläggning, service och isolering med vad som ingår och varför det behövs.",
+        },
+      },
       seo: {
+        title: "TakKoll — WordPress",
         description:
-          "Case study: Ledgerly, an invoicing and cash-flow dashboard for small agencies.",
+          "Case: TakKoll — hur en tydligare WordPress-sajt gjorde takbesiktning enkelt att boka och ROT synligt från start.",
       },
     },
   },
   {
-    slug: "shelfwise",
-    name: "Shelfwise",
-    tagline: "Inventory and reorder alerts for small e-commerce shops.",
+    slug: "bilservicekoll",
+    name: "BilserviceKoll",
+    tagline: "Bilverkstaden i Gävle som gör det enkelt att serva bilen.",
     description:
-      "An inventory tracker that watches stock levels across sales channels and warns shop owners before they run out.",
-    siteUrl: "https://shelfwise.example.com",
-    githubUrl: "https://github.com/marceldeluca/shelfwise",
-    tags: ["E-commerce", "Automation"],
-    year: 2023,
-    stack: ["React", "Node.js", "Shopify API", "Redis"],
-    image:
-      "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=1200&auto=format&fit=crop",
-    imageAlt: "Warehouse shelving stacked with boxes",
+      "Webbplats för BilserviceKoll: service, oljebyten, däck och besiktningskontroll — med onlinebokning och bilupphämtning.",
+    siteUrl: "https://bilservicekoll.se",
+    githubUrl: "",
+    tags: ["WordPress", "Lokalt", "Leadgen"],
+    year: 2025,
+    stack: ["WordPress", "Elementor"],
+    image: ph.wide,
+    imageAlt: "Platshållare för BilserviceKoll-startsida",
     theme: {
-      bg: "var(--project-theme-warm)",
+      bg: "var(--project-theme-sand)",
       dark: false,
     },
     detail: {
       overview: [
-        "Shelfwise watches stock levels across a shop's sales channels and flags items before they sell out.",
+        "Bilar måste servas. Men för många känns det krångligt.",
+        "BilserviceKoll ville ändra på det. De erbjuder service, oljebyten, däck och besiktningskontroll — till och med upphämtning av bilen hemma eller på jobbet.",
       ],
       challenge: [
-        "The client was manually checking spreadsheets every morning and still ran out of bestsellers during busy weeks.",
+        "Hemsidan visade inte fördelarna. Tjänsterna var svåra att överblicka. Och bokningen saknade enkelhet.",
       ],
       solution: [
-        "Connected the Shopify API to a Redis-backed alert system that checks stock levels hourly and emails the owner before items run out.",
+        "Vi byggde en ny hemsida: ett smidigt bokningssystem online där kunden bokar tid och får offert bekräftad innan arbetet startar. Tjänsterna presenterades tydligt i enkla block. Verkstadens garanti på godkänd besiktning lyftes fram. Formulär och kontaktvägar gjorde det enkelt att boka, fråga och få svar.",
       ],
       results: [
-        "Stockouts on top sellers dropped to near zero in the first restock cycle after launch.",
+        "Fler bokningar via hemsidan, färre frågetecken hos kunderna — och en digital närvaro som speglar verkstadens löfte: trygghet, transparens och service på riktigt.",
       ],
+      role: "Design & WordPress-bygge",
+      client: "BilserviceKoll",
+      industry: "Bilverkstad",
+      media: {
+        hero: {
+          src: ph.wide,
+          alt: "Platshållare — BilserviceKoll hero",
+        },
+        feature: {
+          src: ph.wide,
+          alt: "Platshållare — BilserviceKoll tjänster",
+        },
+        mobile: [
+          {
+            src: ph.phone,
+            alt: "Platshållare — BilserviceKoll mobil startsida",
+          },
+          {
+            src: ph.phone,
+            alt: "Platshållare — BilserviceKoll mobil tjänster",
+          },
+          {
+            src: ph.phone,
+            alt: "Platshållare — BilserviceKoll mobil bokning",
+          },
+        ],
+        fullPage: {
+          src: ph.tall,
+          alt: "Platshållare — hela BilserviceKoll-sidan",
+        },
+        fullPageCopy: {
+          eyebrow: "Hela sidan",
+          heading: "Scrolla igenom hela berättelsen.",
+          support:
+            "Bilder saknas ännu — byt ut platshållarna när skärmdumpar finns.",
+        },
+        desktop: {
+          src: ph.wide,
+          alt: "Platshållare — BilserviceKoll desktop",
+        },
+        desktopCopy: {
+          eyebrow: "Tjänster",
+          heading: "Tydliga block — så kunden ser helheten.",
+          support:
+            "Service, däck, olja och besiktning i enkla vyer som är lätta att boka.",
+        },
+      },
       seo: {
+        title: "BilserviceKoll — WordPress",
         description:
-          "Case study: Shelfwise, an inventory and reorder alert system for small e-commerce shops.",
+          "Case: BilserviceKoll — hur en tydligare WordPress-sajt gjorde bilservice i Gävle enkelt att boka.",
       },
     },
   },
   {
-    slug: "focusframe",
-    name: "Focusframe",
-    tagline: "A distraction-free scheduling tool for solo consultants.",
+    slug: "stadkoll",
+    name: "Städkoll",
+    tagline: "Flyttstädning utan stress – till fast pris.",
     description:
-      "A booking and scheduling app that keeps a consultant's calendar simple, with automatic time-zone handling and reminders.",
-    siteUrl: "https://focusframe.example.com",
-    githubUrl: "https://github.com/marceldeluca/focusframe",
-    tags: ["Productivity", "Web App"],
-    year: 2022,
-    stack: ["Next.js", "tRPC", "Prisma", "PostgreSQL"],
-    image:
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200&auto=format&fit=crop",
-    imageAlt: "Laptop screen showing a calendar and scheduling interface",
+      "Webbplats för Städkoll: professionell flyttstädning till fast pris, med 14 dagars garanti och RUT-avdrag.",
+    siteUrl: "https://stadkoll.se",
+    githubUrl: "",
+    tags: ["Frontend", "UX/UI", "Leadgen"],
+    year: 2025,
+    stack: ["Frontend", "UX & UI-design"],
+    image: ph.wide,
+    imageAlt: "Platshållare för Städkoll-startsida",
     theme: {
-      bg: "var(--project-theme-dark)",
-      dark: true,
+      bg: "var(--project-theme-sage)",
+      dark: false,
     },
     detail: {
       overview: [
-        "Focusframe replaces a cluttered booking page with a single clean calendar that handles time zones automatically.",
+        "Att flytta är jobbigt nog. Och för många blir flyttstädningen droppen.",
+        "Städkoll ville göra det enkelt. De erbjuder professionell flyttstädning till fast pris, med 14 dagars garanti och direkt RUT-avdrag.",
       ],
       challenge: [
-        "The consultant was losing bookings to time-zone mix-ups and no-shows with no reminder system in place.",
+        "Hemsidan de hade berättade inte det på ett tydligt sätt. Kunderna fick inte den trygghet och enkelhet som faktiskt fanns i tjänsten.",
       ],
       solution: [
-        "Built a scheduling flow on Next.js and Prisma that detects the visitor's time zone and sends automatic email reminders.",
+        "Vi byggde en ny hemsida: en tydlig offertfunktion som ger kunden ett fast pris direkt. En enkel struktur som lyfter vad som ingår i flyttstädningen. Garantin och RUT-avdraget synligt från start, så att kunden känner sig trygg. Snabb kontaktväg via formulär och call-to-action på varje sida.",
       ],
       results: [
-        "No-shows dropped noticeably in the first month, and double-bookings across time zones stopped entirely.",
+        "Fler förfrågningar, en smidigare process för kunderna och en hemsida som speglar Städkolls löfte — trygg, enkel och prisvärd flyttstädning.",
       ],
+      role: "Frontend, UX & UI-design",
+      client: "Städkoll",
+      industry: "Flyttstädning",
+      media: {
+        hero: {
+          src: ph.wide,
+          alt: "Platshållare — Städkoll hero",
+        },
+        feature: {
+          src: ph.wide,
+          alt: "Platshållare — Städkoll offert och tjänster",
+        },
+        mobile: [
+          {
+            src: ph.phone,
+            alt: "Platshållare — Städkoll mobil startsida",
+          },
+          {
+            src: ph.phone,
+            alt: "Platshållare — Städkoll mobil offert",
+          },
+          {
+            src: ph.phone,
+            alt: "Platshållare — Städkoll mobil kontakt",
+          },
+        ],
+        fullPage: {
+          src: ph.tall,
+          alt: "Platshållare — hela Städkoll-sidan",
+        },
+        fullPageCopy: {
+          eyebrow: "Hela sidan",
+          heading: "Scrolla igenom hela berättelsen.",
+          support:
+            "Bilder saknas ännu — byt ut platshållarna när skärmdumpar finns.",
+        },
+        desktop: {
+          src: ph.wide,
+          alt: "Platshållare — Städkoll desktop",
+        },
+        desktopCopy: {
+          eyebrow: "Offert",
+          heading: "Fast pris — synligt från start.",
+          support:
+            "Offertfunktion, vad som ingår, garanti och RUT i en tydlig struktur.",
+        },
+      },
       seo: {
+        title: "Städkoll — Frontend & UX/UI",
         description:
-          "Case study: Focusframe, a distraction-free scheduling tool for solo consultants.",
+          "Case: Städkoll — hur en tydligare hemsida gjorde flyttstädning till fast pris enkelt att boka.",
+      },
+    },
+  },
+  {
+    slug: "brandsakerhetskoll",
+    name: "Brand & Säkerhetskoll",
+    tagline: "Din lokala expert på brandskydd i Gävle.",
+    description:
+      "Webbplats för Brand & Säkerhetskoll: brandsläckare, brandvarnare och brandfiltar — med tydliga produkter och offert direkt på sidan.",
+    siteUrl: "https://brandsakerhetskoll.se",
+    githubUrl: "",
+    tags: ["Frontend", "UX/UI", "Leadgen"],
+    year: 2025,
+    stack: ["Frontend", "UX & UI-design"],
+    image: ph.wide,
+    imageAlt: "Platshållare för Brand & Säkerhetskoll-startsida",
+    theme: {
+      bg: "var(--project-theme-ember)",
+      dark: false,
+    },
+    detail: {
+      overview: [
+        "Trygghet börjar i hemmet. Men utan rätt brandskydd är den skör.",
+        "Brand & Säkerhetskoll erbjuder brandsläckare, brandvarnare och brandfiltar — CE-märkta, certifierade och framtagna för att rädda liv. Men deras hemsida berättade inte det på rätt sätt.",
+      ],
+      challenge: [
+        "Produkter låg gömda. Budskapet var splittrat. Kunderna fick inte förtroendet som krävs när man pratar säkerhet.",
+      ],
+      solution: [
+        "Vi byggde en ny hemsida: tydliga produktbeskrivningar med fokus på användning och trygghet. Offertförfrågan direkt på sidan för enkel konvertering. Säkerhetsinformation som stärker deras expertroll.",
+      ],
+      results: [
+        "En sida som inte bara säljer produkter — utan också förmedlar förtroende, trygghet och kunskap.",
+      ],
+      role: "Frontend, UX & UI-design",
+      client: "Brand & Säkerhetskoll",
+      industry: "Brandskydd",
+      media: {
+        hero: {
+          src: ph.wide,
+          alt: "Platshållare — Brand & Säkerhetskoll hero",
+        },
+        feature: {
+          src: ph.wide,
+          alt: "Platshållare — Brand & Säkerhetskoll produkter",
+        },
+        mobile: [
+          {
+            src: ph.phone,
+            alt: "Platshållare — Brand & Säkerhetskoll mobil startsida",
+          },
+          {
+            src: ph.phone,
+            alt: "Platshållare — Brand & Säkerhetskoll mobil produkter",
+          },
+          {
+            src: ph.phone,
+            alt: "Platshållare — Brand & Säkerhetskoll mobil offert",
+          },
+        ],
+        fullPage: {
+          src: ph.tall,
+          alt: "Platshållare — hela Brand & Säkerhetskoll-sidan",
+        },
+        fullPageCopy: {
+          eyebrow: "Hela sidan",
+          heading: "Scrolla igenom hela berättelsen.",
+          support:
+            "Bilder saknas ännu — byt ut platshållarna när skärmdumpar finns.",
+        },
+        desktop: {
+          src: ph.wide,
+          alt: "Platshållare — Brand & Säkerhetskoll desktop",
+        },
+        desktopCopy: {
+          eyebrow: "Produkter",
+          heading: "Trygghet synlig — inte gömd.",
+          support:
+            "Produktbeskrivningar, säkerhetsinfo och offert på samma tydliga sida.",
+        },
+      },
+      seo: {
+        title: "Brand & Säkerhetskoll — Frontend & UX/UI",
+        description:
+          "Case: Brand & Säkerhetskoll — hur en tydligare hemsida byggde förtroende kring brandskydd i Gävle.",
+      },
+    },
+  },
+  {
+    slug: "scooterkoll",
+    name: "Scooterkoll",
+    tagline: "Elscootrar är smidiga. Tills de går sönder.",
+    description:
+      "Webbplats för Scooterkoll i Gävle: reparation av alla märken — med tydlig bokning, FAQ och offert nära till hands.",
+    siteUrl: "https://scooterkoll.se",
+    githubUrl: "",
+    tags: ["Frontend", "UX/UI", "SEO"],
+    year: 2025,
+    stack: ["SEO", "Frontend", "UX & UI-design"],
+    image: ph.wide,
+    imageAlt: "Platshållare för Scooterkoll-startsida",
+    theme: {
+      bg: "var(--project-theme-lime)",
+      dark: false,
+    },
+    detail: {
+      overview: [
+        "Elscootrar är smidiga. Tills de går sönder.",
+        "Scooterkoll i Gävle reparerar alla märken — snabbt och lokalt. Men deras gamla hemsida visade inte styrkan i erbjudandet. Kunderna fick inte svar på enkla frågor. Och det var otydligt hur man faktiskt bokar.",
+      ],
+      challenge: [
+        "Erbjudandet syntes inte. Vanliga frågor saknade svar. Och bokningen var svår att hitta — vilket kostade både kunder och tid i support.",
+      ],
+      solution: [
+        "Vi byggde en ny hemsida som löste fyra saker: tydlig struktur med klara steg för hur man bokar, vanliga frågor och svar som sparar tid för både kund och support, en offert-knapp nära till hands som driver fler förfrågningar, och formulär i livechatt-format som gör kontakt snabbt och enkelt direkt på sidan.",
+      ],
+      results: [
+        "Fler förfrågningar från lokala kunder. Mindre supportärenden kring enkla frågor. Och en hemsida som speglar deras service — snabb, trygg och professionell.",
+      ],
+      role: "SEO, Frontend, UX & UI-design",
+      client: "Scooterkoll",
+      industry: "Elscooter-reparation",
+      media: {
+        hero: {
+          src: ph.wide,
+          alt: "Platshållare — Scooterkoll hero",
+        },
+        feature: {
+          src: ph.wide,
+          alt: "Platshållare — Scooterkoll bokning och FAQ",
+        },
+        mobile: [
+          {
+            src: ph.phone,
+            alt: "Platshållare — Scooterkoll mobil startsida",
+          },
+          {
+            src: ph.phone,
+            alt: "Platshållare — Scooterkoll mobil FAQ",
+          },
+          {
+            src: ph.phone,
+            alt: "Platshållare — Scooterkoll mobil offert",
+          },
+        ],
+        fullPage: {
+          src: ph.tall,
+          alt: "Platshållare — hela Scooterkoll-sidan",
+        },
+        fullPageCopy: {
+          eyebrow: "Hela sidan",
+          heading: "Scrolla igenom hela berättelsen.",
+          support:
+            "Bilder saknas ännu — byt ut platshållarna när skärmdumpar finns.",
+        },
+        desktop: {
+          src: ph.wide,
+          alt: "Platshållare — Scooterkoll desktop",
+        },
+        desktopCopy: {
+          eyebrow: "Bokning",
+          heading: "Klara steg — från fråga till offert.",
+          support:
+            "Struktur, FAQ och chattliknande formulär som gör det lätt att ta nästa steg.",
+        },
+      },
+      seo: {
+        title: "Scooterkoll — SEO, Frontend & UX/UI",
+        description:
+          "Case: Scooterkoll — hur en tydligare hemsida gjorde elscooter-reparation i Gävle enkelt att boka.",
+      },
+    },
+  },
+  {
+    slug: "halimapearl",
+    name: "HalimaPearl",
+    tagline: "Från lokalt rykte till en växande varumärkesresa.",
+    description:
+      "GoHighLevel-sajt för HalimaPearl: en plattform som visar kollektionerna, stärker varumärket och öppnar nya marknader.",
+    siteUrl: "https://halimapearl.com",
+    githubUrl: "",
+    tags: ["GoHighLevel", "UX/UI", "Varumärke"],
+    year: 2025,
+    stack: ["GoHighLevel", "UX & UI-design"],
+    image: ph.wide,
+    imageAlt: "Platshållare för HalimaPearl-startsida",
+    theme: {
+      bg: "var(--project-theme-peach)",
+      dark: false,
+    },
+    detail: {
+      overview: [
+        "När vi först mötte HalimaPearl drevs verksamheten nästan helt av word of mouth. Kvinnor i Gambia hörde talas om hennes kläder genom vänner och familj — och kollektionerna spreds snabbt från hand till hand.",
+        "Men med ett växande intresse kom också behovet av något större. Hur skulle hon kunna nå fler kunder, bortom de som redan kände till henne?",
+      ],
+      challenge: [
+        "Ryktet räckte inte längre. Utan en tydlig digital plats riskerade varumärket att stanna lokalt — trots att intresset växte och kollektionerna redan vandrade från hand till hand.",
+      ],
+      solution: [
+        "Vi hjälpte HalimaPearl att ta nästa steg. Genom GoHighLevel byggde vi en professionell digital närvaro där hennes varumärke kunde växa på riktigt — en plattform som visar kollektionerna, stärker varumärkets identitet och öppnar dörrar för nya marknader.",
+      ],
+      results: [
+        "Idag säljer hon inte bara i Gambia, utan även till närliggande länder på den afrikanska kontinenten. Hennes resa är ett exempel på hur ett starkt varumärke och rätt digitalt stöd kan ta ett lokalt initiativ — och förvandla det till något mycket större.",
+      ],
+      role: "GoHighLevel, UX & UI-design",
+      client: "HalimaPearl",
+      industry: "Mode & varumärke",
+      media: {
+        hero: {
+          src: ph.wide,
+          alt: "Platshållare — HalimaPearl hero",
+        },
+        feature: {
+          src: ph.wide,
+          alt: "Platshållare — HalimaPearl kollektioner",
+        },
+        mobile: [
+          {
+            src: ph.phone,
+            alt: "Platshållare — HalimaPearl mobil startsida",
+          },
+          {
+            src: ph.phone,
+            alt: "Platshållare — HalimaPearl mobil kollektion",
+          },
+          {
+            src: ph.phone,
+            alt: "Platshållare — HalimaPearl mobil varumärke",
+          },
+        ],
+        fullPage: {
+          src: ph.tall,
+          alt: "Platshållare — hela HalimaPearl-sidan",
+        },
+        fullPageCopy: {
+          eyebrow: "Hela sidan",
+          heading: "Scrolla igenom hela berättelsen.",
+          support:
+            "Bilder saknas ännu — byt ut platshållarna när skärmdumpar finns.",
+        },
+        desktop: {
+          src: ph.wide,
+          alt: "Platshållare — HalimaPearl desktop",
+        },
+        desktopCopy: {
+          eyebrow: "Varumärke",
+          heading: "Kollektionerna synliga — på riktigt.",
+          support:
+            "En plattform som visar kläderna, stärker identiteten och öppnar för nya marknader.",
+        },
+      },
+      seo: {
+        title: "HalimaPearl — GoHighLevel",
+        description:
+          "Case: HalimaPearl — hur en GoHighLevel-sajt tog ett lokalt modevarumärke från Gambia till fler marknader.",
+      },
+    },
+  },
+  {
+    slug: "ventilationskoll",
+    name: "Ventilationskoll",
+    tagline: "En hemsida som gör jobbet.",
+    description:
+      "Webbplats för Ventilationskoll: tydlig prisinformation och smidig onlinebokning — byggd för att dra in kunder.",
+    siteUrl: "https://ventilationskoll.se",
+    githubUrl: "",
+    tags: ["Frontend", "UX/UI", "SEO"],
+    year: 2025,
+    stack: ["SEO", "Frontend", "UX & UI-design"],
+    image: ph.wide,
+    imageAlt: "Platshållare för Ventilationskoll-startsida",
+    theme: {
+      bg: "var(--project-theme-sky)",
+      dark: false,
+    },
+    detail: {
+      overview: [
+        "Ventilationskoll kom till oss med ett tydligt mål: de behövde en hemsida som inte bara såg bra ut, utan som faktiskt hjälpte dem att få in kunder. Besökarna skulle enkelt kunna hitta prisinformation och smidigt boka direkt online.",
+      ],
+      challenge: [
+        "Snyggt räcker inte. Utan tydliga priser och enkel bokning blir hemsidan en visitkort — istället för en kanal som faktiskt tar emot kunder.",
+      ],
+      solution: [
+        "Vi tog fram en lösning som förenklar både för företaget och deras kunder. En användarvänlig design, tydlig struktur och funktioner som gör att informationen alltid finns nära till hands.",
+      ],
+      results: [
+        "En hemsida som idag inte bara speglar Ventilationskolls tjänster, utan också driver tillväxt. På kort tid har sidan genererat över 14 000 visningar — och fungerar nu som en självklar kanal för nya kunder.",
+      ],
+      role: "SEO, Frontend, UX & UI-design",
+      client: "Ventilationskoll",
+      industry: "Ventilation",
+      media: {
+        hero: {
+          src: ph.wide,
+          alt: "Platshållare — Ventilationskoll hero",
+        },
+        feature: {
+          src: ph.wide,
+          alt: "Platshållare — Ventilationskoll priser och bokning",
+        },
+        mobile: [
+          {
+            src: ph.phone,
+            alt: "Platshållare — Ventilationskoll mobil startsida",
+          },
+          {
+            src: ph.phone,
+            alt: "Platshållare — Ventilationskoll mobil priser",
+          },
+          {
+            src: ph.phone,
+            alt: "Platshållare — Ventilationskoll mobil bokning",
+          },
+        ],
+        fullPage: {
+          src: ph.tall,
+          alt: "Platshållare — hela Ventilationskoll-sidan",
+        },
+        fullPageCopy: {
+          eyebrow: "Hela sidan",
+          heading: "Scrolla igenom hela berättelsen.",
+          support:
+            "Bilder saknas ännu — byt ut platshållarna när skärmdumpar finns.",
+        },
+        desktop: {
+          src: ph.wide,
+          alt: "Platshållare — Ventilationskoll desktop",
+        },
+        desktopCopy: {
+          eyebrow: "Bokning",
+          heading: "Priser nära — bokning ännu närmare.",
+          support:
+            "Tydlig struktur så besökaren hittar information och tar nästa steg utan friktion.",
+        },
+      },
+      seo: {
+        title: "Ventilationskoll — SEO, Frontend & UX/UI",
+        description:
+          "Case: Ventilationskoll — hur en hemsida med tydliga priser och onlinebokning drev över 14 000 visningar.",
+      },
+    },
+  },
+  {
+    slug: "premium-honey-blends",
+    name: "Premium Honey Blends",
+    tagline: "Från meddelanden och kontakter till en butik som aldrig sover.",
+    description:
+      "Shopify-butik för Premium Honey Blends: live lagerstatus och beställningar dygnet runt — utan att något försvinner i chatten.",
+    siteUrl: "https://premiumhoneyblends.com",
+    githubUrl: "",
+    tags: ["Shopify", "E-handel", "Varumärke"],
+    year: 2026,
+    stack: ["Shopify"],
+    image: ph.wide,
+    imageAlt: "Platshållare för Premium Honey Blends-butik",
+    theme: {
+      bg: "var(--project-theme-honey)",
+      dark: false,
+    },
+    detail: {
+      overview: [
+        "Kunden ville lansera sin första hemsida. Fram till dess drevs försäljningen via kontakter och sociala medier — ett upplägg som fungerade, tills det blev för stort att hålla i handen.",
+        "Med tiden blev det jobbigt att hålla koll på alla meddelanden och kontakter, samt att hålla koll på antal produkter i lager.",
+      ],
+      challenge: [
+        "Beställningar försvann bland meddelanden. Lagerstatus fanns i huvudet — inte i systemet. När intresset växte behövdes något mer hållbart än chatt och manuella listor.",
+      ],
+      solution: [
+        "Vi byggde en vacker Shopify-butik där alla kan gå in och lägga sin beställning. Lagerstatus uppdateras live, och kunden säljer endast det som finns tillgängligt — utan att behöva jaga svar i inkorgen.",
+      ],
+      results: [
+        "Nu kan kunder lägga beställningar dag och natt utan att en enda order försvinner bland alla meddelanden. Butiken håller koll på lagret — så att verksamheten kan växa utan kaos.",
+      ],
+      role: "Shopify-butik, UX & UI-design",
+      client: "Premium Honey Blends",
+      industry: "E-handel / Livsmedel",
+      media: {
+        hero: {
+          src: ph.wide,
+          alt: "Platshållare — Premium Honey Blends hero",
+        },
+        feature: {
+          src: ph.wide,
+          alt: "Platshållare — Premium Honey Blends produktvy",
+        },
+        mobile: [
+          {
+            src: ph.phone,
+            alt: "Platshållare — Premium Honey Blends mobil startsida",
+          },
+          {
+            src: ph.phone,
+            alt: "Platshållare — Premium Honey Blends mobil produkt",
+          },
+          {
+            src: ph.phone,
+            alt: "Platshållare — Premium Honey Blends mobil kassa",
+          },
+        ],
+        fullPage: {
+          src: ph.tall,
+          alt: "Platshållare — hela Premium Honey Blends-sidan",
+        },
+        fullPageCopy: {
+          eyebrow: "Hela sidan",
+          heading: "Scrolla igenom hela berättelsen.",
+          support:
+            "Bilder saknas ännu — byt ut platshållarna när skärmdumpar finns.",
+        },
+        desktop: {
+          src: ph.wide,
+          alt: "Platshållare — Premium Honey Blends desktop",
+        },
+        desktopCopy: {
+          eyebrow: "Butik",
+          heading: "Live lager — beställningar dygnet runt.",
+          support:
+            "Shopify som håller koll på lagret och tar emot ordrar utan att något drunknar i chatten.",
+        },
+      },
+      seo: {
+        title: "Premium Honey Blends — Shopify",
+        description:
+          "Case: Premium Honey Blends — hur en Shopify-butik ersatte chattförsäljning med live lager och ordrar dygnet runt.",
+      },
+    },
+  },
+  {
+    slug: "alkama",
+    name: "ALKAMA",
+    tagline:
+      "WooCommerce-butik på svenska, finska och norska — utan att tappa 20 års förtroende.",
+    description:
+      "Flerspråkig WooCommerce-butik för Alkama Industry: fakturabetalning, självbetjäning och lokal SEO i Norden.",
+    siteUrl: "",
+    githubUrl: "",
+    tags: ["WooCommerce", "Polylang", "B2B"],
+    year: 2026,
+    stack: ["WooCommerce", "Polylang", "PHP"],
+    image: ph.wide,
+    imageAlt: "Platshållare för ALKAMA-butik",
+    theme: {
+      bg: "var(--project-theme-steel)",
+      dark: false,
+    },
+    detail: {
+      overview: [
+        "Alkama Industry har sedan 2004 byggt verksamheten på högt förtroende och personliga relationer. Men den manuella, telefonbaserade modellen skapade flaskhalsar när ägandet bytte generation.",
+        "Intäkterna begränsades av hur mycket tid ägaren kunde lägga på telefonbeställningar. Höga administrativa kostnader och språkbarriärer bromsade tillväxten i Norge och Finland. Kunskapen låg i manuella register — svårt för nya ägare att ge samma personliga känsla, och svårt att möta kunder som förväntar sig att handla digitalt.",
+      ],
+      challenge: [
+        "Telefonen räckte inte längre. Utan digital struktur blev tillväxt i Norden dyr, långsam och beroende av en persons tid — samtidigt som relationerna som byggt varumärket riskerade att gå förlorade.",
+      ],
+      solution: [
+        "Målet var att översätta 20 års rykte till en friktionsfri digital upplevelse. Continuity-first UX: en ren, industriell layout som inköpare känner igen — inklusive fakturabetalning digitaliserad så att bokföringen automatiseras utan att tappa den förtroendebaserade känslan. Strategisk lokalisering med Polylang och anpassad PHP: tekniska dokument, fakturor och SEO riktade mot varje marknad, inklusive nynorska för den norska industrisektorn. Admin-automation: självbetjäningsportal för ombeställning på två klick och SEO-optimerade landningssidor som gör sajten till en leadgenerator dygnet runt.",
+      ],
+      results: [
+        "En WooCommerce-butik på svenska, finska och norska som behåller Alkamas förtroende — samtidigt som beställningar, språk och administration skalas utan att allt går via telefonen.",
+      ],
+      role: "WooCommerce, lokalisering & UX/UI",
+      client: "Alkama Industry",
+      industry: "B2B / Industri",
+      media: {
+        hero: {
+          src: ph.wide,
+          alt: "Platshållare — ALKAMA hero",
+        },
+        feature: {
+          src: ph.wide,
+          alt: "Platshållare — ALKAMA butik och lokalisering",
+        },
+        mobile: [
+          {
+            src: ph.phone,
+            alt: "Platshållare — ALKAMA mobil startsida",
+          },
+          {
+            src: ph.phone,
+            alt: "Platshållare — ALKAMA mobil produktkatalog",
+          },
+          {
+            src: ph.phone,
+            alt: "Platshållare — ALKAMA mobil kundportal",
+          },
+        ],
+        fullPage: {
+          src: ph.tall,
+          alt: "Platshållare — hela ALKAMA-sidan",
+        },
+        fullPageCopy: {
+          eyebrow: "Hela sidan",
+          heading: "Scrolla igenom hela berättelsen.",
+          support:
+            "Bilder saknas ännu — byt ut platshållarna när skärmdumpar finns.",
+        },
+        desktop: {
+          src: ph.wide,
+          alt: "Platshållare — ALKAMA desktop",
+        },
+        desktopCopy: {
+          eyebrow: "B2B-butik",
+          heading: "Tre språk — samma förtroende.",
+          support:
+            "WooCommerce med Polylang, fakturaflöde och självbetjäning för ombeställning.",
+        },
+      },
+      seo: {
+        title: "ALKAMA — WooCommerce & Polylang",
+        description:
+          "Case: ALKAMA — flerspråkig WooCommerce-butik som digitaliserade 20 års B2B-förtroende för Norden.",
+      },
+    },
+  },
+  {
+    slug: "uniclean",
+    name: "UniClean",
+    tagline: "Från samma frågor om och om igen — till en sajt som onboardingar själv.",
+    description:
+      "WordPress-sajt för UniClean: tjänster, ungefärliga priser och förväntningar synliga från start — så teamet kan fokusera på jobbet.",
+    siteUrl: "",
+    githubUrl: "",
+    tags: ["WordPress", "Elementor", "Lokalt"],
+    year: 2026,
+    stack: ["WordPress", "Elementor"],
+    image: ph.wide,
+    imageAlt: "Platshållare för UniClean-startsida",
+    theme: {
+      bg: "var(--project-theme-mint)",
+      dark: false,
+    },
+    detail: {
+      overview: [
+        "Lucas hade drivit en framgångsrik lokal verksamhet med starkt rykte i flera år. Men när kundbasen växte blev bristen på en strukturerad onboarding en flaskhals.",
+        "Teamet lade för mycket tid på att svara på samma frågor manuellt — i stället för att fokusera på själva arbetet.",
+      ],
+      challenge: [
+        "Ryktet drog in kunder, men varje ny förfrågan krävde samma manuella förklaringar. Utan en tydlig digital startpunkt blev onboarding långsam och dyr i tid.",
+      ],
+      solution: [
+        "Jag byggde en hemsida som fungerar som en informationshub dygnet runt. Genom att tydligt visa tjänster, ungefärliga priser och vad kunden kan förvänta sig filtrerar och utbildar sajten blivande kunder automatiskt.",
+      ],
+      results: [
+        "Onboardingprocessen blev smidigare, företaget sparar administrativ tid — och kundupplevelsen blir klarare redan innan första samtalet.",
+      ],
+      role: "Design & WordPress-bygge (Elementor)",
+      client: "UniClean",
+      industry: "Lokal service",
+      media: {
+        hero: {
+          src: ph.wide,
+          alt: "Platshållare — UniClean hero",
+        },
+        feature: {
+          src: ph.wide,
+          alt: "Platshållare — UniClean tjänster och priser",
+        },
+        mobile: [
+          {
+            src: ph.phone,
+            alt: "Platshållare — UniClean mobil startsida",
+          },
+          {
+            src: ph.phone,
+            alt: "Platshållare — UniClean mobil tjänster",
+          },
+          {
+            src: ph.phone,
+            alt: "Platshållare — UniClean mobil kontakt",
+          },
+        ],
+        fullPage: {
+          src: ph.tall,
+          alt: "Platshållare — hela UniClean-sidan",
+        },
+        fullPageCopy: {
+          eyebrow: "Hela sidan",
+          heading: "Scrolla igenom hela berättelsen.",
+          support:
+            "Bilder saknas ännu — byt ut platshållarna när skärmdumpar finns.",
+        },
+        desktop: {
+          src: ph.wide,
+          alt: "Platshållare — UniClean desktop",
+        },
+        desktopCopy: {
+          eyebrow: "Onboarding",
+          heading: "Svaren synliga — innan telefonen ringer.",
+          support:
+            "Tjänster, priser och förväntningar på plats så teamet kan fokusera på leveransen.",
+        },
+      },
+      seo: {
+        title: "UniClean — WordPress & Elementor",
+        description:
+          "Case: UniClean — hur en WordPress-sajt blev en 24/7-informationshub och sparade tid i onboarding.",
+      },
+    },
+  },
+  {
+    slug: "shanasheel",
+    name: "Shanasheel",
+    tagline:
+      "Från första skissen till en tvåspråkig sajt som berättar om Akkad — och om framtiden i Irak.",
+    description:
+      "Webbplats för Shanasheel Al-Asima: fastighet, hållbarhet och investeringar, byggd i WordPress med Elementor.",
+    siteUrl: "https://shanasheel.se",
+    githubUrl: "",
+    tags: ["WordPress", "Elementor", "Fastighet"],
+    year: 2025,
+    stack: ["WordPress", "Elementor", "TranslatePress"],
+    image: "/projects/shanasheel/hero-viewport.jpg",
+    imageAlt: "Shanasheel startsida med Akkad Residential City i hero",
+    theme: {
+      bg: "var(--project-theme-forest)",
+      dark: false,
+    },
+    detail: {
+      overview: [
+        "Shanasheel Al-Asima behövde mer än en vanlig företagswebb. De behövde en plats där investerare, familjer och partners kunde känna tyngden i Akkad Residential City — och samtidigt förstå hela bolaget: avfall, solenergi och jordbruk.",
+        "Jag formgav och byggde sajten i WordPress med Elementor, med tydliga sektioner, starka bilder och en berättelse som leder besökaren från första intrycket till nästa steg.",
+      ],
+      challenge: [
+        "Budskapet var stort: lyxboende, hållbarhet och engagemang i Irak — på två språk. Utan en klar berättelse riskerade sajten att bli en lista med tjänster i stället för en resa man vill följa.",
+      ],
+      solution: [
+        "Jag byggde en lång, lugn startsida kring Akkad: hero, investeringsresa, nyheter, hustyper och storytelling-block. Tjänstesidan fick samma ton — fyra affärsområden i bild och text. Allt i Elementor, med arabiska och engelska via TranslatePress.",
+      ],
+      results: [
+        "En live-sajt på shanasheel.se som Digital Koll står bakom — där Shanasheel kan visa projekt, ta emot intresse och berätta sin historia på två språk.",
+      ],
+      role: "Design & WordPress-bygge (Elementor)",
+      client: "Shanasheel Al-Asima",
+      industry: "Fastighet & hållbarhet",
+      media: {
+        hero: {
+          src: "/projects/shanasheel/hero-viewport.jpg",
+          alt: "Shanasheel-hero med Akkad Residential City",
+        },
+        feature: {
+          src: "/projects/shanasheel/story-1.jpg",
+          alt: "Akkad storytelling-bild från Shanasheel-sajten",
+        },
+        mobile: [
+          {
+            src: "/projects/shanasheel/mobile-1.jpg",
+            alt: "Shanasheel startsida i mobil — Akkad-hero",
+          },
+          {
+            src: "/projects/shanasheel/mobile-2.jpg",
+            alt: "Shanasheel mobil — hustyper Type A, B och C",
+          },
+          {
+            src: "/projects/shanasheel/mobile-3.jpg",
+            alt: "Shanasheel tjänstesida i mobil",
+          },
+        ],
+        fullPage: {
+          src: "/projects/shanasheel/page-home.jpg",
+          alt: "Hela Shanasheel-startsida från topp till botten",
+        },
+        fullPageCopy: {
+          eyebrow: "Hela sidan",
+          heading: "Scrolla igenom hela berättelsen.",
+          support:
+            "Startsida från hero till footer — dra eller scrolla inne i ramen.",
+        },
+        desktop: {
+          src: "/projects/shanasheel/services-viewport.jpg",
+          alt: "Shanasheel tjänstesida — hero med nycklar",
+        },
+        desktopCopy: {
+          eyebrow: "Tjänster",
+          heading: "Fyra spår, en gemensam ton.",
+          support:
+            "Fastighet, avfall, solenergi och jordbruk — samma visuella språk på tjänstesidan.",
+        },
+      },
+      seo: {
+        title: "Shanasheel — WordPress & Elementor",
+        description:
+          "Case: Shanasheel Al-Asima — hur jag designade och byggde en tvåspråkig WordPress-sajt kring Akkad Residential City.",
       },
     },
   },

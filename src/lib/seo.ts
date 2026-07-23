@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { site } from "@/data/site";
 import type { Project } from "@/data/projects";
-import type { Service } from "@/data/services";
 
 const siteUrl = new URL(site.url);
 
@@ -20,7 +19,7 @@ export function getDefaultMetadata(): Metadata {
       description: site.description,
       url: site.url,
       siteName: site.name,
-      locale: "en_US",
+      locale: "sv_SE",
       type: "website",
     },
     twitter: {
@@ -56,34 +55,6 @@ export function getProjectMetadata(project: Project): Metadata {
     },
     alternates: {
       canonical: `/projects/${project.slug}`,
-    },
-  };
-}
-
-export function getServiceMetadata(service: Service): Metadata {
-  const title = service.title;
-  const description = service.detailDescription;
-  const image = service.images[0];
-  const imageAlt = service.imagesAlt[0];
-
-  return {
-    title,
-    description,
-    openGraph: {
-      title,
-      description,
-      url: `/services/${service.slug}`,
-      type: "website",
-      images: image ? [{ url: image, alt: imageAlt }] : undefined,
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: image ? [image] : undefined,
-    },
-    alternates: {
-      canonical: `/services/${service.slug}`,
     },
   };
 }
