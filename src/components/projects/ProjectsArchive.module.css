@@ -1,0 +1,116 @@
+/* All-projects archive — editorial listing in site style */
+
+.page {
+  background: var(--color-bg);
+  color: var(--color-text);
+  min-height: 100svh;
+}
+
+.inner {
+  width: 100%;
+  max-width: 22rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 4rem;
+}
+
+.back {
+  margin: 0 0 1.75rem;
+  font-size: 0.9rem;
+}
+
+.back a {
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.back a:hover {
+  color: var(--color-heading);
+}
+
+.back a:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.header {
+  margin-bottom: 2.5rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.65rem;
+  font-size: var(--text-eyebrow);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-eyebrow);
+}
+
+.heading {
+  margin: 0 0 0.85rem;
+  font-size: clamp(2rem, 8vw, 2.75rem);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-heading);
+}
+
+.support {
+  margin: 0;
+  max-width: 34rem;
+  font-size: 0.95rem;
+  line-height: var(--leading-body);
+  color: var(--color-text-muted);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@media (min-width: 640px) {
+  .inner {
+    max-width: 40rem;
+    padding: 2rem 1.5rem 5rem;
+  }
+
+  .header {
+    margin-bottom: 3rem;
+  }
+
+  .heading {
+    font-size: clamp(2.5rem, 5vw, 3.25rem);
+  }
+
+  .support {
+    font-size: 1.05rem;
+  }
+
+  .grid {
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 960px) {
+  .inner {
+    max-width: 64rem;
+    padding: 2.5rem 2rem 6rem;
+  }
+
+  .header {
+    margin-bottom: 3.5rem;
+  }
+
+  .heading {
+    font-size: clamp(3rem, 4vw, 3.75rem);
+  }
+
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.75rem;
+  }
+}

@@ -5,7 +5,7 @@ import styles from "./Hero.module.css";
 
 export default function Hero() {
   const contact = site.nav.find((item) => item.href.includes("contact"));
-  const about = site.nav.find((item) => item.href.includes("about"));
+  const projects = site.nav.find((item) => item.href.includes("projects"));
 
   return (
     <section className={styles.hero}>
@@ -27,12 +27,12 @@ export default function Hero() {
               {contact.name}
             </Link>
           )}
-          {about && (
+          {projects && (
             <Link
-              href={about.href}
+              href={projects.href}
               className={`${styles.btn} ${styles.btnSecondary}`}
             >
-              {about.name}
+              {projects.name}
             </Link>
           )}
         </div>

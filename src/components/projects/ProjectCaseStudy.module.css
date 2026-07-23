@@ -43,10 +43,10 @@
 }
 
 .hero img {
+  /* Let the screenshot keep its own proportions — no cropping */
   display: block;
   width: 100%;
-  aspect-ratio: 16 / 10;
-  object-fit: cover;
+  height: auto;
 }
 
 /* ── Overview ── */
@@ -161,8 +161,7 @@
 .feature img {
   display: block;
   width: 100%;
-  aspect-ratio: 16 / 10;
-  object-fit: cover;
+  height: auto;
 }
 
 /* ── Media sections ── */
@@ -218,6 +217,7 @@
 
 .mobileList {
   display: flex;
+  align-items: flex-start;
   gap: 1rem;
   list-style: none;
   margin: 0;
@@ -257,9 +257,7 @@
 .phoneScreen img {
   display: block;
   width: 100%;
-  aspect-ratio: 9 / 19.5;
-  object-fit: cover;
-  object-position: top center;
+  height: auto;
 }
 
 /* ── Full-page scrollable frame ── */
@@ -320,8 +318,7 @@
 .desktop img {
   display: block;
   width: 100%;
-  aspect-ratio: 16 / 10;
-  object-fit: cover;
+  height: auto;
 }
 
 /* ── Adjacent projects ── */
@@ -513,10 +510,6 @@
   .hero {
     margin-bottom: 3.5rem;
     border-radius: 1.25rem;
-  }
-
-  .hero img {
-    aspect-ratio: 21 / 9;
   }
 
   .title {

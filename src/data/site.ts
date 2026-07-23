@@ -2,11 +2,11 @@ export const site = {
   name: "Marcel Deluca",
   title: "Systemdesigner",
   description:
-    "Jag hjälper företag att få pengarna att arbeta mer — genom mjukvara som är byggd kring hur ni faktiskt jobbar.",
+    "Jag bygger hemsidor, e-handel och interna system åt företag som vill att tekniken bara ska fungera.",
   url: "https://marceldeluca.se",
   email: "marcel@marceldeluca.se",
   intro: {
-    eyebrow: "Berättelsen",
+    eyebrow: "Om mig",
     heading: "Så här brukar det börja",
     description:
       "En kort film om hur jag tänker — från första samtalet till system som gör vardagen enklare och affären starkare.",
@@ -19,8 +19,8 @@ export const site = {
       href: "/",
     },
     {
-      name: "Om mig",
-      href: "/about",
+      name: "Projekt",
+      href: "/projects",
     },
     {
       name: "Kontakt",

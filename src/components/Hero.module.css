@@ -5,8 +5,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100svh;
-  padding: 4.5rem 1.25rem 3.5rem;
+  /* Fill the viewport below the sticky nav so the scroll cue stays on-screen */
+  min-height: calc(100svh - var(--nav-height));
+  padding: 2.5rem 1.25rem 4.5rem;
   overflow: hidden;
   background: var(--color-bg);
   text-align: center;
@@ -101,14 +102,16 @@
 
 .scrollCue {
   position: absolute;
-  bottom: 1.5rem;
-  left: 50%;
+  bottom: 1.25rem;
+  left: 0;
+  right: 0;
   z-index: 1;
   display: inline-flex;
   flex-direction: column;
   align-items: center;
   gap: 0.35rem;
-  transform: translateX(-50%);
+  width: fit-content;
+  margin-inline: auto;
   color: var(--color-text-muted);
   text-decoration: none;
   animation: rise 0.65s ease-out 0.4s both;
@@ -140,11 +143,11 @@
 /* Tablet+ */
 @media (min-width: 640px) {
   .hero {
-    padding: 5.5rem 1.5rem 5.5rem;
+    padding: 3rem 1.5rem 5rem;
   }
 
   .scrollCue {
-    bottom: 2rem;
+    bottom: 1.75rem;
   }
 
   .bg {
@@ -200,12 +203,12 @@
 /* Desktop */
 @media (min-width: 960px) {
   .hero {
-    min-height: 100vh;
-    padding: 6.5rem 2rem 6rem;
+    min-height: calc(100vh - var(--nav-height));
+    padding: 3.5rem 2rem 5.5rem;
   }
 
   .scrollCue {
-    bottom: 2.25rem;
+    bottom: 2rem;
   }
 
   .bg {

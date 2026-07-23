@@ -11,6 +11,10 @@ export function getAllProjects(): Project[] {
   return getProjectsNewestFirst();
 }
 
+export function getFeaturedProjects(count = 3): Project[] {
+  return getProjectsNewestFirst().slice(0, count);
+}
+
 export function getProjectBySlug(slug: string): Project | undefined {
   return projects.find((project) => project.slug === slug);
 }
