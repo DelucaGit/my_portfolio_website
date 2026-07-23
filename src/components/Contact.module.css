@@ -44,7 +44,7 @@
 }
 
 .heading {
-  margin: 0 0 1.75rem;
+  margin: 0 0 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
@@ -66,19 +66,47 @@
   text-wrap: balance;
 }
 
+.bookText {
+  margin: 0 0 1.75rem;
+  font-size: 0.95rem;
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-snug, 1.35);
+  color: var(--color-text-muted);
+  text-wrap: balance;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.75rem;
+  width: 100%;
+}
+
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   padding: 0.9rem 1.25rem;
+  border: none;
   border-radius: 999px;
+  font: inherit;
   font-size: 0.95rem;
   font-weight: var(--weight-medium);
   line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.btnPrimary {
   background: var(--color-btn-primary);
   color: var(--color-btn-on-primary);
-  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.btnSecondary {
+  background: var(--color-btn-secondary);
+  color: var(--color-heading);
 }
 
 .btn:focus-visible {
@@ -105,7 +133,12 @@
   }
 
   .heading {
+    margin-bottom: 1.15rem;
+  }
+
+  .bookText {
     margin-bottom: 2.25rem;
+    font-size: 1.05rem;
   }
 
   .lead {
@@ -116,13 +149,25 @@
     font-size: clamp(2.25rem, 5vw, 2.75rem);
   }
 
+  .actions {
+    flex-direction: row;
+    justify-content: center;
+    width: auto;
+    gap: 0.85rem;
+  }
+
   .btn {
     width: auto;
     padding: 0.85rem 1.6rem;
   }
 
-  .btn:hover {
+  .btnPrimary:hover {
     background: var(--color-btn-primary-hover);
+    transform: translateY(-1px);
+  }
+
+  .btnSecondary:hover {
+    background: var(--color-btn-secondary-hover);
     transform: translateY(-1px);
   }
 }
@@ -165,7 +210,8 @@
     animation: none;
   }
 
-  .btn:hover {
+  .btnPrimary:hover,
+  .btnSecondary:hover {
     transform: none;
   }
 }
