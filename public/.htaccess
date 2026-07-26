@@ -1,30 +1,21 @@
-# Hostinger Apache — HTTPS + clean URL helpers for static Next export
+# Hostinger Apache — static Next.js export
+# Keep this minimal: trailing-slash rewrites caused sticky 301 loops in Chrome.
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
-  # Force HTTPS
+  # Force HTTPS (Hostinger/CDN often sets HTTPS=off behind the proxy)
   RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-  # If a file URL was wrongly given a trailing slash (.jpg/, .mp4/, etc.), strip it
-  RewriteRule ^(.+\.[a-zA-Z0-9]{1,8})/$ /$1 [L,R=301]
-
-  # Never add a trailing slash to real files (images, video, css, js, etc.)
-  RewriteCond %{REQUEST_URI} \.[a-zA-Z0-9]{1,8}$
-  RewriteRule ^ - [L]
-
-  # Directory URLs only: add trailing slash when the path is not a file
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteCond %{REQUEST_URI} !/$
-  RewriteCond %{REQUEST_URI} !\.[a-zA-Z0-9]{1,8}$
-  RewriteRule ^(.*)$ /$1/ [L,R=301]
+  # Strip a wrong trailing slash on real files (.jpg/, .mp4/, …)
+  # Use 302 so browsers do not permanently cache the redirect.
+  RewriteRule ^(.+\.[a-zA-Z0-9]{1,8})/$ /$1 [L,R=302]
 
   DirectoryIndex index.html
 </IfModule>
 
-# Keep image/video cache short so bad CDN/browser redirects expire faster
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresByType text/css "access plus 1 year"

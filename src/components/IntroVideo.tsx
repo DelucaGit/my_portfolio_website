@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { site } from "@/data/site";
+import { asset } from "@/lib/asset";
 import styles from "./IntroVideo.module.css";
 
 export default function IntroVideo() {
@@ -107,12 +108,12 @@ export default function IntroVideo() {
                 className={styles.video}
                 playsInline
                 preload="metadata"
-                poster={intro.poster}
+                poster={asset(intro.poster)}
                 onPlay={() => setPlaying(true)}
                 onPause={() => setPlaying(false)}
                 onEnded={() => setPlaying(false)}
               >
-                <source src={intro.video} type="video/mp4" />
+                <source src={asset(intro.video)} type="video/mp4" />
               </video>
 
               <button

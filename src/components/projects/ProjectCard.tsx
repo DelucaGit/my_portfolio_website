@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import type { Project } from "@/lib/projects";
+import { asset } from "@/lib/asset";
 import styles from "./ProjectCard.module.css";
 
 type ProjectCardProps = {
@@ -28,7 +29,7 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
       <div className={styles.media}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={project.image}
+          src={asset(project.image)}
           alt={project.imageAlt}
           className={styles.image}
         />
