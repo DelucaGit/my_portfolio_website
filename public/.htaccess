@@ -7,28 +7,32 @@
   RewriteCond %{HTTPS} !=on
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
+  # If a file URL was wrongly given a trailing slash (.jpg/, .mp4/, etc.), strip it
+  RewriteRule ^(.+\.[a-zA-Z0-9]{1,8})/$ /$1 [L,R=301]
+
   # Never add a trailing slash to real files (images, video, css, js, etc.)
   RewriteCond %{REQUEST_URI} \.[a-zA-Z0-9]{1,8}$
   RewriteRule ^ - [L]
 
-  # If request has no trailing slash and is not a real file/dir, try as directory
+  # Directory URLs only: add trailing slash when the path is not a file
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_URI} !/$
+  RewriteCond %{REQUEST_URI} !\.[a-zA-Z0-9]{1,8}$
   RewriteRule ^(.*)$ /$1/ [L,R=301]
 
   DirectoryIndex index.html
 </IfModule>
 
-# Cache static assets (short video cache so CDN recovers faster after deploys)
+# Keep image/video cache short so bad CDN/browser redirects expire faster
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresByType text/css "access plus 1 year"
   ExpiresByType application/javascript "access plus 1 year"
-  ExpiresByType image/webp "access plus 1 year"
-  ExpiresByType image/png "access plus 1 year"
-  ExpiresByType image/jpeg "access plus 1 year"
-  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 hour"
+  ExpiresByType image/png "access plus 1 hour"
+  ExpiresByType image/jpeg "access plus 1 hour"
+  ExpiresByType image/svg+xml "access plus 1 hour"
   ExpiresByType video/mp4 "access plus 1 hour"
   ExpiresByType font/woff2 "access plus 1 year"
 </IfModule>
