@@ -1,53 +1,12 @@
-/* Shared project card — used on homepage and /projects */
+/* Full-bleed image card — title on image, more detail on hover/focus */
 
 .card {
-  --project-card-bg: var(--color-surface);
   position: relative;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  border-radius: 1rem;
+  display: block;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
-  background: var(--project-card-bg);
-  box-shadow: var(--shadow-card);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-image);
-}
-
-.cardDark {
-  color: #f5f5f5;
-}
-
-.cardDark .name,
-.cardDark .viewLink {
-  color: #f5f5f5;
-}
-
-.cardDark .tagline,
-.cardDark .year {
-  color: rgba(245, 245, 245, 0.72);
-}
-
-.cardDark .tag {
-  background: rgba(255, 255, 255, 0.12);
-  color: #f5f5f5;
-}
-
-.cardDark .stackItem {
-  border-color: rgba(255, 255, 255, 0.18);
-  color: rgba(245, 245, 245, 0.75);
-}
-
-.media {
-  width: 100%;
-  /* Card images are wide desktop screenshots — keep the box close to that
-     shape so cover-cropping doesn't zoom in and cut most of the width off. */
-  aspect-ratio: 16 / 10;
-  background: color-mix(in srgb, var(--project-card-bg) 70%, #000 6%);
+  background: #141414;
+  isolation: isolate;
 }
 
 .image {
@@ -55,140 +14,156 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: top;
+  object-position: top center;
+  transition: transform 0.55s ease;
 }
 
-.body {
-  padding: 1.25rem;
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
   display: flex;
   flex-direction: column;
-  flex: 1;
+  justify-content: flex-end;
+  padding: 1.25rem 1.15rem 1.35rem;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.78) 0%,
+    rgba(0, 0, 0, 0.35) 42%,
+    rgba(0, 0, 0, 0.08) 70%,
+    transparent 100%
+  );
+  pointer-events: none;
+  transition: background 0.35s ease;
 }
 
-.meta {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 0.75rem;
+.copy {
+  color: #fff;
+  max-width: 28rem;
 }
 
 .year {
-  font-size: 0.85rem;
-  font-weight: var(--weight-medium);
-  color: var(--color-text-subtle);
-}
-
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.tag {
-  padding: 0.25rem 0.65rem;
-  border-radius: 999px;
+  margin: 0 0 0.35rem;
   font-size: 0.75rem;
   font-weight: var(--weight-medium);
-  color: var(--color-text);
-  background: color-mix(in srgb, var(--project-card-bg) 55%, #fff);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .name {
-  margin: 0 0 0.5rem;
-  font-size: 1.25rem;
+  margin: 0;
+  font-size: clamp(1.2rem, 2.4vw, 1.65rem);
   font-weight: var(--weight-semibold);
   letter-spacing: var(--tracking-tight);
-  color: var(--color-heading);
+  line-height: 1.15;
+  color: #fff;
+  text-wrap: balance;
 }
 
 .tagline {
-  margin: 0 0 1rem;
-  font-size: 0.95rem;
-  line-height: var(--leading-body);
-  color: var(--color-text-muted);
+  margin: 0.55rem 0 0;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.86);
+  transform: translateY(0.4rem);
+  transition:
+    max-height 0.4s ease,
+    opacity 0.3s ease,
+    transform 0.3s ease,
+    margin 0.3s ease;
 }
 
-.stack {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  list-style: none;
-  margin: 0 0 1rem;
-  padding: 0;
-}
-
-.stackItem {
-  padding: 0.25rem 0.65rem;
-  border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--project-card-bg) 40%, #000 12%);
-  font-size: 0.75rem;
-  font-weight: var(--weight-medium);
-  color: var(--color-text-subtle);
-  background: color-mix(in srgb, var(--project-card-bg) 70%, #fff);
-}
-
-.viewLink {
+.cta {
   display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  margin-top: auto;
-  font-size: 0.95rem;
+  margin-top: 0;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  font-size: 0.88rem;
   font-weight: var(--weight-medium);
-  color: var(--color-text);
+  color: #fff;
+  transform: translateY(0.35rem);
+  transition:
+    max-height 0.4s ease,
+    opacity 0.3s ease,
+    transform 0.3s ease,
+    margin 0.3s ease;
 }
 
-/* Stretches the link over the whole card so the entire card is clickable,
-   while keeping a single real link in the markup. */
-.viewLink::after {
-  content: "";
+.link {
   position: absolute;
   inset: 0;
+  z-index: 2;
+  border-radius: inherit;
 }
 
-.card:hover .viewLink {
-  color: var(--color-accent);
+.link:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: -4px;
 }
 
-.viewLink:focus-visible {
-  outline: 2px solid var(--color-focus);
-  outline-offset: 3px;
+.card:hover .image,
+.card:focus-within .image {
+  transform: scale(1.04);
 }
 
-@media (min-width: 640px) {
-  .body {
-    padding: 1.75rem;
-  }
+.card:hover .overlay,
+.card:focus-within .overlay {
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.88) 0%,
+    rgba(0, 0, 0, 0.55) 48%,
+    rgba(0, 0, 0, 0.2) 100%
+  );
+}
 
-  .name {
-    font-size: 1.5rem;
-  }
+.card:hover .tagline,
+.card:focus-within .tagline {
+  max-height: 5rem;
+  margin-top: 0.65rem;
+  opacity: 1;
+  transform: translateY(0);
+}
 
+.card:hover .cta,
+.card:focus-within .cta {
+  max-height: 2rem;
+  margin-top: 0.85rem;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (hover: none) {
+  /* Touch: keep short info visible without relying on hover */
   .tagline {
-    font-size: 1rem;
+    max-height: 5rem;
+    margin-top: 0.55rem;
+    opacity: 0.92;
+    transform: none;
+  }
+
+  .cta {
+    max-height: 2rem;
+    margin-top: 0.75rem;
+    opacity: 0.9;
+    transform: none;
   }
 }
 
-/* Homepage featured — side-by-side on desktop */
-@media (min-width: 960px) {
-  .cardFeatured {
-    flex-direction: row;
-    align-items: stretch;
+@media (prefers-reduced-motion: reduce) {
+  .image,
+  .overlay,
+  .tagline,
+  .cta {
+    transition: none;
   }
 
-  .cardFeatured .media {
-    order: 2;
-    flex: 0 0 45%;
-    aspect-ratio: auto;
-  }
-
-  .cardFeatured .body {
-    order: 1;
-    flex: 1 1 55%;
-    justify-content: center;
-    padding: 2.25rem;
+  .card:hover .image,
+  .card:focus-within .image {
+    transform: none;
   }
 }

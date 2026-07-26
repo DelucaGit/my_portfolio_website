@@ -2,21 +2,21 @@
 
 .section {
   background: var(--color-bg);
-  padding: 3.5rem 1.25rem;
+  padding: var(--space-section) 1.25rem;
 }
 
 .inner {
   width: 100%;
-  max-width: 22rem;
+  max-width: var(--content-max-sm);
   margin: 0 auto;
 }
 
 .header {
-  margin-bottom: 2rem;
+  margin-bottom: var(--space-header-gap);
 }
 
 .eyebrow {
-  margin: 0 0 0.65rem;
+  margin: 0 0 0.55rem;
   font-size: var(--text-eyebrow);
   font-weight: var(--weight-semibold);
   letter-spacing: var(--tracking-eyebrow);
@@ -25,8 +25,8 @@
 }
 
 .heading {
-  margin: 0 0 0.75rem;
-  font-size: clamp(1.75rem, 7vw, 2.25rem);
+  margin: 0 0 0.85rem;
+  font-size: var(--text-heading-sm);
   font-weight: var(--weight-bold);
   line-height: var(--leading-tight);
   letter-spacing: var(--tracking-tight);
@@ -36,7 +36,7 @@
 .support {
   margin: 0;
   max-width: 34rem;
-  font-size: 0.95rem;
+  font-size: var(--text-body);
   line-height: var(--leading-body);
   color: var(--color-text-muted);
 }
@@ -131,11 +131,11 @@
   gap: 0.45rem;
   width: 100%;
   margin-top: auto;
-  padding: 0.8rem 1rem;
+  padding: var(--btn-pad-y) var(--btn-pad-x);
   border-radius: 0.75rem;
   background: var(--color-btn-primary);
   color: var(--color-btn-on-primary);
-  font-size: 0.9rem;
+  font-size: var(--btn-font);
   font-weight: var(--weight-semibold);
   text-decoration: none;
   transition: background-color 0.2s ease, transform 0.2s ease;
@@ -154,23 +154,23 @@
 /* Tablet+ */
 @media (min-width: 640px) {
   .section {
-    padding: 5rem 1.5rem;
+    padding: var(--space-section-md) 1.5rem;
   }
 
   .inner {
-    max-width: 42rem;
+    max-width: var(--content-max-md);
   }
 
   .header {
-    margin-bottom: 2.5rem;
+    margin-bottom: var(--space-header-gap-md);
   }
 
   .heading {
-    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-size: var(--text-heading-sm);
   }
 
   .support {
-    font-size: 1rem;
+    font-size: var(--text-body);
   }
 
   .grid {
@@ -182,20 +182,20 @@
 /* Desktop */
 @media (min-width: 960px) {
   .section {
-    padding: 6.5rem 2rem;
+    padding: var(--space-section-lg) 2rem;
   }
 
   .inner {
-    max-width: 68rem;
+    max-width: var(--content-max);
   }
 
   .header {
     max-width: 36rem;
-    margin-bottom: 2.75rem;
+    margin-bottom: var(--space-header-gap-lg);
   }
 
   .heading {
-    font-size: var(--text-heading-sm);
+    font-size: var(--text-heading-md);
   }
 
   .grid {

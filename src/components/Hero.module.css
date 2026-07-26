@@ -7,7 +7,7 @@
   justify-content: center;
   /* Fill the viewport below the sticky nav so the scroll cue stays on-screen */
   min-height: calc(100svh - var(--nav-height));
-  padding: 2.5rem 1.25rem 4.5rem;
+  padding: 2.5rem 1.25rem 3.5rem;
   overflow: hidden;
   background: var(--color-bg);
   text-align: center;
@@ -46,7 +46,7 @@
 
 .name {
   margin: 0 0 1rem;
-  font-size: clamp(2.25rem, 10vw, 2.75rem);
+  font-size: var(--text-hero);
   font-weight: var(--weight-bold);
   line-height: var(--leading-tight);
   letter-spacing: var(--tracking-tight);
@@ -56,7 +56,7 @@
 
 .promise {
   margin: 0 0 1.75rem;
-  font-size: 1rem;
+  font-size: var(--text-body);
   font-weight: var(--weight-regular);
   line-height: var(--leading-body);
   color: var(--color-text-muted);
@@ -77,9 +77,9 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 0.9rem 1.25rem;
+  padding: var(--btn-pad-y) var(--btn-pad-x);
   border-radius: 999px;
-  font-size: 0.95rem;
+  font-size: var(--btn-font);
   font-weight: var(--weight-medium);
   line-height: 1;
   transition: background-color 0.2s ease, transform 0.2s ease;
@@ -143,7 +143,7 @@
 /* Tablet+ */
 @media (min-width: 640px) {
   .hero {
-    padding: 3rem 1.5rem 5rem;
+    padding: 3rem 1.5rem 4rem;
   }
 
   .scrollCue {
@@ -160,17 +160,14 @@
 
   .concept {
     margin-bottom: 1.1rem;
-    font-size: 0.8rem;
   }
 
   .name {
     margin-bottom: 1.15rem;
-    font-size: clamp(2.75rem, 6vw, 3.75rem);
   }
 
   .promise {
     margin-bottom: 2rem;
-    font-size: 1.05rem;
     max-width: 32rem;
   }
 
@@ -184,7 +181,6 @@
 
   .btn {
     width: auto;
-    padding: 0.85rem 1.4rem;
   }
 
   .btn:hover {
@@ -204,7 +200,7 @@
 @media (min-width: 960px) {
   .hero {
     min-height: calc(100vh - var(--nav-height));
-    padding: 3.5rem 2rem 5.5rem;
+    padding: 3.5rem 2rem 4.5rem;
   }
 
   .scrollCue {
@@ -220,12 +216,7 @@
     max-width: 42rem;
   }
 
-  .name {
-    font-size: clamp(3.25rem, 5vw, 4.25rem);
-  }
-
   .promise {
-    font-size: 1.1rem;
     max-width: 34rem;
   }
 }
