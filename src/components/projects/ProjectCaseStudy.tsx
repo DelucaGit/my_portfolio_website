@@ -2,6 +2,7 @@ import Link from "next/link";
 import { site } from "@/data/site";
 import type { Project } from "@/lib/projects";
 import { getAdjacentProjects } from "@/lib/projects";
+import { asset } from "@/lib/asset";
 import styles from "./ProjectCaseStudy.module.css";
 
 type ProjectCaseStudyProps = {
@@ -22,7 +23,7 @@ export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
 
         <figure className={styles.hero}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={media.hero.src} alt={media.hero.alt} />
+          <img src={asset(media.hero.src)} alt={media.hero.alt} />
         </figure>
 
         <header className={styles.overview}>
@@ -132,7 +133,7 @@ export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
         {media.feature && (
           <figure className={styles.feature}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={media.feature.src} alt={media.feature.alt} />
+            <img src={asset(media.feature.src)} alt={media.feature.alt} />
           </figure>
         )}
 
@@ -156,7 +157,7 @@ export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
                     <div className={styles.phoneNotch} aria-hidden="true" />
                     <div className={styles.phoneScreen}>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={image.src} alt={image.alt} />
+                      <img src={asset(image.src)} alt={image.alt} />
                     </div>
                   </li>
                 ))}
@@ -191,7 +192,7 @@ export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
               </div>
               <div className={styles.fullPageScroll}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={media.fullPage.src} alt={media.fullPage.alt} />
+                <img src={asset(media.fullPage.src)} alt={media.fullPage.alt} />
               </div>
             </div>
           </section>
@@ -217,7 +218,7 @@ export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
 
             <figure className={styles.desktop}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={media.desktop.src} alt={media.desktop.alt} />
+              <img src={asset(media.desktop.src)} alt={media.desktop.alt} />
             </figure>
           </section>
         )}
@@ -230,7 +231,7 @@ export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
                 <span className={styles.adjacentRow}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={prev.image}
+                    src={asset(prev.image)}
                     alt=""
                     className={styles.adjacentThumb}
                   />
@@ -251,7 +252,7 @@ export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
                   <span className={styles.adjacentName}>{next.name}</span>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={next.image}
+                    src={asset(next.image)}
                     alt=""
                     className={styles.adjacentThumb}
                   />

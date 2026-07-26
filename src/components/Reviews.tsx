@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { getAllReviews } from "@/lib/reviews";
+import { asset } from "@/lib/asset";
 import styles from "./Reviews.module.css";
 
 export default function Reviews() {
@@ -41,7 +42,7 @@ export default function Reviews() {
                   <div className={styles.avatarWrap}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      src={activeReview.avatar}
+                      src={asset(activeReview.avatar)}
                       alt={activeReview.author}
                       className={styles.avatar}
                     />
