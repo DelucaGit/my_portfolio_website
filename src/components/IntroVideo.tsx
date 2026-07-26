@@ -1,63 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { site } from "@/data/site";
 import { asset } from "@/lib/asset";
 import styles from "./IntroVideo.module.css";
 
 export default function IntroVideo() {
   const { intro } = site;
-  const stageRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [progress, setProgress] = useState(0);
   const [playing, setPlaying] = useState(false);
-  const [reduceMotion, setReduceMotion] = useState(false);
-
-  useEffect(() => {
-    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReduceMotion(media.matches);
-
-    const onChange = () => setReduceMotion(media.matches);
-    media.addEventListener("change", onChange);
-    return () => media.removeEventListener("change", onChange);
-  }, []);
-
-  useEffect(() => {
-    if (reduceMotion) {
-      setProgress(1);
-      return;
-    }
-
-    const stage = stageRef.current;
-    if (!stage) return;
-
-    let frame = 0;
-
-    const update = () => {
-      frame = 0;
-      const rect = stage.getBoundingClientRect();
-      const travel = Math.max(stage.offsetHeight - window.innerHeight, 1);
-      const raw = (-rect.top) / travel;
-      setProgress(Math.min(Math.max(raw, 0), 1));
-    };
-
-    const onScroll = () => {
-      if (frame) return;
-      frame = window.requestAnimationFrame(update);
-    };
-
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      if (frame) window.cancelAnimationFrame(frame);
-    };
-  }, [reduceMotion]);
-
-  const scale = 0.84 + progress * 0.16;
-  const radius = 1.25 + progress * 1.25; // 1.25rem → 2.5rem
 
   async function togglePlay() {
     const video = videoRef.current;
@@ -92,15 +43,9 @@ export default function IntroVideo() {
           <p className={styles.support}>{intro.description}</p>
         </header>
 
-        <div className={styles.stage} ref={stageRef}>
+        <div className={styles.stage}>
           <div className={styles.sticky}>
-            <div
-              className={styles.frame}
-              style={{
-                transform: `scale(${scale})`,
-                borderRadius: `${radius}rem`,
-              }}
-            >
+            <div className={styles.frame}>
               <div className={styles.glow} aria-hidden="true" />
 
               <video

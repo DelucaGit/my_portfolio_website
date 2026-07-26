@@ -2,13 +2,13 @@
 
 .section {
   background: var(--color-bg);
-  padding: 3.5rem 1.25rem;
+  padding: var(--space-section) 1.25rem;
   overflow-x: hidden;
 }
 
 .inner {
   width: 100%;
-  max-width: 22rem;
+  max-width: var(--content-max-sm);
   margin: 0 auto;
 }
 
@@ -19,7 +19,7 @@
 
 .textCol {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: var(--space-header-gap);
 }
 
 .reviewCol {
@@ -29,7 +29,7 @@
 }
 
 .eyebrow {
-  margin: 0 0 0.65rem;
+  margin: 0 0 0.55rem;
   font-size: var(--text-eyebrow);
   font-weight: var(--weight-semibold);
   letter-spacing: var(--tracking-eyebrow);
@@ -39,7 +39,7 @@
 
 .heading {
   margin: 0;
-  font-size: clamp(1.75rem, 7vw, 2.25rem);
+  font-size: var(--text-heading-sm);
   font-weight: var(--weight-bold);
   line-height: var(--leading-tight);
   letter-spacing: var(--tracking-tight);
@@ -191,19 +191,19 @@
 /* Tablet+ */
 @media (min-width: 640px) {
   .section {
-    padding: 5rem 1.5rem;
+    padding: var(--space-section-md) 1.5rem;
   }
 
   .inner {
-    max-width: 40rem;
+    max-width: var(--content-max-md);
   }
 
   .textCol {
-    margin-bottom: 2.5rem;
+    margin-bottom: var(--space-header-gap-md);
   }
 
   .heading {
-    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-size: var(--text-heading-sm);
   }
 
   .cardGlow {
@@ -227,15 +227,15 @@
 /* Desktop */
 @media (min-width: 960px) {
   .section {
-    padding: 6.5rem 2rem;
+    padding: var(--space-section-lg) 2rem;
   }
 
   .inner {
-    max-width: 56rem;
+    max-width: var(--content-max);
   }
 
   .heading {
-    font-size: var(--text-heading-sm);
+    font-size: var(--text-heading-md);
   }
 
   /* A fixed height (instead of one that follows each review's length)

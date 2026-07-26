@@ -1,67 +1,40 @@
 import Link from "next/link";
-import type { CSSProperties } from "react";
 import type { Project } from "@/lib/projects";
 import { asset } from "@/lib/asset";
 import styles from "./ProjectCard.module.css";
 
 type ProjectCardProps = {
   project: Project;
-  /** Side-by-side layout on desktop (homepage featured list) */
+  /** Kept for call-site compatibility; layout is the same for all cards. */
   featured?: boolean;
 };
 
-export function ProjectCard({ project, featured = false }: ProjectCardProps) {
+export function ProjectCard({ project }: ProjectCardProps) {
   return (
-    <article
-      className={[
-        styles.card,
-        featured ? styles.cardFeatured : "",
-        project.theme.dark ? styles.cardDark : "",
-      ]
-        .filter(Boolean)
-        .join(" ")}
-      style={
-        {
-          "--project-card-bg": project.theme.bg,
-        } as CSSProperties
-      }
-    >
-      <div className={styles.media}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={asset(project.image)}
-          alt={project.imageAlt}
-          className={styles.image}
-        />
-      </div>
+    <article className={styles.card}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={asset(project.image)}
+        alt={project.imageAlt}
+        className={styles.image}
+      />
 
-      <div className={styles.body}>
-        <div className={styles.meta}>
-          <span className={styles.year}>{project.year}</span>
-          <ul className={styles.tags}>
-            {project.tags.map((tag) => (
-              <li key={tag} className={styles.tag}>
-                {tag}
-              </li>
-            ))}
-          </ul>
+      <div className={styles.overlay}>
+        <div className={styles.copy}>
+          <p className={styles.year}>{project.year}</p>
+          <h3 className={styles.name}>{project.name}</h3>
+          <p className={styles.tagline}>{project.tagline}</p>
+          <span className={styles.cta} aria-hidden="true">
+            Läs berättelsen →
+          </span>
         </div>
-
-        <h3 className={styles.name}>{project.name}</h3>
-        <p className={styles.tagline}>{project.tagline}</p>
-
-        <ul className={styles.stack}>
-          {project.stack.map((item) => (
-            <li key={item} className={styles.stackItem}>
-              {item}
-            </li>
-          ))}
-        </ul>
-
-        <Link href={`/projects/${project.slug}`} className={styles.viewLink}>
-          Läs berättelsen <span aria-hidden="true">→</span>
-        </Link>
       </div>
+
+      <Link
+        href={`/projects/${project.slug}`}
+        className={styles.link}
+        aria-label={`${project.name} — läs berättelsen`}
+      />
     </article>
   );
 }
