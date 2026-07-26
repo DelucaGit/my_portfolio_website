@@ -74,7 +74,7 @@ export const projects: Project[] = [
     tags: ["WordPress", "Lokalt", "Leadgen"],
     year: 2025,
     stack: ["WordPress", "Elementor"],
-    image: "/projects/takkoll/hero-viewport.jpg",
+    image: "/projects/takkoll/hero.jpg",
     imageAlt: "TakKoll startsida — professionella taklösningar",
     theme: {
       bg: "var(--project-theme-roof)",
@@ -99,11 +99,11 @@ export const projects: Project[] = [
       industry: "Tak & fastighetsservice",
       media: {
         hero: {
-          src: "/projects/takkoll/hero-viewport.jpg",
+          src: "/projects/takkoll/hero.jpg",
           alt: "TakKoll-hero med takarbetare och tydlig CTA",
         },
         feature: {
-          src: "/projects/takkoll/services-viewport.jpg",
+          src: "/projects/takkoll/services.jpg",
           alt: "TakKolls tjänstekort — målning, omläggning, service och isolering",
         },
         mobile: [
@@ -958,6 +958,81 @@ export const projects: Project[] = [
         title: "Shanasheel — WordPress & Elementor",
         description:
           "Case: Shanasheel Al-Asima — hur jag designade och byggde en tvåspråkig WordPress-sajt kring Akkad Residential City.",
+      },
+    },
+  },
+  {
+    slug: "fcvaxjo",
+    name: "FC Växjö",
+    tagline: "En digital hemmaplan för föreningen sedan 1989.",
+    description:
+      "Webbplats för FC Växjö: nyheter, träningstider, galleri och kontakt — med klubbens svart-guld-identitet i centrum.",
+    siteUrl: "https://fcvaxjo.se",
+    githubUrl: "",
+    tags: ["Webbdesign", "UX/UI", "Förening"],
+    year: 2023,
+    stack: ["One.com", "UX & UI-design"],
+    image: "/projects/fcvaxjo/hero-viewport.png",
+    imageAlt: "FC Växjö startsida — hero med klubbmärke och plan",
+    theme: {
+      bg: "var(--project-theme-dark)",
+      dark: true,
+    },
+    detail: {
+      overview: [
+        "FC Växjö har sedan 1989 samlat ungdomar kring fotboll, gemenskap och integration i Växjö. Föreningen behövde en hemsida som kändes som klubben — inte som en generisk mall.",
+        "Sajten skulle bära klubbmärket, visa nyheter och träningstider, samla bilder från verksamheten och göra det enkelt för föräldrar, partners och sponsorer att ta kontakt.",
+      ],
+      challenge: [
+        "Utan en tydlig digital plats riskerade klubbens historia, schema och gemenskap att stanna i Facebook-inlägg och mun-till-mun — svårt för nya familjer och samarbetspartners att hitta rätt.",
+      ],
+      solution: [
+        "Jag formgav och byggde en webbplats med klubbens svarta och guldiga uttryck: stark hero med emblem, nyheter och träningstider på startsidan, om-sida med historia och utmärkelser, galleri, samt kontakt och sponsorformulär.",
+      ],
+      results: [
+        "En live-sajt på fcvaxjo.se där medlemmar, föräldrar och partners hittar nyheter, tider, bilder och kontakt — med en identitet som matchar föreningen på planen.",
+      ],
+      role: "Design & webbutveckling",
+      client: "FC Växjö",
+      industry: "Fotbollsförening",
+      media: {
+        hero: {
+          src: "/projects/fcvaxjo/hero-viewport.png",
+          alt: "FC Växjö startsida — hero med klubbmärke mot gräsplan",
+        },
+        feature: {
+          src: "/projects/fcvaxjo/gallery-viewport.png",
+          alt: "FC Växjö galleri — foton från lag, matcher och aktiviteter",
+        },
+        mobile: [
+          {
+            src: "/projects/fcvaxjo/mobile-1.png",
+            alt: "FC Växjö mobil startsida — hero med klubbmärke",
+          },
+          {
+            src: "/projects/fcvaxjo/mobile-2.png",
+            alt: "FC Växjö mobil — Om FC Växjö med klubbens historia",
+          },
+          {
+            src: "/projects/fcvaxjo/mobile-3.png",
+            alt: "FC Växjö mobil — kontaktuppgifter och klubbledare",
+          },
+        ],
+        desktop: {
+          src: "/projects/fcvaxjo/about-viewport.png",
+          alt: "Om FC Växjö — klubbmärke, historia och utmärkelser",
+        },
+        desktopCopy: {
+          eyebrow: "Identitet",
+          heading: "Historia och utmärkelser — synliga på riktigt.",
+          support:
+            "Från PARS och ARYO till FC Växjö 2008 — plus stipendier och integrationspris i en tydlig berättelse.",
+        },
+      },
+      seo: {
+        title: "FC Växjö — Webbdesign",
+        description:
+          "Case: FC Växjö — hur en klubbsajt med svart-guld-identitet blev digital hemmaplan för nyheter, träning och gemenskap.",
       },
     },
   },

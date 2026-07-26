@@ -57,7 +57,7 @@
 
 .title {
   margin: 0 0 1.75rem;
-  font-size: clamp(2rem, 8vw, 2.75rem);
+  font-size: var(--text-heading-sm);
   font-weight: var(--weight-bold);
   line-height: var(--leading-tight);
   letter-spacing: var(--tracking-tight);
@@ -513,7 +513,7 @@
   }
 
   .title {
-    font-size: clamp(2.5rem, 4vw, 3.5rem);
+    font-size: var(--text-heading-md);
     margin-bottom: 2.5rem;
   }
 

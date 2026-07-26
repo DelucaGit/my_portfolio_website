@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { site } from "@/data/site";
 import type { Project } from "@/data/projects";
+import type { Service } from "@/data/services";
 
 const siteUrl = new URL(site.url);
 
@@ -80,6 +81,32 @@ export function getProjectMetadata(project: Project): Metadata {
     },
     alternates: {
       canonical: `/projects/${project.slug}`,
+    },
+  };
+}
+
+export function getServiceMetadata(service: Service): Metadata {
+  const title = service.detail.seo.title ?? service.title;
+  const description = service.detail.seo.description;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: `/services/${service.slug}`,
+      type: "article",
+      images: [{ url: service.image, alt: service.imageAlt }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [service.image],
+    },
+    alternates: {
+      canonical: `/services/${service.slug}`,
     },
   };
 }

@@ -7,7 +7,11 @@ export default function Services() {
   const services = getAllServices();
 
   return (
-    <section className={styles.section} aria-labelledby="services-heading">
+    <section
+      id="services"
+      className={styles.section}
+      aria-labelledby="services-heading"
+    >
       <div className={styles.inner}>
         <header className={styles.header}>
           <p className={styles.eyebrow}>Tjänster</p>
@@ -51,8 +55,8 @@ function ServiceCard({ service }: { service: Service }) {
       </ul>
 
       {!service.comingSoon && (
-        <Link href="#contact" className={styles.cta}>
-          Hör av dig <span aria-hidden="true">→</span>
+        <Link href={`/services/${service.slug}`} className={styles.cta}>
+          Läs mer <span aria-hidden="true">→</span>
         </Link>
       )}
     </article>
