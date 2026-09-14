@@ -16,7 +16,7 @@ export default function Projects() {
         <header className={styles.header}>
           <p className={styles.eyebrow}>Projekt</p>
           <h2 id="projects-heading" className={styles.heading}>
-            Ett urval av det jag byggt åt riktiga företag.
+            Projekt som jag har byggt för mig själv och företag
           </h2>
         </header>
 

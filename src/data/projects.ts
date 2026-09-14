@@ -23,6 +23,9 @@ export type ProjectMedia = {
   fullPageCopy?: MediaSectionCopy;
   desktop?: ProjectImage;
   desktopCopy?: MediaSectionCopy;
+  /** Extra screenshots stacked under a short heading */
+  gallery?: ProjectImage[];
+  galleryCopy?: MediaSectionCopy;
 };
 
 export type Project = {
@@ -63,6 +66,96 @@ const ph = {
 } as const;
 
 export const projects: Project[] = [
+  {
+    slug: "andalus-calendar",
+    name: "The Andalus Calendar",
+    tagline: "En kalender där bönetiden redan sitter i vyn — så du inte bokar över salah.",
+    description:
+      "Personlig kalenderapp med gregoriansk och hijri-kalender, bönetider i UI:t och uppgifter i samma vy. Live beta.",
+    siteUrl: "https://andaluscalendar.com/",
+    githubUrl: "",
+    tags: ["React", "Firebase", "Kalender"],
+    year: 2026,
+    stack: ["React", "Firebase", "Hostinger"],
+    image: "/projects/andalus-calendar/hero-viewport.png",
+    imageAlt:
+      "The Andalus Calendar i månadsvy — bönetider till vänster, hijri-datum i rutnätet och uppgifter till höger",
+    theme: {
+      bg: "var(--project-theme-andalus)",
+      dark: false,
+    },
+    detail: {
+      overview: [
+        "Syftet var enkelt: sluta hoppa mellan appar. I stället för att kolla bönetiden någon annanstans skulle den synas där jag redan planerar dagen.",
+      ],
+      challenge: [
+        "Vardagen bodde i en kalender. Salah bodde i en annan app. Utan en gemensam vy var det lätt att planera något som krockade med bönetiden — bara för att de två inte pratade med varandra.",
+      ],
+      solution: [
+        "Jag byggde The Andalus Calendar i React och Firebase: en kalender där bönetider ligger rakt i planeringsvyn, med växling mellan gregoriansk och hijri-kalender och uppgifter i samma yta. Jag använde Google AI Studio under bygget och hostade på Hostinger, med automatisk uppdatering när huvudkoden ändras.",
+      ],
+      results: [
+        "En live beta på andaluscalendar.com (version 2026.1). Jag pausade i början av 2026 när jag fick mitt första barn, och hoppas återvända — men appen går att använda redan nu.",
+      ],
+      role: "Produkt, design & utveckling",
+      client: "Eget projekt",
+      industry: "Kalender / produktivitet",
+      media: {
+        hero: {
+          src: "/projects/andalus-calendar/hero-viewport.png",
+          alt: "Månadsvy med nedräkning till Maghrib, hijri-datum och uppgifter i sidopanelen",
+        },
+        feature: {
+          src: "/projects/andalus-calendar/day-overlay.png",
+          alt: "Dagsvy där Dhuhr, Asr, Maghrib och Isha ritas som linjer i tidsschemat",
+        },
+        mobile: [],
+        desktop: {
+          src: "/projects/andalus-calendar/settings.png",
+          alt: "Inställningar för ljust/mörkt läge, gregoriansk eller hijri-kalender och böneräkningsmetod",
+        },
+        desktopCopy: {
+          eyebrow: "Inställningar",
+          heading: "Hijri, mörkt läge och böneräkning — i samma meny.",
+          support:
+            "Växla kalendertyp, välj böneräkningsmetod och utseende utan att lämna dagen.",
+        },
+        gallery: [
+          {
+            src: "/projects/andalus-calendar/landing-hero.png",
+            alt: "Andalus landningssida — Version 2026.1 now live",
+          },
+          {
+            src: "/projects/andalus-calendar/landing-dual-calendar.png",
+            alt: "Landningssida — dual-calendar med hijri, helgdagar och sol/måne-spårning",
+          },
+          {
+            src: "/projects/andalus-calendar/landing-prayer.png",
+            alt: "Landningssida — bönetider som överlägg i dagsvyn",
+          },
+          {
+            src: "/projects/andalus-calendar/landing-tasks.png",
+            alt: "Landningssida — uppgifter för vardag och andliga vanor i samma yta",
+          },
+          {
+            src: "/projects/andalus-calendar/landing-privacy.png",
+            alt: "Landningssida — integritet: säker molnlagring och ingen dataförsäljning",
+          },
+        ],
+        galleryCopy: {
+          eyebrow: "Landningen",
+          heading: "Så möter besökaren appen innan de loggar in.",
+          support:
+            "Hijri-kalender, bönetider och uppgifter — förklarat redan på startsidan.",
+        },
+      },
+      seo: {
+        title: "The Andalus Calendar — React & Firebase",
+        description:
+          "Case: The Andalus Calendar — en React- och Firebase-kalender där muslimska bönetider sitter i samma UI som dagen.",
+      },
+    },
+  },
   {
     slug: "takkoll",
     name: "TakKoll",
