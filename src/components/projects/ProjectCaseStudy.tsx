@@ -223,6 +223,36 @@ export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
           </section>
         )}
 
+        {media.gallery && media.gallery.length > 0 && (
+          <section
+            className={styles.mediaSection}
+            aria-labelledby="gallery-heading"
+          >
+            <div className={styles.mediaIntro}>
+              <p className={styles.eyebrow}>
+                {media.galleryCopy?.eyebrow ?? "Fler bilder"}
+              </p>
+              <h2 id="gallery-heading" className={styles.mediaHeading}>
+                {media.galleryCopy?.heading ?? "Fler vyer från projektet."}
+              </h2>
+              {media.galleryCopy?.support && (
+                <p className={styles.mediaSupport}>{media.galleryCopy.support}</p>
+              )}
+            </div>
+
+            <ul className={styles.gallery}>
+              {media.gallery.map((image) => (
+                <li key={image.src}>
+                  <figure className={styles.galleryItem}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={asset(image.src)} alt={image.alt} />
+                  </figure>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
         {(prev || next) && (
           <nav className={styles.adjacent} aria-label="Andra projekt">
             {prev ? (
