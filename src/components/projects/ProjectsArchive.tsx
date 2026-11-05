@@ -17,8 +17,7 @@ export function ProjectsArchive() {
           <p className={styles.eyebrow}>Portfolio</p>
           <h1 className={styles.heading}>Alla projekt</h1>
           <p className={styles.support}>
-            Hemsidor, butiker och system — från första samtalet till något som
-            faktiskt hjälper affären.
+            En samling webbprojekt jag har byggt, egna produkter och uppdrag.
           </p>
         </header>
 

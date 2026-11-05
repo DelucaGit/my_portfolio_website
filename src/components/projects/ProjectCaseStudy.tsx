@@ -12,141 +12,177 @@ type ProjectCaseStudyProps = {
 export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
   const { detail } = project;
   const { media } = detail;
-  const { prev, next } = getAdjacentProjects(project.slug);
+  const { next } = getAdjacentProjects(project.slug);
+
+  const metaBits = [
+    detail.client,
+    detail.role,
+    String(project.year),
+  ].filter(Boolean);
 
   return (
     <article className={styles.page}>
       <div className={styles.inner}>
         <p className={styles.back}>
-          <Link href="/#projects">← Tillbaka till projekten</Link>
+          <Link href="/projects">← Tillbaka till projekt</Link>
         </p>
 
-        <figure className={styles.hero}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={asset(media.hero.src)} alt={media.hero.alt} />
-        </figure>
-
-        <header className={styles.overview}>
-          <h1 className={styles.title}>{project.name}</h1>
-
-          <div className={styles.overviewGrid}>
-            <div className={styles.copy}>
-              {detail.challenge && (
-                <section className={styles.block}>
-                  <h2 className={styles.blockHeading}>Utmaningen</h2>
-                  {detail.challenge.map((paragraph) => (
-                    <p key={paragraph}>{paragraph}</p>
-                  ))}
-                </section>
-              )}
-
-              {detail.solution && (
-                <section className={styles.block}>
-                  <h2 className={styles.blockHeading}>Lösningen</h2>
-                  {detail.solution.map((paragraph) => (
-                    <p key={paragraph}>{paragraph}</p>
-                  ))}
-                </section>
-              )}
-
-              {detail.overview.map((paragraph) => (
-                <p key={paragraph} className={styles.overviewText}>
-                  {paragraph}
-                </p>
+        {/* 1. Header */}
+        <header className={styles.header}>
+          <div className={styles.headerMain}>
+            <div className={styles.tags}>
+              {project.stack.map((item) => (
+                <span key={item} className={styles.tagAccent}>
+                  {item}
+                </span>
               ))}
-
-              {detail.results && (
-                <section className={styles.block}>
-                  <h2 className={styles.blockHeading}>Resultatet</h2>
-                  {detail.results.map((paragraph) => (
-                    <p key={paragraph}>{paragraph}</p>
-                  ))}
-                </section>
-              )}
+              {metaBits.map((bit) => (
+                <span key={bit} className={styles.tagMuted}>
+                  {bit}
+                </span>
+              ))}
             </div>
 
-            <aside className={styles.meta} aria-label="Projektdetaljer">
-              <dl className={styles.metaList}>
-                {detail.client && (
-                  <div>
-                    <dt>Kund</dt>
-                    <dd>{detail.client}</dd>
-                  </div>
-                )}
-                {detail.industry && (
-                  <div>
-                    <dt>Bransch</dt>
-                    <dd>{detail.industry}</dd>
-                  </div>
-                )}
-                {detail.role && (
-                  <div>
-                    <dt>Roll</dt>
-                    <dd>{detail.role}</dd>
-                  </div>
-                )}
-                <div>
-                  <dt>År</dt>
-                  <dd>{project.year}</dd>
-                </div>
-                <div>
-                  <dt>Taggar</dt>
-                  <dd>{project.tags.join(", ")}</dd>
-                </div>
-                <div>
-                  <dt>Teknik</dt>
-                  <dd>{project.stack.join(", ")}</dd>
-                </div>
-                {project.siteUrl && (
-                  <div>
-                    <dt>Webbplats</dt>
-                    <dd>
-                      <a
-                        href={project.siteUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Besök live-sajten
-                      </a>
-                    </dd>
-                  </div>
-                )}
-                {project.githubUrl && (
-                  <div>
-                    <dt>Källkod</dt>
-                    <dd>
-                      <a
-                        href={project.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Visa på GitHub
-                      </a>
-                    </dd>
-                  </div>
-                )}
-              </dl>
-            </aside>
+            <h1 className={styles.title}>{project.name}</h1>
+            <p className={styles.lead}>{project.tagline}</p>
+            {detail.overview[0] && (
+              <p className={styles.summary}>{detail.overview[0]}</p>
+            )}
+          </div>
+
+          <div className={styles.headerActions}>
+            {project.siteUrl && (
+              <a
+                href={project.siteUrl}
+                className={`${styles.btn} ${styles.btnPrimary}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Live-sida ↗
+              </a>
+            )}
+            {project.githubUrl && (
+              <a
+                href={project.githubUrl}
+                className={`${styles.btn} ${styles.btnSecondary}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                GitHub
+              </a>
+            )}
           </div>
         </header>
 
-        {media.feature && (
-          <figure className={styles.feature}>
+        {/* 2. Hero image */}
+        <section className={styles.heroBlock}>
+          <div className={styles.heroFrame}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={asset(media.feature.src)} alt={media.feature.alt} />
-          </figure>
+            <img
+              src={asset(media.hero.src)}
+              alt={media.hero.alt}
+              className={styles.heroImage}
+            />
+          </div>
+          <p className={styles.heroCaption}>{media.hero.alt}</p>
+        </section>
+
+        {/* 3. Tech stack */}
+        <section className={styles.stackBar} aria-labelledby="stack-heading">
+          <div>
+            <p className={styles.stackEyebrow}>Teknik</p>
+            <h2 id="stack-heading" className={styles.stackHeading}>
+              Det här använde jag
+            </h2>
+          </div>
+          <ul className={styles.stackPills}>
+            {project.stack.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </section>
+
+        {/* 4. Challenge + Solution */}
+        {(detail.challenge || detail.solution) && (
+          <section
+            className={styles.duoSection}
+            aria-labelledby="duo-heading"
+          >
+            <div className={styles.duoIntro}>
+              <p className={styles.eyebrow}>Problemet och svaret</p>
+              <h2 id="duo-heading" className={styles.sectionHeading}>
+                Utmaning & lösning
+              </h2>
+            </div>
+
+            <div className={styles.duoGrid}>
+              {detail.challenge && (
+                <div className={`${styles.duoCard} ${styles.duoChallenge}`}>
+                  <h3 className={styles.duoTitle}>Utmaningen</h3>
+                  <ul className={styles.duoList}>
+                    {detail.challenge.map((paragraph) => (
+                      <li key={paragraph}>{paragraph}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {detail.solution && (
+                <div className={`${styles.duoCard} ${styles.duoSolution}`}>
+                  <h3 className={styles.duoTitle}>Lösningen</h3>
+                  <ul className={styles.duoList}>
+                    {detail.solution.map((paragraph) => (
+                      <li key={paragraph}>{paragraph}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
+
+        {/* Results */}
+        {detail.results && (
+          <section className={styles.results} aria-labelledby="results-heading">
+            <p className={styles.eyebrow}>Resultat</p>
+            <h2 id="results-heading" className={styles.sectionHeading}>
+              Vad det ledde till
+            </h2>
+            <div className={styles.resultsBody}>
+              {detail.results.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* 5. Feature / media blocks */}
+        {media.feature && (
+          <section className={styles.featureRow}>
+            <figure className={styles.featureMedia}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={asset(media.feature.src)} alt={media.feature.alt} />
+            </figure>
+            <div className={styles.featureCopy}>
+              <p className={styles.eyebrow}>Detalj</p>
+              <h2 className={styles.featureHeading}>En viktig del av UI:t</h2>
+              <p className={styles.featureText}>{media.feature.alt}</p>
+            </div>
+          </section>
         )}
 
         {media.mobile.length > 0 && (
-          <section className={styles.mediaSection} aria-labelledby="mobile-heading">
+          <section
+            className={styles.mediaSection}
+            aria-labelledby="mobile-heading"
+          >
             <div className={styles.mediaIntro}>
               <p className={styles.eyebrow}>Mobil</p>
-              <h2 id="mobile-heading" className={styles.mediaHeading}>
-                Så här ser det ut i fickan.
+              <h2 id="mobile-heading" className={styles.sectionHeading}>
+                Så ser det ut i telefonen
               </h2>
               <p className={styles.mediaSupport}>
-                Riktiga skärmdumpar från mobilläget. Scrolla i sidled för att se
-                fler vyer.
+                Scrolla i sidled för att se fler vyer.
               </p>
             </div>
 
@@ -166,21 +202,43 @@ export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
           </section>
         )}
 
+        {media.desktop && (
+          <section
+            className={`${styles.featureRow} ${styles.featureRowFlip}`}
+          >
+            <div className={styles.featureCopy}>
+              <p className={styles.eyebrow}>
+                {media.desktopCopy?.eyebrow ?? "Desktop"}
+              </p>
+              <h2 className={styles.featureHeading}>
+                {media.desktopCopy?.heading ?? "Desktop-vyn"}
+              </h2>
+              <p className={styles.featureText}>
+                {media.desktopCopy?.support ?? media.desktop.alt}
+              </p>
+            </div>
+            <figure className={styles.featureMedia}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={asset(media.desktop.src)} alt={media.desktop.alt} />
+            </figure>
+          </section>
+        )}
+
         {media.fullPage && (
           <section
             className={styles.mediaSection}
             aria-labelledby="fullpage-heading"
           >
-            <div className={styles.mediaIntro}>
+            <div className={styles.mediaIntroWide}>
               <p className={styles.eyebrow}>
                 {media.fullPageCopy?.eyebrow ?? "Hela sidan"}
               </p>
-              <h2 id="fullpage-heading" className={styles.mediaHeading}>
-                {media.fullPageCopy?.heading ?? "Scrolla igenom hela flödet."}
+              <h2 id="fullpage-heading" className={styles.sectionHeading}>
+                {media.fullPageCopy?.heading ?? "Scrolla igenom hela flödet"}
               </h2>
               <p className={styles.mediaSupport}>
                 {media.fullPageCopy?.support ??
-                  "Dra eller scrolla inne i ramen för att se layouten från topp till botten."}
+                  "Scrolla inne i ramen för att se layouten från topp till botten."}
               </p>
             </div>
 
@@ -198,42 +256,17 @@ export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
           </section>
         )}
 
-        {media.desktop && (
-          <section
-            className={styles.mediaSection}
-            aria-labelledby="desktop-heading"
-          >
-            <div className={styles.mediaIntro}>
-              <p className={styles.eyebrow}>
-                {media.desktopCopy?.eyebrow ?? "Desktop"}
-              </p>
-              <h2 id="desktop-heading" className={styles.mediaHeading}>
-                {media.desktopCopy?.heading ?? "Där det tunga arbetet händer."}
-              </h2>
-              <p className={styles.mediaSupport}>
-                {media.desktopCopy?.support ??
-                  "Tabeller, grafer och kontroller — arbetsytan när fokus behövs."}
-              </p>
-            </div>
-
-            <figure className={styles.desktop}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={asset(media.desktop.src)} alt={media.desktop.alt} />
-            </figure>
-          </section>
-        )}
-
         {media.gallery && media.gallery.length > 0 && (
           <section
             className={styles.mediaSection}
             aria-labelledby="gallery-heading"
           >
-            <div className={styles.mediaIntro}>
+            <div className={styles.mediaIntroWide}>
               <p className={styles.eyebrow}>
                 {media.galleryCopy?.eyebrow ?? "Fler bilder"}
               </p>
-              <h2 id="gallery-heading" className={styles.mediaHeading}>
-                {media.galleryCopy?.heading ?? "Fler vyer från projektet."}
+              <h2 id="gallery-heading" className={styles.sectionHeading}>
+                {media.galleryCopy?.heading ?? "Fler vyer från projektet"}
               </h2>
               {media.galleryCopy?.support && (
                 <p className={styles.mediaSupport}>{media.galleryCopy.support}</p>
@@ -253,59 +286,61 @@ export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
           </section>
         )}
 
-        {(prev || next) && (
-          <nav className={styles.adjacent} aria-label="Andra projekt">
-            {prev ? (
-              <Link href={`/projects/${prev.slug}`} className={styles.adjacentLink}>
-                <span className={styles.adjacentLabel}>Föregående projekt</span>
-                <span className={styles.adjacentRow}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={asset(prev.image)}
-                    alt=""
-                    className={styles.adjacentThumb}
-                  />
-                  <span className={styles.adjacentName}>{prev.name}</span>
-                </span>
-              </Link>
-            ) : (
-              <span />
-            )}
-
-            {next ? (
-              <Link
-                href={`/projects/${next.slug}`}
-                className={`${styles.adjacentLink} ${styles.adjacentNext}`}
-              >
-                <span className={styles.adjacentLabel}>Nästa projekt</span>
-                <span className={styles.adjacentRow}>
-                  <span className={styles.adjacentName}>{next.name}</span>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={asset(next.image)}
-                    alt=""
-                    className={styles.adjacentThumb}
-                  />
-                </span>
-              </Link>
-            ) : (
-              <span />
-            )}
-          </nav>
+        {media.closing && (
+          <section className={styles.featureRow}>
+            <figure className={styles.featureMedia}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={asset(media.closing.src)} alt={media.closing.alt} />
+            </figure>
+            <div className={styles.featureCopy}>
+              <p className={styles.eyebrow}>
+                {media.closingCopy?.eyebrow ?? "Detalj"}
+              </p>
+              <h2 className={styles.featureHeading}>
+                {media.closingCopy?.heading ?? "En viktig del av UI:t"}
+              </h2>
+              <p className={styles.featureText}>
+                {media.closingCopy?.support ?? media.closing.alt}
+              </p>
+            </div>
+          </section>
         )}
+
+        {/* 6. Next project */}
+        <nav className={styles.nextNav} aria-label="Nästa projekt">
+          {next ? (
+            <Link href={`/projects/${next.slug}`} className={styles.nextLink}>
+              <span className={styles.nextLabel}>Nästa projekt</span>
+              <span className={styles.nextName}>
+                {next.name} <span aria-hidden="true">→</span>
+              </span>
+            </Link>
+          ) : (
+            <Link href="/projects" className={styles.nextLink}>
+              <span className={styles.nextLabel}>Portfolio</span>
+              <span className={styles.nextName}>
+                Se alla projekt <span aria-hidden="true">→</span>
+              </span>
+            </Link>
+          )}
+
+          <Link href="/cv" className={styles.nextCv}>
+            Läs CV
+          </Link>
+        </nav>
       </div>
 
       <section className={styles.cta} aria-labelledby="project-cta-heading">
         <div className={styles.ctaInner}>
-          <p className={styles.ctaBadge}>Öppen för nya uppdrag</p>
+          <p className={styles.ctaBadge}>{site.status}</p>
           <h2 id="project-cta-heading" className={styles.ctaHeading}>
-            <span className={styles.ctaLead}>Gillar du det du ser?</span>
-            <span className={styles.ctaBold}>
-              Berätta vad ni behöver, så tittar vi på det tillsammans.
-            </span>
+            Vill du prata mer?
           </h2>
+          <p className={styles.ctaText}>
+            Mejla mig om du har frågor om projektet eller om ett jobb.
+          </p>
           <a href={`mailto:${site.email}`} className={styles.ctaBtn}>
-            Mejla mig
+            {site.email}
           </a>
         </div>
       </section>

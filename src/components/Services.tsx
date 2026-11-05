@@ -19,7 +19,7 @@ export default function Services() {
             Mjukvara som hjälper affären att växa.
           </h2>
           <p className={styles.support}>
-            Börja med det ni behöver mest — resten kan växa fram senare. Alla
+            Börja med det ni behöver mest, resten kan växa fram senare. Alla
             uppdrag prissätts efter behov, och första samtalet är kostnadsfritt.
           </p>
         </header>

@@ -1,0 +1,532 @@
+.page {
+  background: var(--color-bg);
+  color: var(--color-text);
+  min-height: 100svh;
+}
+
+.inner {
+  width: 100%;
+  max-width: 58rem;
+  margin: 0 auto;
+  padding: 1.5rem var(--page-pad) 4rem;
+}
+
+.back {
+  margin: 0 0 1.5rem;
+  font-size: 0.9rem;
+}
+
+.back a {
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+
+.back a:hover {
+  color: var(--color-accent);
+}
+
+.heroCard,
+.job,
+.eduItem,
+.cta {
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 1px 2px rgba(30, 27, 25, 0.03);
+}
+
+.heroCard {
+  display: grid;
+  gap: 1.5rem;
+  padding: 1.75rem 1.35rem;
+  margin-bottom: 2rem;
+}
+
+.heroCopy {
+  min-width: 0;
+}
+
+/* Mobile: portrait first (order: -1) so the face is the first thing you see */
+.portrait {
+  margin: 0;
+  order: -1;
+  justify-self: center;
+  width: min(11rem, 60%);
+  padding: 0.4rem;
+  border-radius: 1.25rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-light);
+}
+
+.portraitImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: contain;
+  object-position: center top;
+  border-radius: 0.95rem;
+  background: var(--color-surface-dim);
+}
+
+.eyebrow {
+  margin: 0 0 0.5rem;
+  font-size: var(--text-eyebrow);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.name {
+  margin: 0 0 0.4rem;
+  font-size: clamp(2rem, 5vw, 2.75rem);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-heading);
+}
+
+.role {
+  margin: 0 0 1rem;
+  font-size: 1.05rem;
+  font-weight: var(--weight-semibold);
+  color: var(--color-heading);
+}
+
+.summary {
+  margin: 0 0 1.5rem;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--color-text-muted);
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.65rem;
+  margin: 0 0 1.5rem;
+}
+
+.facts dt {
+  font-size: var(--text-eyebrow);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+.facts dd {
+  margin: 0.2rem 0 0;
+  font-size: 0.98rem;
+  color: var(--color-heading);
+}
+
+.facts a {
+  display: inline-block;
+  /* A little vertical padding gives the link a bigger tap area on touch screens */
+  padding: 0.25rem 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.facts a:hover {
+  color: var(--color-accent);
+}
+
+.factNote {
+  color: var(--color-text-muted);
+  font-weight: var(--weight-regular);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+/* Mobile: PDF button on its own row, GitHub + LinkedIn share the row below (1 + 2) */
+.heroActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.heroActions > a:first-child {
+  grid-column: 1 / -1;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: var(--btn-pad-y) var(--btn-pad-x);
+  border-radius: var(--radius-full);
+  font-size: var(--btn-font);
+  font-weight: var(--weight-semibold);
+  line-height: 1;
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.btnIcon {
+  flex-shrink: 0;
+  width: 1.05em;
+  height: 1.05em;
+}
+
+.btnPrimary {
+  background: var(--color-btn-primary);
+  color: var(--color-btn-on-primary);
+}
+
+.btnPrimary:hover {
+  background: var(--color-btn-primary-hover);
+  transform: translateY(-1px);
+}
+
+.btnSecondary {
+  background: var(--color-btn-secondary);
+  color: var(--color-heading);
+}
+
+.btnSecondary:hover {
+  background: var(--color-btn-secondary-hover);
+  transform: translateY(-1px);
+}
+
+.btnAccent {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.btnAccent:hover {
+  background: var(--color-accent-strong);
+  transform: translateY(-1px);
+}
+
+.btnDark {
+  background: #111;
+  color: #fff;
+}
+
+.btnDark:hover {
+  background: #000;
+  transform: translateY(-1px);
+}
+
+.btnStack {
+  flex-direction: column;
+  gap: 0.2rem;
+  line-height: 1.15;
+}
+
+.btnNote {
+  font-size: 0.72rem;
+  font-weight: var(--weight-medium);
+  font-style: italic;
+  letter-spacing: 0.01em;
+  opacity: 0.88;
+}
+
+.btnLinkedIn {
+  background: #0a66c2;
+  color: #fff;
+}
+
+.btnLinkedIn:hover {
+  background: #004182;
+  transform: translateY(-1px);
+}
+
+.block {
+  margin-bottom: 2rem;
+}
+
+.blockTitle {
+  margin: 0 0 1rem;
+  font-size: 1.35rem;
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.015em;
+  color: var(--color-heading);
+}
+
+.jobs,
+.simpleList,
+.eduList,
+.langList,
+.bullets,
+.tags {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.jobs {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.job {
+  padding: 1.35rem 1.25rem;
+}
+
+.jobTop {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 0.85rem;
+}
+
+.jobTitle {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: var(--weight-semibold);
+  color: var(--color-heading);
+}
+
+.jobPlace {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+}
+
+.jobPeriod {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: var(--weight-medium);
+  color: var(--color-accent);
+}
+
+.bullets {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-bottom: 1rem;
+}
+
+.bullets li {
+  position: relative;
+  padding-left: 1rem;
+  font-size: 0.98rem;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.bullets li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--color-accent);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.tags li {
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  font-size: 0.8rem;
+  font-weight: var(--weight-semibold);
+  color: var(--color-heading);
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+}
+
+.simpleList,
+.eduList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.eduItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1.15rem 1.2rem;
+}
+
+.eduItem .jobPeriod {
+  margin-top: 0.35rem;
+}
+
+.eduDetails {
+  margin-top: 0.75rem;
+}
+
+.eduSummary {
+  cursor: pointer;
+  list-style: none;
+  font-size: 0.92rem;
+  font-weight: var(--weight-semibold);
+  color: var(--color-accent);
+  user-select: none;
+}
+
+.eduSummary::-webkit-details-marker {
+  display: none;
+}
+
+.eduSummary::before {
+  content: "+ ";
+  font-weight: var(--weight-bold);
+}
+
+.eduDetails[open] .eduSummary::before {
+  content: "– ";
+}
+
+.eduSummary:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+  border-radius: 0.25rem;
+}
+
+.eduLearnings {
+  list-style: none;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.eduLearnings li {
+  position: relative;
+  padding-left: 1rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.eduLearnings li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--color-accent);
+}
+
+.langList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.langList li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--color-border-light);
+  font-size: 0.98rem;
+}
+
+.langList li span:first-child {
+  font-weight: var(--weight-semibold);
+  color: var(--color-heading);
+}
+
+.langList li span:last-child {
+  color: var(--color-text-muted);
+}
+
+.cta {
+  padding: 2rem 1.35rem;
+  text-align: center;
+}
+
+.ctaHeading {
+  margin: 0 0 0.75rem;
+  font-size: var(--text-heading-sm);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-heading);
+}
+
+.ctaText {
+  margin: 0 auto 1.25rem;
+  max-width: 28rem;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--color-text-muted);
+}
+
+.cta .actions {
+  justify-content: center;
+}
+
+@media (min-width: 640px) {
+  .inner {
+    padding: 2rem var(--page-pad-md) 5rem;
+  }
+
+  .heroCard {
+    grid-template-columns: minmax(0, 1fr) 12.5rem;
+    align-items: start;
+    gap: 2rem;
+    padding: 2.25rem;
+  }
+
+  .portrait {
+    order: 0;
+    width: 100%;
+    justify-self: end;
+  }
+
+  .facts {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.85rem;
+  }
+
+  /* Tablet and up: buttons flow in a row like before */
+  .heroActions {
+    display: flex;
+  }
+
+  .heroActions > a:first-child {
+    grid-column: auto;
+  }
+
+  .jobTop {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .split {
+    grid-template-columns: 1.2fr 1fr;
+    gap: 2rem;
+  }
+
+  /* Right column (Kompetens) follows the scroll until the education column ends */
+  .split > .block:last-child {
+    position: sticky;
+    top: calc(var(--nav-height) + 1.5rem);
+    align-self: start;
+  }
+
+  .cta {
+    padding: 2.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btnPrimary:hover,
+  .btnSecondary:hover,
+  .btnAccent:hover,
+  .btnDark:hover,
+  .btnLinkedIn:hover {
+    transform: none;
+  }
+}

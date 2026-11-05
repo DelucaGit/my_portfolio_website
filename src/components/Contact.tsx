@@ -1,7 +1,4 @@
-import Script from "next/script";
 import { site } from "@/data/site";
-import SprinkleField from "@/components/SprinkleField";
-import CalendlyBookButton from "@/components/CalendlyBookButton";
 import styles from "./Contact.module.css";
 
 export default function Contact() {
@@ -11,45 +8,28 @@ export default function Contact() {
       className={styles.section}
       aria-labelledby="contact-heading"
     >
-      <SprinkleField className={styles.bg} />
-
-      <div className={styles.inner}>
-        <p className={styles.badge}>Öppen för nya uppdrag</p>
-
+      <div className={styles.card}>
         <h2 id="contact-heading" className={styles.heading}>
-          <span className={styles.lead}>Kontakt</span>
-          <span className={styles.bold}>
-            Skicka ett mejl till mig eller boka ett digitalt möte
-          </span>
+          Vill du komma i kontakt?
         </h2>
-
-        <p className={styles.bookText}>
-          Det tar bara 30 sekunder att boka tid med mig.
+        <p className={styles.text}>
+          Skicka ett mejl eller ring om du vill prata om jobb, projekt eller
+          bara säga hej.
         </p>
 
         <div className={styles.actions}>
-          <CalendlyBookButton
-            className={`${styles.btn} ${styles.btnPrimary}`}
-          >
-            Boka möte
-          </CalendlyBookButton>
+          <a href={`mailto:${site.email}`} className={styles.btn}>
+            {site.email}
+          </a>
           <a
-            href={`mailto:${site.email}`}
-            className={`${styles.btn} ${styles.btnSecondary}`}
+            href={`tel:${site.phone.replace(/\s/g, "")}`}
+            className={`${styles.btn} ${styles.btnAccent}`}
           >
-            Mejla mig
+            <span>{site.phone}</span>
+            <span className={styles.btnNote}>{site.phoneNote}</span>
           </a>
         </div>
       </div>
-
-      <link
-        href="https://assets.calendly.com/assets/external/widget.css"
-        rel="stylesheet"
-      />
-      <Script
-        src="https://assets.calendly.com/assets/external/widget.js"
-        strategy="lazyOnload"
-      />
     </section>
   );
 }

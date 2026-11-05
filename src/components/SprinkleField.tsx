@@ -96,7 +96,7 @@ function buildSprinkles(): Sprinkle[] {
       const x = cx + Math.cos(a) * ring.rx * rJitter + (rand(i * 7) - 0.5) * 18;
       const y = cy + Math.sin(a) * ring.ry * rJitter + (rand(i * 11) - 0.5) * 14;
 
-      // Keep the middle readable — skip dots that land too close to center.
+      // Keep the middle readable. Skip dots that land too close to center.
       const dx = (x - cx) / 280;
       const dy = (y - cy) / 190;
       if (dx * dx + dy * dy < 1) {

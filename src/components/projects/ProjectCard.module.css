@@ -1,97 +1,87 @@
-/* Full-bleed image card — title on image, more detail on hover/focus */
-
 .card {
   position: relative;
-  display: block;
-  aspect-ratio: 4 / 3;
-  overflow: hidden;
-  background: #141414;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.5rem;
+  border-radius: 1.5rem;
   isolation: isolate;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.card:hover,
+.card:focus-within {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card);
+}
+
+.copy {
+  margin-bottom: 1.25rem;
+}
+
+.name {
+  margin: 0 0 0.55rem;
+  font-size: clamp(1.25rem, 2vw, 1.625rem);
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  color: var(--color-heading);
+  text-wrap: balance;
+  transition: color 0.2s ease;
+}
+
+.card:hover .name,
+.card:focus-within .name {
+  color: var(--color-accent);
+}
+
+.tagline {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--color-text-muted);
+  text-wrap: pretty;
+}
+
+.media {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.72);
 }
 
 .image {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: top center;
-  transition: transform 0.55s ease;
+  object-fit: contain;
+  object-position: center center;
+  transition: transform 0.5s ease;
 }
 
-.overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 1.25rem 1.15rem 1.35rem;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.78) 0%,
-    rgba(0, 0, 0, 0.35) 42%,
-    rgba(0, 0, 0, 0.08) 70%,
-    transparent 100%
-  );
-  pointer-events: none;
-  transition: background 0.35s ease;
-}
-
-.copy {
-  color: #fff;
-  max-width: 28rem;
-}
-
-.year {
-  margin: 0 0 0.35rem;
-  font-size: 0.75rem;
-  font-weight: var(--weight-medium);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.name {
-  margin: 0;
-  font-size: clamp(1.2rem, 2.4vw, 1.65rem);
-  font-weight: var(--weight-semibold);
-  letter-spacing: var(--tracking-tight);
-  line-height: 1.15;
-  color: #fff;
-  text-wrap: balance;
-}
-
-.tagline {
-  margin: 0.55rem 0 0;
-  max-height: 0;
-  overflow: hidden;
-  opacity: 0;
-  font-size: 0.92rem;
-  line-height: 1.45;
-  color: rgba(255, 255, 255, 0.86);
-  transform: translateY(0.4rem);
-  transition:
-    max-height 0.4s ease,
-    opacity 0.3s ease,
-    transform 0.3s ease,
-    margin 0.3s ease;
+.card:hover .image,
+.card:focus-within .image {
+  transform: scale(1.03);
 }
 
 .cta {
   display: inline-flex;
-  margin-top: 0;
-  max-height: 0;
-  overflow: hidden;
-  opacity: 0;
-  font-size: 0.88rem;
-  font-weight: var(--weight-medium);
-  color: #fff;
-  transform: translateY(0.35rem);
-  transition:
-    max-height 0.4s ease,
-    opacity 0.3s ease,
-    transform 0.3s ease,
-    margin 0.3s ease;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: auto;
+  font-size: var(--btn-font);
+  font-weight: var(--weight-semibold);
+  color: var(--color-heading);
+  transition: color 0.2s ease;
+}
+
+.card:hover .cta,
+.card:focus-within .cta {
+  color: var(--color-accent);
 }
 
 .link {
@@ -102,66 +92,58 @@
 }
 
 .link:focus-visible {
-  outline: 2px solid #fff;
-  outline-offset: -4px;
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
 }
 
-.card:hover .image,
-.card:focus-within .image {
-  transform: scale(1.04);
+.cardDark {
+  color: #fff;
 }
 
-.card:hover .overlay,
-.card:focus-within .overlay {
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.88) 0%,
-    rgba(0, 0, 0, 0.55) 48%,
-    rgba(0, 0, 0, 0.2) 100%
-  );
+.cardDark .name,
+.cardDark .cta {
+  color: #fff;
 }
 
-.card:hover .tagline,
-.card:focus-within .tagline {
-  max-height: 5rem;
-  margin-top: 0.65rem;
-  opacity: 1;
-  transform: translateY(0);
+.cardDark .tagline {
+  color: rgba(255, 255, 255, 0.78);
 }
 
-.card:hover .cta,
-.card:focus-within .cta {
-  max-height: 2rem;
-  margin-top: 0.85rem;
-  opacity: 1;
-  transform: translateY(0);
+.cardDark .media {
+  background: rgba(255, 255, 255, 0.08);
 }
 
-@media (hover: none) {
-  /* Touch: keep short info visible without relying on hover */
-  .tagline {
-    max-height: 5rem;
-    margin-top: 0.55rem;
-    opacity: 0.92;
-    transform: none;
+/* Mobile: tighter card so four projects fit in fewer screens */
+@media (max-width: 639px) {
+  .card {
+    padding: 1.15rem;
+    border-radius: 1.25rem;
   }
 
-  .cta {
-    max-height: 2rem;
-    margin-top: 0.75rem;
-    opacity: 0.9;
-    transform: none;
+  .copy {
+    margin-bottom: 0.9rem;
+  }
+
+  .tagline {
+    font-size: 0.95rem;
+  }
+
+  .media {
+    aspect-ratio: 16 / 9;
+    margin-bottom: 0.75rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .card,
   .image,
-  .overlay,
-  .tagline,
+  .name,
   .cta {
     transition: none;
   }
 
+  .card:hover,
+  .card:focus-within,
   .card:hover .image,
   .card:focus-within .image {
     transform: none;

@@ -1,88 +1,132 @@
-/* Mobile-first base — scale up from here */
-
 .hero {
-  position: relative;
-  display: flex;
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 2.75rem var(--page-pad) 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.75rem;
   align-items: center;
-  justify-content: center;
-  /* Fill the viewport below the sticky nav so the scroll cue stays on-screen */
-  min-height: calc(100svh - var(--nav-height));
-  padding: 2.5rem 1.25rem 3.5rem;
-  overflow: hidden;
-  background: var(--color-bg);
-  text-align: center;
 }
 
-.bg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.7;
-  transform-origin: 50% 50%;
-}
-
-.inner {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  max-width: 22rem;
+/* Mobile: everything centered under the avatar */
+.copy {
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
 }
 
-.concept {
-  margin: 0 0 0.85rem;
-  font-size: var(--text-eyebrow);
-  font-weight: var(--weight-semibold);
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
-  color: var(--color-eyebrow);
-  animation: rise 0.65s ease-out both;
+.status {
+  margin: 0 0 1.25rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  font-size: 0.8rem;
+  font-weight: var(--weight-medium);
+  color: var(--color-text-muted);
 }
 
-.name {
+.heading {
   margin: 0 0 1rem;
+  max-width: 22ch;
   font-size: var(--text-hero);
   font-weight: var(--weight-bold);
   line-height: var(--leading-tight);
   letter-spacing: var(--tracking-tight);
   color: var(--color-heading);
-  animation: rise 0.65s ease-out 0.08s both;
+  text-wrap: balance;
+}
+
+.accent {
+  color: var(--color-accent);
+  font-style: italic;
 }
 
 .promise {
   margin: 0 0 1.75rem;
+  max-width: 36rem;
   font-size: var(--text-body);
-  font-weight: var(--weight-regular);
   line-height: var(--leading-body);
   color: var(--color-text-muted);
-  text-wrap: balance;
-  animation: rise 0.65s ease-out 0.16s both;
 }
 
 .actions {
+  width: 100%;
+  max-width: 28rem;
   display: flex;
   flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Mobile: the two main buttons stack full width so they are easy to hit with a thumb */
+.actionRow {
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 0.65rem;
-  width: 100%;
-  animation: rise 0.65s ease-out 0.24s both;
+}
+
+/* Mejl / LinkedIn / GitHub stay side by side, but with a 44px minimum height */
+.actionRow:nth-child(2) {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.actionRow:nth-child(2) .btn {
+  min-height: 2.75rem;
+  padding: 0.7rem 0.5rem;
 }
 
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  padding: var(--btn-pad-y) var(--btn-pad-x);
-  border-radius: 999px;
+  gap: 0.45rem;
+  min-height: 3rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-full);
   font-size: var(--btn-font);
-  font-weight: var(--weight-medium);
+  font-weight: var(--weight-semibold);
   line-height: 1;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  text-align: center;
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.btnIcon {
+  flex-shrink: 0;
+  width: 1.05em;
+  height: 1.05em;
+}
+
+.btnStack {
+  flex-direction: column;
+  gap: 0.2rem;
+  min-height: 3.35rem;
+  padding-top: 0.65rem;
+  padding-bottom: 0.55rem;
+  line-height: 1.15;
+}
+
+.btnMain {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+}
+
+.btnNote {
+  font-size: 0.72rem;
+  font-weight: var(--weight-medium);
+  font-style: italic;
+  letter-spacing: 0.01em;
+  opacity: 0.88;
 }
 
 .btn:focus-visible {
@@ -95,177 +139,146 @@
   color: var(--color-btn-on-primary);
 }
 
+.btnPrimary:hover {
+  background: var(--color-heading);
+  transform: translateY(-1px);
+}
+
+.btnAccent {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.btnAccent:hover {
+  background: var(--color-accent-strong);
+  transform: translateY(-1px);
+}
+
 .btnSecondary {
-  background: var(--color-btn-secondary);
-  color: var(--color-text);
-}
-
-.scrollCue {
-  position: absolute;
-  bottom: 1.25rem;
-  left: 0;
-  right: 0;
-  z-index: 1;
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.35rem;
-  width: fit-content;
-  margin-inline: auto;
-  color: var(--color-text-muted);
-  text-decoration: none;
-  animation: rise 0.65s ease-out 0.4s both;
-}
-
-.scrollCue:hover {
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
   color: var(--color-heading);
 }
 
-.scrollCue:focus-visible {
-  outline: 2px solid var(--color-focus);
-  outline-offset: 4px;
-  border-radius: 0.35rem;
+.btnSecondary:hover {
+  border-color: rgba(179, 5, 100, 0.25);
+  color: var(--color-accent);
+  transform: translateY(-1px);
 }
 
-.scrollCueLabel {
-  font-size: 0.8rem;
-  font-weight: var(--weight-medium);
-  letter-spacing: 0.04em;
+/* Mobile: small square "avatar" first (order: -1), centered above the text */
+.visual {
+  position: relative;
+  order: -1;
+  width: 12rem;
+  justify-self: center;
 }
 
-.scrollCueArrow {
+.visualGlow {
+  position: absolute;
+  inset: -0.5rem;
+  border-radius: 1.75rem;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 176, 202, 0.45),
+    rgba(227, 223, 255, 0.45)
+  );
+  filter: blur(18px);
+  opacity: 0.7;
+}
+
+.visualFrame {
+  position: relative;
+  padding: 1rem;
+  border-radius: 1.5rem;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.visualImage {
   display: block;
-  font-size: 1.15rem;
-  line-height: 1;
-  animation: bounce 1.8s ease-in-out infinite;
+  width: 100%;
+  height: auto;
+  /* A square shows about half the photo height, enough for the whole head */
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  object-position: 50% 45%;
+  border-radius: 1rem;
 }
 
-/* Tablet+ */
-@media (min-width: 640px) {
+@media (min-width: 900px) {
   .hero {
-    padding: 3rem 1.5rem 4rem;
+    padding: 4.5rem var(--page-pad-lg) 0;
   }
 
-  .scrollCue {
-    bottom: 1.75rem;
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
   }
 
-  .bg {
-    opacity: 0.85;
+  /* Desktop: text back to the left edge */
+  .copy {
+    align-items: flex-start;
+    text-align: left;
   }
 
-  .inner {
-    max-width: 36rem;
-  }
-
-  .concept {
-    margin-bottom: 1.1rem;
-  }
-
-  .name {
-    margin-bottom: 1.15rem;
-  }
-
-  .promise {
-    margin-bottom: 2rem;
-    max-width: 32rem;
+  .heading {
+    max-width: none;
   }
 
   .actions {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    width: auto;
-    gap: 0.75rem;
+    max-width: 32rem;
+  }
+
+  /* Desktop: back to two buttons per row and normal button height */
+  .actionRow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .btn {
+    min-height: 2.85rem;
+  }
+
+  .actionRow:nth-child(2) .btn {
+    min-height: 2.85rem;
+    padding: 0.85rem 1rem;
+  }
+
+  /* Desktop: photo back on the right side, full column width, tall crop */
+  .visual {
+    order: 0;
     width: auto;
+    justify-self: stretch;
   }
 
-  .btn:hover {
-    transform: translateY(-1px);
-  }
-
-  .btnPrimary:hover {
-    background: var(--color-btn-primary-hover);
-  }
-
-  .btnSecondary:hover {
-    background: var(--color-btn-secondary-hover);
+  .visualImage {
+    aspect-ratio: auto;
+    height: 32rem;
+    object-position: 38% 58%;
   }
 }
 
-/* Desktop */
-@media (min-width: 960px) {
+/* Small phones: a bit less side padding and a slightly smaller heading,
+   so the text gets wider and takes less height */
+@media (max-width: 639px) {
   .hero {
-    min-height: calc(100vh - var(--nav-height));
-    padding: 3.5rem 2rem 4.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
-  .scrollCue {
-    bottom: 2rem;
-  }
-
-  .bg {
-    opacity: 1;
-    animation: drift 28s ease-in-out infinite alternate;
-  }
-
-  .inner {
-    max-width: 42rem;
-  }
-
-  .promise {
-    max-width: 34rem;
-  }
-}
-
-@keyframes rise {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes drift {
-  from {
-    transform: translateY(0) rotate(0deg);
-  }
-  to {
-    transform: translateY(-10px) rotate(1.5deg);
-  }
-}
-
-@keyframes bounce {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(6px);
+  .heading {
+    font-size: 2rem;
+    /* "balance" makes the lines evenly short; "pretty" fills the width like the paragraph below */
+    text-wrap: pretty;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .concept,
-  .name,
-  .promise,
-  .actions,
-  .scrollCue,
-  .bg {
-    animation: none;
-  }
-
-  .scrollCueArrow {
-    animation: none;
-  }
-
-  .btn:hover {
+  .btnPrimary:hover,
+  .btnAccent:hover,
+  .btnSecondary:hover {
     transform: none;
   }
 }

@@ -61,15 +61,15 @@ export const services: Service[] = [
     slug: "web-development",
     title: "Webbutveckling",
     description:
-      "Hemsidor som berättar vad ni gör — och får besökaren att ta nästa steg.",
+      "Hemsidor som berättar vad ni gör, och får besökaren att ta nästa steg.",
     features: [
-      "Företags- och portfoliosajter",
+      "Företags- och portfoliohemsidor",
       "Priskalkylatorer & formulär",
       "Byggt för fart och tydlighet",
     ],
     icon: "globe",
     image: "/services/web-development-hero.svg",
-    imageAlt: "Illustration av modern webbplatslayout",
+    imageAlt: "Illustration av modern hemsidalayout",
     detail: {
       overview: [
         "En hemsida ska göra mer än att finnas. Den ska förklara erbjudandet, bygga förtroende och göra det enkelt att höra av sig.",
@@ -78,10 +78,10 @@ export const services: Service[] = [
         {
           title: "Tydligt budskap",
           description:
-            "Besökaren förstår vad ni erbjuder på några sekunder — och vad nästa steg är.",
+            "Besökaren förstår vad ni erbjuder på några sekunder, och vad nästa steg är.",
           image: {
             src: "/services/web-development-hero.svg",
-            alt: "Illustration av modern webbplatslayout",
+            alt: "Illustration av modern hemsidalayout",
           },
           tone: "blue",
         },
@@ -98,14 +98,14 @@ export const services: Service[] = [
       ],
       points: [
         {
-          title: "Företags- och portfoliosajter",
+          title: "Företags- och portfoliohemsidor",
           description:
             "Sidor som presenterar er verksamhet på ett sätt som känns trovärdigt och enkelt att skanna.",
         },
         {
           title: "Priskalkylatorer & formulär",
           description:
-            "Verktyg som gör det lättare att lämna en förfrågan — utan onödig friktion.",
+            "Verktyg som gör det lättare att lämna en förfrågan, utan onödig friktion.",
         },
         {
           title: "Fart och tydlighet",
@@ -114,7 +114,7 @@ export const services: Service[] = [
         },
       ],
       idealFor: "Företag som vill synas tydligt online",
-      delivery: "Färdig webbplats + överlämning",
+      delivery: "Färdig hemsida + överlämning",
       timeline: "Oftast 2–6 veckor",
       process: [
         {
@@ -125,7 +125,7 @@ export const services: Service[] = [
         {
           title: "Struktur & design",
           description:
-            "Sidkarta, layout och visuellt uttryck — så att budskapet landar innan vi bygger klart.",
+            "Sidkarta, layout och visuellt uttryck, så att budskapet landar innan vi bygger klart.",
         },
         {
           title: "Bygg & finputs",
@@ -141,17 +141,17 @@ export const services: Service[] = [
       media: {
         hero: {
           src: "/services/web-development-hero.svg",
-          alt: "Illustration av modern webbplatslayout",
+          alt: "Illustration av modern hemsidalayout",
         },
         feature: {
           src: "/services/web-development-feature.svg",
-          alt: "Illustration av tydliga sektioner och call-to-action på en webbplats",
+          alt: "Illustration av tydliga sektioner och call-to-action på en hemsida",
         },
       },
       seo: {
         title: "Webbutveckling",
         description:
-          "Hemsidor för företag som vill synas tydligt — snabb, konverterande webbutveckling med fokus på innehåll, fart och nästa steg.",
+          "Hemsidor för företag som vill synas tydligt, snabb, konverterande webbutveckling med fokus på innehåll, fart och nästa steg.",
       },
     },
   },
@@ -159,7 +159,7 @@ export const services: Service[] = [
     slug: "ai-development",
     title: "AI-utveckling",
     description:
-      "AI där det faktiskt sparar tid — chattar, assistenter och automation.",
+      "AI där det faktiskt sparar tid, chattar, assistenter och automation.",
     features: [
       "Skräddarsydda AI-chattar",
       "Interna assistenter",
@@ -170,13 +170,13 @@ export const services: Service[] = [
     imageAlt: "Illustration av AI-assistent och automation",
     detail: {
       overview: [
-        "AI är mest värdefull när den tar bort repetitivt arbete — inte när den bara är en demo.",
+        "AI är mest värdefull när den tar bort repetitivt arbete, inte när den bara är en demo.",
       ],
       highlights: [
         {
           title: "Anpassad till er kunskap",
           description:
-            "Svaren bygger på hur ni jobbar och vad ni erbjuder — inte på generiska mallar.",
+            "Svaren bygger på hur ni jobbar och vad ni erbjuder, inte på generiska mallar.",
           image: {
             src: "/services/ai-development-hero.svg",
             alt: "Illustration av AI-assistent och automation",
@@ -203,7 +203,7 @@ export const services: Service[] = [
         {
           title: "Interna assistenter",
           description:
-            "Hjälp för support, sälj eller admin — utan att någon behöver jaga information.",
+            "Hjälp för support, sälj eller admin, utan att någon behöver jaga information.",
         },
         {
           title: "Bild- och innehållsverktyg",
@@ -218,7 +218,7 @@ export const services: Service[] = [
         {
           title: "Hitta rätt use case",
           description:
-            "Vi väljer ett flöde där AI ger tydlig nytta — inte där den bara är en kul grej.",
+            "Vi väljer ett flöde där AI ger tydlig nytta, inte där den bara är en kul grej.",
         },
         {
           title: "Kunskap & regler",
@@ -249,7 +249,7 @@ export const services: Service[] = [
       seo: {
         title: "AI-utveckling",
         description:
-          "Skräddarsydd AI för företag — chattar, interna assistenter och automation som sparar tid i vardagen.",
+          "Skräddarsydd AI för företag, chattar, interna assistenter och automation som sparar tid i vardagen.",
       },
     },
   },
@@ -268,7 +268,7 @@ export const services: Service[] = [
     imageAlt: "Illustration av dashboard och interna system",
     detail: {
       overview: [
-        "När kalkylark och mejltrådar bromsar tillväxten behövs något mer anpassat — byggt runt hur ni faktiskt arbetar.",
+        "När kalkylark och mejltrådar bromsar tillväxten behövs något mer anpassat, byggt runt hur ni faktiskt arbetar.",
       ],
       highlights: [
         {
@@ -296,7 +296,7 @@ export const services: Service[] = [
         {
           title: "Dashboards & adminverktyg",
           description:
-            "Översikt och kontroll på ett ställe — så att rätt person ser rätt information.",
+            "Översikt och kontroll på ett ställe, så att rätt person ser rätt information.",
         },
         {
           title: "Interna arbetsflöden",
@@ -355,7 +355,7 @@ export const services: Service[] = [
     slug: "ecommerce-tools",
     title: "E-handelsverktyg",
     description:
-      "Butiker och säljverktyg där köpet känns enkelt — och uppföljningen blir tydlig.",
+      "Butiker och säljverktyg där köpet känns enkelt, och uppföljningen blir tydlig.",
     features: [
       "Produkt- och checkoutflöden",
       "Order- och lagervyer",
@@ -366,13 +366,13 @@ export const services: Service[] = [
     imageAlt: "Illustration av e-handel och checkoutflöde",
     detail: {
       overview: [
-        "En bra e-handel gör det enkelt att hitta, välja och betala — och ger er koll på ordrar efteråt.",
+        "En bra e-handel gör det enkelt att hitta, välja och betala, och ger er koll på ordrar efteråt.",
       ],
       highlights: [
         {
           title: "Enköp som känns enkelt",
           description:
-            "Tydliga produktsidor och en checkout som inte krånglar — så fler kommer i mål.",
+            "Tydliga produktsidor och en checkout som inte krånglar, så fler kommer i mål.",
           image: {
             src: "/services/ecommerce-tools-hero.svg",
             alt: "Illustration av e-handel och checkoutflöde",
@@ -429,7 +429,7 @@ export const services: Service[] = [
         {
           title: "Lansering & uppföljning",
           description:
-            "Ni går live — och vi finjusterar utifrån hur kunderna faktiskt handlar.",
+            "Ni går live, och vi finjusterar utifrån hur kunderna faktiskt handlar.",
         },
       ],
       media: {

@@ -10,7 +10,13 @@
 
 html,
 body {
-  height: 100%;
+  /* min-height (not height) lets the page grow, so <html> stays the scroll container */
+  min-height: 100%;
+}
+
+html {
+  /* Only on <html>: overflow on <body> would turn it into its own scroll box
+     and break position: sticky for the navbar and the CV side column */
   overflow-x: hidden;
 }
 

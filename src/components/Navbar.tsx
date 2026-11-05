@@ -6,9 +6,6 @@ import { useEffect, useId, useState } from "react";
 import { site } from "@/data/site";
 import styles from "./Navbar.module.css";
 
-const links = site.nav.filter((item) => item.name !== "Kontakt");
-const contact = site.nav.find((item) => item.name === "Kontakt");
-
 export default function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -36,6 +33,8 @@ export default function Navbar() {
 
   function isActive(href: string) {
     if (href === "/") return pathname === "/";
+    if (href === "/cv") return pathname === "/cv";
+    if (href.startsWith("/#")) return pathname === "/";
     return pathname === href || pathname.startsWith(`${href}/`);
   }
 
@@ -44,10 +43,11 @@ export default function Navbar() {
       <div className={styles.bar}>
         <Link href="/" className={styles.brand}>
           {site.name}
+          <span className={styles.brandDot} aria-hidden="true" />
         </Link>
 
         <nav className={styles.desktopNav} aria-label="Huvudmeny">
-          {links.map((item) => (
+          {site.nav.map((item) => (
             <Link
               key={item.href}
               href={item.href}
@@ -59,11 +59,9 @@ export default function Navbar() {
         </nav>
 
         <div className={styles.desktopActions}>
-          {contact && (
-            <Link href={contact.href} className={styles.cta}>
-              {contact.name}
-            </Link>
-          )}
+          <Link href="/cv" className={styles.cta}>
+            Läs CV
+          </Link>
         </div>
 
         <button
@@ -116,6 +114,15 @@ export default function Navbar() {
             </li>
           ))}
         </ul>
+
+        <Link
+          href="/cv"
+          className={styles.drawerCta}
+          onClick={() => setOpen(false)}
+          tabIndex={open ? 0 : -1}
+        >
+          Läs CV
+        </Link>
       </nav>
     </header>
   );

@@ -4,7 +4,7 @@ import { getFeaturedProjects } from "@/lib/projects";
 import styles from "./Projects.module.css";
 
 export default function Projects() {
-  const projects = getFeaturedProjects(3);
+  const projects = getFeaturedProjects(4);
 
   return (
     <section
@@ -14,10 +14,12 @@ export default function Projects() {
     >
       <div className={styles.inner}>
         <header className={styles.header}>
-          <p className={styles.eyebrow}>Projekt</p>
           <h2 id="projects-heading" className={styles.heading}>
-            Projekt som jag har byggt för mig själv och företag
+            Projekt
           </h2>
+          <p className={styles.support}>
+            Några saker jag har byggt, egna produkter och uppdrag.
+          </p>
         </header>
 
         <ul className={styles.list}>

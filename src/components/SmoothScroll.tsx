@@ -11,7 +11,7 @@ type SmoothScrollProps = {
 
 /**
  * Lenis takes over scrolling with its own transform-based position, so a
- * Next.js page navigation doesn't reset it the way native scroll would —
+ * Next.js page navigation doesn't reset it the way native scroll would . 
  * the new page can open wherever the old page was scrolled to. This jumps
  * back to the top on every route change.
  */
