@@ -2,6 +2,20 @@
 
 A running log of what we built, what we chose, and why. Written so a later article can tell the story without reconstructing it from git.
 
+## 5 Nov 2026 — Zenith Kampsport case study
+
+**Goal:** Add a portfolio case for a site Marcel maintains but did not originally build.
+
+**What we did**
+- Captured zenithkampsport.se at 1440×900 (hero, schema, om-oss, kontakt, medlemskap) plus schema at 1280×800 for the laptop-layout story
+- New slug `zenith-kampsport`, year 2026, placed first in `projects.ts` so it leads the homepage featured four
+- Stack: Next.js, TypeScript, Tailwind, Vercel; GitHub points at `esam95/usc-nextjs` (existing public repo)
+- Copy is honest: role is "Underhåll och vidareutveckling", not "I built this from scratch". Focus on taking over after the previous developer, schedule work, and smaller laptop screens
+
+**Why honesty matters:** Claiming authorship of someone else's build would be easy to spot from the GitHub history. Maintenance of a live club site is still strong recruiter signal.
+
+**Note:** Nav "Priser" resolves to `/medlemskap`; `/priser` is 404. We screenshot medlemskap for the closing section.
+
 ## 5 Nov 2026 — Mobil UX-pass (390 px)
 
 **Goal:** Make the site comfortable to read and tap on a phone, without touching desktop, colours or copy.

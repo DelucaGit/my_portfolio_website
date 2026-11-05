@@ -70,6 +70,96 @@ const ph = {
 
 export const projects: Project[] = [
   {
+    slug: "zenith-kampsport",
+    name: "Zenith Kampsport",
+    tagline:
+      "Underhåll och förbättring av en Next.js-klubbhemsida. Schema och layout för mindre laptopskärmar.",
+    description:
+      "Jag tog över Zenith Kampsports hemsida när den tidigare utvecklaren inte kunde fortsätta. Jobbar med schema, layout och publicering via GitHub och Vercel.",
+    siteUrl: "https://www.zenithkampsport.se",
+    githubUrl: "https://github.com/esam95/usc-nextjs",
+    tags: ["Next.js", "Underhåll", "Förening"],
+    year: 2026,
+    stack: ["Next.js", "TypeScript", "Tailwind", "Vercel"],
+    image: "/projects/zenith-kampsport/hero-viewport.png",
+    imageAlt: "Zenith Kampsport startsida med hero och knappar för medlemskap",
+    theme: {
+      bg: "var(--project-theme-dark)",
+      dark: true,
+    },
+    detail: {
+      overview: [
+        "Zenith Kampsport är en kampsportsklubb i Järva. Hemsidan fanns redan i Next.js, med schema, medlemskap och kontakt.",
+        "Jag är deras nya utvecklare. Jag underhåller koden, förbättrar det som behövs och publicerar via GitHub till Vercel.",
+      ],
+      challenge: [
+        "Den tidigare utvecklaren kunde inte fortsätta. Klubben behövde någon som kan Next.js och kan ta hand om hemsidan över tid.",
+        "Schemat är det medlemmarna använder mest. Det måste vara lätt att läsa, även på mindre laptopskärmar där layouten tidigare blev trång.",
+      ],
+      solution: [
+        "Jag tog över repot och deployen (GitHub till Vercel) så ändringar går live utan manuell uppladdning.",
+        "Jag har arbetat med schemasidan så träningstiderna är tydligare.",
+        "Jag har anpassat layouten så hemsidan funkar bättre på mindre laptopskärmar, inte bara på stora skärmar och mobil.",
+      ],
+      results: [
+        "Hemsidan ligger live på zenithkampsport.se.",
+        "Klubben har en utvecklare som kan fortsätta förbättra sidan när behov uppstår.",
+        "Schema och layout på mindre skärmar är mer användbara för medlemmar och nyfikna som vill provträna.",
+      ],
+      role: "Underhåll och vidareutveckling",
+      client: "Zenith Kampsport",
+      industry: "Kampsportsklubb",
+      media: {
+        hero: {
+          src: "/projects/zenith-kampsport/hero-viewport.png",
+          alt: "Startsida med hero, logotyp och knappar för medlemskap och klasser",
+        },
+        mobile: [],
+        desktop: {
+          src: "/projects/zenith-kampsport/schema-viewport.png",
+          alt: "Veckoschema med färgade pass för boxning, BJJ och brottning",
+        },
+        desktopCopy: {
+          eyebrow: "Schema",
+          heading: "Träningstiderna syns direkt.",
+          support:
+            "Medlemmar och besökare ska snabbt se när passen går och var lokalen ligger.",
+        },
+        gallery: [
+          {
+            src: "/projects/zenith-kampsport/schema-laptop.png",
+            alt: "Samma schema på en mindre laptopbredd, 1280 pixlar",
+          },
+          {
+            src: "/projects/zenith-kampsport/om-oss-viewport.png",
+            alt: "Om oss-sidan med hero och klubbens berättelse",
+          },
+        ],
+        galleryCopy: {
+          eyebrow: "Layout",
+          heading: "Bättre på mindre laptopskärmar.",
+          support:
+            "Många surfar på 13–14 tum. Sidan ska kännas lugn där också, inte bara på stor skärm.",
+        },
+        closing: {
+          src: "/projects/zenith-kampsport/medlemskap-viewport.png",
+          alt: "Medlemskapssidan med priser och knappar för att bli medlem",
+        },
+        closingCopy: {
+          eyebrow: "Medlemskap",
+          heading: "Priser och nästa steg på samma ställe.",
+          support:
+            "Besökare som vill börja ska hitta medlemsnivåer utan att leta runt på hemsidan.",
+        },
+      },
+      seo: {
+        title: "Zenith Kampsport. Underhåll i Next.js",
+        description:
+          "Case: Zenith Kampsport. Underhåll av en Next.js-klubbhemsida med fokus på schema och layout, publicerad via GitHub och Vercel.",
+      },
+    },
+  },
+  {
     slug: "fcvaxjo-reborn",
     name: "FC Växjö Reborn",
     tagline:
