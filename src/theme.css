@@ -1,120 +1,133 @@
 /**
- * Portfolio design tokens — colours, fonts, and typography.
- * Import this file from globals.css when rebuilding the site.
+ * Warm editorial tokens — from the Stitch design (cream + magenta).
  */
 
 :root {
-  --nav-height: 4.5rem;
-  /* ── Font ── */
-  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --nav-height: 5rem;
 
-  /* ── Core palette ── */
-  --color-bg: #ffffff;
-  --color-text: #000000;
-  --color-text-muted: #3c4043;
-  --color-heading: #0a0a0f;
+  /* ── Font ── */
+  --font-sans: var(--font-jakarta), system-ui, -apple-system, sans-serif;
+
+  /* ── Core palette (Stitch warm editorial) ── */
+  --color-bg: #fff8f5;
+  --color-text: #1e1b19;
+  --color-text-muted: #584048;
+  --color-heading: #1e1b19;
 
   /* ── Surfaces ── */
-  --color-surface: #f7f7f9;
-  --color-surface-hover: #efeff1;
-  --color-surface-input: #f9f9fb;
+  --color-surface: #faf2ee;
+  --color-surface-hover: #f4ece8;
+  --color-surface-raised: #ffffff;
+  --color-surface-input: #ffffff;
+  --color-surface-dim: #e0d8d5;
 
   /* ── Buttons ── */
-  --color-btn-primary: #000000;
-  --color-btn-primary-hover: #1a1a1a;
-  --color-btn-secondary: #f1f3f4;
-  --color-btn-secondary-hover: #e8eaed;
-  --color-btn-on-primary: #ffffff;
+  --color-btn-primary: #1e1b19;
+  --color-btn-primary-hover: #b30564;
+  --color-btn-secondary: #f4ece8;
+  --color-btn-secondary-hover: #eee7e3;
+  --color-btn-on-primary: #fff8f5;
 
   /* ── Accent & interactive ── */
-  --color-accent: #4a90d9;
-  --color-accent-muted: rgba(74, 144, 217, 0.1);
-  --color-focus: #2e64ff;
-  --color-focus-ring: rgba(46, 100, 255, 0.1);
+  --color-accent: #b30564;
+  --color-accent-strong: #d52e7e;
+  --color-accent-muted: rgba(179, 5, 100, 0.1);
+  --color-secondary: #5244d3;
+  --color-tertiary: #00685f;
+  --color-focus: #b30564;
+  --color-focus-ring: rgba(179, 5, 100, 0.15);
   --color-linkedin: #0a66c2;
 
   /* ── Text opacity variants ── */
-  --color-text-subtle: rgba(10, 10, 15, 0.52);
-  --color-text-faint: rgba(10, 10, 15, 0.4);
-  --color-eyebrow: rgba(0, 0, 0, 0.4);
+  --color-text-subtle: rgba(30, 27, 25, 0.55);
+  --color-text-faint: rgba(30, 27, 25, 0.4);
+  --color-eyebrow: #b30564;
 
   /* ── Borders & shadows ── */
-  --color-border: rgba(0, 0, 0, 0.08);
-  --color-border-light: rgba(0, 0, 0, 0.06);
-  --color-border-input: rgba(0, 0, 0, 0.05);
+  --color-border: rgba(30, 27, 25, 0.08);
+  --color-border-light: rgba(30, 27, 25, 0.05);
+  --color-border-input: rgba(30, 27, 25, 0.12);
   --shadow-card:
-    0 12px 32px rgba(0, 0, 0, 0.04),
-    0 2px 4px rgba(0, 0, 0, 0.02);
+    0 16px 36px -12px rgba(28, 25, 23, 0.06),
+    0 4px 12px -4px rgba(28, 25, 23, 0.03);
   --shadow-image:
-    0 1px 2px rgba(0, 0, 0, 0.05),
-    0 20px 50px rgba(0, 0, 0, 0.1);
+    0 1px 2px rgba(28, 25, 23, 0.05),
+    0 20px 50px rgba(28, 25, 23, 0.08);
 
   /* ── Dark surfaces (video, media) ── */
-  --color-video-bg: #0a0a0a;
-  --color-video-inner: #111111;
+  --color-video-bg: #1e1b19;
+  --color-video-inner: #33302d;
 
-  /* ── Section rhythm (homepage) ── */
-  --space-section: 4.75rem;
-  --space-section-md: 5.75rem;
-  --space-section-lg: 6.5rem;
-  --space-header-gap: 2.25rem;
-  --space-header-gap-md: 2.75rem;
-  --space-header-gap-lg: 3rem;
-  --content-max: 68rem;
+  /* ── Section rhythm ── */
+  --space-section: 4.5rem;
+  --space-section-md: 5.5rem;
+  --space-section-lg: 7rem;
+  --space-header-gap: 1.75rem;
+  --space-header-gap-md: 2.25rem;
+  --space-header-gap-lg: 2.75rem;
+  --content-max: 77.5rem;
   --content-max-md: 42rem;
   --content-max-sm: 22rem;
+  --page-pad: 1.25rem;
+  --page-pad-md: 2rem;
+  --page-pad-lg: 3.5rem;
 
-  /*
-   * Fluid type + buttons
-   * clamp(min, preferred, max):
-   * - min  = phone size
-   * - preferred = grows with viewport (vw)
-   * - max  = large-desktop size
-   */
-  --text-eyebrow: clamp(0.7rem, 0.65rem + 0.2vw, 0.8rem);
+  /* ── Type ── */
+  --text-eyebrow: 0.75rem;
   --text-body: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --text-body-sm: 0.875rem;
   --text-quote: clamp(1.05rem, 1rem + 0.25vw, 1.2rem);
-  --text-heading-sm: clamp(1.75rem, 1.15rem + 2.2vw, 2.75rem);
-  --text-heading-md: clamp(2rem, 1.1rem + 2.8vw, 3.25rem);
-  --text-heading-lg: clamp(2.25rem, 0.9rem + 3.8vw, 3.75rem);
-  /* Hero name: compact on phones, up to ~5em on large screens */
-  --text-hero: clamp(2.5rem, 1rem + 7vw, 5em);
+  --text-heading-sm: clamp(1.625rem, 1.3rem + 1.2vw, 2.25rem);
+  --text-heading-md: clamp(1.75rem, 1.2rem + 1.8vw, 2.25rem);
+  --text-heading-lg: clamp(2rem, 1.2rem + 2.4vw, 2.75rem);
+  --text-hero: clamp(2.25rem, 1.2rem + 3.5vw, 3.25rem);
 
-  --btn-font: clamp(0.9rem, 0.84rem + 0.3vw, 1.05rem);
-  --btn-pad-y: clamp(0.85rem, 0.75rem + 0.35vw, 1.1rem);
-  --btn-pad-x: clamp(1.25rem, 1rem + 1.1vw, 1.85rem);
+  --btn-font: 0.9375rem;
+  --btn-pad-y: 0.85rem;
+  --btn-pad-x: 1.5rem;
 
-  /* ── Font weights ── */
   --weight-regular: 400;
   --weight-medium: 500;
   --weight-semibold: 600;
   --weight-bold: 700;
 
-  /* ── Letter spacing ── */
-  --tracking-eyebrow: 0.15em;
-  --tracking-tight: -0.042em;
+  --tracking-eyebrow: 0.08em;
+  --tracking-tight: -0.03em;
 
-  /* ── Line heights ── */
-  --leading-tight: 1.06;
-  --leading-body: 1.6;
+  --leading-tight: 1.2;
+  --leading-body: 1.65;
 
-  /* ── Project showcase themes (one unique tint per project) ── */
-  --project-theme-warm: #f0ebe3;
-  --project-theme-green: #e7efe8;
-  --project-theme-blue: #e8eef8;
-  --project-theme-amber: #f3eee4;
-  --project-theme-dark: #0f0f0f;
-  --project-theme-cool: #e8f0ff;
-  --project-theme-honey: #f4edd8;
-  --project-theme-steel: #e4e9ef;
-  --project-theme-mint: #e6f1ee;
-  --project-theme-roof: #dfe8f4;
-  --project-theme-sand: #f1ebe3;
-  --project-theme-sage: #e8efe4;
-  --project-theme-ember: #f3e6e3;
-  --project-theme-lime: #e8f2e6;
-  --project-theme-peach: #f4ebe4;
-  --project-theme-sky: #e5eef5;
-  --project-theme-forest: #e4efe6;
-  --project-theme-andalus: #e4f3ee;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-full: 9999px;
+
+  /* ── Project pastel cards (Stitch) ── */
+  --project-theme-warm: #fff1eb;
+  --project-theme-green: #ecf7f2;
+  --project-theme-blue: #edf4ff;
+  --project-theme-amber: #fef9ea;
+  --project-theme-dark: #1e1b19;
+  --project-theme-cool: #f5effe;
+  --project-theme-honey: #fef9ea;
+  --project-theme-steel: #edf4ff;
+  --project-theme-mint: #ecf7f2;
+  --project-theme-roof: #edf4ff;
+  --project-theme-sand: #fff1eb;
+  --project-theme-sage: #ecf7f2;
+  --project-theme-ember: #fff1eb;
+  --project-theme-lime: #ecf7f2;
+  --project-theme-peach: #fff1eb;
+  --project-theme-sky: #edf4ff;
+  --project-theme-forest: #ecf7f2;
+  --project-theme-andalus: #ecf7f2;
+  --project-theme-lilac: #f5effe;
+}
+
+/* Mobile: slightly larger body text for easier reading, tighter section spacing */
+@media (max-width: 639px) {
+  :root {
+    --text-body: 1.0625rem;
+    --space-section: 3.75rem;
+  }
 }

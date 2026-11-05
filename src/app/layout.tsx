@@ -1,12 +1,12 @@
-import { Inter } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import SmoothScroll from "@/components/SmoothScroll";
+import Footer from "@/components/Footer";
 import { getDefaultMetadata } from "@/lib/seo";
 
-const inter = Inter({
+const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-jakarta",
   display: "swap",
 });
 
@@ -19,11 +19,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="sv">
-      <body className={inter.variable}>
-        <SmoothScroll>
-          <Navbar />
-          {children}
-        </SmoothScroll>
+      <body className={jakarta.variable}>
+        <Navbar />
+        {children}
+        <Footer />
       </body>
     </html>
   );

@@ -37,7 +37,7 @@ export function getDefaultMetadata(): Metadata {
 export function getProjectsIndexMetadata(): Metadata {
   const title = "Projekt";
   const description =
-    "Alla projekt — case studies om webb, e-handel och system som hjälper företag att växa.";
+    "Alla projekt, webbappar, hemsidor och system som Marcel Deluca har byggt.";
 
   return {
     title,
