@@ -110,6 +110,11 @@ export const site = {
         name: "Cursor",
         label: "Verktyg",
       },
+      {
+        icon: "claude",
+        name: "Claude Code",
+        label: "Verktyg",
+      },
     ],
   },
   /** Full legal name only on the CV page */
