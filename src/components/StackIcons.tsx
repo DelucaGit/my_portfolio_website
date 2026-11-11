@@ -18,6 +18,7 @@ const TITLES: Record<string, string> = {
   git: "Git",
   jira: "Jira",
   cursor: "Cursor",
+  claude: "Claude Code",
   wordpress: "WordPress",
   tailwind: "Tailwind CSS",
   postgresql: "PostgreSQL",
