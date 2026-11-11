@@ -56,7 +56,6 @@
   }
 
   .inner {
-    margin-left: var(--page-pad-lg);
-    padding: 0;
+    padding: 0 var(--page-pad-lg);
   }
 }
