@@ -2,6 +2,20 @@
 
 A running log of what we built, what we chose, and why. Written so a later article can tell the story without reconstructing it from git.
 
+## 13 Nov 2026 — Sabaah Al-Wuruud case study
+
+**Goal:** Show the adhkar app Marcel built for his wife as a portfolio case. First case that is an Android app, not a website.
+
+**What we did**
+- Ran the app on localhost (Vite) at 390×844, 2× pixel density, clock fixed to a morning so the timeline shows a normal day
+- Pressed "I memorized page 1" so Today shows the verse and tafsir card
+- Screenshots of every tab (Today, Adhkar, morning reader, Qur'an, Istikhara, Me) plus Today in dark mode, in `public/projects/sabaah-al-wuruud/`
+- Composed a wide `hero.png` (1600×1000) from three phone screenshots with Pillow, since the hero frame expects a landscape image
+- New slug `sabaah-al-wuruud`, year 2026, first in `projects.ts`. Theme `--project-theme-lilac` to match the app
+- Copy covers the why (her favourite adhkar app filled up with ads), the process (issues first, small PRs, Claude Code, Capacitor, Android Studio SDK, debug APK then signed release APK) and the stack
+
+**Privacy:** His wife's name must not appear. The screenshots were taken with a neutral name set in the app instead of blurring afterwards, the copy says "min fru", and `siteUrl`/`githubUrl` are empty so the case does not link to the app repo.
+
 ## 5 Nov 2026 — Zenith Kampsport case study
 
 **Goal:** Add a portfolio case for a site Marcel maintains but did not originally build.
