@@ -98,6 +98,7 @@ export const projects: Project[] = [
     detail: {
       overview: [
         "Min fru och jag har varit gifta i fem år. Sabaah Al-Wuruud är en Android-app jag byggde till henne: morgon- och kvällsadhkar, bönetider och hennes Koran-memorering på ett ställe.",
+        "Adhkar är korta böner och åminnelser som vi muslimer läser varje morgon och kväll. Med dem ber vi vår Skapare att skydda oss under dagen och natten.",
         "Appen är gjord för en enda användare. Den har hennes favoritfärger, bara de delar hon faktiskt använder och ingenting annat.",
       ],
       challenge: [
