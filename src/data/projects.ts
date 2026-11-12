@@ -77,7 +77,7 @@ export const projects: Project[] = [
     description:
       "Min frus favoritapp för adhkar hade fyllts med reklam. Jag byggde en egen till henne i hennes favoritfärger, med bara det hon använder, och levererade den som en signerad APK.",
     siteUrl: "",
-    githubUrl: "",
+    githubUrl: "https://github.com/DelucaGit/sabaah-al-wuruud",
     tags: ["Android", "Capacitor", "Personligt projekt"],
     year: 2026,
     stack: [
@@ -97,8 +97,7 @@ export const projects: Project[] = [
     },
     detail: {
       overview: [
-        "Min fru och jag har varit gifta i fem år. Sabaah Al-Wuruud är en Android-app jag byggde till henne: morgon- och kvällsadhkar, bönetider och hennes Koran-memorering på ett ställe.",
-        "Adhkar är korta böner och åminnelser som vi muslimer läser varje morgon och kväll. Med dem ber vi vår Skapare att skydda oss under dagen och natten.",
+        "Min fru och jag har varit gifta i fem år. Sabaah Al-Wuruud är en Android-app jag byggde till henne: morgon- och kvällsadhkar, bönetider och hennes Koran-memorering på ett ställe. Adhkar är korta böner och åminnelser som vi muslimer läser varje morgon och kväll. Med dem ber vi vår Skapare att skydda oss under dagen och natten.",
         "Appen är gjord för en enda användare. Den har hennes favoritfärger, bara de delar hon faktiskt använder och ingenting annat.",
       ],
       challenge: [
