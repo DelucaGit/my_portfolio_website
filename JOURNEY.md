@@ -2,6 +2,14 @@
 
 A running log of what we built, what we chose, and why. Written so a later article can tell the story without reconstructing it from git.
 
+## 12 Nov 2026 — Sabaah Al-Wuruud: her reaction as the closing review (#24)
+
+**Goal:** End the case with the one review the app can get.
+
+**What we did**
+- Added the chat screenshot of her reaction as `media.closing`, the existing two-column block (image and text) that renders last in the case
+- Copy: eyebrow "Recension", heading "Den enda recensionen som räknas." No name is visible in the screenshot
+
 ## 12 Nov 2026 — Sabaah Al-Wuruud: adhkar explained, GitHub button (#22)
 
 **Goal:** Make the case readable for non-Muslims and link it to the app repo.
