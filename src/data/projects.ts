@@ -70,6 +70,103 @@ const ph = {
 
 export const projects: Project[] = [
   {
+    slug: "sabaah-al-wuruud",
+    name: "Sabaah Al-Wuruud",
+    tagline:
+      "En minimalistisk adhkar-app för Android som jag byggde till min fru. Utan reklam, utan konto och helt offline.",
+    description:
+      "Min frus favoritapp för adhkar hade fyllts med reklam. Jag byggde en egen till henne i hennes favoritfärger, med bara det hon använder, och levererade den som en signerad APK.",
+    siteUrl: "",
+    githubUrl: "",
+    tags: ["Android", "Capacitor", "Personligt projekt"],
+    year: 2026,
+    stack: [
+      "JavaScript",
+      "Vite",
+      "Capacitor",
+      "Android Studio",
+      "Vitest",
+      "Claude Code",
+    ],
+    image: "/projects/sabaah-al-wuruud/hero.png",
+    imageAlt:
+      "Tre telefoner med adhkar-appen Sabaah Al-Wuruud i lavendel, i ljust och mörkt läge",
+    theme: {
+      bg: "var(--project-theme-lilac)",
+      dark: false,
+    },
+    detail: {
+      overview: [
+        "Min fru och jag har varit gifta i fem år. Sabaah Al-Wuruud är en Android-app jag byggde till henne: morgon- och kvällsadhkar, bönetider och hennes Koran-memorering på ett ställe.",
+        "Appen är gjord för en enda användare. Den har hennes favoritfärger, bara de delar hon faktiskt använder och ingenting annat.",
+      ],
+      challenge: [
+        "Hennes favoritapp för adhkar, Daily Supplications, hade med tiden fyllts med reklam och en massa funktioner hon aldrig använder. Det som skulle vara en lugn stund på morgonen började med att klicka bort annonser.",
+        "Hon behövde inte fler funktioner. Hon behövde färre: sina adhkar, dagens bönetider och ett enkelt sätt att följa sin memorering.",
+        "Appen skulle fungera utan internet och utan konto, och jag ville kunna ge den till henne direkt utan att gå via Google Play.",
+      ],
+      solution: [
+        "Fyra flikar och inget mer: Today, Adhkar, Qur'an och Me. Dagen visas som en tidslinje där morgon-, kvälls- och sovadhkar ligger mellan bönetiderna.",
+        "Lavendel som grundfärg, ljust och mörkt läge och justerbar arabisk textstorlek. Hälsningen på startsidan är personlig.",
+        "När hon markerar en sida som memorerad visar startsidan en vers från sidorna hon kan, tillsammans med Tafsir al-Muyassar.",
+        "Allt ligger i appen: hela Koranen (604 sidor, 6 236 verser), tafsir, typsnitt och bönetider som räknas ut lokalt med biblioteket adhan. Appen gör inga nätverksanrop och samlar ingen data.",
+        "Byggd med vanlig JavaScript i ES-moduler och Vite, utan ramverk. Capacitor packar webbappen som en riktig Android-app med lokala notiser och haptik.",
+        "Arbetet planerades i GitHub Issues innan något byggdes: mål, epics, user stories och tasks. Varje issue blev en liten pull request, runt 60 stycken, skrivna tillsammans med Claude Code.",
+        "Android-projektet byggs med Gradle och Android Studios SDK. Först en debug-APK för att testa på hennes telefon, sedan en release-APK signerad med en egen nyckel som bara finns lokalt och aldrig i repot.",
+      ],
+      results: [
+        "Version 1.0 är byggd, signerad och verifierad med apksigner. APK-filen är 6,4 MB och innehåller allt, inklusive hela Koranen.",
+        "Hon fick appen som en fil i WhatsApp tillsammans med en kort installationsguide i PDF. Ingen butik, inget konto och ingen reklam.",
+        "Logiken för bönetider, påminnelser, memorering och sparad data täcks av 236 automatiska tester.",
+        "Nästa steg är redan inskrivna som issues: en rättning av ett arabiskt tecken i version 1.0.1 och en mushaf-läsare sida för sida i en senare version.",
+      ],
+      role: "Design och utveckling",
+      client: "Min fru",
+      industry: "Personlig Android-app",
+      media: {
+        hero: {
+          src: "/projects/sabaah-al-wuruud/hero.png",
+          alt: "Dagens adhkar, nästa bön och dagens reflektion, i ljust och mörkt läge",
+        },
+        mobile: [
+          {
+            src: "/projects/sabaah-al-wuruud/today.png",
+            alt: "Today: nästa bön, dagens bönetider och dagens reflektion med vers och tafsir",
+          },
+          {
+            src: "/projects/sabaah-al-wuruud/adhkar.png",
+            alt: "Adhkar: dagen som tidslinje med morgon-, kvälls- och sovadhkar mellan bönerna",
+          },
+          {
+            src: "/projects/sabaah-al-wuruud/morning.png",
+            alt: "Läsaren för morgonadhkar, en dhikr i taget med räknare",
+          },
+          {
+            src: "/projects/sabaah-al-wuruud/quran.png",
+            alt: "Qur'an: memorering sida för sida, här med första sidan markerad",
+          },
+          {
+            src: "/projects/sabaah-al-wuruud/istikhara.png",
+            alt: "Istikhara-bönen med markerade ord där man nämner sitt ärende",
+          },
+          {
+            src: "/projects/sabaah-al-wuruud/settings.png",
+            alt: "Me: namn, färg, utseende, arabisk textstorlek och påminnelser",
+          },
+          {
+            src: "/projects/sabaah-al-wuruud/today-dark.png",
+            alt: "Today i mörkt läge",
+          },
+        ],
+      },
+      seo: {
+        title: "Sabaah Al-Wuruud. Adhkar-app för Android",
+        description:
+          "Case: en minimalistisk adhkar-app för Android byggd till min fru. JavaScript, Vite och Capacitor, helt offline och levererad som signerad APK.",
+      },
+    },
+  },
+  {
     slug: "zenith-kampsport",
     name: "Zenith Kampsport",
     tagline:
