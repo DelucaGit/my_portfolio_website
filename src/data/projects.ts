@@ -158,6 +158,16 @@ export const projects: Project[] = [
             alt: "Today i mörkt läge",
           },
         ],
+        closing: {
+          src: "/projects/sabaah-al-wuruud/review.jpg",
+          alt: "Chatt där min fru svarar på skärmbilderna av appen: Du skojar, jag älskar den",
+        },
+        closingCopy: {
+          eyebrow: "Recension",
+          heading: "Den enda recensionen som räknas.",
+          support:
+            "Appen har en enda användare. Så här svarade hon när jag skickade de första skärmbilderna. Något bättre betyg kan den inte få.",
+        },
       },
       seo: {
         title: "Sabaah Al-Wuruud. Adhkar-app för Android",
