@@ -2,6 +2,15 @@
 
 A running log of what we built, what we chose, and why. Written so a later article can tell the story without reconstructing it from git.
 
+## 12 Nov 2026 — Sabaah Al-Wuruud: adhkar explained, GitHub button (#22)
+
+**Goal:** Make the case readable for non-Muslims and link it to the app repo.
+
+**What we did**
+- The first overview paragraph (the only one the case page renders) now explains what adhkar are: short prayers and remembrances Muslims read every morning and evening, asking the Creator for protection during the day and night
+- `githubUrl` now points at `DelucaGit/sabaah-al-wuruud`, so the existing GitHub button in the case header shows. This reverses the earlier choice to keep the case unlinked from the app repo; Marcel asked for the link
+- `AGENTS.md` now says every piece of work starts as a GitHub issue, so the repo keeps a full history
+
 ## 13 Nov 2026 — Sabaah Al-Wuruud case study
 
 **Goal:** Show the adhkar app Marcel built for his wife as a portfolio case. First case that is an Android app, not a website.
