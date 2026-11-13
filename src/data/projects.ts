@@ -782,24 +782,7 @@ export const projects: Project[] = [
           src: "/projects/scooterkoll/hero-viewport.webp",
           alt: "Scooterkoll startsida, hero med offertformulär och 365+ reparerade scootrar",
         },
-        feature: {
-          src: ph.wide,
-          alt: "Platshållare. Scooterkoll bokning och FAQ",
-        },
-        mobile: [
-          {
-            src: ph.phone,
-            alt: "Platshållare. Scooterkoll mobil startsida",
-          },
-          {
-            src: ph.phone,
-            alt: "Platshållare. Scooterkoll mobil FAQ",
-          },
-          {
-            src: ph.phone,
-            alt: "Platshållare. Scooterkoll mobil offert",
-          },
-        ],
+        mobile: [],
         fullPage: {
           src: "/projects/scooterkoll/page-home.webp",
           alt: "Hela Scooterkoll-startsida från topp till botten",
@@ -809,16 +792,6 @@ export const projects: Project[] = [
           heading: "Scrolla igenom hela berättelsen.",
           support:
             "Dra eller scrolla inne i ramen för att se sidan från topp till botten.",
-        },
-        desktop: {
-          src: ph.wide,
-          alt: "Platshållare. Scooterkoll desktop",
-        },
-        desktopCopy: {
-          eyebrow: "Bokning",
-          heading: "Klara steg, från fråga till offert.",
-          support:
-            "Struktur, FAQ och chattliknande formulär som gör det lätt att ta nästa steg.",
         },
       },
       seo: {
