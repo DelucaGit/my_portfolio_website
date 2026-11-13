@@ -203,7 +203,7 @@ export const site = {
   },
   nav: [
     { name: "Hem", href: "/" },
-    { name: "Projekt", href: "/#projects" },
+    { name: "Projekt", href: "/projects" },
     { name: "Om", href: "/#about" },
     { name: "Kontakt", href: "/#contact" },
   ],
