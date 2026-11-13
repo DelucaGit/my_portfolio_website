@@ -2,6 +2,13 @@
 
 A running log of what we built, what we chose, and why. Written so a later article can tell the story without reconstructing it from git.
 
+## 13 Nov 2026 — Sabaah Al-Wuruud: what the name means (#26)
+
+**Goal:** Tell readers who don't know Arabic what the app's name means.
+
+**What we did**
+- The first overview paragraph now says the name is Arabic for "rosornas morgon" (Morning of Roses)
+
 ## 12 Nov 2026 — Sabaah Al-Wuruud: her reaction as the closing review (#24)
 
 **Goal:** End the case with the one review the app can get.
