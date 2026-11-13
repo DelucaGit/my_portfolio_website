@@ -840,24 +840,7 @@ export const projects: Project[] = [
           src: "/projects/halimapearl/hero-viewport.webp",
           alt: "HalimaPearl startsida, hero med Modesty Is Fashion mot sidentyg",
         },
-        feature: {
-          src: ph.wide,
-          alt: "Platshållare. HalimaPearl kollektioner",
-        },
-        mobile: [
-          {
-            src: ph.phone,
-            alt: "Platshållare. HalimaPearl mobil startsida",
-          },
-          {
-            src: ph.phone,
-            alt: "Platshållare. HalimaPearl mobil kollektion",
-          },
-          {
-            src: ph.phone,
-            alt: "Platshållare. HalimaPearl mobil varumärke",
-          },
-        ],
+        mobile: [],
         fullPage: {
           src: "/projects/halimapearl/page-collection.webp",
           alt: "HalimaPearl kimono-kollektion, produktlista från topp till botten",
@@ -867,16 +850,6 @@ export const projects: Project[] = [
           heading: "Bläddra i kollektionen, precis som en kund gör.",
           support:
             "Sök, filtrera och sortera bland kimonos, dra eller scrolla inne i ramen.",
-        },
-        desktop: {
-          src: ph.wide,
-          alt: "Platshållare. HalimaPearl desktop",
-        },
-        desktopCopy: {
-          eyebrow: "Varumärke",
-          heading: "Kollektionerna synliga, på riktigt.",
-          support:
-            "En plattform som visar kläderna, stärker identiteten och öppnar för nya marknader.",
         },
       },
       seo: {
