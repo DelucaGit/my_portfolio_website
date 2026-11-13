@@ -724,24 +724,7 @@ export const projects: Project[] = [
           src: "/projects/brand-sakerhetskoll/hero-viewport.webp",
           alt: "Brand & Säkerhetskoll startsida, hero med brandsläckare och trygghet i hemmet",
         },
-        feature: {
-          src: ph.wide,
-          alt: "Platshållare. Brand & Säkerhetskoll produkter",
-        },
-        mobile: [
-          {
-            src: ph.phone,
-            alt: "Platshållare. Brand & Säkerhetskoll mobil startsida",
-          },
-          {
-            src: ph.phone,
-            alt: "Platshållare. Brand & Säkerhetskoll mobil produkter",
-          },
-          {
-            src: ph.phone,
-            alt: "Platshållare. Brand & Säkerhetskoll mobil offert",
-          },
-        ],
+        mobile: [],
         fullPage: {
           src: "/projects/brand-sakerhetskoll/page-home.webp",
           alt: "Hela Brand & Säkerhetskoll-startsida från topp till botten",
@@ -751,16 +734,6 @@ export const projects: Project[] = [
           heading: "Scrolla igenom hela berättelsen.",
           support:
             "Dra eller scrolla inne i ramen för att se sidan från topp till botten.",
-        },
-        desktop: {
-          src: ph.wide,
-          alt: "Platshållare. Brand & Säkerhetskoll desktop",
-        },
-        desktopCopy: {
-          eyebrow: "Produkter",
-          heading: "Trygghet synlig, inte gömd.",
-          support:
-            "Produktbeskrivningar, säkerhetsinfo och offert på samma tydliga sida.",
         },
       },
       seo: {
