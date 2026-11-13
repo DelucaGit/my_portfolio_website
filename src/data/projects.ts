@@ -62,12 +62,6 @@ export type Project = {
   };
 };
 
-const ph = {
-  wide: "/projects/placeholders/wide.svg",
-  tall: "/projects/placeholders/tall.svg",
-  phone: "/projects/placeholders/phone.svg",
-} as const;
-
 export const projects: Project[] = [
   {
     slug: "sabaah-al-wuruud",
@@ -639,24 +633,7 @@ export const projects: Project[] = [
           src: "/projects/stadkoll/hero-viewport.webp",
           alt: "Städkoll startsida, hero med flyttstädning till fast pris",
         },
-        feature: {
-          src: ph.wide,
-          alt: "Platshållare. Städkoll offert och tjänster",
-        },
-        mobile: [
-          {
-            src: ph.phone,
-            alt: "Platshållare. Städkoll mobil startsida",
-          },
-          {
-            src: ph.phone,
-            alt: "Platshållare. Städkoll mobil offert",
-          },
-          {
-            src: ph.phone,
-            alt: "Platshållare. Städkoll mobil kontakt",
-          },
-        ],
+        mobile: [],
         fullPage: {
           src: "/projects/stadkoll/page-home.webp",
           alt: "Hela Städkoll-startsida från topp till botten",
@@ -666,16 +643,6 @@ export const projects: Project[] = [
           heading: "Scrolla igenom hela berättelsen.",
           support:
             "Dra eller scrolla inne i ramen för att se sidan från topp till botten.",
-        },
-        desktop: {
-          src: ph.wide,
-          alt: "Platshållare. Städkoll desktop",
-        },
-        desktopCopy: {
-          eyebrow: "Offert",
-          heading: "Fast pris, synligt från start.",
-          support:
-            "Offertfunktion, vad som ingår, garanti och RUT i en tydlig struktur.",
         },
       },
       seo: {
