@@ -120,8 +120,6 @@ export const projects: Project[] = [
         "Logiken för bönetider, påminnelser, memorering och sparad data täcks av 236 automatiska tester.",
         "Nästa steg är redan inskrivna som issues: en rättning av ett arabiskt tecken i version 1.0.1 och en mushaf-läsare sida för sida i en senare version.",
       ],
-      role: "Design och utveckling",
-      client: "Min fru",
       industry: "Personlig Android-app",
       media: {
         hero: {
