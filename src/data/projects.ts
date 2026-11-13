@@ -978,24 +978,7 @@ export const projects: Project[] = [
           src: "/projects/ventilationskoll/hero-viewport.webp",
           alt: "Ventilationskoll startsida, hero med pris från 2095 kr och kundomdömen",
         },
-        feature: {
-          src: ph.wide,
-          alt: "Platshållare. Ventilationskoll priser och bokning",
-        },
-        mobile: [
-          {
-            src: ph.phone,
-            alt: "Platshållare. Ventilationskoll mobil startsida",
-          },
-          {
-            src: ph.phone,
-            alt: "Platshållare. Ventilationskoll mobil priser",
-          },
-          {
-            src: ph.phone,
-            alt: "Platshållare. Ventilationskoll mobil bokning",
-          },
-        ],
+        mobile: [],
         fullPage: {
           src: "/projects/ventilationskoll/page-home.webp",
           alt: "Hela Ventilationskoll-startsida från topp till botten",
@@ -1005,16 +988,6 @@ export const projects: Project[] = [
           heading: "Scrolla igenom hela berättelsen.",
           support:
             "Dra eller scrolla inne i ramen för att se sidan från topp till botten.",
-        },
-        desktop: {
-          src: ph.wide,
-          alt: "Platshållare. Ventilationskoll desktop",
-        },
-        desktopCopy: {
-          eyebrow: "Bokning",
-          heading: "Priser nära, bokning ännu närmare.",
-          support:
-            "Tydlig struktur så besökaren hittar information och tar nästa steg utan friktion.",
         },
       },
       seo: {
