@@ -2,6 +2,27 @@
 
 A running log of what we built, what we chose, and why. Written so a later article can tell the story without reconstructing it from git.
 
+## 25 Nov 2026 — Three prototypes for the next design (#47)
+
+**Goal:** Marcel wants a new direction for the portfolio: simple, but with something advanced in it. He likes animation and 3D, and the page must stay light. Three prototypes that look clearly different, so he can pick one.
+
+**What we did**
+- Three standalone pages in `prototypes/`, one HTML file each, no JavaScript libraries and no build step. They sit outside the Next.js app and outside `public/`, so nothing here is deployed to marceldeluca.se
+- `prototypes/index.html` is an overview that links to all three
+- `prototypes/assets/`: WebP copies of the 17 project covers in two sizes (1280 and 640 px wide, cropped to 2:1) and the portrait. About 1 MB in total, against 72 MB in `public/`
+- **Konfetti** (65 KB): the current brand, light and warm. The sprinkles from the old hero are now about 7 000 WebGL particles (2 600 on phones) that form a greeting in Marcel's five languages. The morph runs in the vertex shader, so the CPU only sets a few values per frame
+- **Kontrollrum** (68 KB): dark ink blue, mono readouts, amber for live things. A dotted 3D globe drawn in Canvas 2D shows where the work has landed. Hovering a row in the project log turns the globe to that place
+- **Affisch** (51 KB): white, black and one cobalt blue, Archivo as a variable font. The name runs edge to edge and each letter changes width and weight near the pointer. The eight projects from 2026 sit on a 3D drum built with CSS transforms only
+
+**Decisions**
+- **Same content in all three:** hero, projects, tech, about, contact. No services, reviews or booking, because those left the homepage earlier when the audience became recruiters
+- **Native scrolling.** Lenis was removed on 5 Nov because it felt slow, so no prototype takes over the scroll
+- **Readable without the effect.** All text is in the HTML and visible in the first frame. Each centerpiece pauses when it is off-screen or the tab is hidden, and shows one static frame with `prefers-reduced-motion`, without WebGL and without JavaScript
+- **Only real places on the globe.** Markers exist for the places `projects.ts` states: Växjö, Gävle, Norge, Finland, Irak and Gambia. That covers 8 of 17 projects. The other 9 show a dash
+- **Prototypes, not the final build.** The chosen one gets rebuilt in Next.js in its own issue
+
+**Tested:** Playwright at 1440×900 and 390×844 for all three: no console errors, all images load, no sideways scroll. Frame rate was only measured in headless Chromium, not on a real phone.
+
 ## 25 Nov 2026 — UniClean Partners case study (#43)
 
 **Goal:** Add a case for the new uniclean.nu, the Next.js site that replaces the WordPress site Marcel built earlier.
