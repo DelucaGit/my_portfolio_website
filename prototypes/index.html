@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portfolio Prototyper</title>
+<meta name="robots" content="noindex">
+<style>
+  /* Layout: one quiet column, three wide rows. Each row is a screenshot beside a short brief. */
+  :root {
+    color-scheme: light;
+    --bg: #f3f4f6;
+    --surface: #ffffff;
+    --ink: #14161a;
+    --muted: #565c66;
+    --line: #d9dce1;
+    --link: #1d3fd0;
+    --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font: 1rem/1.6 var(--font);
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 68rem;
+    margin-inline: auto;
+    padding-block: clamp(2.5rem, 6vw, 5rem);
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    display: grid;
+    gap: clamp(2rem, 4vw, 3rem);
+  }
+  header { display: grid; gap: 0.75rem; max-width: 44rem; }
+  .eyebrow {
+    font: 0.75rem/1 var(--mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  h1 {
+    font-size: clamp(1.75rem, 1.2rem + 2.2vw, 2.75rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  header p { color: var(--muted); max-width: 60ch; }
+  ol { list-style: none; display: grid; gap: 1.25rem; }
+  .row {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    color: inherit;
+    text-decoration: none;
+  }
+  .row:hover .go, .row:focus-visible .go { text-decoration: underline; }
+  .row:focus-visible { outline: 3px solid var(--link); outline-offset: 3px; }
+  .shot {
+    display: block;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    object-position: top;
+    border-right: 1px solid var(--line);
+    background: var(--bg);
+  }
+  .brief {
+    min-width: 0;
+    padding: clamp(1.25rem, 3vw, 2rem);
+    display: grid;
+    gap: 0.75rem;
+    align-content: center;
+  }
+  .brief h2 { font-size: 1.5rem; line-height: 1.2; letter-spacing: -0.01em; }
+  .brief p { color: var(--muted); }
+  dl { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0.25rem 1rem; font-size: 0.875rem; }
+  dt { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); padding-top: 0.2em; }
+  .brief .go { color: var(--link); font-weight: 600; }
+  footer { color: var(--muted); font-size: 0.875rem; max-width: 60ch; }
+  @media (max-width: 720px) {
+    .row { grid-template-columns: minmax(0, 1fr); }
+    .shot { border-right: 0; border-bottom: 1px solid var(--line); }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Issue #47 · arbetsmaterial</p>
+    <h1>Tre riktningar för nästa version av portfolion</h1>
+    <p>Samma innehåll i alla tre: hero, projekt, teknik, om mig och kontakt. Varje prototyp är en enda HTML-fil utan JavaScript-bibliotek och har en avancerad detalj. Öppna dem och välj den som känns mest som du.</p>
+  </header>
+
+  <main>
+    <ol>
+      <li>
+        <a class="row" href="konfetti.html">
+          <img class="shot" src="assets/thumb-konfetti.webp" width="1280" height="800" alt="Skärmbild av prototypen Konfetti" decoding="async">
+          <div class="brief">
+            <h2>Konfetti</h2>
+            <p>Ljus och varm, närmast dagens sida. Strösslet från nuvarande hero har blivit levande.</p>
+            <dl>
+              <dt>Detalj</dt><dd>Tusentals partiklar i WebGL som formar en hälsning på dina fem språk.</dd>
+              <dt>Känsla</dt><dd>Mjuk, vänlig, lekfull.</dd>
+            </dl>
+            <p class="go">Öppna Konfetti →</p>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a class="row" href="kontrollrum.html">
+          <img class="shot" src="assets/thumb-kontrollrum.webp" width="1280" height="800" alt="Skärmbild av prototypen Kontrollrum" decoding="async" loading="lazy">
+          <div class="brief">
+            <h2>Kontrollrum</h2>
+            <p>Mörk och teknisk, som en instrumentpanel. Projekten visas som en tät logg.</p>
+            <dl>
+              <dt>Detalj</dt><dd>En 3D-glob som visar var kunderna finns och som följer projektlistan.</dd>
+              <dt>Känsla</dt><dd>Precis, lugn, ingenjörsmässig.</dd>
+            </dl>
+            <p class="go">Öppna Kontrollrum →</p>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a class="row" href="affisch.html">
+          <img class="shot" src="assets/thumb-affisch.webp" width="1280" height="800" alt="Skärmbild av prototypen Affisch" decoding="async" loading="lazy">
+          <div class="brief">
+            <h2>Affisch</h2>
+            <p>Vitt, svart och en blå färg. Typografin gör jobbet, med namnet från kant till kant.</p>
+            <dl>
+              <dt>Detalj</dt><dd>Projektbilderna i ett 3D-galleri i ren CSS och bokstäver som reagerar på muspekaren.</dd>
+              <dt>Känsla</dt><dd>Rak, självsäker, grafisk.</dd>
+            </dl>
+            <p class="go">Öppna Affisch →</p>
+          </div>
+        </a>
+      </li>
+    </ol>
+  </main>
+
+  <footer>
+    <p>Prototyperna ligger utanför Next.js-appen och publiceras inte på marceldeluca.se. Länkarna till CV och projekt går till den riktiga sidan.</p>
+  </footer>
+</div>
+</body>
+</html>
