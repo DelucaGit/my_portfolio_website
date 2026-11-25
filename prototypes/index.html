@@ -81,6 +81,7 @@
   dl { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0.25rem 1rem; font-size: 0.875rem; }
   dt { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); padding-top: 0.2em; }
   .brief .go { color: var(--link); font-weight: 600; }
+  .brief .tag { font: 0.75rem/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); }
   footer { color: var(--muted); font-size: 0.875rem; max-width: 60ch; }
   @media (max-width: 720px) {
     .row { grid-template-columns: minmax(0, 1fr); }
@@ -92,15 +93,30 @@
 <div class="wrap">
   <header>
     <p class="eyebrow">Issue #47 · arbetsmaterial</p>
-    <h1>Tre riktningar för nästa version av portfolion</h1>
-    <p>Samma innehåll i alla tre: hero, projekt, teknik, om mig och kontakt. Varje prototyp är en enda HTML-fil utan JavaScript-bibliotek och har en avancerad detalj. Öppna dem och välj den som känns mest som du.</p>
+    <h1>Riktningar för nästa version av portfolion</h1>
+    <p>Samma innehåll i alla: hero, projekt, teknik, om mig och kontakt. Varje prototyp är en enda HTML-fil utan JavaScript-bibliotek. Överst ligger Festaffisch, som slår ihop de två jag gillade: Konfetti och Affisch.</p>
   </header>
 
   <main>
     <ol>
       <li>
+        <a class="row" href="festaffisch.html">
+          <img class="shot" src="assets/thumb-festaffisch.webp" width="1280" height="800" alt="Skärmbild av prototypen Festaffisch" decoding="async">
+          <div class="brief">
+            <p class="tag">Ny · Konfetti + Affisch</p>
+            <h2>Festaffisch</h2>
+            <p>Affischens stora typografi och 3D-galleri, i Konfettis varma färger.</p>
+            <dl>
+              <dt>Detalj</dt><dd>Hälsningen i partiklar står över namnet, och bokstäverna i namnet reagerar på muspekaren.</dd>
+              <dt>Känsla</dt><dd>Grafisk och självsäker, men varm.</dd>
+            </dl>
+            <p class="go">Öppna Festaffisch →</p>
+          </div>
+        </a>
+      </li>
+      <li>
         <a class="row" href="konfetti.html">
-          <img class="shot" src="assets/thumb-konfetti.webp" width="1280" height="800" alt="Skärmbild av prototypen Konfetti" decoding="async">
+          <img class="shot" src="assets/thumb-konfetti.webp" width="1280" height="800" alt="Skärmbild av prototypen Konfetti" decoding="async" loading="lazy">
           <div class="brief">
             <h2>Konfetti</h2>
             <p>Ljus och varm, närmast dagens sida. Strösslet från nuvarande hero har blivit levande.</p>

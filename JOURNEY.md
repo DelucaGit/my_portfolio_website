@@ -2,6 +2,24 @@
 
 A running log of what we built, what we chose, and why. Written so a later article can tell the story without reconstructing it from git.
 
+## 25 Nov 2026 — Festaffisch: Konfetti and Affisch in one page (#47)
+
+**Goal:** Marcel liked two of the three prototypes, Konfetti and Affisch. A fourth prototype shows what they look like as one design, before anything is built in Next.js.
+
+**What we did**
+- `prototypes/festaffisch.html` (74 KB, one file, no JavaScript libraries). Kontrollrum is not taken further
+- **From Affisch:** the 12-column poster grid with thick rules, Archivo as the only typeface, the name edge to edge with letters that change width and weight near the pointer, the 3D drum of the eight projects from 2026, the index with a cover that follows the cursor, and the tech band
+- **From Konfetti:** the cream paper, warm ink and magenta instead of white, black and cobalt, and the WebGL confetti that spells the greeting in five languages. The greeting sits above the name, so the top of the page reads "Hej / Marcel Deluca"
+- The ten confetti colours return in small places: the backs of the cards on the drum, the marks between the words in the tech band, and a yellow block behind the portrait, which is in colour again
+
+**Decisions**
+- **Affisch is the skeleton, Konfetti is the colour and the life.** Two layouts cannot be averaged, but a layout and a palette can be combined. Rounded pastel cards next to hard rules looked like two sites
+- **The language buttons became a poster list** (SV, EN, ES, AR, FR) in the label column, with the full names from 1200 px. On phones they are a row of six square buttons
+- **The name only reacts when the pointer is near it.** Both effects live in the hero, and without this the name went thin whenever the pointer played with the confetti
+- **Long greetings use the condensed cut.** "Bonjour" was too soft on phones in Konfetti because it had to be drawn small. Set in condensed letters it can be about 28 % taller in the same width
+
+**Tested:** Playwright at 390, 768, 1024, 1440 and 1920 px wide: no console errors, all images load, no sideways scroll. Reduced motion shows a still greeting and hides the pause button. Frame rate was only measured in headless Chromium (software WebGL), not on a real phone.
+
 ## 25 Nov 2026 — Three prototypes for the next design (#47)
 
 **Goal:** Marcel wants a new direction for the portfolio: simple, but with something advanced in it. He likes animation and 3D, and the page must stay light. Three prototypes that look clearly different, so he can pick one.
