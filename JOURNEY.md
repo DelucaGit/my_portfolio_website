@@ -2,6 +2,27 @@
 
 A running log of what we built, what we chose, and why. Written so a later article can tell the story without reconstructing it from git.
 
+## 25 Nov 2026 — Tyngdlös: between Cursor's site and Antigravity's (#48)
+
+**Goal:** After Festaffisch, Marcel wanted to try something new. He likes the websites of Cursor and Google Antigravity and asked for something in between.
+
+**What we did**
+- `prototypes/tyngdlos.html` (62 KB, one file, no JavaScript libraries), with a light and a dark theme
+- **From Cursor:** warm paper, small calm type, app windows that sit on a painted landscape, grey cards with text on one side and a window on the other, a row of small dated cards, and a footer with a theme switch
+- **From Antigravity:** a big centred headline inside a ring of coloured dashes that follows the pointer, a statement that fills in word by word as it scrolls, a dark rounded panel where the ring comes back, and the name as a giant clipped wordmark in the footer
+- **The project window** holds all 17 projects. A list on the left, the case in the middle, and an "agent" column that replays each choice as a short log. Its buttons do real things: "Något i Next.js" jumps to the next project built in Next.js
+- **The paintings are drawn in code.** Each landscape is about 6,400 short brush strokes from a seeded random generator, painted once on a small canvas when it comes near the screen. No image files
+- **The ring** is about 700 dashes in WebGL (300 on phones). Every position is worked out in the vertex shader, so JavaScript only moves two points per frame
+
+**Decisions**
+- **Look at the sites before building.** Both hosts were blocked from the cloud container. The first plan was to work from memory, and Marcel stopped that. A new environment for this repository now allows `cursor.com` and `antigravity.google`, and the design is based on screenshots of both
+- **Borrow the ideas, not the assets.** No logos, texts or images from either site. The paintings and the ring are our own code, and the ring's colours run blue, violet, red and amber
+- **Two corner sizes on purpose.** Cards and windows have small corners like Cursor. The two stages (the painting under the hero, the dark contact panel) have big corners like Antigravity
+- **One typeface plus a mono.** Google Sans Flex for everything and Geist Mono for file names and labels
+- **The Java window is an example.** The card about backend and cloud shows a Spring Boot controller written for this page. It is labelled "exempel" and should be swapped for real code from the Reddit clone
+
+**Tested:** Playwright at 390, 768, 1024, 1440 and 1920 px wide: no console errors, all images load, no sideways scroll. The project list, arrow keys, the agent buttons, the theme switch and the copy button work. Reduced motion shows a still ring and full-colour text. About 61 fps in headless Chromium (software WebGL), not measured on a real phone.
+
 ## 25 Nov 2026 — Festaffisch: Konfetti and Affisch in one page (#47)
 
 **Goal:** Marcel liked two of the three prototypes, Konfetti and Affisch. A fourth prototype shows what they look like as one design, before anything is built in Next.js.
