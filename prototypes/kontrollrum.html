@@ -174,6 +174,7 @@ h1 em { font-style: normal; color: var(--ice); }
   aspect-ratio: 1; touch-action: pan-y; cursor: grab; -webkit-user-select: none; user-select: none;
 }
 .globe.is-drag { cursor: grabbing; }
+.globe:focus-visible { outline-offset: -2px; }
 .globe canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 /* static disc: what you see before the first frame, without JS, or without canvas */
 .globe::before {
@@ -189,18 +190,23 @@ h1 em { font-style: normal; color: var(--ice); }
 .readout dd.hot { color: var(--amber); }
 .readout a { text-decoration-color: var(--line-2); text-underline-offset: 3px; }
 .readout a:hover { color: var(--ice); }
-.places { display: flex; flex-wrap: wrap; border-top: 1px solid var(--line); }
+.places { display: none; flex-wrap: wrap; border-top: 1px solid var(--line); }
+.js .places { display: flex; }
+.js-only { display: none; }
+.js .js-only { display: block; }
+.nojs-places { position: absolute; inset: 0; display: grid; place-content: center; gap: 0.35rem; text-align: center; font-family: var(--mono); font-size: var(--fs-sm); color: var(--muted); }
+.nojs-places b { color: var(--amber); font-weight: 500; }
 .places button {
   flex: 1 1 auto; min-height: 44px; padding: 0 0.8rem;
   font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.03em; color: var(--muted);
   border-right: 1px solid var(--line); margin-bottom: -1px; border-bottom: 1px solid var(--line);
 }
 .places button:hover { color: var(--text); background: var(--ink-3); }
-.places button[aria-pressed="true"] { color: var(--amber); background: var(--amber-soft); }
 .places button.is-on { color: var(--text); }
+.places button[aria-pressed="true"] { color: var(--amber); background: var(--amber-soft); box-shadow: inset 0 -2px 0 var(--amber); }
 .hint { padding: 0.6rem 0.9rem; font-family: var(--mono); font-size: var(--fs-label); color: var(--dim); letter-spacing: 0.03em; }
 @media (max-width: 999px) { .globe { max-width: 21rem; } }
-@media (max-width: 599px) { .places { display: grid; grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 599px) { .js .places { display: grid; grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 520px) {
   .readout { grid-template-columns: 1fr 1fr; }
   .readout > div:last-child { grid-column: 1 / -1; border-left: 0; border-top: 1px solid var(--line); }
@@ -269,7 +275,10 @@ h2 { font-size: var(--fs-h2); font-weight: 600; line-height: 1.15; letter-spacin
 
 /* tech matrix */
 .matrix { display: grid; border-top: 1px solid var(--line-2); }
-@media (min-width: 800px) { .matrix { grid-template-columns: 1fr 1fr; column-gap: 2.5rem; } }
+@media (min-width: 800px) {
+  .matrix { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(5, auto); grid-auto-flow: column; column-gap: 2.5rem; }
+  .matrix .wide { grid-row: 6; }
+}
 .matrix > div { display: grid; grid-template-columns: 8.5rem minmax(0, 1fr); gap: 1rem; align-items: baseline; padding: 0.8rem 0.25rem; border-bottom: 1px solid var(--line); }
 .matrix dd { display: flex; flex-wrap: wrap; gap: 0.3rem 1.4rem; font-weight: 500; }
 .matrix .wide { grid-column: 1 / -1; }
@@ -376,6 +385,7 @@ footer { padding-block: 1.75rem 2.5rem; }
         <div class="scope-head label"><span>Karta</span><span>Var jobben har landat</span></div>
         <div class="globe" data-globe tabindex="0" role="group" aria-label="Glob som visar var projekten finns. Rotera med piltangenterna. Platserna finns också som knappar under globen.">
           <canvas aria-hidden="true"></canvas>
+          <noscript><p class="nojs-places"><b>Växjö</b><span>Gävle</span><span>Norge · Finland</span><span>Irak</span><span>Gambia</span></p></noscript>
         </div>
         <dl class="readout">
           <div><dt>Plats</dt><dd data-ro="name" class="hot">Växjö</dd></div>
@@ -390,7 +400,7 @@ footer { padding-block: 1.75rem 2.5rem; }
           <button type="button" data-place="irak" aria-pressed="false">Irak</button>
           <button type="button" data-place="gambia" aria-pressed="false">Gambia</button>
         </div>
-        <p class="hint">Dra för att rotera. Välj en plats för att se projekten där.</p>
+        <p class="hint js-only">Dra för att rotera. Välj en plats för att se projekten där.</p>
       </div>
     </div>
   </section>
@@ -473,12 +483,12 @@ footer { padding-block: 1.75rem 2.5rem; }
       </header>
       <dl class="matrix">
         <div><dt class="label">Frontend</dt><dd><span>React / Next.js</span><span>Tailwind CSS</span></dd></div>
-        <div><dt class="label">Databas</dt><dd><span>PostgreSQL</span></dd></div>
         <div><dt class="label">Grunder</dt><dd><span>HTML &amp; CSS</span></dd></div>
-        <div><dt class="label">Data &amp; hosting</dt><dd><span>Firebase</span></dd></div>
         <div><dt class="label">Backend</dt><dd><span>Java</span><span>REST API</span><span>PHP</span></dd></div>
-        <div><dt class="label">DevOps</dt><dd><span>Docker</span></dd></div>
         <div><dt class="label">CMS</dt><dd><span>WordPress / Elementor</span></dd></div>
+        <div><dt class="label">Databas</dt><dd><span>PostgreSQL</span></dd></div>
+        <div><dt class="label">Data &amp; hosting</dt><dd><span>Firebase</span></dd></div>
+        <div><dt class="label">DevOps</dt><dd><span>Docker</span></dd></div>
         <div><dt class="label">Cloud</dt><dd><span>AWS</span><span>Azure</span></dd></div>
         <div><dt class="label">Samarbete</dt><dd><span>Git</span><span>Jira</span></dd></div>
         <div><dt class="label">Verktyg</dt><dd><span>Cursor</span><span>Claude Code</span></dd></div>
@@ -806,7 +816,7 @@ footer { padding-block: 1.75rem 2.5rem; }
 
     /* markers */
     v.hits.length = 0;
-    var labels = [];
+    var labels = [], home = null;
     for (i = 0; i < PLACES.length; i++) {
       p = PLACES[i]; x = p.v[0]; y = p.v[1]; z = p.v[2];
       X = x * cl - z * sl; Z1 = x * sl + z * cl; Z = y * sp + Z1 * cp;
@@ -823,7 +833,7 @@ footer { padding-block: 1.75rem 2.5rem; }
           ctx.strokeStyle = 'rgba(' + AMB + ',0.5)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(px, py, 9 * k, 0, TAU); ctx.stroke();
         }
         ctx.fillStyle = 'rgba(' + AMB + ',1)'; ctx.beginPath(); ctx.arc(px, py, 3.4 * k, 0, TAU); ctx.fill();
-        labels.push({ t: p.name, x: px, y: py, hot: true, left: anyAct && !on });
+        home = { t: p.name, x: px, y: py, home: true, solo: !anyAct || on };
       } else {
         var col = on ? AMB : ICE, rr = (on ? 6 : 4.2) * k;
         ctx.fillStyle = 'rgba(' + INK + ',0.9)'; ctx.beginPath(); ctx.arc(px, py, rr, 0, TAU); ctx.fill();
@@ -834,17 +844,28 @@ footer { padding-block: 1.75rem 2.5rem; }
           ctx.moveTo(px - rr - 5, py); ctx.lineTo(px - rr - 1.5, py); ctx.moveTo(px + rr + 1.5, py); ctx.lineTo(px + rr + 5, py);
           ctx.moveTo(px, py - rr - 5); ctx.lineTo(px, py - rr - 1.5); ctx.moveTo(px, py + rr + 1.5); ctx.lineTo(px, py + rr + 5);
           ctx.stroke();
-          labels.push({ t: p.name, x: px, y: py, hot: true, left: false });
+          labels.push({ t: p.name, x: px, y: py });
         }
       }
     }
     /* labels: home always, active places too */
+    if (home) labels.push(home);
     var fs = v.mini ? 10 : 11;
     ctx.font = '500 ' + fs + 'px "JetBrains Mono", ui-monospace, Menlo, monospace'; ctx.textBaseline = 'middle';
+    var placed = [];
     for (i = 0; i < labels.length; i++) {
-      var L = labels[i], txt = L.t.toUpperCase(), tw = ctx.measureText(txt).width + 12, th = fs + 8;
-      var lx = L.left ? L.x - 12 - tw : L.x + 12, ly = L.y - th / 2 - (L.left ? 0 : 12);
-      lx = clamp(lx, 2, S - tw - 2); ly = clamp(ly, 2, S - th - 2);
+      var L = labels[i], txt = L.t.toUpperCase(), tw = ctx.measureText(txt).width + 12, th = fs + 8, lx = 0, ly = 0;
+      /* try a few positions around the marker and take the first that is free */
+      var sd = home && !L.home && L.x < home.x ? -1 : 1;
+      var cand = L.home ? (L.solo ? [[1, -1]] : [[-1, 1], [1, 1], [-1, 0], [1, 0], [-1, -1]]) : [[sd, -1], [sd, 1], [sd, 0], [-sd, -1], [-sd, 1]];
+      for (j = 0; j < cand.length; j++) {
+        lx = clamp(cand[j][0] > 0 ? L.x + 11 : L.x - 11 - tw, 2, S - tw - 2);
+        ly = clamp(L.y - th / 2 + cand[j][1] * (th / 2 + 5), 2, S - th - 2);
+        var free = true;
+        for (var q = 0; q < placed.length; q++) { var o = placed[q]; if (lx < o[0] + o[2] + 3 && lx + tw + 3 > o[0] && ly < o[1] + o[3] + 3 && ly + th + 3 > o[1]) { free = false; break; } }
+        if (free) break;
+      }
+      placed.push([lx, ly, tw, th]);
       ctx.fillStyle = 'rgba(' + INK + ',0.9)'; ctx.fillRect(lx, ly, tw, th);
       ctx.strokeStyle = 'rgba(' + AMB + ',0.55)'; ctx.lineWidth = 1; ctx.strokeRect(lx + 0.5, ly + 0.5, tw - 1, th - 1);
       ctx.fillStyle = 'rgba(' + AMB + ',1)'; ctx.fillText(txt, lx + 6, ly + th / 2 + 0.5);

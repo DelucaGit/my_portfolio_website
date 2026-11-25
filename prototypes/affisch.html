@@ -19,6 +19,7 @@
   --grey: #5c5f6b;
   --on-blue: #ffffff;
   --font: "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-cond: "Archivo", "Archivo Fallback", "Arial Narrow", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --pad-l: max(16px, env(safe-area-inset-left, 0px));
   --pad-r: max(16px, env(safe-area-inset-right, 0px));
   --gap: 1rem;
@@ -31,6 +32,13 @@
     --pad-r: max(32px, env(safe-area-inset-right, 0px));
     --gap: 1.5rem;
   }
+}
+
+/* Until Archivo arrives, a shrunken local bold stands in for the condensed display cuts, so big lines keep their measure. */
+@font-face {
+  font-family: "Archivo Fallback";
+  src: local("Arial Bold"), local("Arial-BoldMT"), local("Helvetica Bold"), local("Helvetica-Bold"), local("Arial");
+  font-weight: 100 900; size-adjust: 76%;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -57,7 +65,7 @@ button { font: inherit; color: inherit; }
 .wrap { max-width: 105rem; margin-inline: auto; padding-left: var(--pad-l); padding-right: var(--pad-r); }
 .label { font-size: .8125rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; line-height: 1.3; }
 .disp {
-  font-stretch: 62%; font-weight: 800; text-transform: uppercase;
+  font-family: var(--font-cond); font-stretch: 62%; font-weight: 800; text-transform: uppercase;
   font-size: clamp(3.25rem, 11.5vw, 10.5rem); line-height: .94; letter-spacing: -.01em; text-wrap: balance;
 }
 .grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); row-gap: 1.5rem; }
@@ -86,7 +94,7 @@ button { font: inherit; color: inherit; }
 }
 
 /* ── Hero ── */
-.name { container-type: inline-size; padding-block: clamp(1rem, 2.4vw, 2.25rem) clamp(.9rem, 2vw, 1.9rem); }
+.name { container-type: inline-size; overflow-x: clip; font-family: var(--font-cond); padding-block: clamp(1rem, 2.4vw, 2.25rem) clamp(.9rem, 2vw, 1.9rem); }
 .name-set {
   display: flex; justify-content: space-between;
   font-size: 13vw; font-size: 13.86cqw; line-height: .72;
@@ -94,18 +102,18 @@ button { font: inherit; color: inherit; }
   -webkit-user-select: none; user-select: none;
 }
 .word { display: flex; }
-.l { display: block; font-variation-settings: "wdth" 74, "wght" 800; }
-.word + .word .l { font-variation-settings: "wdth" 74, "wght" 800; }
+.l { display: block; font-variation-settings: "wdth" 76.6, "wght" 800; }
 @media (max-width: 699px) {
   .name-set { flex-direction: column; gap: .1em; font-size: 28vw; font-size: 30.3cqw; }
   .word { justify-content: space-between; }
-  .word + .word .l { font-variation-settings: "wdth" 78.6, "wght" 800; }
+  .l { font-variation-settings: "wdth" 68.4, "wght" 800; }
+  .word + .word .l { font-variation-settings: "wdth" 72.7, "wght" 800; }
 }
 .hero-grid { border-top: var(--rule) solid var(--ink); padding-block: 1.25rem var(--space); }
 .status { display: flex; align-items: center; align-self: start; gap: .6rem; padding-top: .35rem; }
 .sq { flex: none; width: .8rem; height: .8rem; background: var(--blue); }
 .statement {
-  font-size: clamp(1.75rem, 3.9vw, 3.75rem); font-stretch: 84%; font-weight: 650;
+  font-size: clamp(1.75rem, 3.5vw, 3.375rem); font-stretch: 84%; font-weight: 650;
   line-height: 1.04; letter-spacing: -.015em; text-wrap: balance;
 }
 .statement em { font-style: normal; color: var(--blue); }
@@ -181,13 +189,13 @@ button { font: inherit; color: inherit; }
 .is-3d .cap { display: grid; border-top: var(--rule) solid var(--ink); padding-top: 1.25rem; }
 .cap-count { display: flex; align-items: flex-start; gap: .5rem; font-variant-numeric: tabular-nums; }
 .cap-count b {
-  color: var(--blue); font-stretch: 62%; font-weight: 800; letter-spacing: -.01em;
+  color: var(--blue); font-family: var(--font-cond); font-stretch: 62%; font-weight: 800; letter-spacing: -.01em;
   font-size: clamp(2.75rem, 6.4vw, 6.25rem); line-height: .88;
 }
 .cap-count span { padding-top: .3rem; }
 .cap-body { min-height: calc(clamp(2.75rem, 6.4vw, 6.25rem) * 1.76 + 6.75rem); }
 .cap-name {
-  font-stretch: 62%; font-weight: 800; text-transform: uppercase; letter-spacing: -.01em;
+  font-family: var(--font-cond); font-stretch: 62%; font-weight: 800; text-transform: uppercase; letter-spacing: -.01em;
   font-size: clamp(2.75rem, 6.4vw, 6.25rem); line-height: .88; text-wrap: balance;
 }
 .cap-tag { margin-top: .9rem; font-size: clamp(1.0625rem, 1.45vw, 1.3125rem); line-height: 1.4; max-width: 46ch; }
@@ -214,7 +222,7 @@ button { font: inherit; color: inherit; }
 .i-n, .i-y { font-variant-numeric: tabular-nums; }
 .i-n { color: var(--grey); }
 .i-name {
-  font-stretch: 66%; font-weight: 750; text-transform: uppercase; letter-spacing: -.005em;
+  font-family: var(--font-cond); font-stretch: 66%; font-weight: 750; text-transform: uppercase; letter-spacing: -.005em;
   font-size: clamp(1.625rem, 3.7vw, 3.5rem); line-height: 1;
 }
 .i-tags { grid-column: 2 / 3; grid-row: 2; color: var(--grey); font-size: .9375rem; }
@@ -243,7 +251,7 @@ button { font: inherit; color: inherit; }
 .band ul { display: flex; flex: none; }
 .band li {
   display: flex; align-items: center; gap: .32em; padding-right: .32em; white-space: nowrap;
-  font-stretch: 62%; font-weight: 800; text-transform: uppercase; font-size: clamp(3rem, 8.5vw, 7.5rem); line-height: .9;
+  font-family: var(--font-cond); font-stretch: 62%; font-weight: 800; text-transform: uppercase; font-size: clamp(3rem, 8.5vw, 7.5rem); line-height: .9;
 }
 .band li::after { content: ""; flex: none; width: .26em; height: .26em; background: var(--blue); }
 .band:hover .band-track, .band.off .band-track { animation-play-state: paused; }
@@ -279,7 +287,7 @@ button { font: inherit; color: inherit; }
 .kontakt .intro { margin-top: 1.25rem; max-width: 36ch; font-size: clamp(1.125rem, 1.6vw, 1.375rem); }
 .big {
   display: block; width: fit-content; max-width: 100%; text-decoration: none; overflow-wrap: anywhere;
-  font-stretch: 62%; font-weight: 800; letter-spacing: -.01em; line-height: .95;
+  font-family: var(--font-cond); font-stretch: 62%; font-weight: 800; letter-spacing: -.01em; line-height: .95;
   font-size: 8.4vw; font-size: min(9.1cqw, 9.5rem);
 }
 .big:hover { text-decoration: underline; text-decoration-thickness: .06em; text-underline-offset: .08em; }
@@ -584,7 +592,7 @@ footer .foot { display: flex; flex-wrap: wrap; justify-content: space-between; g
       var n = letters.length, wt = new Array(n), gt = new Array(n), out = new Array(n), i, li, x;
       for (i = 0; i < n; i++) {
         wt[i] = REST_W + f[i] * (MAX_W - REST_W);
-        gt[i] = REST_G + f[i] * 100 - (1 - f[i]) * pres * 340;
+        gt[i] = REST_G + f[i] * 100 - (1 - f[i]) * pres * 300;
       }
       for (li = 0; li < lines.length; li++) solve(lines[li], wt, gt, out);
       for (i = 0; i < n; i++) letters[i].style.fontVariationSettings = '"wdth" ' + out[i].toFixed(1) + ', "wght" ' + Math.round(gt[i]);
@@ -616,14 +624,21 @@ footer .foot { display: flex; flex-wrap: wrap; justify-content: space-between; g
     }
     function kick() { if (!raf) raf = requestAnimationFrame(tick); }
 
+    // Without the variable font there is no width axis to solve with: scale the type down until it fits.
+    function shrink() {
+      set.style.fontSize = '';
+      var size = parseFloat(getComputedStyle(set).fontSize), room = set.clientWidth, widest = 0;
+      var stacked = getComputedStyle(set).flexDirection === 'column';
+      var sums = words.map(function (w) { return w.reduce(function (s, i) { return s + letters[i].getBoundingClientRect().width; }, 0); });
+      widest = stacked ? Math.max.apply(null, sums) : sums[0] + sums[1] + 0.17 * size;
+      if (widest > room) set.style.fontSize = (size * room / widest * 0.995).toFixed(2) + 'px';
+    }
     function start() {
-      if (!measure()) return;
-      layout(); paint();
-      var t = 0;
-      window.addEventListener('resize', function () {
-        clearTimeout(t);
-        t = setTimeout(function () { layout(); paint(); }, 120);
-      }, { passive: true });
+      var variable = measure(), t = 0;
+      var refit = variable ? function () { layout(); paint(); } : shrink;
+      refit();
+      window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(refit, 120); }, { passive: true });
+      if (!variable) return;
       if (!fine.matches || reduce.matches) return;
       hero.addEventListener('pointermove', function (e) {
         if (e.pointerType && e.pointerType !== 'mouse') return;
