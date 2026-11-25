@@ -2,6 +2,23 @@
 
 A running log of what we built, what we chose, and why. Written so a later article can tell the story without reconstructing it from git.
 
+## 25 Nov 2026 — UniClean Partners case study (#43)
+
+**Goal:** Add a case for the new uniclean.nu, the Next.js site that replaces the WordPress site Marcel built earlier.
+
+**What we did**
+- New project at `/projects/uniclean-partners/`, first in `projects.ts` so it leads the homepage
+- The old `uniclean` case (WordPress) stays. The new case says in its first paragraph that Marcel built the previous site in WordPress
+- Six studio images and six phone screenshots in `public/projects/uniclean-partners/`. The studio images are compositions: real screenshots placed in a browser window and phone frame on a backdrop in UniClean's colours
+- A 32 second screen recording with a visible mouse pointer. New optional `video` field on project media, rendered in the same browser frame as the full-page block
+
+**Decisions**
+- **Not technical.** Marcel asked for tech stack, problem and solution only. Test counts, security work and the build problem at Hostinger are left out
+- **Role:** developer of the website. The app is built by someone else, and the case says so
+- **No numbers.** There are no measurements of bookings or traffic, so the results only say what is true: the site is live and the quote flow is gone
+- **Screenshots come from the local copy of the UniClean repo** (branch `partnerlank`), because uniclean.nu stops automated browsers with a bot check
+- **No reviews in the images.** The reviews section shows real people's names, so it is not featured
+
 ## 13 Nov 2026 — Sabaah Al-Wuruud: what the name means (#26)
 
 **Goal:** Tell readers who don't know Arabic what the app's name means.

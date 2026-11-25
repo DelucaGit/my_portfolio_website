@@ -156,6 +156,45 @@ export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
           </section>
         )}
 
+        {media.video && (
+          <section
+            className={styles.mediaSection}
+            aria-labelledby="video-heading"
+          >
+            <div className={styles.mediaIntroWide}>
+              <p className={styles.eyebrow}>
+                {media.videoCopy?.eyebrow ?? "Film"}
+              </p>
+              <h2 id="video-heading" className={styles.sectionHeading}>
+                {media.videoCopy?.heading ?? "Se hemsidan i rörelse"}
+              </h2>
+              {media.videoCopy?.support && (
+                <p className={styles.mediaSupport}>{media.videoCopy.support}</p>
+              )}
+            </div>
+
+            <div className={styles.fullPageFrame}>
+              <div className={styles.fullPageChrome} aria-hidden="true">
+                <span />
+                <span />
+                <span />
+              </div>
+              <video
+                className={styles.video}
+                src={asset(media.video.src)}
+                poster={asset(media.video.poster)}
+                aria-label={media.video.alt}
+                controls
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+              />
+            </div>
+          </section>
+        )}
+
         {/* 5. Feature / media blocks */}
         {media.feature && (
           <section className={styles.featureRow}>

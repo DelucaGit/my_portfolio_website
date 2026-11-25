@@ -490,6 +490,16 @@
   height: auto;
 }
 
+/* ── Video ── */
+
+.video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  background: var(--color-surface-dim);
+}
+
 /* ── Gallery ── */
 
 .gallery {
