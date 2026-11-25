@@ -1,0 +1,974 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Portfolio Kontrollrum</title>
+<meta name="description" content="Marcel Deluca, webbutvecklare i Växjö. Jag bygger webbappar och hemsidor med React och Java.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap">
+<style>
+/* Layout idea: an instrument panel. Hairline grid, mono readouts, one globe as the only moving part. */
+:root {
+  color-scheme: dark;
+  --ink: #0b1526;
+  --ink-2: #0f1c31;
+  --ink-3: #14243e;
+  --text: #e6edf5;
+  --muted: #9aabc0;
+  --dim: #7489a3;
+  --ice: #8fc4e8;
+  --line: rgba(143, 196, 232, 0.16);
+  --line-2: rgba(143, 196, 232, 0.34);
+  --amber: #ffb547;
+  --amber-soft: rgba(255, 181, 71, 0.13);
+  --on-light: #0b1526;
+
+  --sans: "Schibsted Grotesk", "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --fs-label: 0.72rem;
+  --fs-sm: 0.875rem;
+  --fs-body: 1rem;
+  --fs-lead: clamp(1.05rem, 1rem + 0.3vw, 1.2rem);
+  --fs-h3: 1.125rem;
+  --fs-h2: clamp(1.6rem, 1.25rem + 1.5vw, 2.25rem);
+  --fs-h1: clamp(2rem, 1.35rem + 2.4vw, 3.05rem);
+
+  --gutter: clamp(16px, 4vw, 56px);
+  --max: 77.5rem;
+  --section: clamp(3.5rem, 2.5rem + 4vw, 6rem);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 5rem; }
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+h1, h2, h3, p, ul, ol, dl, dd, figure { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; }
+::selection { background: var(--amber); color: var(--on-light); }
+
+.wrap {
+  width: 100%;
+  max-width: calc(var(--max) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-left: max(var(--gutter), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--gutter), env(safe-area-inset-right, 0px));
+}
+.label {
+  font-family: var(--mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.skip {
+  position: absolute; left: 12px; top: -60px; z-index: 50;
+  background: var(--amber); color: var(--on-light);
+  padding: 0.6rem 0.9rem; font-weight: 600; text-decoration: none;
+}
+.skip:focus { top: 12px; }
+
+/* ── Header ── */
+.top { border-bottom: 1px solid var(--line); background: var(--ink); }
+.top-row { display: flex; align-items: center; gap: 1rem; min-height: 4rem; flex-wrap: wrap; }
+.brand {
+  display: inline-flex; align-items: center; gap: 0.6rem; min-height: 44px;
+  font-weight: 600; letter-spacing: -0.01em; text-decoration: none;
+}
+.brand i { width: 9px; height: 9px; background: var(--amber); display: block; }
+.nav { display: flex; gap: 0.25rem; margin-left: auto; }
+.nav a {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 0.85rem;
+  font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.04em;
+  color: var(--muted); text-decoration: none;
+}
+.nav a:hover { color: var(--text); }
+.cv-link {
+  display: inline-flex; align-items: center; gap: 0.5rem; min-height: 44px; padding: 0 1rem;
+  border: 1px solid var(--line-2); font-weight: 600; font-size: var(--fs-sm); text-decoration: none;
+}
+.cv-link:hover { border-color: var(--ice); background: var(--ink-2); }
+@media (min-width: 760px) { .top { position: sticky; top: 0; z-index: 20; } }
+@media (max-width: 759px) {
+  .top-row { gap: 0; }
+  .cv-link { margin-left: auto; }
+  .nav { order: 3; width: 100%; margin: 0; border-top: 1px solid var(--line); }
+  .nav a { flex: 1; justify-content: center; padding: 0; }
+}
+
+/* ── Status strip ── */
+.strip { border-bottom: 1px solid var(--line); background: var(--ink-2); }
+.strip ul { display: grid; grid-template-columns: repeat(4, auto); justify-content: space-between; gap: 0 1.5rem; }
+.strip li {
+  display: flex; align-items: center; gap: 0.6rem; min-height: 2.5rem;
+  font-family: var(--mono); font-size: var(--fs-label); letter-spacing: 0.05em; color: var(--muted);
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.strip b { font-weight: 500; color: var(--text); }
+.strip .k { color: var(--dim); text-transform: uppercase; letter-spacing: 0.09em; }
+.live { color: var(--amber) !important; }
+.led { width: 7px; height: 7px; border-radius: 50%; background: var(--amber); box-shadow: 0 0 0 3px var(--amber-soft); flex: none; }
+@media (max-width: 899px) {
+  .strip ul { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); justify-content: stretch; }
+  .strip li:nth-child(n + 3) { border-top: 1px solid var(--line); }
+}
+@media (max-width: 479px) { .wide-only { display: none; } }
+
+/* ── Hero ── */
+.hero { border-bottom: 1px solid var(--line); }
+.hero-grid {
+  display: grid; gap: 2.5rem; align-items: center;
+  padding-block: clamp(2rem, 1rem + 4vw, 3.5rem);
+  min-height: min(calc(100svh - 6.6rem), 820px);
+}
+@media (min-width: 1000px) { .hero-grid { grid-template-columns: minmax(0, 0.92fr) minmax(0, 1fr); gap: clamp(2rem, 5vw, 4.5rem); } }
+.hero-copy { display: grid; gap: 1.4rem; min-width: 0; }
+h1 { font-size: var(--fs-h1); font-weight: 600; line-height: 1.1; letter-spacing: -0.025em; text-wrap: balance; }
+h1 em { font-style: normal; color: var(--ice); }
+.lead { font-size: var(--fs-lead); color: var(--muted); max-width: 34rem; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
+  min-height: 3rem; padding: 0 1.35rem; font-weight: 600; text-decoration: none;
+  border: 1px solid var(--line-2);
+}
+.btn:hover { border-color: var(--ice); background: var(--ink-2); }
+.btn-solid { background: var(--text); color: var(--on-light); border-color: var(--text); }
+.btn-solid:hover { background: #fff; border-color: #fff; }
+.btn .arr { font-family: var(--mono); font-weight: 400; }
+.cta { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+/* contact readout rows: label + value, hairline separated */
+.rows { border-top: 1px solid var(--line); max-width: 34rem; }
+.rows > div { display: grid; grid-template-columns: 4.25rem minmax(0, 1fr); gap: 0.75rem; align-items: center; min-height: 3rem; border-bottom: 1px solid var(--line); }
+.rows dt { font-family: var(--mono); font-size: var(--fs-label); letter-spacing: 0.09em; text-transform: uppercase; color: var(--dim); }
+.rows dd { display: flex; flex-wrap: wrap; align-items: center; gap: 0.15rem 1.1rem; font-family: var(--mono); font-size: var(--fs-sm); min-width: 0; }
+.rows a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; overflow-wrap: anywhere; }
+.rows a:hover { color: var(--ice); }
+.rows .note { color: var(--muted); }
+.ext::after { content: " \2197"; color: var(--dim); }
+
+/* ── Scope (globe panel) ── */
+.scope { border: 1px solid var(--line); background: var(--ink-2); position: relative; min-width: 0; }
+.scope::before, .scope::after { content: ""; position: absolute; width: 11px; height: 11px; border: 1px solid var(--ice); pointer-events: none; }
+.scope::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+.scope::after { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+.scope-head { display: flex; justify-content: space-between; gap: 1rem; padding: 0.7rem 0.9rem; border-bottom: 1px solid var(--line); }
+.scope-head span:last-child { color: var(--muted); text-align: right; }
+.globe {
+  position: relative; display: block; width: 100%; max-width: 32.5rem; margin-inline: auto;
+  aspect-ratio: 1; touch-action: pan-y; cursor: grab; -webkit-user-select: none; user-select: none;
+}
+.globe.is-drag { cursor: grabbing; }
+.globe canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+/* static disc: what you see before the first frame, without JS, or without canvas */
+.globe::before {
+  content: ""; position: absolute; inset: 6.5%; border-radius: 50%;
+  background: radial-gradient(circle at 34% 30%, #18305a, #0c1830 72%);
+  border: 1px solid var(--line-2);
+}
+.readout { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr) minmax(0, 1.5fr); border-top: 1px solid var(--line); }
+.readout > div { padding: 0.65rem 0.9rem; min-width: 0; }
+.readout > div + div { border-left: 1px solid var(--line); }
+.readout dt { font-family: var(--mono); font-size: var(--fs-label); letter-spacing: 0.09em; text-transform: uppercase; color: var(--dim); }
+.readout dd { font-family: var(--mono); font-size: var(--fs-sm); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; min-height: 2.8em; }
+.readout dd.hot { color: var(--amber); }
+.readout a { text-decoration-color: var(--line-2); text-underline-offset: 3px; }
+.readout a:hover { color: var(--ice); }
+.places { display: flex; flex-wrap: wrap; border-top: 1px solid var(--line); }
+.places button {
+  flex: 1 1 auto; min-height: 44px; padding: 0 0.8rem;
+  font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.03em; color: var(--muted);
+  border-right: 1px solid var(--line); margin-bottom: -1px; border-bottom: 1px solid var(--line);
+}
+.places button:hover { color: var(--text); background: var(--ink-3); }
+.places button[aria-pressed="true"] { color: var(--amber); background: var(--amber-soft); }
+.places button.is-on { color: var(--text); }
+.hint { padding: 0.6rem 0.9rem; font-family: var(--mono); font-size: var(--fs-label); color: var(--dim); letter-spacing: 0.03em; }
+@media (max-width: 999px) { .globe { max-width: 21rem; } }
+@media (max-width: 599px) { .places { display: grid; grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 520px) {
+  .readout { grid-template-columns: 1fr 1fr; }
+  .readout > div:last-child { grid-column: 1 / -1; border-left: 0; border-top: 1px solid var(--line); }
+  .readout dd { min-height: 1.6em; }
+}
+
+/* ── Sections ── */
+.sec { padding-block: var(--section); border-bottom: 1px solid var(--line); }
+.sec-head { display: grid; gap: 0.6rem; margin-bottom: clamp(1.75rem, 1rem + 2vw, 2.75rem); }
+h2 { font-size: var(--fs-h2); font-weight: 600; line-height: 1.15; letter-spacing: -0.02em; text-wrap: balance; }
+.sec-head p { color: var(--muted); max-width: 40rem; }
+@media (min-width: 900px) {
+  .sec-head { grid-template-columns: 12rem minmax(0, 1fr); align-items: baseline; gap: 1.5rem; }
+  .sec-head > :not(.label) { grid-column: 2; }
+}
+
+/* featured cards */
+.feat { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); margin-bottom: clamp(2.5rem, 1.5rem + 3vw, 4rem); }
+.feat li { display: grid; }
+.card { display: grid; grid-template-rows: auto 1fr; border: 1px solid var(--line); background: var(--ink-2); text-decoration: none; min-width: 0; }
+.card:hover, .card:focus-visible { border-color: var(--line-2); }
+.card figure { aspect-ratio: 2 / 1; overflow: hidden; border-bottom: 1px solid var(--line); background: var(--ink-3); }
+.card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.92; transition: transform 0.5s cubic-bezier(.2,.7,.2,1), opacity 0.3s; }
+.card:hover img { transform: scale(1.03); opacity: 1; }
+.card-body { display: grid; gap: 0.5rem; padding: 0.9rem 1rem 1.1rem; align-content: start; }
+.card h3 { font-size: var(--fs-h3); font-weight: 600; letter-spacing: -0.01em; }
+.card p { font-size: var(--fs-sm); color: var(--muted); line-height: 1.5; }
+.meta { display: flex; justify-content: space-between; gap: 0.75rem; font-family: var(--mono); font-size: var(--fs-label); letter-spacing: 0.06em; color: var(--dim); text-transform: uppercase; }
+.meta span:first-child { color: var(--ice); }
+
+/* log */
+.log-grid { display: grid; gap: 2rem; }
+@media (min-width: 1100px) { .log-grid { grid-template-columns: minmax(0, 1fr) 17.5rem; gap: 2.5rem; align-items: start; } }
+.log-cap { display: flex; justify-content: space-between; gap: 1rem; padding-bottom: 0.7rem; }
+.log { border-top: 1px solid var(--line-2); }
+.cols, .row { display: grid; grid-template-columns: 3.4rem minmax(0, 1.9fr) minmax(0, 1.15fr) 6.5rem 1.2rem; gap: 0 1rem; align-items: baseline; }
+.cols { padding: 0.55rem 0.6rem; border-bottom: 1px solid var(--line); }
+.row { padding: 0.8rem 0.6rem; border-bottom: 1px solid var(--line); text-decoration: none; position: relative; }
+.row:hover, .row:focus-visible { background: var(--ink-2); }
+.row .yr { font-family: var(--mono); font-size: var(--fs-sm); color: var(--dim); font-variant-numeric: tabular-nums; }
+.row .nm { display: grid; gap: 0.15rem; min-width: 0; }
+.row .nm b { font-weight: 600; letter-spacing: -0.005em; }
+.row .nm small { font-size: var(--fs-sm); color: var(--muted); line-height: 1.45; }
+.row .tg, .row .pl { font-family: var(--mono); font-size: 0.78rem; color: var(--muted); }
+.row .pl.has { color: var(--ice); }
+.row .go { font-family: var(--mono); color: var(--dim); text-align: right; }
+.row:hover .go, .row:focus-visible .go { color: var(--amber); }
+.row.lit { background: var(--amber-soft); }
+.row.lit::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--amber); }
+.row.lit .pl { color: var(--amber); }
+@media (max-width: 719px) {
+  .cols { display: none; }
+  .row { grid-template-columns: 3rem minmax(0, 1fr) 1rem; padding: 0.85rem 0.25rem; gap: 0.3rem 0.75rem; }
+  .row .tg { grid-column: 2; grid-row: 2; }
+  .row .pl { grid-column: 2; grid-row: 3; }
+  .row .pl:not(.has) { display: none; }
+  .row .go { grid-column: 3; grid-row: 1; }
+  .row .nm small { display: none; }
+}
+.mini { display: none; }
+@media (min-width: 1100px) { .mini { display: block; position: sticky; top: 5.25rem; } }
+.mini .readout { grid-template-columns: 1fr; }
+.mini .readout > div + div { border-left: 0; border-top: 1px solid var(--line); }
+.mini .readout dd { min-height: 0; }
+.mini .hint { border-top: 1px solid var(--line); line-height: 1.6; }
+
+/* tech matrix */
+.matrix { display: grid; border-top: 1px solid var(--line-2); }
+@media (min-width: 800px) { .matrix { grid-template-columns: 1fr 1fr; column-gap: 2.5rem; } }
+.matrix > div { display: grid; grid-template-columns: 8.5rem minmax(0, 1fr); gap: 1rem; align-items: baseline; padding: 0.8rem 0.25rem; border-bottom: 1px solid var(--line); }
+.matrix dd { display: flex; flex-wrap: wrap; gap: 0.3rem 1.4rem; font-weight: 500; }
+.matrix .wide { grid-column: 1 / -1; }
+.matrix .wide dd span small { font-family: var(--mono); font-size: var(--fs-label); color: var(--dim); font-weight: 400; margin-left: 0.4rem; letter-spacing: 0.04em; }
+.aside-note { font-family: var(--mono); font-size: var(--fs-sm); color: var(--ice); }
+@media (max-width: 479px) { .matrix > div { grid-template-columns: 6.5rem minmax(0, 1fr); } }
+
+/* about */
+.about { display: grid; gap: 2rem; }
+@media (min-width: 900px) { .about { grid-template-columns: 12rem minmax(0, 20rem) minmax(0, 1fr); gap: 1.5rem clamp(1.5rem, 4vw, 3.5rem); align-items: start; } }
+.duo { position: relative; isolation: isolate; aspect-ratio: 4 / 5; overflow: hidden; border: 1px solid var(--line-2); background: #000; max-width: 20rem; }
+.duo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%; filter: grayscale(1) contrast(1.08); }
+.duo::before, .duo::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.duo::before { background: #0d1b33; mix-blend-mode: lighten; }
+.duo::after { background: #b7d8f0; mix-blend-mode: multiply; }
+.duo figcaption { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; display: flex; justify-content: space-between; gap: 0.5rem; padding: 0.55rem 0.7rem; background: rgba(11, 21, 38, 0.82); color: var(--text); }
+.about-text { display: grid; gap: 1.1rem; max-width: 38rem; }
+.about-text p { font-size: var(--fs-lead); color: var(--text); }
+.about-text p + p { color: var(--muted); }
+.edu { margin-top: 1rem; border-top: 1px solid var(--line-2); }
+.edu li { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+.edu .mono { font-size: var(--fs-sm); color: var(--dim); }
+.edu b { display: block; font-weight: 600; }
+.edu span { font-size: var(--fs-sm); color: var(--muted); }
+
+/* contact */
+.contact { border: 1px solid var(--line-2); background: var(--ink-2); position: relative; display: grid; }
+.contact::before, .contact::after { content: ""; position: absolute; width: 11px; height: 11px; border: 1px solid var(--ice); pointer-events: none; }
+.contact::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+.contact::after { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+@media (min-width: 900px) { .contact { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+.contact > div { padding: clamp(1.5rem, 1rem + 2.5vw, 2.75rem); display: grid; gap: 1rem; align-content: center; min-width: 0; }
+.contact > div + div { border-top: 1px solid var(--line); }
+@media (min-width: 900px) { .contact > div + div { border-top: 0; border-left: 1px solid var(--line); } }
+.contact p { color: var(--muted); max-width: 30rem; }
+.big { font-family: var(--mono); font-size: clamp(1rem, 0.85rem + 0.9vw, 1.4rem); overflow-wrap: anywhere; text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; }
+.big:hover { color: var(--ice); }
+.chan { display: grid; gap: 0.1rem; padding-bottom: 0.9rem; border-bottom: 1px solid var(--line); }
+.chan:last-child { border-bottom: 0; padding-bottom: 0; }
+.chan-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem 1rem; }
+.copy { min-height: 44px; padding: 0 0.85rem; border: 1px solid var(--line-2); font-family: var(--mono); font-size: var(--fs-label); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); display: none; }
+.js .copy { display: inline-flex; align-items: center; }
+.copy:hover { color: var(--text); border-color: var(--ice); }
+.copy.ok { color: var(--amber); border-color: var(--amber); }
+
+footer { padding-block: 1.75rem 2.5rem; }
+.foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem 1.5rem; font-family: var(--mono); font-size: var(--fs-label); letter-spacing: 0.05em; color: var(--dim); }
+.foot a { color: var(--muted); display: inline-flex; align-items: center; min-height: 44px; }
+.foot nav { display: flex; gap: 1.25rem; }
+.foot span { display: inline-flex; align-items: center; min-height: 44px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .card img { transition: none; }
+  .card:hover img { transform: none; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Hoppa till innehållet</a>
+
+<header class="top">
+  <div class="wrap top-row">
+    <a class="brand" href="#main"><i aria-hidden="true"></i>Marcel Deluca</a>
+    <nav class="nav" aria-label="Huvudmeny">
+      <a href="#projekt">Projekt</a>
+      <a href="#teknik">Teknik</a>
+      <a href="#om">Om</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+    <a class="cv-link" href="https://marceldeluca.se/cv/" target="_blank" rel="noopener noreferrer">Läs CV</a>
+  </div>
+</header>
+
+<main id="main">
+  <div class="strip">
+    <div class="wrap">
+      <ul>
+        <li class="live"><span class="led" aria-hidden="true"></span>Öppen för jobb</li>
+        <li><span class="k">Växjö</span> <b id="clock">Europe/Stockholm</b></li>
+        <li><span class="k">Läge</span> <b>56.88°N 14.81°E</b></li>
+        <li><span class="k">Logg</span> <b>17 projekt<span class="wide-only"> · 2023–2026</span></b></li>
+      </ul>
+    </div>
+  </div>
+
+  <section class="hero" aria-labelledby="hero-h">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="label">Webbutvecklare · Växjö, Sverige</p>
+        <h1 id="hero-h">Jag heter Marcel, en <em>webbutvecklare</em>. Jag bygger webbappar med Java och React.</h1>
+        <p class="lead">Jag bygger webbappar och hemsidor med React och Java. Jag söker en fast anställning där jag får växa i ett team.</p>
+        <div class="cta">
+          <a class="btn btn-solid" href="https://marceldeluca.se/cv/" target="_blank" rel="noopener noreferrer">Läs CV <span class="arr" aria-hidden="true">→</span></a>
+          <a class="btn" href="#projekt">Se projekten</a>
+        </div>
+        <dl class="rows">
+          <div><dt>Tel</dt><dd><a href="tel:0738796601">073 879 66 01</a><span class="note">Ring efter 12.00</span></dd></div>
+          <div><dt>Mejl</dt><dd><a href="mailto:malakdeluca@gmail.com">malakdeluca@gmail.com</a></dd></div>
+          <div><dt>Webb</dt><dd><a class="ext" href="https://www.linkedin.com/in/marcel-deluca" target="_blank" rel="noopener noreferrer">LinkedIn</a><a class="ext" href="https://github.com/DelucaGit" target="_blank" rel="noopener noreferrer">GitHub</a></dd></div>
+        </dl>
+      </div>
+
+      <div class="scope" data-scope>
+        <div class="scope-head label"><span>Karta</span><span>Var jobben har landat</span></div>
+        <div class="globe" data-globe tabindex="0" role="group" aria-label="Glob som visar var projekten finns. Rotera med piltangenterna. Platserna finns också som knappar under globen.">
+          <canvas aria-hidden="true"></canvas>
+        </div>
+        <dl class="readout">
+          <div><dt>Plats</dt><dd data-ro="name" class="hot">Växjö</dd></div>
+          <div><dt>Läge</dt><dd data-ro="pos">56.88°N 14.81°E</dd></div>
+          <div><dt>Projekt</dt><dd data-ro="proj"><a href="#p-fcvaxjo-reborn">FC Växjö Reborn</a>, <a href="#p-fcvaxjo">FC Växjö</a></dd></div>
+        </dl>
+        <div class="places" role="group" aria-label="Välj plats på globen">
+          <button type="button" data-place="vaxjo" aria-pressed="false">Växjö</button>
+          <button type="button" data-place="gavle" aria-pressed="false">Gävle</button>
+          <button type="button" data-place="norge" aria-pressed="false">Norge</button>
+          <button type="button" data-place="finland" aria-pressed="false">Finland</button>
+          <button type="button" data-place="irak" aria-pressed="false">Irak</button>
+          <button type="button" data-place="gambia" aria-pressed="false">Gambia</button>
+        </div>
+        <p class="hint">Dra för att rotera. Välj en plats för att se projekten där.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="projekt" aria-labelledby="projekt-h">
+    <div class="wrap">
+      <header class="sec-head">
+        <p class="label">Projekt</p>
+        <h2 id="projekt-h">Några saker jag har byggt</h2>
+        <p>Egna produkter och uppdrag. De fyra senaste först, sedan hela loggen.</p>
+      </header>
+
+      <ul class="feat">
+        <li><a class="card" href="https://marceldeluca.se/projects/uniclean-partners/" target="_blank" rel="noopener noreferrer">
+          <figure><img src="assets/uniclean-partners-sm.webp" srcset="assets/uniclean-partners-sm.webp 640w, assets/uniclean-partners.webp 1280w" sizes="(min-width: 1200px) 290px, (min-width: 640px) 46vw, 92vw" width="640" height="320" alt="UniClean Partners, startsidan i en webbläsare och på en telefon" loading="lazy" decoding="async"></figure>
+          <div class="card-body"><p class="meta"><span>2026</span><span>Next.js</span></p><h3>UniClean Partners</h3><p>Ny hemsida för UniClean som vägleder kunder och städare till den nya appen.</p></div>
+        </a></li>
+        <li><a class="card" href="https://marceldeluca.se/projects/sabaah-al-wuruud/" target="_blank" rel="noopener noreferrer">
+          <figure><img src="assets/sabaah-al-wuruud-sm.webp" srcset="assets/sabaah-al-wuruud-sm.webp 640w, assets/sabaah-al-wuruud.webp 1280w" sizes="(min-width: 1200px) 290px, (min-width: 640px) 46vw, 92vw" width="640" height="320" alt="Sabaah Al-Wuruud, tre skärmar ur Android-appen" loading="lazy" decoding="async"></figure>
+          <div class="card-body"><p class="meta"><span>2026</span><span>Android</span></p><h3>Sabaah Al-Wuruud</h3><p>En minimalistisk adhkar-app för Android som jag byggde till min fru. Utan reklam, utan konto och helt offline.</p></div>
+        </a></li>
+        <li><a class="card" href="https://marceldeluca.se/projects/zenith-kampsport/" target="_blank" rel="noopener noreferrer">
+          <figure><img src="assets/zenith-kampsport-sm.webp" srcset="assets/zenith-kampsport-sm.webp 640w, assets/zenith-kampsport.webp 1280w" sizes="(min-width: 1200px) 290px, (min-width: 640px) 46vw, 92vw" width="640" height="320" alt="Zenith Kampsport, startsidan" loading="lazy" decoding="async"></figure>
+          <div class="card-body"><p class="meta"><span>2026</span><span>Next.js</span></p><h3>Zenith Kampsport</h3><p>Underhåll och förbättring av en Next.js-klubbhemsida. Schema och layout för mindre laptopskärmar.</p></div>
+        </a></li>
+        <li><a class="card" data-places="vaxjo" href="https://marceldeluca.se/projects/fcvaxjo-reborn/" target="_blank" rel="noopener noreferrer">
+          <figure><img src="assets/fcvaxjo-reborn-sm.webp" srcset="assets/fcvaxjo-reborn-sm.webp 640w, assets/fcvaxjo-reborn.webp 1280w" sizes="(min-width: 1200px) 290px, (min-width: 640px) 46vw, 92vw" width="640" height="320" alt="FC Växjö Reborn, nyhetssidan" loading="lazy" decoding="async"></figure>
+          <div class="card-body"><p class="meta"><span>2026</span><span>Växjö</span></p><h3>FC Växjö Reborn</h3><p>Ny klubbhemsida i Next.js. Byggd för träningstider, nyheter och en kommande app.</p></div>
+        </a></li>
+      </ul>
+
+      <div class="log-grid">
+        <div>
+          <p class="log-cap label"><span>Logg · 17 poster</span><span>Nyast först</span></p>
+          <div class="log">
+            <div class="cols label" aria-hidden="true"><span>År</span><span>Projekt</span><span>Taggar</span><span>Plats</span><span></span></div>
+            <ol>
+              <li><a class="row" id="p-uniclean-partners" href="https://marceldeluca.se/projects/uniclean-partners/" target="_blank" rel="noopener noreferrer"><span class="yr">2026</span><span class="nm"><b>UniClean Partners</b><small>Ny hemsida för UniClean som vägleder kunder och städare till den nya appen.</small></span><span class="tg">Next.js · Tailwind · Lokalt</span><span class="pl">—</span><span class="go" aria-hidden="true">↗</span></a></li>
+              <li><a class="row" id="p-sabaah-al-wuruud" href="https://marceldeluca.se/projects/sabaah-al-wuruud/" target="_blank" rel="noopener noreferrer"><span class="yr">2026</span><span class="nm"><b>Sabaah Al-Wuruud</b><small>En minimalistisk adhkar-app för Android som jag byggde till min fru.</small></span><span class="tg">Android · Capacitor · Personligt projekt</span><span class="pl">—</span><span class="go" aria-hidden="true">↗</span></a></li>
+              <li><a class="row" id="p-zenith-kampsport" href="https://marceldeluca.se/projects/zenith-kampsport/" target="_blank" rel="noopener noreferrer"><span class="yr">2026</span><span class="nm"><b>Zenith Kampsport</b><small>Underhåll och förbättring av en Next.js-klubbhemsida.</small></span><span class="tg">Next.js · Underhåll · Förening</span><span class="pl">—</span><span class="go" aria-hidden="true">↗</span></a></li>
+              <li><a class="row" id="p-fcvaxjo-reborn" data-places="vaxjo" href="https://marceldeluca.se/projects/fcvaxjo-reborn/" target="_blank" rel="noopener noreferrer"><span class="yr">2026</span><span class="nm"><b>FC Växjö Reborn</b><small>Ny klubbhemsida i Next.js. Byggd för träningstider, nyheter och en kommande app.</small></span><span class="tg">Next.js · Förening · CI/CD</span><span class="pl has">Växjö</span><span class="go" aria-hidden="true">↗</span></a></li>
+              <li><a class="row" id="p-andalus-calendar" href="https://marceldeluca.se/projects/andalus-calendar/" target="_blank" rel="noopener noreferrer"><span class="yr">2026</span><span class="nm"><b>The Andalus Calendar</b><small>En kalender där bönetiden redan sitter i vyn, så du inte bokar över salah.</small></span><span class="tg">React · Firebase · Kalender</span><span class="pl">—</span><span class="go" aria-hidden="true">↗</span></a></li>
+              <li><a class="row" id="p-premium-honey-blends" href="https://marceldeluca.se/projects/premium-honey-blends/" target="_blank" rel="noopener noreferrer"><span class="yr">2026</span><span class="nm"><b>Premium Honey Blends</b><small>Från meddelanden och kontakter till en butik som aldrig sover.</small></span><span class="tg">Shopify · E-handel · Varumärke</span><span class="pl">—</span><span class="go" aria-hidden="true">↗</span></a></li>
+              <li><a class="row" id="p-alkama" data-places="norge finland" href="https://marceldeluca.se/projects/alkama/" target="_blank" rel="noopener noreferrer"><span class="yr">2026</span><span class="nm"><b>ALKAMA</b><small>WooCommerce-butik på svenska, finska och norska, utan att tappa 20 års förtroende.</small></span><span class="tg">WooCommerce · Polylang · B2B</span><span class="pl has">Norge · Finland</span><span class="go" aria-hidden="true">↗</span></a></li>
+              <li><a class="row" id="p-uniclean" href="https://marceldeluca.se/projects/uniclean/" target="_blank" rel="noopener noreferrer"><span class="yr">2026</span><span class="nm"><b>UniClean</b><small>Från samma frågor om och om igen, till en hemsida som onboardingar själv.</small></span><span class="tg">WordPress · Elementor · Lokalt</span><span class="pl">—</span><span class="go" aria-hidden="true">↗</span></a></li>
+              <li><a class="row" id="p-takkoll" href="https://marceldeluca.se/projects/takkoll/" target="_blank" rel="noopener noreferrer"><span class="yr">2025</span><span class="nm"><b>TakKoll</b><small>Skyddar svenska hem – ett tak i taget.</small></span><span class="tg">WordPress · Lokalt · Leadgen</span><span class="pl">—</span><span class="go" aria-hidden="true">↗</span></a></li>
+              <li><a class="row" id="p-bilservicekoll" data-places="gavle" href="https://marceldeluca.se/projects/bilservicekoll/" target="_blank" rel="noopener noreferrer"><span class="yr">2025</span><span class="nm"><b>BilserviceKoll</b><small>Bilverkstaden i Gävle som gör det enkelt att serva bilen.</small></span><span class="tg">WordPress · Lokalt · Leadgen</span><span class="pl has">Gävle</span><span class="go" aria-hidden="true">↗</span></a></li>
+              <li><a class="row" id="p-stadkoll" href="https://marceldeluca.se/projects/stadkoll/" target="_blank" rel="noopener noreferrer"><span class="yr">2025</span><span class="nm"><b>Städkoll</b><small>Flyttstädning utan stress – till fast pris.</small></span><span class="tg">Frontend · UX/UI · Leadgen</span><span class="pl">—</span><span class="go" aria-hidden="true">↗</span></a></li>
+              <li><a class="row" id="p-brandsakerhetskoll" data-places="gavle" href="https://marceldeluca.se/projects/brandsakerhetskoll/" target="_blank" rel="noopener noreferrer"><span class="yr">2025</span><span class="nm"><b>Brand &amp; Säkerhetskoll</b><small>Din lokala expert på brandskydd i Gävle.</small></span><span class="tg">Frontend · UX/UI · Leadgen</span><span class="pl has">Gävle</span><span class="go" aria-hidden="true">↗</span></a></li>
+              <li><a class="row" id="p-scooterkoll" data-places="gavle" href="https://marceldeluca.se/projects/scooterkoll/" target="_blank" rel="noopener noreferrer"><span class="yr">2025</span><span class="nm"><b>Scooterkoll</b><small>Elscootrar är smidiga. Tills de går sönder.</small></span><span class="tg">Frontend · UX/UI · SEO</span><span class="pl has">Gävle</span><span class="go" aria-hidden="true">↗</span></a></li>
+              <li><a class="row" id="p-halimapearl" data-places="gambia" href="https://marceldeluca.se/projects/halimapearl/" target="_blank" rel="noopener noreferrer"><span class="yr">2025</span><span class="nm"><b>HalimaPearl</b><small>Från lokalt rykte till en växande varumärkesresa.</small></span><span class="tg">GoHighLevel · UX/UI · Varumärke</span><span class="pl has">Gambia</span><span class="go" aria-hidden="true">↗</span></a></li>
+              <li><a class="row" id="p-ventilationskoll" href="https://marceldeluca.se/projects/ventilationskoll/" target="_blank" rel="noopener noreferrer"><span class="yr">2025</span><span class="nm"><b>Ventilationskoll</b><small>En hemsida som gör jobbet.</small></span><span class="tg">Frontend · UX/UI · SEO</span><span class="pl">—</span><span class="go" aria-hidden="true">↗</span></a></li>
+              <li><a class="row" id="p-shanasheel" data-places="irak" href="https://marceldeluca.se/projects/shanasheel/" target="_blank" rel="noopener noreferrer"><span class="yr">2025</span><span class="nm"><b>Shanasheel</b><small>Från första skissen till en tvåspråkig hemsida som berättar om Akkad, och om framtiden i Irak.</small></span><span class="tg">WordPress · Elementor · Fastighet</span><span class="pl has">Irak</span><span class="go" aria-hidden="true">↗</span></a></li>
+              <li><a class="row" id="p-fcvaxjo" data-places="vaxjo" href="https://marceldeluca.se/projects/fcvaxjo/" target="_blank" rel="noopener noreferrer"><span class="yr">2023</span><span class="nm"><b>FC Växjö</b><small>En digital hemmaplan för föreningen sedan 1989.</small></span><span class="tg">Webbdesign · UX/UI · Förening</span><span class="pl has">Växjö</span><span class="go" aria-hidden="true">↗</span></a></li>
+            </ol>
+          </div>
+        </div>
+
+        <aside class="mini scope" data-scope aria-label="Plats för projektet">
+          <div class="scope-head label"><span>Plats</span><span>8 av 17</span></div>
+          <div class="globe" data-globe data-mini>
+            <canvas aria-hidden="true"></canvas>
+          </div>
+          <dl class="readout">
+            <div><dt>Plats</dt><dd data-ro="name" class="hot">Växjö</dd></div>
+            <div><dt>Läge</dt><dd data-ro="pos">56.88°N 14.81°E</dd></div>
+          </dl>
+          <p class="hint">Håll pekaren över en rad för att se var projektet finns. Plats anges för 8 av 17 projekt.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="teknik" aria-labelledby="teknik-h">
+    <div class="wrap">
+      <header class="sec-head">
+        <p class="label">Teknik</p>
+        <h2 id="teknik-h">Vilka språk jag kan</h2>
+        <p class="aside-note">(förutom svenska, engelska, spanska, arabiska och franska…)</p>
+      </header>
+      <dl class="matrix">
+        <div><dt class="label">Frontend</dt><dd><span>React / Next.js</span><span>Tailwind CSS</span></dd></div>
+        <div><dt class="label">Databas</dt><dd><span>PostgreSQL</span></dd></div>
+        <div><dt class="label">Grunder</dt><dd><span>HTML &amp; CSS</span></dd></div>
+        <div><dt class="label">Data &amp; hosting</dt><dd><span>Firebase</span></dd></div>
+        <div><dt class="label">Backend</dt><dd><span>Java</span><span>REST API</span><span>PHP</span></dd></div>
+        <div><dt class="label">DevOps</dt><dd><span>Docker</span></dd></div>
+        <div><dt class="label">CMS</dt><dd><span>WordPress / Elementor</span></dd></div>
+        <div><dt class="label">Cloud</dt><dd><span>AWS</span><span>Azure</span></dd></div>
+        <div><dt class="label">Samarbete</dt><dd><span>Git</span><span>Jira</span></dd></div>
+        <div><dt class="label">Verktyg</dt><dd><span>Cursor</span><span>Claude Code</span></dd></div>
+        <div class="wide"><dt class="label">Talade språk</dt><dd><span>Svenska<small>Flytande</small></span><span>Spanska<small>Flytande</small></span><span>Engelska<small>Flytande</small></span><span>Arabiska<small>Flytande</small></span><span>Franska<small>Förstår</small></span></dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="sec" id="om" aria-labelledby="om-h">
+    <div class="wrap about">
+      <p class="label">Om mig</p>
+      <figure class="duo">
+        <img src="assets/portrait.webp" width="576" height="1024" alt="Marcel Deluca i profil vid havet" loading="lazy" decoding="async">
+        <figcaption class="label"><span>Marcel Deluca</span><span>Växjö</span></figcaption>
+      </figure>
+      <div class="about-text">
+        <h2 id="om-h">Hej, jag är Marcel</h2>
+        <p>Jag är webbutvecklare. Jag bygger hemsidor, webbappar och egna produkter, bland annat The Andalus Calendar.</p>
+        <p>Just nu studerar jag Java med cloud på JENSEN yrkeshögskola. Jag vill jobba i ett team där jag får koda, lära mig mer och ta ansvar.</p>
+        <ul class="edu" aria-label="Utbildning">
+          <li><span class="mono">2025–2027</span><div><b>Systemutveckling i Java med cloud-inriktning</b><span>JENSEN yrkeshögskola</span></div></li>
+          <li><span class="mono">2022–2024</span><div><b>Webmaster</b><span>Högskolan Väst (distans)</span></div></li>
+          <li><span class="mono">2017–2020</span><div><b>Samhällsvetenskap / IB</b><span>Katedralskolan Växjö</span></div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="kontakt" aria-labelledby="kontakt-h">
+    <div class="wrap">
+      <div class="contact">
+        <div>
+          <p class="label live">Öppen för jobb</p>
+          <h2 id="kontakt-h">Vill du komma i kontakt?</h2>
+          <p>Skicka ett mejl eller ring om du vill prata om jobb, projekt eller bara säga hej.</p>
+        </div>
+        <div>
+          <div class="chan">
+            <span class="label">Mejl</span>
+            <div class="chan-row">
+              <a class="big" id="email" href="mailto:malakdeluca@gmail.com">malakdeluca@gmail.com</a>
+              <button class="copy" type="button" id="copy-email" data-copy="malakdeluca@gmail.com">Kopiera</button>
+            </div>
+          </div>
+          <div class="chan">
+            <span class="label">Telefon · Ring efter 12.00</span>
+            <div class="chan-row"><a class="big" href="tel:0738796601">073 879 66 01</a></div>
+          </div>
+          <div class="chan">
+            <span class="label">Webb</span>
+            <div class="chan-row">
+              <a class="big ext" href="https://www.linkedin.com/in/marcel-deluca" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+              <a class="big ext" href="https://github.com/DelucaGit" target="_blank" rel="noopener noreferrer">GitHub</a>
+              <a class="big ext" href="https://marceldeluca.se/cv/" target="_blank" rel="noopener noreferrer">CV</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span>© 2026 Marcel Deluca · Växjö, Sverige</span>
+    <nav aria-label="Sidfot"><a href="#projekt">Projekt</a><a href="#kontakt">Kontakt</a><a href="#main">Till toppen ↑</a></nav>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var doc = document, root = doc.documentElement;
+  root.classList.add('js');
+  var mq = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
+  var reduce = mq.matches;
+
+  /* ── Clock: Växjö local time ── */
+  (function () {
+    var el = doc.getElementById('clock');
+    if (!el || !window.Intl) return;
+    var opt = { timeZone: 'Europe/Stockholm', hour: '2-digit', minute: '2-digit', hour12: false };
+    if (!reduce) opt.second = '2-digit';
+    var fmt;
+    try { fmt = new Intl.DateTimeFormat('sv-SE', opt); } catch (e) { return; }
+    function tick() { el.textContent = fmt.format(new Date()); }
+    tick();
+    setInterval(function () { if (!doc.hidden) tick(); }, reduce ? 20000 : 1000);
+  })();
+
+  /* ── Copy email ── */
+  (function () {
+    var b = doc.getElementById('copy-email');
+    if (!b) return;
+    b.addEventListener('click', function () {
+      var txt = b.getAttribute('data-copy');
+      function done() { b.textContent = 'Kopierat'; b.classList.add('ok'); setTimeout(function () { b.textContent = 'Kopiera'; b.classList.remove('ok'); }, 1800); }
+      function fallback() {
+        var a = doc.getElementById('email'), r = doc.createRange(), s = window.getSelection();
+        r.selectNodeContents(a); s.removeAllRanges(); s.addRange(r);
+        b.textContent = 'Markerat';
+      }
+      try { navigator.clipboard.writeText(txt).then(done, fallback); } catch (e) { fallback(); }
+    });
+  })();
+
+  /* ── Globe ── */
+  var D = Math.PI / 180, TAU = Math.PI * 2;
+  var ICE = '143,196,232', DOT = '176,212,240', AMB = '255,181,71', INK = '11,21,38';
+
+  /* Places stated in the project data. Countries are marked at an approximate centre, so they show no coordinates. */
+  var PLACES = [
+    { id: 'vaxjo', name: 'Växjö', lat: 56.88, lon: 14.81, pos: '56.88°N 14.81°E', home: true, proj: [['fcvaxjo-reborn', 'FC Växjö Reborn'], ['fcvaxjo', 'FC Växjö']] },
+    { id: 'gavle', name: 'Gävle', lat: 60.67, lon: 17.14, pos: '60.67°N 17.14°E', proj: [['bilservicekoll', 'BilserviceKoll'], ['brandsakerhetskoll', 'Brand & Säkerhetskoll'], ['scooterkoll', 'Scooterkoll']] },
+    { id: 'norge', name: 'Norge', lat: 61.0, lon: 9.0, pos: 'Land · marknad', proj: [['alkama', 'ALKAMA']] },
+    { id: 'finland', name: 'Finland', lat: 62.5, lon: 26.0, pos: 'Land · marknad', proj: [['alkama', 'ALKAMA']] },
+    { id: 'irak', name: 'Irak', lat: 33.2, lon: 43.7, pos: 'Land', proj: [['shanasheel', 'Shanasheel']] },
+    { id: 'gambia', name: 'Gambia', lat: 13.45, lon: -15.6, pos: 'Land', proj: [['halimapearl', 'HalimaPearl']] }
+  ];
+  var BY = {}; PLACES.forEach(function (p) { BY[p.id] = p; });
+  var HOME = BY.vaxjo;
+  var TOUR = ['vaxjo', 'gambia', 'gavle', 'irak', 'norge', 'finland'];
+
+  /* Land mask: 240x120 equirectangular, 1 bit per cell (Natural Earth land, rasterised offline). */
+  var MW = 240, MH = 120;
+  var MASK = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAf/gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA///f///8YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP//j/////gAAAeAAAAAAAeAAAAAAAAAAAAAAAAAOT/8/////+AAAPgAAAAAAABcAAAAAAAAAAAAAADkAIfwf////+AAADAAAAAAAAAOAAAAAAAAAAAAAAA/jr3gAP///+AAAAAAAAHwAA//8AAPAAAAAAAAAAfAAHZAAD///+AAAAAAAAYAAH//4AAAAAAAAAAAAAf+zu/4AB///4AAAAAAABgDA/////wDAAAAAAEAAAJ/4M//gB///4AAAAAAABgHf/////7/+AAAAB//wPo/8eHv4A///wAAAA/8AADHf////////+08wH/////243nH8Af/+AAAAD//xn//v////////////A////////+B/g//gAAAAH//5///////////////OH////////8P5Af8AP4AAP7+H///////////////AA////////NA+AP4ADgAA/3////////////////+AD///////8AOIAHwAAAAD/P////////////////8AD///////4APgADwAAAAH/P//////////////w/gAA/AH////4APzAAAAAAAD/D/////////////ZhgAAAHAB////8AH/gAAAAAMAOD////////////8AHAAAAQAAf////wH/gAAAAAOBuP////////////wAPAAAAAAAH////+f/4AAAAA2Ahf////////////gAPAAAAAAAH////+f/+AAAAB3D//////////////9AMAAAAAAAB/////f/+AAAABnv///////////////AIAAAAAAAB///////yAAAAAAf//////////////9AAAAAAAAAAf/////+HAAAAAH///////////////8AAAAAAAAAAf/////+AgAAAAD///////////////4AAAAAAAAAAf//////wAAAAAB///zfx/////////wAAAAAAAAAAf/////yAAAAAAB/7/gPz/////////jAAAAAAAAAAf/////gAAAAAA/wY/gHx////////8DAAAAAAAAAAf/////AAAAAAA/gGfvn4////////4AAAAAAAAAAAf////+AAAAAAA/ACZ//5///////3gGAAAAAAAAAAP////8AAAAAAA/AAM//4///////hwEAAAAAAAAAAH////4AAAAAAAMPgAf/////////4wcAAAAAAAAAAH////4AAAAAAAP/gAA/////////wz4AAAAAAAAAAB////wAAAAAAAf/gAA/////////wGgAAAAAAAAAAA////AAAAAAAA//8cB/////////4EAAAAAAAAAAAAX///AAAAAAAB///f//////////4AAAAAAAAAAAAAX/5BAAAAAAAB//////z///////4AAAAAAAAAAAAAL/gBAAAAAAAH//////5///////4AAAAAAAAAAAAAF/gBgAAAAAAP////+/8P//////wAAAAAAAAAAAAAE/gAAAAAAAAP////+f8wH/////gAAAAAAAAAAAAAAfgAAAAAAAAf/////P/4D/////IAAAAAAAAAAAAAAPgA4AAAAAAf/////v/8D//f/4AAAAAAAAAAAAAAAPwwMAAAAAAf/////n/4A/8P+QAAAAAAAAAAAAAAAHxwBwAAAAAf/////n/wAfwH+wAAAAAAAAAAAAAAAB/gAAAAAAAf/////z/gAfgH+AMAAAAAAAAAAAAAAAX8AAAAAAAf/////z+AAfAB/AIAAAAAAAAAAAAAAAB+AAAAAAAf/////94AAPAB/gIAAAAAAAAAAAAAAAAMAAAAAAAf//////AAAPAA/gAAAAAAAAAAAAAAAAAEDwAAAAAP/////+MAAOAAHgEAAAAAAAAAAAAAAAAGH/gAAAAH//////8AAGAACAAAAAAAAAAAAAAAAAABv/wAAAAH//////4AAFAAgADAAAAAAAAAAAAAAAAAP/4AAAAD//////4AABgAwABAAAAAAAAAAAAAAAAAP//gAAAA/H////wAAAACYBgAAAAAAAAAAAAAAAAAP//wAAAAAA////wAAAADYDgAAAAAAAAAAAAAAAAAP//wAAAAAA////gAAAAB4PgAAAAAAAAAAAAAAAAAf//4AAAAAA///+AAAAAA4foQAAAAAAAAAAAAAAAA///+AAAAAA///8AAAAAAYfAGAAAAAAAAAAAAAAAA////gAAAAA///4AAAAAAefYDYAAAAAAAAAAAAAAA////8AAAAAf//4AAAAAAOCcB/AAAAAAAAAAAAAAA/////AAAAAP//wAAAAAAGAAAPiAAAAAAAAAAAAAA/////gAAAAP//wAAAAAAB4AAPwAAAAAAAAAAAAAAf////gAAAAH//wAAAAAAAMAAPYAAAAAAAAAAAAAAP////AAAAAH//4AAAAAAAAAAAMAAAAAAAAAAAAAAP///+AAAAAH//4AAAAAAAAAAAAAAAAAAAAAAAAAAH///+AAAAAH//4AAAAAAAAAHjAAAAAAAAAAAAAAAH///8AAAAAP//4MAAAAAAAAvjAAAAAAAAAAAAAAAD///8AAAAAP//44AAAAAAAB/jgAAAAAAAAAAAAAAA///8AAAAAP//x4AAAAAAAH/7gAAAAAAAAAAAAAAAf//8AAAAAP//B4AAAAAAAH//wAAAAAAAAAAAAAAAf//4AAAAAH/+B4AAAAAAAf//4AAAAAAAAAAAAAAAf//4AAAAAH//BwAAAAAAB///8AAAAAAAAAAAAAAAf//AAAAAAD//BwAAAAAAD///+AAAAAAAAAAAAAAAf/8AAAAAAD/+BgAAAAAAD////AAAAAAAAAAAAAAAf/8AAAAAAD/8AAAAAAAAD////AAAAAAAAAAAAAAAf/8AAAAAAD/8AAAAAAAAD////AAAAAAAAAAAAAAA//4AAAAAAB/4AAAAAAAAD////AAAAAAAAAAAAAAA//wAAAAAAA/wAAAAAAAAB////AAAAAAAAAAAAAAA//gAAAAAAA/gAAAAAAAAB/h//AAAAAAAAAAAAAAA//gAAAAAAA/AAAAAAAAAB8A/+AAAAAAAAAAAAAAA/8AAAAAAAAAAAAAAAAAAAAAP8AAAAAAAAAAAAAAB/8AAAAAAAAAAAAAAAAAAAAAH8AAAAAAAAAAAAAAB/4AAAAAAAAAAAAAAAAAAAAADwAAOAAAAAAAAAAAB/gAAAAAAAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAB+AAAAAAAAAAAAAAAAAAAAAAAYAAQAAAAAAAAAAAB+AAAAAAAAAAAAAAAAAAAAAAAYAAwAAAAAAAAAAAB8AAAAAAAAAAAAAAAAAAAAAAAAADgAAAAAAAAAAAD4AAAAAAAAAAAAAAAAAAAAAAAAAHAAAAAAAAAAAAD8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAHwAAD//+Dv+AAAAAAAAAAAAAAAAGAAAAAAAAAAAD//8B///////4AAAAAAAAAAAAAAA/gAAAAAAAAADv//8f////////+AAAAAAAAAAAAAC/gAAAABe///////8//////////+AAAAAAAAABwgA3wAAAAH///////////////////+AAAAAAAtwB////gAAAAf///////////////////wAAAAB////////+AAAAf////////////////////AAAAHH///////+AAAAf/////////////////////gAABD////////wQAPg//////////////////////gAAAAP///////8AQ/gP////////////////////+AAAAB/////////8AAf//////////////////////AAABH//////////v////////////////////////+A////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////';
+  var bits = null;
+  try { bits = atob(MASK); } catch (e) { bits = ''; }
+  function land(lat, lon) {
+    var x = Math.floor((lon + 180) / 360 * MW) % MW, y = Math.min(MH - 1, Math.floor((90 - lat) / 180 * MH));
+    var i = y * MW + x;
+    return (bits.charCodeAt(i >> 3) & (0x80 >> (i & 7))) !== 0;
+  }
+  function vec(lat, lon) { var c = Math.cos(lat * D); return [c * Math.sin(lon * D), Math.sin(lat * D), c * Math.cos(lon * D)]; }
+
+  var dotCache = {};
+  function makeDots(step) {
+    var key = step.toFixed(2);
+    if (dotCache[key]) return dotCache[key];
+    var out = [], row = 0;
+    for (var lat = 83; lat > -58; lat -= step, row++) {
+      var n = Math.max(1, Math.round(360 * Math.cos(lat * D) / step)), off = (row % 2) * 0.5;
+      for (var i = 0; i < n; i++) {
+        var lon = -180 + (i + off) * 360 / n;
+        if (land(lat, lon)) { var v = vec(lat, lon); out.push(v[0], v[1], v[2]); }
+      }
+    }
+    return (dotCache[key] = new Float32Array(out));
+  }
+
+  /* Graticule every 30°, as polylines of unit vectors */
+  var GRAT = (function () {
+    var lines = [], a, b, pts, v;
+    for (a = -180; a < 180; a += 30) { pts = []; for (b = -80; b <= 80; b += 5) { v = vec(b, a); pts.push(v[0], v[1], v[2]); } lines.push(pts); }
+    for (b = -60; b <= 60; b += 30) { pts = []; for (a = -180; a <= 180; a += 5) { v = vec(b, a); pts.push(v[0], v[1], v[2]); } lines.push(pts); }
+    return lines;
+  })();
+
+  /* Great-circle arcs from home, lifted above the surface */
+  var ARC_N = 44;
+  PLACES.forEach(function (p, idx) {
+    p.v = vec(p.lat, p.lon);
+    if (p.home) return;
+    var a = HOME.v || vec(HOME.lat, HOME.lon), b = p.v;
+    var dot = a[0] * b[0] + a[1] * b[1] + a[2] * b[2], om = Math.acos(Math.max(-1, Math.min(1, dot))), so = Math.sin(om);
+    var lift = 0.03 + om * 0.2, pts = new Float32Array((ARC_N + 1) * 3);
+    for (var i = 0; i <= ARC_N; i++) {
+      var t = i / ARC_N, k1 = Math.sin((1 - t) * om) / so, k2 = Math.sin(t * om) / so, r = 1 + lift * Math.sin(Math.PI * t);
+      pts[i * 3] = (a[0] * k1 + b[0] * k2) * r; pts[i * 3 + 1] = (a[1] * k1 + b[1] * k2) * r; pts[i * 3 + 2] = (a[2] * k1 + b[2] * k2) * r;
+    }
+    p.arc = pts; p.phase = idx * 0.19;
+  });
+  HOME.v = vec(HOME.lat, HOME.lon);
+
+  var REST = { lon: 15, lat: 33 };
+  var st = { lon: REST.lon, lat: REST.lat, tLon: REST.lon, tLat: REST.lat, vLon: 0, sway: 0, drag: false, sel: null, hover: null, tour: null, tourI: -1, nextTour: 0, lastUser: -1e9, active: [] };
+  var views = [], raf = 0, last = 0;
+
+  function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+  function aim(ids) {
+    var x = HOME.v[0], y = HOME.v[1], z = HOME.v[2];
+    ids.forEach(function (id) { var v = BY[id].v; x += v[0]; y += v[1]; z += v[2]; });
+    var len = Math.sqrt(x * x + y * y + z * z) || 1;
+    var lat = Math.asin(y / len) / D, lon = Math.atan2(x, z) / D;
+    st.tLat = clamp(lat - 7, 6, 50);
+    var d = ((lon - st.tLon) % 360 + 540) % 360 - 180;
+    st.tLon += d; st.vLon = 0;
+  }
+
+  var roEls = { name: doc.querySelectorAll('[data-ro="name"]'), pos: doc.querySelectorAll('[data-ro="pos"]'), proj: doc.querySelectorAll('[data-ro="proj"]') };
+  var chips = doc.querySelectorAll('.places [data-place]');
+  function esc(s) { return s.replace(/&/g, '&amp;'); }
+  function refresh(reAim) {
+    var act = st.hover || (st.sel ? [st.sel] : null) || st.tour || [];
+    var key = act.join(',');
+    if (key !== st.active.join(',')) {
+      st.active = act;
+      var shown = act.length ? act : ['vaxjo'], i;
+      var names = shown.map(function (id) { return BY[id].name; }).join(' · ');
+      var pos = shown.length === 1 ? BY[shown[0]].pos : 'Länder · marknader';
+      var seen = {}, links = [];
+      shown.forEach(function (id) { BY[id].proj.forEach(function (p) { if (!seen[p[0]]) { seen[p[0]] = 1; links.push('<a href="#p-' + p[0] + '">' + esc(p[1]) + '</a>'); } }); });
+      for (i = 0; i < roEls.name.length; i++) roEls.name[i].textContent = names;
+      for (i = 0; i < roEls.pos.length; i++) roEls.pos[i].textContent = pos;
+      for (i = 0; i < roEls.proj.length; i++) roEls.proj[i].innerHTML = links.join(', ');
+      for (i = 0; i < chips.length; i++) chips[i].classList.toggle('is-on', act.indexOf(chips[i].getAttribute('data-place')) > -1);
+      if (act.length && reAim !== false) aim(act);
+    }
+    kick();
+  }
+  function setSel(id) {
+    st.sel = st.sel === id ? null : id;
+    var i, rows = doc.querySelectorAll('.row.lit');
+    for (i = 0; i < rows.length; i++) rows[i].classList.remove('lit');
+    if (st.sel) { rows = doc.querySelectorAll('.row[data-places~="' + st.sel + '"]'); for (i = 0; i < rows.length; i++) rows[i].classList.add('lit'); }
+    for (i = 0; i < chips.length; i++) chips[i].setAttribute('aria-pressed', chips[i].getAttribute('data-place') === st.sel ? 'true' : 'false');
+    touch(); refresh();
+    if (!st.sel && !st.hover) { st.tLat = REST.lat; }
+  }
+  function touch() { st.lastUser = performance.now(); st.nextTour = 0; if (st.tour) { st.tour = null; } }
+
+  function View(el) {
+    this.el = el; this.canvas = el.querySelector('canvas');
+    this.ctx = this.canvas && this.canvas.getContext ? this.canvas.getContext('2d') : null;
+    this.mini = el.hasAttribute('data-mini'); this.visible = false; this.size = 0; this.hits = [];
+  }
+  View.prototype.resize = function () {
+    var w = this.el.clientWidth; if (!w || !this.ctx) return;
+    var small = window.innerWidth < 760;
+    var dpr = Math.min(window.devicePixelRatio || 1, small ? 1.5 : 2);
+    this.size = w; this.dpr = dpr; this.R = w * 0.435;
+    this.canvas.width = Math.round(w * dpr); this.canvas.height = Math.round(w * dpr);
+    this.dots = makeDots(Math.max(1.5, Math.min(3.2, 6.1 * 180 / (Math.PI * this.R))));
+    this.back = !small && !this.mini;
+    var c = w / 2, g = this.ctx.createRadialGradient(c - this.R * 0.32, c - this.R * 0.4, this.R * 0.05, c, c, this.R);
+    g.addColorStop(0, '#18305a'); g.addColorStop(0.75, '#0d1a33'); g.addColorStop(1, '#0b1730');
+    this.grad = g;
+    var s = this.ctx.createRadialGradient(c, c, this.R * 0.62, c, c, this.R);
+    s.addColorStop(0, 'rgba(' + INK + ',0)'); s.addColorStop(1, 'rgba(' + INK + ',0.62)');
+    this.shade = s;
+  };
+
+  function draw(v, now) {
+    var ctx = v.ctx; if (!ctx || !v.size) return;
+    var S = v.size, R = v.R, cx = S / 2, cy = S / 2, k = clamp(R / 220, 0.55, 1.1), i, j;
+    ctx.setTransform(v.dpr, 0, 0, v.dpr, 0, 0);
+    ctx.clearRect(0, 0, S, S);
+
+    var lam = (st.lon + st.sway * 4 * Math.sin(now * 0.00035)) * D, phi = st.lat * D;
+    var cl = Math.cos(lam), sl = Math.sin(lam), cp = Math.cos(phi), sp = Math.sin(phi);
+    var x, y, z, X, Y, Z, Z1, px, py;
+
+    /* disc, rim and bezel ticks */
+    ctx.fillStyle = v.grad; ctx.beginPath(); ctx.arc(cx, cy, R, 0, TAU); ctx.fill();
+    ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(' + ICE + ',0.4)'; ctx.stroke();
+    ctx.beginPath();
+    for (i = 0; i < 72; i++) {
+      var a = i * TAU / 72, r1 = R + 5 * k, r2 = R + (i % 6 === 0 ? 13 : 8.5) * k;
+      ctx.moveTo(cx + Math.cos(a) * r1, cy + Math.sin(a) * r1); ctx.lineTo(cx + Math.cos(a) * r2, cy + Math.sin(a) * r2);
+    }
+    ctx.strokeStyle = 'rgba(' + ICE + ',0.3)'; ctx.stroke();
+
+    /* graticule, front side only */
+    ctx.beginPath();
+    for (i = 0; i < GRAT.length; i++) {
+      var g = GRAT[i], pen = false;
+      for (j = 0; j < g.length; j += 3) {
+        x = g[j]; y = g[j + 1]; z = g[j + 2];
+        X = x * cl - z * sl; Z1 = x * sl + z * cl; Z = y * sp + Z1 * cp;
+        if (Z <= 0) { pen = false; continue; }
+        Y = y * cp - Z1 * sp; px = cx + R * X; py = cy - R * Y;
+        if (pen) ctx.lineTo(px, py); else ctx.moveTo(px, py);
+        pen = true;
+      }
+    }
+    ctx.strokeStyle = 'rgba(' + ICE + ',0.09)'; ctx.stroke();
+
+    /* land dots, bucketed by depth so each bucket is one fill */
+    var d = v.dots, P = [new Path2D(), new Path2D(), new Path2D(), new Path2D()], PB = v.back ? new Path2D() : null;
+    var rad = [0.7 * k, 0.95 * k, 1.15 * k, 1.3 * k], rb = 0.8 * k, b, r;
+    for (i = 0; i < d.length; i += 3) {
+      x = d[i]; y = d[i + 1]; z = d[i + 2];
+      X = x * cl - z * sl; Z1 = x * sl + z * cl; Z = y * sp + Z1 * cp;
+      Y = y * cp - Z1 * sp; px = cx + R * X; py = cy - R * Y;
+      if (Z <= 0) { if (PB && Z < -0.12) { PB.moveTo(px + rb, py); PB.arc(px, py, rb, 0, TAU); } continue; }
+      b = Z > 0.72 ? 3 : Z > 0.45 ? 2 : Z > 0.2 ? 1 : 0; r = rad[b];
+      P[b].moveTo(px + r, py); P[b].arc(px, py, r, 0, TAU);
+    }
+    if (PB) { ctx.fillStyle = 'rgba(' + ICE + ',0.075)'; ctx.fill(PB); }
+    var al = [0.26, 0.48, 0.72, 0.95];
+    for (b = 0; b < 4; b++) { ctx.fillStyle = 'rgba(' + DOT + ',' + al[b] + ')'; ctx.fill(P[b]); }
+    ctx.fillStyle = v.shade; ctx.beginPath(); ctx.arc(cx, cy, R, 0, TAU); ctx.fill();
+
+    /* arcs */
+    var act = st.active, anyAct = act.length > 0, p, on;
+    for (i = 0; i < PLACES.length; i++) {
+      p = PLACES[i]; if (!p.arc) continue;
+      on = act.indexOf(p.id) > -1;
+      var pts = p.arc, pen2 = false;
+      ctx.beginPath();
+      for (j = 0; j < pts.length; j += 3) {
+        x = pts[j]; y = pts[j + 1]; z = pts[j + 2];
+        X = x * cl - z * sl; Z1 = x * sl + z * cl; Z = y * sp + Z1 * cp; Y = y * cp - Z1 * sp;
+        if (Z <= 0 && X * X + Y * Y <= 1) { pen2 = false; continue; }
+        px = cx + R * X; py = cy - R * Y;
+        if (pen2) ctx.lineTo(px, py); else ctx.moveTo(px, py);
+        pen2 = true;
+      }
+      ctx.lineWidth = on ? 1.7 : 1;
+      ctx.strokeStyle = on ? 'rgba(' + AMB + ',0.95)' : 'rgba(' + ICE + ',' + (anyAct ? 0.28 : 0.5) + ')';
+      ctx.stroke();
+      if (!reduce && (on || !anyAct)) {
+        /* a small pulse travelling out from home */
+        var t = (now * 0.00028 + p.phase) % 1, f = t * ARC_N, i0 = Math.floor(f) * 3, fr = f - Math.floor(f);
+        if (i0 + 5 < pts.length) {
+          x = pts[i0] + (pts[i0 + 3] - pts[i0]) * fr; y = pts[i0 + 1] + (pts[i0 + 4] - pts[i0 + 1]) * fr; z = pts[i0 + 2] + (pts[i0 + 5] - pts[i0 + 2]) * fr;
+          X = x * cl - z * sl; Z1 = x * sl + z * cl; Z = y * sp + Z1 * cp; Y = y * cp - Z1 * sp;
+          if (Z > 0 || X * X + Y * Y > 1) {
+            ctx.fillStyle = on ? 'rgba(' + AMB + ',1)' : 'rgba(' + DOT + ',0.9)';
+            ctx.beginPath(); ctx.arc(cx + R * X, cy - R * Y, (on ? 2.4 : 1.7) * k, 0, TAU); ctx.fill();
+          }
+        }
+      }
+    }
+
+    /* markers */
+    v.hits.length = 0;
+    var labels = [];
+    for (i = 0; i < PLACES.length; i++) {
+      p = PLACES[i]; x = p.v[0]; y = p.v[1]; z = p.v[2];
+      X = x * cl - z * sl; Z1 = x * sl + z * cl; Z = y * sp + Z1 * cp;
+      if (Z < 0.04) continue;
+      Y = y * cp - Z1 * sp; px = cx + R * X; py = cy - R * Y;
+      on = act.indexOf(p.id) > -1;
+      v.hits.push({ id: p.id, x: px, y: py });
+      if (p.home) {
+        if (!reduce) {
+          var w = (now * 0.0006) % 1;
+          ctx.strokeStyle = 'rgba(' + AMB + ',' + (0.7 * (1 - w)) + ')'; ctx.lineWidth = 1.2;
+          ctx.beginPath(); ctx.arc(px, py, (4 + w * 13) * k, 0, TAU); ctx.stroke();
+        } else {
+          ctx.strokeStyle = 'rgba(' + AMB + ',0.5)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(px, py, 9 * k, 0, TAU); ctx.stroke();
+        }
+        ctx.fillStyle = 'rgba(' + AMB + ',1)'; ctx.beginPath(); ctx.arc(px, py, 3.4 * k, 0, TAU); ctx.fill();
+        labels.push({ t: p.name, x: px, y: py, hot: true, left: anyAct && !on });
+      } else {
+        var col = on ? AMB : ICE, rr = (on ? 6 : 4.2) * k;
+        ctx.fillStyle = 'rgba(' + INK + ',0.9)'; ctx.beginPath(); ctx.arc(px, py, rr, 0, TAU); ctx.fill();
+        ctx.strokeStyle = 'rgba(' + col + ',1)'; ctx.lineWidth = on ? 1.6 : 1.2; ctx.stroke();
+        ctx.fillStyle = 'rgba(' + col + ',1)'; ctx.beginPath(); ctx.arc(px, py, 1.5 * k, 0, TAU); ctx.fill();
+        if (on) {
+          ctx.beginPath();
+          ctx.moveTo(px - rr - 5, py); ctx.lineTo(px - rr - 1.5, py); ctx.moveTo(px + rr + 1.5, py); ctx.lineTo(px + rr + 5, py);
+          ctx.moveTo(px, py - rr - 5); ctx.lineTo(px, py - rr - 1.5); ctx.moveTo(px, py + rr + 1.5); ctx.lineTo(px, py + rr + 5);
+          ctx.stroke();
+          labels.push({ t: p.name, x: px, y: py, hot: true, left: false });
+        }
+      }
+    }
+    /* labels: home always, active places too */
+    var fs = v.mini ? 10 : 11;
+    ctx.font = '500 ' + fs + 'px "JetBrains Mono", ui-monospace, Menlo, monospace'; ctx.textBaseline = 'middle';
+    for (i = 0; i < labels.length; i++) {
+      var L = labels[i], txt = L.t.toUpperCase(), tw = ctx.measureText(txt).width + 12, th = fs + 8;
+      var lx = L.left ? L.x - 12 - tw : L.x + 12, ly = L.y - th / 2 - (L.left ? 0 : 12);
+      lx = clamp(lx, 2, S - tw - 2); ly = clamp(ly, 2, S - th - 2);
+      ctx.fillStyle = 'rgba(' + INK + ',0.9)'; ctx.fillRect(lx, ly, tw, th);
+      ctx.strokeStyle = 'rgba(' + AMB + ',0.55)'; ctx.lineWidth = 1; ctx.strokeRect(lx + 0.5, ly + 0.5, tw - 1, th - 1);
+      ctx.fillStyle = 'rgba(' + AMB + ',1)'; ctx.fillText(txt, lx + 6, ly + th / 2 + 0.5);
+    }
+  }
+
+  function anyVisible() { for (var i = 0; i < views.length; i++) if (views[i].visible) return true; return false; }
+  function frame(now) {
+    raf = 0;
+    var dt = Math.min(0.05, (now - last) / 1000 || 0.016); last = now;
+    var idle = !st.drag && !st.hover && !st.sel && now - st.lastUser > 5000;
+    if (idle && now >= st.nextTour) {
+      st.tourI = (st.tourI + 1) % TOUR.length; st.tour = [TOUR[st.tourI]]; st.nextTour = now + 5200;
+      refresh();
+    }
+    st.sway += ((idle ? 1 : 0) - st.sway) * (1 - Math.exp(-dt * 1.5));
+    if (!st.drag && Math.abs(st.vLon) > 0.05) { st.tLon += st.vLon * dt; st.lon += st.vLon * dt; st.vLon *= Math.exp(-dt * 2.6); }
+    var e = 1 - Math.exp(-dt * 3.2);
+    st.lon += (st.tLon - st.lon) * e; st.lat += (st.tLat - st.lat) * e;
+    for (var i = 0; i < views.length; i++) if (views[i].visible) draw(views[i], now);
+    if (anyVisible() && !doc.hidden) raf = requestAnimationFrame(frame);
+  }
+  /* reduced motion: no loop, snap to the target and paint one frame per change */
+  function kick() {
+    if (reduce) {
+      st.lon = st.tLon; st.lat = st.tLat; st.sway = 0;
+      for (var i = 0; i < views.length; i++) if (views[i].visible) draw(views[i], 0);
+      return;
+    }
+    if (!raf && anyVisible() && !doc.hidden) { last = performance.now(); raf = requestAnimationFrame(frame); }
+  }
+
+  function bind(v) {
+    var el = v.el, id = null, sx = 0, sy = 0, lx = 0, ly = 0, lt = 0, moved = 0;
+    function hit(e) {
+      var r = el.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top, best = null, bd = 18 * 18;
+      for (var i = 0; i < v.hits.length; i++) { var h = v.hits[i], dd = (h.x - x) * (h.x - x) + (h.y - y) * (h.y - y); if (dd < bd) { bd = dd; best = h.id; } }
+      return best;
+    }
+    el.addEventListener('pointerdown', function (e) {
+      if (e.button) return;
+      id = e.pointerId; sx = lx = e.clientX; sy = ly = e.clientY; lt = performance.now(); moved = 0;
+      st.drag = true; st.vLon = 0; el.classList.add('is-drag');
+      try { el.setPointerCapture(id); } catch (err) {}
+      touch(); refresh(false);
+    });
+    el.addEventListener('pointermove', function (e) {
+      if (id === null || e.pointerId !== id) {
+        if (e.pointerType === 'mouse') el.style.cursor = hit(e) ? 'pointer' : '';
+        return;
+      }
+      var dx = e.clientX - lx, dy = e.clientY - ly, now = performance.now(), q = 57.3 / v.R;
+      lx = e.clientX; ly = e.clientY; moved = Math.max(moved, Math.abs(e.clientX - sx) + Math.abs(e.clientY - sy));
+      st.tLon -= dx * q; st.lon -= dx * q;
+      if (e.pointerType !== 'touch') { st.tLat = clamp(st.tLat + dy * q, -35, 72); st.lat = clamp(st.lat + dy * q, -35, 72); }
+      var dtm = Math.max(8, now - lt) / 1000; lt = now;
+      st.vLon = st.vLon * 0.6 + (-dx * q / dtm) * 0.4;
+      st.lastUser = now; kick();
+    });
+    function end(e) {
+      if (id === null || e.pointerId !== id) return;
+      id = null; st.drag = false; el.classList.remove('is-drag');
+      if (reduce || performance.now() - lt > 120) st.vLon = 0;
+      st.vLon = clamp(st.vLon, -260, 260);
+      if (e.type === 'pointerup' && moved < 6) { st.vLon = 0; var h = hit(e); if (h) setSel(h); }
+      st.lastUser = performance.now(); kick();
+    }
+    el.addEventListener('pointerup', end); el.addEventListener('pointercancel', end);
+    el.addEventListener('keydown', function (e) {
+      var k = e.key, used = true;
+      if (k === 'ArrowLeft') st.tLon -= 12; else if (k === 'ArrowRight') st.tLon += 12;
+      else if (k === 'ArrowUp') st.tLat = clamp(st.tLat + 8, -35, 72); else if (k === 'ArrowDown') st.tLat = clamp(st.tLat - 8, -35, 72);
+      else used = false;
+      if (used) { e.preventDefault(); touch(); refresh(false); }
+    });
+  }
+
+  var els = doc.querySelectorAll('[data-globe]'), i;
+  for (i = 0; i < els.length; i++) { var v = new View(els[i]); if (v.ctx) views.push(v); }
+  if (!views.length) { root.classList.add('no-canvas'); }
+
+  var rt = 0;
+  function resizeAll() { for (var i = 0; i < views.length; i++) views[i].resize(); kick(); if (reduce) return; for (i = 0; i < views.length; i++) if (views[i].visible) draw(views[i], performance.now()); }
+  views.forEach(function (v) { v.resize(); bind(v); });
+  window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(resizeAll, 140); }, { passive: true });
+  if (doc.fonts && doc.fonts.ready) doc.fonts.ready.then(function () { if (reduce) kick(); });
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (en) {
+      en.forEach(function (x) {
+        for (var i = 0; i < views.length; i++) if (views[i].el === x.target) {
+          views[i].visible = x.isIntersecting;
+          if (x.isIntersecting && !views[i].size) views[i].resize();
+        }
+      });
+      kick();
+    }, { rootMargin: '80px' });
+    views.forEach(function (v) { io.observe(v.el); });
+  } else { views.forEach(function (v) { v.visible = true; }); }
+  doc.addEventListener('visibilitychange', function () { if (!doc.hidden) kick(); });
+  if (mq.addEventListener) mq.addEventListener('change', function () { reduce = mq.matches; if (reduce) { st.tour = null; st.hover = null; refresh(); } kick(); });
+
+  /* place buttons */
+  for (i = 0; i < chips.length; i++) chips[i].addEventListener('click', function () { setSel(this.getAttribute('data-place')); });
+
+  /* project rows and cards: hover or focus points the globe at the project's place */
+  var list = doc.getElementById('projekt');
+  function over(e) {
+    var a = e.target.closest ? e.target.closest('[data-places]') : null;
+    var ids = a ? a.getAttribute('data-places').split(' ') : null;
+    if ((ids ? ids.join() : '') === (st.hover ? st.hover.join() : '')) return;
+    st.hover = ids; st.lastUser = performance.now(); st.nextTour = 0; st.tour = null;
+    refresh();
+  }
+  if (list) {
+    list.addEventListener('pointerover', function (e) { if (e.pointerType !== 'touch') over(e); }, { passive: true });
+    list.addEventListener('pointerleave', function () { if (st.hover) { st.hover = null; st.lastUser = performance.now(); refresh(); } }, { passive: true });
+    list.addEventListener('focusin', over);
+    list.addEventListener('focusout', function () { if (st.hover) { st.hover = null; refresh(); } });
+  }
+
+  st.lastUser = performance.now() - 3200; /* first tour step about 1.8 s after load */
+  kick();
+})();
+</script>
+</body>
+</html>

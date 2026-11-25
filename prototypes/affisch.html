@@ -1,0 +1,787 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Portfolio Affisch</title>
+<meta name="description" content="Marcel Deluca, webbutvecklare i Växjö. Jag bygger webbappar och hemsidor med React och Java.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<style>
+/* Layout: a Swiss poster. One white sheet, a 12-column grid split 2 / 6 / 4, thick black rules,
+   one cobalt accent. Archivo's width axis does the design work: condensed for display, normal for text. */
+:root {
+  color-scheme: light;
+  --paper: #ffffff;
+  --ink: #0b0b0c;
+  --blue: #1f3bff;
+  --grey: #5c5f6b;
+  --on-blue: #ffffff;
+  --font: "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --pad-l: max(16px, env(safe-area-inset-left, 0px));
+  --pad-r: max(16px, env(safe-area-inset-right, 0px));
+  --gap: 1rem;
+  --rule: 4px;
+  --space: clamp(4rem, 9vw, 8.5rem);
+}
+@media (min-width: 900px) {
+  :root {
+    --pad-l: max(32px, env(safe-area-inset-left, 0px));
+    --pad-r: max(32px, env(safe-area-inset-right, 0px));
+    --gap: 1.5rem;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  font-stretch: 100%;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, p, ol, ul, dl, dd, figure { margin: 0; padding: 0; }
+ol, ul { list-style: none; }
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+::selection { background: var(--blue); color: var(--on-blue); }
+
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.wrap { max-width: 105rem; margin-inline: auto; padding-left: var(--pad-l); padding-right: var(--pad-r); }
+.label { font-size: .8125rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; line-height: 1.3; }
+.disp {
+  font-stretch: 62%; font-weight: 800; text-transform: uppercase;
+  font-size: clamp(3.25rem, 11.5vw, 10.5rem); line-height: .94; letter-spacing: -.01em; text-wrap: balance;
+}
+.grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); row-gap: 1.5rem; }
+.grid > * { grid-column: 1 / -1; }
+@media (min-width: 900px) {
+  .grid > .c-label { grid-column: 1 / 3; }
+  .grid > .c-main { grid-column: 3 / 9; }
+  .grid > .c-side { grid-column: 9 / 13; }
+  .grid > .c-wide { grid-column: 3 / 13; }
+}
+
+/* ── Top bar ── */
+.top {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 1.5rem;
+  border-bottom: var(--rule) solid var(--ink); padding-block: .25rem;
+}
+.top p { display: flex; align-items: center; min-height: 44px; }
+.top nav { display: flex; flex-wrap: wrap; gap: 0 1.25rem; align-items: center; }
+.top a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; }
+.top a:hover { color: var(--blue); }
+.top .nav-cv { background: var(--ink); color: var(--paper); padding-inline: .9rem; }
+.top .nav-cv:hover { background: var(--blue); color: var(--on-blue); }
+@media (max-width: 479px) {
+  .top nav { font-size: .75rem; gap: 0 .85rem; width: 100%; justify-content: space-between; }
+  .top .nav-cv { padding-inline: .7rem; }
+}
+
+/* ── Hero ── */
+.name { container-type: inline-size; padding-block: clamp(1rem, 2.4vw, 2.25rem) clamp(.9rem, 2vw, 1.9rem); }
+.name-set {
+  display: flex; justify-content: space-between;
+  font-size: 13vw; font-size: 13.86cqw; line-height: .72;
+  font-kerning: none; text-transform: uppercase; white-space: nowrap;
+  -webkit-user-select: none; user-select: none;
+}
+.word { display: flex; }
+.l { display: block; font-variation-settings: "wdth" 74, "wght" 800; }
+.word + .word .l { font-variation-settings: "wdth" 74, "wght" 800; }
+@media (max-width: 699px) {
+  .name-set { flex-direction: column; gap: .1em; font-size: 28vw; font-size: 30.3cqw; }
+  .word { justify-content: space-between; }
+  .word + .word .l { font-variation-settings: "wdth" 78.6, "wght" 800; }
+}
+.hero-grid { border-top: var(--rule) solid var(--ink); padding-block: 1.25rem var(--space); }
+.status { display: flex; align-items: center; align-self: start; gap: .6rem; padding-top: .35rem; }
+.sq { flex: none; width: .8rem; height: .8rem; background: var(--blue); }
+.statement {
+  font-size: clamp(1.75rem, 3.9vw, 3.75rem); font-stretch: 84%; font-weight: 650;
+  line-height: 1.04; letter-spacing: -.015em; text-wrap: balance;
+}
+.statement em { font-style: normal; color: var(--blue); }
+.hero-side { display: grid; gap: 1.25rem; align-content: start; }
+.hero-side > p { max-width: 40ch; }
+.actions { display: grid; gap: .5rem; }
+.btn {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  min-height: 3.5rem; padding: .5rem 1rem; border: 2px solid var(--ink);
+  text-decoration: none; font-weight: 700; font-size: .9375rem; letter-spacing: .05em; text-transform: uppercase;
+}
+.btn small { font-size: .75rem; font-weight: 500; letter-spacing: .04em; }
+.btn-blue { background: var(--blue); border-color: var(--blue); color: var(--on-blue); }
+.btn:hover { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.links { display: flex; flex-wrap: wrap; gap: 0 1.5rem; }
+.links a {
+  display: inline-flex; align-items: center; min-height: 44px; font-weight: 600;
+  text-decoration-thickness: 2px; text-underline-offset: .22em; overflow-wrap: anywhere;
+}
+.links a:hover { color: var(--blue); }
+
+/* ── Section heads ── */
+.sec-head {
+  display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: .75rem 2rem;
+  padding-bottom: clamp(.75rem, 1.6vw, 1.25rem);
+}
+.sec-head p { max-width: 30ch; padding-bottom: .35rem; }
+.sec-head .note { color: var(--blue); font-weight: 600; }
+
+/* ── Gallery: plain grid first, lifted into 3D by the script ── */
+.gal { --cw: min(40rem, 78vw); --ch: calc(var(--cw) / 2 + 2.75rem + 6px); --r: calc(var(--cw) * 1.28); --tilt: -12deg; }
+.gal-stage { border-top: var(--rule) solid var(--ink); padding: var(--gap) var(--pad-r) 0 var(--pad-l); }
+.ring { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
+@media (min-width: 900px) { .ring { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.card a { display: block; border: 3px solid var(--ink); background: var(--ink); color: var(--paper); text-decoration: none; }
+.card img { width: 100%; aspect-ratio: 2 / 1; object-fit: cover; background: var(--paper); }
+.card-label {
+  display: flex; align-items: center; gap: .7rem; min-height: 2.75rem; padding: .25rem .7rem;
+  font-stretch: 72%; font-weight: 700; font-size: .9375rem; letter-spacing: .03em; text-transform: uppercase; line-height: 1.1;
+}
+.card-label b { font-weight: 500; font-variant-numeric: tabular-nums; }
+.card-back, .cap { display: none; }
+
+.is-3d .gal-stage {
+  position: relative; height: calc(3rem + var(--cw) * .336 + var(--ch) * .632); padding: 0; overflow: hidden;
+  perspective: calc(var(--cw) * 2.2); touch-action: pan-y; cursor: grab;
+  -webkit-user-select: none; user-select: none;
+}
+.is-3d.dragging .gal-stage { cursor: grabbing; }
+.is-3d .ring {
+  display: block; position: absolute; left: 50%; top: calc(1.5rem + var(--cw) * .0717 - var(--ch) * .365);
+  width: var(--cw); height: var(--ch); margin-left: calc(var(--cw) / -2);
+  transform-style: preserve-3d;
+  transform: translateZ(calc(var(--r) * -1)) rotateX(var(--tilt)) rotateY(0deg);
+  transition: transform 700ms cubic-bezier(.2, .75, .2, 1);
+  will-change: transform;
+}
+.is-3d .card {
+  position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+  transform: rotateY(calc(var(--i) * 45deg)) translateZ(var(--r));
+  transform-style: preserve-3d;
+}
+.is-3d .card a, .is-3d .card-back { -webkit-backface-visibility: hidden; backface-visibility: hidden; }
+.is-3d .card a { height: 100%; -webkit-user-drag: none; }
+.is-3d .card img { -webkit-user-drag: none; pointer-events: none; }
+.is-3d .card-back {
+  display: flex; align-items: flex-start; position: absolute; inset: 0; padding: .14em .16em 0;
+  background: var(--blue); color: var(--on-blue); transform: rotateY(180deg);
+  font-stretch: 62%; font-weight: 800; font-size: calc(var(--cw) * .2); line-height: .74; font-variant-numeric: tabular-nums;
+}
+.is-3d .gal-stage:focus-visible { outline-offset: -6px; }
+
+.is-3d .cap { display: grid; border-top: var(--rule) solid var(--ink); padding-top: 1.25rem; }
+.cap-count { display: flex; align-items: flex-start; gap: .5rem; font-variant-numeric: tabular-nums; }
+.cap-count b {
+  color: var(--blue); font-stretch: 62%; font-weight: 800; letter-spacing: -.01em;
+  font-size: clamp(2.75rem, 6.4vw, 6.25rem); line-height: .88;
+}
+.cap-count span { padding-top: .3rem; }
+.cap-body { min-height: calc(clamp(2.75rem, 6.4vw, 6.25rem) * 1.76 + 6.75rem); }
+.cap-name {
+  font-stretch: 62%; font-weight: 800; text-transform: uppercase; letter-spacing: -.01em;
+  font-size: clamp(2.75rem, 6.4vw, 6.25rem); line-height: .88; text-wrap: balance;
+}
+.cap-tag { margin-top: .9rem; font-size: clamp(1.0625rem, 1.45vw, 1.3125rem); line-height: 1.4; max-width: 46ch; }
+.cap-side { display: grid; gap: 1rem; align-content: start; }
+.cap-meta { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .35rem 1.25rem; }
+.cap-meta dt { color: var(--grey); padding-top: .2em; }
+.cap-meta dd { font-weight: 600; }
+.gal-nav { display: flex; gap: .5rem; }
+.gal-nav button {
+  flex: none; width: 3.5rem; height: 3.5rem; border: 2px solid var(--ink); background: var(--paper);
+  font-size: 1.375rem; line-height: 1; cursor: pointer; border-radius: 0;
+}
+.gal-nav button:hover { background: var(--ink); color: var(--paper); }
+.gal-nav .btn { flex: 1; }
+
+/* ── Index of all projects ── */
+.idx-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-top: var(--space); padding-bottom: .6rem; }
+.idx { border-top: var(--rule) solid var(--ink); }
+.idx a {
+  display: grid; grid-template-columns: 2.25rem minmax(0, 1fr) auto; column-gap: .75rem; align-items: baseline;
+  padding: .7rem .75rem; margin-inline: -.75rem; border-bottom: 1px solid var(--ink); text-decoration: none;
+}
+.idx li:last-child a { border-bottom-width: var(--rule); }
+.i-n, .i-y { font-variant-numeric: tabular-nums; }
+.i-n { color: var(--grey); }
+.i-name {
+  font-stretch: 66%; font-weight: 750; text-transform: uppercase; letter-spacing: -.005em;
+  font-size: clamp(1.625rem, 3.7vw, 3.5rem); line-height: 1;
+}
+.i-tags { grid-column: 2 / 3; grid-row: 2; color: var(--grey); font-size: .9375rem; }
+.i-y { grid-column: 3; grid-row: 1; font-weight: 600; white-space: nowrap; }
+.i-y span { display: inline-block; margin-left: .5rem; }
+.idx a:hover { background: var(--ink); color: var(--paper); }
+.idx a:hover .i-n, .idx a:hover .i-tags { color: var(--paper); }
+@media (min-width: 900px) {
+  .idx a { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); }
+  .i-n { grid-column: 1 / 3; }
+  .i-name { grid-column: 3 / 9; }
+  .i-tags { grid-column: 9 / 12; grid-row: 1; font-size: 1rem; }
+  .i-y { grid-column: 12; justify-self: end; }
+}
+.peek {
+  position: fixed; left: 0; top: 0; z-index: 20; width: 22rem; aspect-ratio: 2 / 1; pointer-events: none;
+  border: 3px solid var(--ink); background: var(--blue); opacity: 0; will-change: transform;
+}
+.peek.on { opacity: 1; }
+.peek img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ── Teknik ── */
+.sec { padding-top: var(--space); }
+.band { margin-top: var(--space); background: var(--ink); color: var(--paper); overflow: hidden; padding-block: .7rem .55rem; }
+.band-track { display: flex; width: max-content; animation: slide 60s linear infinite; }
+.band ul { display: flex; flex: none; }
+.band li {
+  display: flex; align-items: center; gap: .32em; padding-right: .32em; white-space: nowrap;
+  font-stretch: 62%; font-weight: 800; text-transform: uppercase; font-size: clamp(3rem, 8.5vw, 7.5rem); line-height: .9;
+}
+.band li::after { content: ""; flex: none; width: .26em; height: .26em; background: var(--blue); }
+.band:hover .band-track, .band.off .band-track { animation-play-state: paused; }
+@keyframes slide { to { transform: translate3d(-50%, 0, 0); } }
+.stack { border-top: var(--rule) solid var(--ink); }
+.stack > div { border-bottom: 1px solid var(--ink); padding-block: .8rem; row-gap: .15rem; align-items: baseline; }
+.stack > div:last-child { border-bottom-width: var(--rule); }
+.stack dt { color: var(--grey); }
+.stack .items { display: flex; flex-wrap: wrap; gap: 0 1.75rem; }
+.stack dd { font-stretch: 78%; font-weight: 650; font-size: clamp(1.5rem, 2.9vw, 2.625rem); line-height: 1.12; letter-spacing: -.01em; }
+
+/* ── Om mig ── */
+.om-grid { border-top: var(--rule) solid var(--ink); padding-top: 1.25rem; }
+.portrait { max-width: 20rem; }
+.portrait img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 38%; filter: grayscale(1) contrast(1.35) brightness(1.05); }
+.lead { font-size: clamp(1.375rem, 2.3vw, 2.125rem); font-stretch: 88%; font-weight: 600; line-height: 1.16; letter-spacing: -.01em; }
+.lead + .lead { margin-top: 1em; }
+.edu { margin-top: 2.5rem; border-top: 1px solid var(--ink); }
+.edu li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .1rem 1rem; padding-block: .75rem; border-bottom: 1px solid var(--ink); }
+.edu b { font-weight: 700; }
+.edu span { color: var(--grey); grid-column: 1; }
+.edu time { grid-column: 2; grid-row: 1; font-variant-numeric: tabular-nums; white-space: nowrap; }
+@media (min-width: 900px) {
+  .om-grid > .portrait { grid-column: 3 / 6; }
+  .om-grid > .om-text { grid-column: 6 / 13; }
+}
+
+/* ── Kontakt ── */
+.kontakt { margin-top: var(--space); background: var(--blue); color: var(--on-blue); padding-block: clamp(3rem, 7vw, 6.5rem); }
+.kontakt :focus-visible { outline-color: var(--on-blue); }
+.kontakt ::selection { background: var(--on-blue); color: var(--blue); }
+.kontakt-in { container-type: inline-size; }
+.kontakt .intro { margin-top: 1.25rem; max-width: 36ch; font-size: clamp(1.125rem, 1.6vw, 1.375rem); }
+.big {
+  display: block; width: fit-content; max-width: 100%; text-decoration: none; overflow-wrap: anywhere;
+  font-stretch: 62%; font-weight: 800; letter-spacing: -.01em; line-height: .95;
+  font-size: 8.4vw; font-size: min(9.1cqw, 9.5rem);
+}
+.big:hover { text-decoration: underline; text-decoration-thickness: .06em; text-underline-offset: .08em; }
+.k-rows { margin-top: clamp(2rem, 5vw, 4rem); border-top: var(--rule) solid var(--on-blue); }
+.k-row { padding-block: 1rem; border-bottom: 1px solid var(--on-blue); row-gap: .25rem; align-items: baseline; }
+.k-row:last-child { border-bottom: 0; }
+.k-row .links a:hover { color: var(--on-blue); text-decoration-thickness: 4px; }
+
+footer .foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .25rem 1.5rem; padding-block: 1.1rem 1.4rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .band-track { animation: none; }
+  .is-3d .ring { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <div class="top label">
+    <p>Webbutvecklare · Växjö, Sverige</p>
+    <nav aria-label="Huvudmeny">
+      <a href="#projekt">Projekt</a>
+      <a href="#teknik">Teknik</a>
+      <a href="#om">Om</a>
+      <a href="#kontakt">Kontakt</a>
+      <a class="nav-cv" href="https://marceldeluca.se/cv/" target="_blank" rel="noopener noreferrer">Läs CV</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero wrap" aria-labelledby="namn">
+    <h1 class="name" id="namn">
+      <span class="vh">Marcel Deluca</span>
+      <span class="name-set" aria-hidden="true"><span class="word"><span class="l">M</span><span class="l">A</span><span class="l">R</span><span class="l">C</span><span class="l">E</span><span class="l">L</span></span><span class="word"><span class="l">D</span><span class="l">E</span><span class="l">L</span><span class="l">U</span><span class="l">C</span><span class="l">A</span></span></span>
+    </h1>
+    <div class="hero-grid grid">
+      <p class="status label c-label"><span class="sq" aria-hidden="true"></span>Öppen för jobb</p>
+      <p class="statement c-main">Jag heter Marcel, en <em>webbutvecklare</em>. Jag bygger webbappar med Java och React.</p>
+      <div class="hero-side c-side">
+        <p>Jag bygger webbappar och hemsidor med React och Java. Jag söker en fast anställning där jag får växa i ett team.</p>
+        <div class="actions">
+          <a class="btn btn-blue" href="https://marceldeluca.se/cv/" target="_blank" rel="noopener noreferrer">Läs CV <span aria-hidden="true">→</span></a>
+          <a class="btn" href="tel:0738796601">073 879 66 01 <small>Ring efter 12.00</small></a>
+        </div>
+        <p class="links">
+          <a href="mailto:malakdeluca@gmail.com">malakdeluca@gmail.com</a>
+          <a href="https://www.linkedin.com/in/marcel-deluca" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+          <a href="https://github.com/DelucaGit" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="projekt" aria-labelledby="projekt-h">
+    <div class="wrap sec-head">
+      <h2 class="disp" id="projekt-h">Projekt</h2>
+      <p>Några saker jag har byggt, egna produkter och uppdrag. Här är de åtta från 2026.</p>
+    </div>
+
+    <div class="gal" id="gal">
+      <div class="gal-stage">
+        <ol class="ring">
+          <li class="card" data-name="UniClean Partners" data-year="2026" data-tags="Next.js · Tailwind · Lokalt" data-tagline="Ny hemsida för UniClean som vägleder kunder och städare till den nya appen.">
+            <a href="https://marceldeluca.se/projects/uniclean-partners/" target="_blank" rel="noopener noreferrer" draggable="false"><img src="assets/uniclean-partners-sm.webp" width="640" height="320" alt="Skärmbild av UniClean Partners" decoding="async" loading="lazy" draggable="false"><span class="card-label"><b>01</b> UniClean Partners</span></a>
+            <span class="card-back" aria-hidden="true">01</span>
+          </li>
+          <li class="card" data-name="Sabaah Al-Wuruud" data-year="2026" data-tags="Android · Capacitor · Personligt projekt" data-tagline="En minimalistisk adhkar-app för Android som jag byggde till min fru. Utan reklam, utan konto och helt offline.">
+            <a href="https://marceldeluca.se/projects/sabaah-al-wuruud/" target="_blank" rel="noopener noreferrer" draggable="false"><img src="assets/sabaah-al-wuruud-sm.webp" width="640" height="320" alt="Skärmbild av Sabaah Al-Wuruud" decoding="async" loading="lazy" draggable="false"><span class="card-label"><b>02</b> Sabaah Al-Wuruud</span></a>
+            <span class="card-back" aria-hidden="true">02</span>
+          </li>
+          <li class="card" data-name="Zenith Kampsport" data-year="2026" data-tags="Next.js · Underhåll · Förening" data-tagline="Underhåll och förbättring av en Next.js-klubbhemsida. Schema och layout för mindre laptopskärmar.">
+            <a href="https://marceldeluca.se/projects/zenith-kampsport/" target="_blank" rel="noopener noreferrer" draggable="false"><img src="assets/zenith-kampsport-sm.webp" width="640" height="320" alt="Skärmbild av Zenith Kampsport" decoding="async" loading="lazy" draggable="false"><span class="card-label"><b>03</b> Zenith Kampsport</span></a>
+            <span class="card-back" aria-hidden="true">03</span>
+          </li>
+          <li class="card" data-name="FC Växjö Reborn" data-year="2026" data-tags="Next.js · Förening · CI/CD" data-tagline="Ny klubbhemsida i Next.js. Byggd för träningstider, nyheter och en kommande app.">
+            <a href="https://marceldeluca.se/projects/fcvaxjo-reborn/" target="_blank" rel="noopener noreferrer" draggable="false"><img src="assets/fcvaxjo-reborn-sm.webp" width="640" height="320" alt="Skärmbild av FC Växjö Reborn" decoding="async" loading="lazy" draggable="false"><span class="card-label"><b>04</b> FC Växjö Reborn</span></a>
+            <span class="card-back" aria-hidden="true">04</span>
+          </li>
+          <li class="card" data-name="The Andalus Calendar" data-year="2026" data-tags="React · Firebase · Kalender" data-tagline="En kalender där bönetiden redan sitter i vyn, så du inte bokar över salah.">
+            <a href="https://marceldeluca.se/projects/andalus-calendar/" target="_blank" rel="noopener noreferrer" draggable="false"><img src="assets/andalus-calendar-sm.webp" width="640" height="320" alt="Skärmbild av The Andalus Calendar" decoding="async" loading="lazy" draggable="false"><span class="card-label"><b>05</b> The Andalus Calendar</span></a>
+            <span class="card-back" aria-hidden="true">05</span>
+          </li>
+          <li class="card" data-name="Premium Honey Blends" data-year="2026" data-tags="Shopify · E-handel · Varumärke" data-tagline="Från meddelanden och kontakter till en butik som aldrig sover.">
+            <a href="https://marceldeluca.se/projects/premium-honey-blends/" target="_blank" rel="noopener noreferrer" draggable="false"><img src="assets/premium-honey-blends-sm.webp" width="640" height="320" alt="Skärmbild av Premium Honey Blends" decoding="async" loading="lazy" draggable="false"><span class="card-label"><b>06</b> Premium Honey Blends</span></a>
+            <span class="card-back" aria-hidden="true">06</span>
+          </li>
+          <li class="card" data-name="ALKAMA" data-year="2026" data-tags="WooCommerce · Polylang · B2B" data-tagline="WooCommerce-butik på svenska, finska och norska, utan att tappa 20 års förtroende.">
+            <a href="https://marceldeluca.se/projects/alkama/" target="_blank" rel="noopener noreferrer" draggable="false"><img src="assets/alkama-sm.webp" width="640" height="320" alt="Skärmbild av ALKAMA" decoding="async" loading="lazy" draggable="false"><span class="card-label"><b>07</b> ALKAMA</span></a>
+            <span class="card-back" aria-hidden="true">07</span>
+          </li>
+          <li class="card" data-name="UniClean" data-year="2026" data-tags="WordPress · Elementor · Lokalt" data-tagline="Från samma frågor om och om igen, till en hemsida som onboardingar själv.">
+            <a href="https://marceldeluca.se/projects/uniclean/" target="_blank" rel="noopener noreferrer" draggable="false"><img src="assets/uniclean-sm.webp" width="640" height="320" alt="Skärmbild av UniClean" decoding="async" loading="lazy" draggable="false"><span class="card-label"><b>08</b> UniClean</span></a>
+            <span class="card-back" aria-hidden="true">08</span>
+          </li>
+        </ol>
+      </div>
+
+      <div class="wrap">
+        <div class="cap grid">
+          <p class="cap-count c-label"><b id="cap-n">01</b><span class="label">/ 08</span></p>
+          <div class="cap-body c-main" aria-live="polite" aria-atomic="true">
+            <h3 class="cap-name" id="cap-name">UniClean Partners</h3>
+            <p class="cap-tag" id="cap-tag">Ny hemsida för UniClean som vägleder kunder och städare till den nya appen.</p>
+          </div>
+          <div class="cap-side c-side">
+            <dl class="cap-meta">
+              <dt class="label">År</dt><dd id="cap-year">2026</dd>
+              <dt class="label">Taggar</dt><dd id="cap-tags">Next.js · Tailwind · Lokalt</dd>
+            </dl>
+            <div class="gal-nav">
+              <button type="button" id="gal-prev" aria-label="Föregående projekt">←</button>
+              <button type="button" id="gal-next" aria-label="Nästa projekt">→</button>
+              <a class="btn btn-blue" id="cap-link" href="https://marceldeluca.se/projects/uniclean-partners/" target="_blank" rel="noopener noreferrer">Läs caset <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="idx-head">
+        <h3 class="label">Alla projekt, nyast först</h3>
+        <p class="label">17 st</p>
+      </div>
+      <ol class="idx" id="idx">
+        <li><a href="https://marceldeluca.se/projects/uniclean-partners/" target="_blank" rel="noopener noreferrer" data-cover="uniclean-partners"><span class="i-n label">01</span><span class="i-name">UniClean Partners</span><span class="i-tags">Next.js · Tailwind · Lokalt</span><span class="i-y label">2026<span aria-hidden="true">↗</span></span></a></li>
+        <li><a href="https://marceldeluca.se/projects/sabaah-al-wuruud/" target="_blank" rel="noopener noreferrer" data-cover="sabaah-al-wuruud"><span class="i-n label">02</span><span class="i-name">Sabaah Al-Wuruud</span><span class="i-tags">Android · Capacitor · Personligt projekt</span><span class="i-y label">2026<span aria-hidden="true">↗</span></span></a></li>
+        <li><a href="https://marceldeluca.se/projects/zenith-kampsport/" target="_blank" rel="noopener noreferrer" data-cover="zenith-kampsport"><span class="i-n label">03</span><span class="i-name">Zenith Kampsport</span><span class="i-tags">Next.js · Underhåll · Förening</span><span class="i-y label">2026<span aria-hidden="true">↗</span></span></a></li>
+        <li><a href="https://marceldeluca.se/projects/fcvaxjo-reborn/" target="_blank" rel="noopener noreferrer" data-cover="fcvaxjo-reborn"><span class="i-n label">04</span><span class="i-name">FC Växjö Reborn</span><span class="i-tags">Next.js · Förening · CI/CD</span><span class="i-y label">2026<span aria-hidden="true">↗</span></span></a></li>
+        <li><a href="https://marceldeluca.se/projects/andalus-calendar/" target="_blank" rel="noopener noreferrer" data-cover="andalus-calendar"><span class="i-n label">05</span><span class="i-name">The Andalus Calendar</span><span class="i-tags">React · Firebase · Kalender</span><span class="i-y label">2026<span aria-hidden="true">↗</span></span></a></li>
+        <li><a href="https://marceldeluca.se/projects/premium-honey-blends/" target="_blank" rel="noopener noreferrer" data-cover="premium-honey-blends"><span class="i-n label">06</span><span class="i-name">Premium Honey Blends</span><span class="i-tags">Shopify · E-handel · Varumärke</span><span class="i-y label">2026<span aria-hidden="true">↗</span></span></a></li>
+        <li><a href="https://marceldeluca.se/projects/alkama/" target="_blank" rel="noopener noreferrer" data-cover="alkama"><span class="i-n label">07</span><span class="i-name">ALKAMA</span><span class="i-tags">WooCommerce · Polylang · B2B</span><span class="i-y label">2026<span aria-hidden="true">↗</span></span></a></li>
+        <li><a href="https://marceldeluca.se/projects/uniclean/" target="_blank" rel="noopener noreferrer" data-cover="uniclean"><span class="i-n label">08</span><span class="i-name">UniClean</span><span class="i-tags">WordPress · Elementor · Lokalt</span><span class="i-y label">2026<span aria-hidden="true">↗</span></span></a></li>
+        <li><a href="https://marceldeluca.se/projects/takkoll/" target="_blank" rel="noopener noreferrer" data-cover="takkoll"><span class="i-n label">09</span><span class="i-name">TakKoll</span><span class="i-tags">WordPress · Lokalt · Leadgen</span><span class="i-y label">2025<span aria-hidden="true">↗</span></span></a></li>
+        <li><a href="https://marceldeluca.se/projects/bilservicekoll/" target="_blank" rel="noopener noreferrer" data-cover="bilservicekoll"><span class="i-n label">10</span><span class="i-name">BilserviceKoll</span><span class="i-tags">WordPress · Lokalt · Leadgen</span><span class="i-y label">2025<span aria-hidden="true">↗</span></span></a></li>
+        <li><a href="https://marceldeluca.se/projects/stadkoll/" target="_blank" rel="noopener noreferrer" data-cover="stadkoll"><span class="i-n label">11</span><span class="i-name">Städkoll</span><span class="i-tags">Frontend · UX/UI · Leadgen</span><span class="i-y label">2025<span aria-hidden="true">↗</span></span></a></li>
+        <li><a href="https://marceldeluca.se/projects/brandsakerhetskoll/" target="_blank" rel="noopener noreferrer" data-cover="brandsakerhetskoll"><span class="i-n label">12</span><span class="i-name">Brand &amp; Säkerhetskoll</span><span class="i-tags">Frontend · UX/UI · Leadgen</span><span class="i-y label">2025<span aria-hidden="true">↗</span></span></a></li>
+        <li><a href="https://marceldeluca.se/projects/scooterkoll/" target="_blank" rel="noopener noreferrer" data-cover="scooterkoll"><span class="i-n label">13</span><span class="i-name">Scooterkoll</span><span class="i-tags">Frontend · UX/UI · SEO</span><span class="i-y label">2025<span aria-hidden="true">↗</span></span></a></li>
+        <li><a href="https://marceldeluca.se/projects/halimapearl/" target="_blank" rel="noopener noreferrer" data-cover="halimapearl"><span class="i-n label">14</span><span class="i-name">HalimaPearl</span><span class="i-tags">GoHighLevel · UX/UI · Varumärke</span><span class="i-y label">2025<span aria-hidden="true">↗</span></span></a></li>
+        <li><a href="https://marceldeluca.se/projects/ventilationskoll/" target="_blank" rel="noopener noreferrer" data-cover="ventilationskoll"><span class="i-n label">15</span><span class="i-name">Ventilationskoll</span><span class="i-tags">Frontend · UX/UI · SEO</span><span class="i-y label">2025<span aria-hidden="true">↗</span></span></a></li>
+        <li><a href="https://marceldeluca.se/projects/shanasheel/" target="_blank" rel="noopener noreferrer" data-cover="shanasheel"><span class="i-n label">16</span><span class="i-name">Shanasheel</span><span class="i-tags">WordPress · Elementor · Fastighet</span><span class="i-y label">2025<span aria-hidden="true">↗</span></span></a></li>
+        <li><a href="https://marceldeluca.se/projects/fcvaxjo/" target="_blank" rel="noopener noreferrer" data-cover="fcvaxjo"><span class="i-n label">17</span><span class="i-name">FC Växjö</span><span class="i-tags">Webbdesign · UX/UI · Förening</span><span class="i-y label">2023<span aria-hidden="true">↗</span></span></a></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="teknik" aria-labelledby="teknik-h">
+    <div class="band" id="band" aria-hidden="true">
+      <div class="band-track">
+        <ul><li>React</li><li>Next.js</li><li>Java</li><li>REST API</li><li>PostgreSQL</li><li>Docker</li><li>AWS</li><li>Azure</li><li>Tailwind CSS</li><li>Firebase</li><li>PHP</li><li>WordPress</li><li>Git</li></ul>
+        <ul><li>React</li><li>Next.js</li><li>Java</li><li>REST API</li><li>PostgreSQL</li><li>Docker</li><li>AWS</li><li>Azure</li><li>Tailwind CSS</li><li>Firebase</li><li>PHP</li><li>WordPress</li><li>Git</li></ul>
+      </div>
+    </div>
+    <div class="wrap sec">
+      <div class="sec-head">
+        <h2 class="disp" id="teknik-h">Vilka språk jag kan</h2>
+        <p class="note">(förutom svenska, engelska, spanska, arabiska och franska…)</p>
+      </div>
+      <dl class="stack">
+        <div class="grid"><dt class="label c-label">Frontend</dt><div class="items c-wide"><dd>React / Next.js</dd><dd>Tailwind CSS</dd></div></div>
+        <div class="grid"><dt class="label c-label">Grunder</dt><div class="items c-wide"><dd>HTML &amp; CSS</dd></div></div>
+        <div class="grid"><dt class="label c-label">Backend</dt><div class="items c-wide"><dd>Java</dd><dd>REST API</dd><dd>PHP</dd></div></div>
+        <div class="grid"><dt class="label c-label">CMS</dt><div class="items c-wide"><dd>WordPress / Elementor</dd></div></div>
+        <div class="grid"><dt class="label c-label">Databas</dt><div class="items c-wide"><dd>PostgreSQL</dd></div></div>
+        <div class="grid"><dt class="label c-label">Data &amp; hosting</dt><div class="items c-wide"><dd>Firebase</dd></div></div>
+        <div class="grid"><dt class="label c-label">DevOps</dt><div class="items c-wide"><dd>Docker</dd></div></div>
+        <div class="grid"><dt class="label c-label">Cloud</dt><div class="items c-wide"><dd>AWS</dd><dd>Azure</dd></div></div>
+        <div class="grid"><dt class="label c-label">Samarbete</dt><div class="items c-wide"><dd>Git</dd><dd>Jira</dd></div></div>
+        <div class="grid"><dt class="label c-label">Verktyg</dt><div class="items c-wide"><dd>Cursor</dd><dd>Claude Code</dd></div></div>
+      </dl>
+    </div>
+  </section>
+
+  <section id="om" class="wrap sec" aria-labelledby="om-h">
+    <div class="sec-head">
+      <h2 class="disp" id="om-h">Hej, jag är Marcel</h2>
+    </div>
+    <div class="om-grid grid">
+      <p class="label c-label">Om mig</p>
+      <figure class="portrait">
+        <img src="assets/portrait.webp" width="576" height="1024" alt="Marcel Deluca i profil vid havet" decoding="async" loading="lazy">
+      </figure>
+      <div class="om-text">
+        <p class="lead">Jag är webbutvecklare. Jag bygger hemsidor, webbappar och egna produkter, bland annat The Andalus Calendar.</p>
+        <p class="lead">Just nu studerar jag Java med cloud på JENSEN yrkeshögskola. Jag vill jobba i ett team där jag får koda, lära mig mer och ta ansvar.</p>
+        <ul class="edu" aria-label="Utbildning">
+          <li><b>Systemutveckling i Java med cloud-inriktning</b><span>JENSEN yrkeshögskola</span><time>2025 – 2027</time></li>
+          <li><b>Webmaster</b><span>Högskolan Väst (distans)</span><time>2022 – 2024</time></li>
+          <li><b>Samhällsvetenskap / IB</b><span>Katedralskolan Växjö</span><time>2017 – 2020</time></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="kontakt" class="kontakt" aria-labelledby="kontakt-h">
+    <div class="wrap">
+      <div class="kontakt-in">
+        <h2 class="disp" id="kontakt-h">Vill du komma i kontakt?</h2>
+        <p class="intro">Skicka ett mejl eller ring om du vill prata om jobb, projekt eller bara säga hej.</p>
+        <div class="k-rows">
+          <div class="k-row grid">
+            <p class="label c-label">Mejl</p>
+            <a class="big c-wide" href="mailto:malakdeluca@gmail.com">malakdeluca@gmail.com</a>
+          </div>
+          <div class="k-row grid">
+            <p class="label c-label">Telefon<br>Ring efter 12.00</p>
+            <a class="big c-wide" href="tel:0738796601">073 879 66 01</a>
+          </div>
+          <div class="k-row grid">
+            <p class="label c-label">Mer</p>
+            <p class="links c-wide">
+              <a href="https://marceldeluca.se/cv/" target="_blank" rel="noopener noreferrer">Läs CV ↗</a>
+              <a href="https://www.linkedin.com/in/marcel-deluca" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+              <a href="https://github.com/DelucaGit" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <div class="foot label">
+    <p>Marcel Deluca · Växjö, Sverige</p>
+    <p>Portfolio 2026</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var mq = function (q) { return window.matchMedia ? window.matchMedia(q) : { matches: false }; };
+  var reduce = mq('(prefers-reduced-motion: reduce)');
+  var fine = mq('(hover: hover) and (pointer: fine)');
+  var clamp = function (v, a, b) { return v < a ? a : v > b ? b : v; };
+
+  /* ── 1. The name: justified with the width axis, and kinetic under a fine pointer ──
+     Each letter's advance is measured once at the corners of the design space. Every frame the
+     widths are solved so the line fills the measure exactly, so letters can swell without overflow. */
+  (function () {
+    var set = document.querySelector('.name-set');
+    if (!set || !window.requestAnimationFrame) return;
+    var letters = [].slice.call(set.querySelectorAll('.l'));
+    var words = [].slice.call(set.querySelectorAll('.word')).map(function (w) {
+      return [].slice.call(w.querySelectorAll('.l')).map(function (l) { return letters.indexOf(l); });
+    });
+    var WD = [62, 75, 87, 100, 112, 125], WG = [400, 550, 700, 800, 900], REST_W = 74, REST_G = 800, MIN_W = 62, MAX_W = 125;
+    var table = null, F = 0, W = 0, lines = [], hero = document.querySelector('.hero');
+    var f = letters.map(function () { return 0; }), ft = f.slice(), pres = 0, presT = 0, raf = 0;
+    var px = 0, py = 0, cx = letters.map(function () { return 0; }), cy = letters.map(function () { return 0; });
+
+    function measure() {
+      var probe = document.createElement('span'), cache = {};
+      probe.style.cssText = 'position:absolute;left:-9999px;top:0;visibility:hidden;white-space:nowrap;' +
+        'font-family:' + getComputedStyle(set).fontFamily + ';font-size:200px;line-height:1;font-kerning:none;text-transform:uppercase';
+      document.body.appendChild(probe);
+      table = letters.map(function (l) {
+        var ch = l.textContent;
+        if (cache[ch]) return cache[ch];
+        return (cache[ch] = WG.map(function (g) {
+          return WD.map(function (w) {
+            probe.style.fontVariationSettings = '"wdth" ' + w + ', "wght" ' + g;
+            probe.textContent = ch;
+            return probe.getBoundingClientRect().width / 200;
+          });
+        }));
+      });
+      document.body.removeChild(probe);
+      // A fallback font has no width axis: leave the static CSS setting alone.
+      var a = table[0], last = WD.length - 1;
+      return a[3][last] - a[3][0] > 0.05;
+    }
+    function seg(arr, v) { var k = 0; while (k < arr.length - 2 && v > arr[k + 1]) k++; return k; }
+    function adv(i, w, g) {
+      var t = table[i], gi = seg(WG, g), wi = seg(WD, w);
+      var gt = (g - WG[gi]) / (WG[gi + 1] - WG[gi]), wt = (w - WD[wi]) / (WD[wi + 1] - WD[wi]);
+      var lo = t[gi][wi] + (t[gi][wi + 1] - t[gi][wi]) * wt, hi = t[gi + 1][wi] + (t[gi + 1][wi + 1] - t[gi + 1][wi]) * wt;
+      return lo + (hi - lo) * gt;
+    }
+    function layout() {
+      F = parseFloat(getComputedStyle(set).fontSize);
+      W = set.clientWidth;
+      var stacked = getComputedStyle(set).flexDirection === 'column';
+      lines = stacked
+        ? words.map(function (w) { return { ids: w, room: W * 0.998 }; })
+        : [{ ids: [].concat.apply([], words), room: W - 0.17 * F }];
+    }
+    function solve(line, wt, gt, out) {
+      var lo = -70, hi = 70, k, d, sum, j;
+      for (k = 0; k < 18; k++) {
+        d = (lo + hi) / 2; sum = 0;
+        for (j = 0; j < line.ids.length; j++) sum += adv(line.ids[j], clamp(wt[line.ids[j]] + d, MIN_W, MAX_W), gt[line.ids[j]]);
+        if (sum * F > line.room) hi = d; else lo = d;
+      }
+      for (j = 0; j < line.ids.length; j++) out[line.ids[j]] = clamp(wt[line.ids[j]] + lo, MIN_W, MAX_W);
+    }
+    function paint() {
+      var n = letters.length, wt = new Array(n), gt = new Array(n), out = new Array(n), i, li, x;
+      for (i = 0; i < n; i++) {
+        wt[i] = REST_W + f[i] * (MAX_W - REST_W);
+        gt[i] = REST_G + f[i] * 100 - (1 - f[i]) * pres * 340;
+      }
+      for (li = 0; li < lines.length; li++) solve(lines[li], wt, gt, out);
+      for (i = 0; i < n; i++) letters[i].style.fontVariationSettings = '"wdth" ' + out[i].toFixed(1) + ', "wght" ' + Math.round(gt[i]);
+      // Predicted letter centres, used for the next pointer sample (no layout read needed).
+      for (li = 0; li < lines.length; li++) {
+        var ids = lines[li].ids, total = 0, widths = ids.map(function (id) { var a = adv(id, out[id], gt[id]) * F; total += a; return a; });
+        var slack = lines.length > 1 ? (W - total) / (ids.length - 1) : 0;
+        x = 0;
+        for (i = 0; i < ids.length; i++) {
+          if (lines.length === 1 && i === words[0].length) x += W - total;
+          cx[ids[i]] = x + widths[i] / 2; cy[ids[i]] = (li + 0.5) * F * 0.77;
+          x += widths[i] + slack;
+        }
+      }
+    }
+    function tick() {
+      raf = 0;
+      var rect = set.getBoundingClientRect(), sx = W * 0.1, sy = F * 0.95, moving = false, i, dx, dy;
+      for (i = 0; i < letters.length; i++) {
+        dx = px - rect.left - cx[i]; dy = py - rect.top - cy[i];
+        ft[i] = presT * Math.exp(-(dx * dx) / (2 * sx * sx) - (dy * dy) / (2 * sy * sy));
+        f[i] += (ft[i] - f[i]) * 0.2;
+        if (Math.abs(ft[i] - f[i]) > 0.002) moving = true; else f[i] = ft[i];
+      }
+      pres += (presT - pres) * 0.14;
+      if (Math.abs(presT - pres) > 0.002) moving = true; else pres = presT;
+      paint();
+      if (moving) raf = requestAnimationFrame(tick);
+    }
+    function kick() { if (!raf) raf = requestAnimationFrame(tick); }
+
+    function start() {
+      if (!measure()) return;
+      layout(); paint();
+      var t = 0;
+      window.addEventListener('resize', function () {
+        clearTimeout(t);
+        t = setTimeout(function () { layout(); paint(); }, 120);
+      }, { passive: true });
+      if (!fine.matches || reduce.matches) return;
+      hero.addEventListener('pointermove', function (e) {
+        if (e.pointerType && e.pointerType !== 'mouse') return;
+        px = e.clientX; py = e.clientY; presT = 1; kick();
+      }, { passive: true });
+      hero.addEventListener('pointerleave', function () { presT = 0; kick(); }, { passive: true });
+    }
+    if (document.fonts && document.fonts.load) {
+      document.fonts.load('800 100px Archivo', 'MARCELDU').then(start, start);
+    } else { start(); }
+  })();
+
+  /* ── 2. The gallery: eight covers on a drum, CSS 3D only ── */
+  (function () {
+    var gal = document.getElementById('gal');
+    if (!gal || !window.PointerEvent || !window.CSS || !CSS.supports('transform-style', 'preserve-3d')) return;
+    var stage = gal.querySelector('.gal-stage'), ring = gal.querySelector('.ring');
+    var cards = [].slice.call(ring.children), n = cards.length, step = 360 / n;
+    var el = function (id) { return document.getElementById(id); };
+    var cap = { n: el('cap-n'), name: el('cap-name'), tag: el('cap-tag'), year: el('cap-year'), tags: el('cap-tags'), link: el('cap-link') };
+    var idx = 0, angle = 0, active = 0, perPx = 0.07, drag = null, raf = 0, pending = 0, hush = false;
+    var mod = function (i) { return ((i % n) + n) % n; };
+    var pad = function (i) { return (i < 9 ? '0' : '') + (i + 1); };
+
+    gal.classList.add('is-3d');
+    cards.forEach(function (c, i) {
+      c.style.setProperty('--i', i);
+      var a = c.querySelector('a'); a.tabIndex = -1;
+      var img = c.querySelector('img'); img.loading = 'eager';
+    });
+    ring.setAttribute('aria-hidden', 'true');
+    stage.tabIndex = 0;
+    stage.setAttribute('role', 'group');
+    stage.setAttribute('aria-roledescription', 'karusell');
+    stage.setAttribute('aria-label', 'Åtta projekt från 2026. Dra, eller använd vänster- och högerpil, för att bläddra.');
+
+    function metrics() { perPx = 180 / (Math.PI * cards[0].offsetWidth * 1.28); }
+    function turn(a, ms) {
+      ring.style.transitionDuration = (reduce.matches ? 0 : ms) + 'ms';
+      ring.style.transform = 'translateZ(calc(var(--r) * -1)) rotateX(var(--tilt)) rotateY(' + a.toFixed(2) + 'deg)';
+    }
+    function show(k) {
+      var j = mod(k);
+      if (j === active) return;
+      active = j;
+      var c = cards[j], d = c.dataset;
+      cap.n.textContent = pad(j);
+      cap.name.textContent = d.name;
+      cap.tag.textContent = d.tagline;
+      cap.year.textContent = d.year;
+      cap.tags.textContent = d.tags;
+      cap.link.href = c.querySelector('a').href;
+    }
+    function go(k, ms) { idx = k; angle = -k * step; turn(angle, ms == null ? 700 : ms); show(k); }
+    function goTo(i) { var d = mod(i - mod(idx) + n / 2) - n / 2; go(idx + d); }
+
+    stage.addEventListener('pointerdown', function (e) {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      drag = { id: e.pointerId, x: e.clientX, a: angle, moved: false, lx: e.clientX, lt: e.timeStamp, v: 0 };
+    });
+    stage.addEventListener('pointermove', function (e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      var dx = e.clientX - drag.x;
+      if (!drag.moved) {
+        if (Math.abs(dx) < 6) return;
+        drag.moved = true; drag.x = e.clientX; dx = 0;
+        try { stage.setPointerCapture(e.pointerId); } catch (err) {}
+        gal.classList.add('dragging');
+      }
+      var dt = e.timeStamp - drag.lt;
+      if (dt > 0) { drag.v = drag.v * 0.6 + ((e.clientX - drag.lx) / dt) * 0.4; drag.lx = e.clientX; drag.lt = e.timeStamp; }
+      pending = drag.a + dx * perPx;
+      if (!raf) raf = requestAnimationFrame(function () {
+        raf = 0;
+        if (!drag) return;
+        angle = pending; turn(angle, 0); show(Math.round(-angle / step));
+      });
+    }, { passive: true });
+    function release(e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      var d = drag; drag = null;
+      gal.classList.remove('dragging');
+      if (!d.moved) return;
+      hush = true; setTimeout(function () { hush = false; }, 0);
+      angle = pending;
+      var here = Math.round(-angle / step);
+      var stale = e.timeStamp - d.lt > 90 || reduce.matches || e.type === 'pointercancel';
+      var aim = Math.round(-(angle + (stale ? 0 : d.v * perPx * 260)) / step);
+      go(clamp(aim, here - 3, here + 3), 650);
+    }
+    stage.addEventListener('pointerup', release);
+    stage.addEventListener('pointercancel', release);
+
+    ring.addEventListener('click', function (e) {
+      var c = e.target.closest ? e.target.closest('.card') : null;
+      if (!c) return;
+      if (hush) { e.preventDefault(); return; }
+      var i = cards.indexOf(c);
+      if (i !== mod(idx)) { e.preventDefault(); goTo(i); }
+    });
+    ring.addEventListener('dragstart', function (e) { e.preventDefault(); });
+    stage.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft') go(idx - 1);
+      else if (e.key === 'ArrowRight') go(idx + 1);
+      else if (e.key === 'Home') goTo(0);
+      else if (e.key === 'End') goTo(n - 1);
+      else return;
+      e.preventDefault();
+    });
+    el('gal-prev').addEventListener('click', function () { go(idx - 1); });
+    el('gal-next').addEventListener('click', function () { go(idx + 1); });
+
+    var t = 0;
+    window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(metrics, 150); }, { passive: true });
+    metrics();
+  })();
+
+  /* ── 3. Index: a cover that follows the cursor (fine pointers only) ── */
+  (function () {
+    var list = document.getElementById('idx');
+    if (!list || !fine.matches || !window.requestAnimationFrame) return;
+    var peek = document.createElement('div'), img = null;
+    peek.className = 'peek'; peek.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(peek);
+    var x = 0, y = 0, tx = 0, ty = 0, raf = 0, on = false, cur = '';
+    function frame() {
+      raf = 0;
+      var k = reduce.matches ? 1 : 0.22;
+      x += (tx - x) * k; y += (ty - y) * k;
+      peek.style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,0)';
+      if (on && (Math.abs(tx - x) > 0.5 || Math.abs(ty - y) > 0.5)) raf = requestAnimationFrame(frame);
+    }
+    list.addEventListener('pointermove', function (e) {
+      var a = e.target.closest ? e.target.closest('a[data-cover]') : null;
+      if (!a || e.pointerType !== 'mouse' || window.innerWidth < 900) { on = false; peek.classList.remove('on'); return; }
+      var w = peek.offsetWidth, h = peek.offsetHeight;
+      tx = clamp(e.clientX + 28, 8, window.innerWidth - w - 8);
+      ty = clamp(e.clientY - h - 20, 8, window.innerHeight - h - 8);
+      if (a.dataset.cover !== cur) {
+        cur = a.dataset.cover;
+        if (!img) { img = document.createElement('img'); img.alt = ''; img.decoding = 'async'; peek.appendChild(img); }
+        img.src = 'assets/' + cur + '-sm.webp';
+      }
+      if (!on) { on = true; x = tx; y = ty; peek.classList.add('on'); }
+      if (!raf) raf = requestAnimationFrame(frame);
+    }, { passive: true });
+    list.addEventListener('pointerleave', function () { on = false; peek.classList.remove('on'); }, { passive: true });
+  })();
+
+  /* ── 4. Marquee band only runs while it is on screen ── */
+  (function () {
+    var band = document.getElementById('band');
+    if (!band || !('IntersectionObserver' in window)) return;
+    new IntersectionObserver(function (entries) {
+      band.classList.toggle('off', !entries[0].isIntersecting);
+    }).observe(band);
+  })();
+})();
+</script>
+</body>
+</html>
