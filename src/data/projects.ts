@@ -8,6 +8,13 @@ export type ProjectImage = {
   alt: string;
 };
 
+export type ProjectVideo = {
+  src: string;
+  poster: string;
+  /** Describes what the recording shows, for screen readers */
+  alt: string;
+};
+
 export type MediaSectionCopy = {
   eyebrow: string;
   heading: string;
@@ -29,6 +36,9 @@ export type ProjectMedia = {
   /** Optional detail shown after the gallery (e.g. a small feature like branded email) */
   closing?: ProjectImage;
   closingCopy?: MediaSectionCopy;
+  /** Optional screen recording of the site in use, shown in a browser frame */
+  video?: ProjectVideo;
+  videoCopy?: MediaSectionCopy;
 };
 
 export type Project = {
@@ -63,6 +73,138 @@ export type Project = {
 };
 
 export const projects: Project[] = [
+  {
+    slug: "uniclean-partners",
+    name: "UniClean Partners",
+    tagline:
+      "Ny hemsida för UniClean. Besökaren går direkt till bokning i appen, utan offert.",
+    description:
+      "Jag byggde UniCleans nya hemsida i Next.js. Den ersätter WordPress-sajten jag byggde tidigare och skickar kunder och städare direkt till appen.",
+    siteUrl: "https://uniclean.nu",
+    githubUrl: "https://github.com/DelucaGit/UniClean-Website",
+    tags: ["Next.js", "Tailwind", "Lokalt"],
+    year: 2026,
+    stack: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Hostinger"],
+    image: "/projects/uniclean-partners/studio-hero.webp",
+    imageAlt:
+      "UniCleans nya startsida i ett webbläsarfönster och i en telefon",
+    theme: {
+      bg: "var(--project-theme-sky)",
+      dark: false,
+    },
+    detail: {
+      overview: [
+        "UniClean är ett städföretag med hemstäd, storstäd, flyttstäd och fönsterputs. Jag byggde deras förra hemsida i WordPress. Nu har företaget en egen app där kunden ser priset och bokar själv, så hemsidan behövde göras om. Jag var utvecklare för hemsidan. Appen är byggd av någon annan.",
+      ],
+      challenge: [
+        "På den gamla hemsidan ledde allt till knappen ”Begär prisoffert”. Appen kunde ta emot en bokning direkt, men hemsidan bad fortfarande kunden att vänta på en offert.",
+        "Hemsidan och appen drog åt olika håll.",
+        "Hemsidan ska fungera för tre grupper: kunder som vill boka städning, oftast i mobilen, städare som vill bli partner och befintliga kunder som behöver hjälp med en bokning.",
+      ],
+      solution: [
+        "En ny hemsida i Next.js som förklarar tjänsterna och visar vägen till appen. Hemsidan bokar ingenting själv. Bokning, priser och inloggning sköts av appen.",
+        "”Boka nu” syns i menyn hela tiden, och varje avsnitt har en tydlig väg till appen. Offertförfrågan är borta.",
+        "Städare hittar partneransökan under ”Jobba hos oss”.",
+        "Färgerna är hämtade från appen, så steget från hemsida till app känns inte som ett byte av varumärke. Bilderna är riktiga foton och riktiga skärmbilder från appen.",
+        "Gamla adresser från WordPress-sajten leder rätt, så sökträffar och sparade länkar fungerar som förut.",
+      ],
+      results: [
+        "Hemsidan ligger live på uniclean.nu och har ersatt WordPress-sajten.",
+        "Besökaren går från hemsidan till bokning i appen utan att begära offert.",
+      ],
+      role: "Utvecklare (hemsidan)",
+      client: "UniClean",
+      industry: "Lokal service",
+      media: {
+        hero: {
+          src: "/projects/uniclean-partners/studio-hero.webp",
+          alt: "Startsidan på dator och mobil, med knappar för att boka städning och bli partner",
+        },
+        video: {
+          src: "/projects/uniclean-partners/walkthrough.mp4",
+          poster: "/projects/uniclean-partners/walkthrough-poster.jpg",
+          alt: "Inspelning där någon klickar sig igenom hemsidan: tjänster, pris, de fyra stegen i Så funkar det och Jobba hos oss",
+        },
+        videoCopy: {
+          eyebrow: "Film",
+          heading: "Så känns det att använda hemsidan.",
+          support:
+            "Från startsidan till tjänster, pris och de fyra stegen i ”Så funkar det”.",
+        },
+        mobile: [
+          {
+            src: "/projects/uniclean-partners/mobile-top.webp",
+            alt: "Mobil startsida med rubriken Städning när du behöver den och knappar för att boka och bli partner",
+          },
+          {
+            src: "/projects/uniclean-partners/mobile-tjanster.webp",
+            alt: "Tjänsterna i mobilen: hemstäd, storstäd, flyttstäd och fönsterputs",
+          },
+          {
+            src: "/projects/uniclean-partners/mobile-pris.webp",
+            alt: "Avsnittet Du ser priset innan du bokar, med appens skärm för storlek och pris",
+          },
+          {
+            src: "/projects/uniclean-partners/mobile-sa-funkar-det.webp",
+            alt: "Så funkar det i mobilen, med en skärmbild från appen",
+          },
+          {
+            src: "/projects/uniclean-partners/mobile-trygghet.webp",
+            alt: "Avsnittet om att alla städare är verifierade med BankID",
+          },
+          {
+            src: "/projects/uniclean-partners/mobile-partner.webp",
+            alt: "Jobba som städare hos UniClean, med knapp för att ansöka som partner",
+          },
+        ],
+        desktop: {
+          src: "/projects/uniclean-partners/studio-pris.webp",
+          alt: "Avsnittet Du ser priset innan du bokar, med appens prisskärm i en telefon",
+        },
+        desktopCopy: {
+          eyebrow: "Pris",
+          heading: "Du ser priset innan du bokar.",
+          support:
+            "I stället för ett offertformulär visar hemsidan appens egen skärm för storlek och pris, med en knapp som leder dit.",
+        },
+        gallery: [
+          {
+            src: "/projects/uniclean-partners/studio-steps.webp",
+            alt: "Så funkar det på dator och mobil, fyra steg från vald städning till betalning",
+          },
+          {
+            src: "/projects/uniclean-partners/studio-phones.webp",
+            alt: "Tre telefoner med startsidan, prisavsnittet och Så funkar det",
+          },
+          {
+            src: "/projects/uniclean-partners/studio-wall.webp",
+            alt: "Hemsidans avsnitt bredvid varandra, sedda snett uppifrån",
+          },
+        ],
+        galleryCopy: {
+          eyebrow: "Fler bilder",
+          heading: "Fyra steg, från vald städning till betalning.",
+          support:
+            "Stegen i ”Så funkar det” går att klicka på. Telefonen i bild byter då skärmbild från appen.",
+        },
+        closing: {
+          src: "/projects/uniclean-partners/studio-partner.webp",
+          alt: "Avsnittet Jobba som städare hos UniClean på dator och mobil",
+        },
+        closingCopy: {
+          eyebrow: "Partner",
+          heading: "En egen väg in för städare.",
+          support:
+            "Den som vill jobba hos UniClean hittar partneransökan under ”Jobba hos oss”, utan att leta bland kundernas sidor.",
+        },
+      },
+      seo: {
+        title: "UniClean Partners. Ny hemsida i Next.js",
+        description:
+          "Case: UniClean Partners. Ny hemsida i Next.js som ersätter WordPress-sajten och skickar besökaren direkt till bokning i appen.",
+      },
+    },
+  },
   {
     slug: "sabaah-al-wuruud",
     name: "Sabaah Al-Wuruud",
