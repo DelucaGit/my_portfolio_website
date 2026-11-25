@@ -17,6 +17,8 @@ A running log of what we built, what we chose, and why. Written so a later artic
 - **Role:** developer of the website. The app is built by someone else, and the case says so
 - **No numbers.** There are no measurements of bookings or traffic, so the results only say what is true: the site is live and the quote flow is gone
 - **Screenshots come from the local copy of the UniClean repo** (branch `partnerlank`), because uniclean.nu stops automated browsers with a bot check
+- **The story, corrected by Marcel:** the old site was for quote requests. The new site exists because the new app arrived, an Uber for cleaning that connects private customers with cleaners nearby. The site guides both groups to it
+- **Stack lists Next.js, not React as well.** Next.js is built on React, so one name is enough
 - **No reviews in the images.** The reviews section shows real people's names, so it is not featured
 
 ## 13 Nov 2026 — Sabaah Al-Wuruud: what the name means (#26)

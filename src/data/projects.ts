@@ -77,14 +77,14 @@ export const projects: Project[] = [
     slug: "uniclean-partners",
     name: "UniClean Partners",
     tagline:
-      "Ny hemsida för UniClean. Besökaren går direkt till bokning i appen, utan offert.",
+      "Ny hemsida för UniClean som vägleder kunder och städare till den nya appen.",
     description:
-      "Jag byggde UniCleans nya hemsida i Next.js. Den ersätter WordPress-sajten jag byggde tidigare och skickar kunder och städare direkt till appen.",
+      "UniClean har fått en app som fungerar som Uber fast för städning. Jag byggde den nya hemsidan i Next.js som vägleder kunder och städare dit.",
     siteUrl: "https://uniclean.nu",
     githubUrl: "https://github.com/DelucaGit/UniClean-Website",
     tags: ["Next.js", "Tailwind", "Lokalt"],
     year: 2026,
-    stack: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Hostinger"],
+    stack: ["Next.js", "TypeScript", "Tailwind CSS", "Hostinger"],
     image: "/projects/uniclean-partners/studio-hero.webp",
     imageAlt:
       "UniCleans nya startsida i ett webbläsarfönster och i en telefon",
@@ -94,23 +94,23 @@ export const projects: Project[] = [
     },
     detail: {
       overview: [
-        "UniClean är ett städföretag med hemstäd, storstäd, flyttstäd och fönsterputs. Jag byggde deras förra hemsida i WordPress. Nu har företaget en egen app där kunden ser priset och bokar själv, så hemsidan behövde göras om. Jag var utvecklare för hemsidan. Appen är byggd av någon annan.",
+        "UniClean är ett städföretag med hemstäd, storstäd, flyttstäd och fönsterputs. Jag byggde deras förra hemsida i WordPress. När företaget fick en ny app behövde de en ny hemsida som vägleder dit. Jag var utvecklare för hemsidan. Appen är byggd av någon annan.",
       ],
       challenge: [
-        "På den gamla hemsidan ledde allt till knappen ”Begär prisoffert”. Appen kunde ta emot en bokning direkt, men hemsidan bad fortfarande kunden att vänta på en offert.",
-        "Hemsidan och appen drog åt olika håll.",
-        "Hemsidan ska fungera för tre grupper: kunder som vill boka städning, oftast i mobilen, städare som vill bli partner och befintliga kunder som behöver hjälp med en bokning.",
+        "UniCleans förra hemsida var byggd för att ta emot offertförfrågningar.",
+        "Sedan kom den nya appen. Den är som Uber fast för städning. Privatpersoner kopplas ihop med städare i området på nolltid. Samtidigt får professionella städare in kunder, precis som Uber låter vanliga förare köra åt andra.",
+        "Då behövdes en ny hemsida som förklarar appen och vägleder både kunder och städare dit.",
       ],
       solution: [
         "En ny hemsida i Next.js som förklarar tjänsterna och visar vägen till appen. Hemsidan bokar ingenting själv. Bokning, priser och inloggning sköts av appen.",
-        "”Boka nu” syns i menyn hela tiden, och varje avsnitt har en tydlig väg till appen. Offertförfrågan är borta.",
-        "Städare hittar partneransökan under ”Jobba hos oss”.",
+        "”Boka nu” syns i menyn hela tiden, och varje avsnitt har en tydlig väg till appen.",
+        "Städare har en egen väg in. De hittar partneransökan under ”Jobba hos oss”.",
         "Färgerna är hämtade från appen, så steget från hemsida till app känns inte som ett byte av varumärke. Bilderna är riktiga foton och riktiga skärmbilder från appen.",
         "Gamla adresser från WordPress-sajten leder rätt, så sökträffar och sparade länkar fungerar som förut.",
       ],
       results: [
         "Hemsidan ligger live på uniclean.nu och har ersatt WordPress-sajten.",
-        "Besökaren går från hemsidan till bokning i appen utan att begära offert.",
+        "Kunder och städare går från hemsidan direkt till appen.",
       ],
       role: "Utvecklare (hemsidan)",
       client: "UniClean",
@@ -165,7 +165,7 @@ export const projects: Project[] = [
           eyebrow: "Pris",
           heading: "Du ser priset innan du bokar.",
           support:
-            "I stället för ett offertformulär visar hemsidan appens egen skärm för storlek och pris, med en knapp som leder dit.",
+            "Hemsidan visar appens egen skärm för storlek och pris, med en knapp som leder dit.",
         },
         gallery: [
           {
@@ -201,7 +201,7 @@ export const projects: Project[] = [
       seo: {
         title: "UniClean Partners. Ny hemsida i Next.js",
         description:
-          "Case: UniClean Partners. Ny hemsida i Next.js som ersätter WordPress-sajten och skickar besökaren direkt till bokning i appen.",
+          "Case: UniClean Partners. Ny hemsida i Next.js som vägleder kunder och städare till UniCleans nya app.",
       },
     },
   },
