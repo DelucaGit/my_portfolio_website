@@ -9,14 +9,17 @@ A running log of what we built, what we chose, and why. Written so a later artic
 **What we did**
 - New project at `/projects/uniclean-partners/`, first in `projects.ts` so it leads the homepage
 - The old `uniclean` case (WordPress) stays. The new case says in its first paragraph that Marcel built the previous site in WordPress
-- Six studio images and six phone screenshots in `public/projects/uniclean-partners/`. The studio images are compositions: real screenshots placed in a browser window and phone frame on a backdrop in UniClean's colours
-- A 32 second screen recording with a visible mouse pointer. New optional `video` field on project media, rendered in the same browser frame as the full-page block
+- Five studio images and five phone screenshots in `public/projects/uniclean-partners/`. The studio images are compositions: real screenshots placed in a browser window and phone frame on a backdrop in UniClean's colours
+- A 30 second screen recording with a visible mouse pointer. New optional `video` field on project media, rendered in the same browser frame as the full-page block
 
 **Decisions**
 - **Not technical.** Marcel asked for tech stack, problem and solution only. Test counts, security work and the build problem at Hostinger are left out
 - **Role:** developer of the website. The app is built by someone else, and the case says so
 - **No numbers.** There are no measurements of bookings or traffic, so the results only say what is true: the site is live and the quote flow is gone
 - **Screenshots come from the local copy of the UniClean repo** (branch `partnerlank`), because uniclean.nu stops automated browsers with a bot check
+- **The story, corrected by Marcel:** the old site was for quote requests. The new site exists because the new app arrived, an Uber for cleaning that connects private customers with cleaners nearby. The site guides both groups to it
+- **Stack lists Next.js, not React as well.** Next.js is built on React, so one name is enough
+- **About Marcel's work, not the app.** The block about the price screen is gone, because that screen belongs to the app. The texts now say what Marcel built, in first person
 - **No reviews in the images.** The reviews section shows real people's names, so it is not featured
 
 ## 13 Nov 2026 — Sabaah Al-Wuruud: what the name means (#26)
