@@ -7,7 +7,7 @@ import { featuredProject, homeProjects } from "./site";
  * customers have closed their sites. No real project has ended, so the
  * normal build cannot show that state.
  *
- * `build-ended-site.ts` builds it into out-ended/ before the tests start and
+ * `build-test-sites.ts` builds it into out-ended/ before the tests start and
  * the suite serves it on its own port. It is the real site built by the real
  * `next build`, with two inputs changed:
  *  - one project is marked as ended by hand (E2E_ENDED_PROJECT stands in for

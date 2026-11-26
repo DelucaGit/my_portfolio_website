@@ -1,6 +1,7 @@
 import { test } from "@playwright/test";
 import {
   allRoutes,
+  keyRoutes,
   expectNoSidewaysScroll,
   expectTheme,
   returningVisitor,
@@ -12,11 +13,16 @@ import {
  * Every page, in both themes, at every width the design must hold at.
  * One page load per route and theme; the window is then resized, the way a
  * visitor drags it, so the suite stays fast.
+ *
+ * Safari's engine gets one page of each kind, in the light theme.
  */
+const inSafariToo = new Set(keyRoutes());
+
 for (const theme of THEMES) {
   test.describe(`Ingen vågrät skroll, ${theme === "light" ? "ljust" : "mörkt"} tema`, () => {
     for (const route of allRoutes()) {
-      test(route, async ({ page }) => {
+      const tag = theme === "light" && inSafariToo.has(route) ? " @webkit" : "";
+      test(`${route}${tag}`, async ({ page }) => {
         await returningVisitor(page, { chose: theme });
         await page.setViewportSize({ width: WIDTHS[0], height: 900 });
         await page.goto(route);

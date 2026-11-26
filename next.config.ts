@@ -1,16 +1,22 @@
 import type { NextConfig } from "next";
 
 /**
- * Only the Playwright suite sets E2E_ENDED_PROJECT: it builds a second copy of
- * the site in which one project counts as ended (see hasEndedSite in
- * src/lib/projects.ts). That copy is written to out-ended/, never to out/,
- * and only out/ is deployed.
+ * Only the Playwright suite sets these two. It builds two more copies of the
+ * site, and neither can end up in out/, which is the only folder deployed:
+ *  - E2E_ENDED_PROJECT: one project counts as ended (see hasEndedSite in
+ *    src/lib/projects.ts). Written to out-ended/.
+ *  - E2E_FEATURED_PROJECT: another project is the featured one (see
+ *    featuredSlug in src/lib/projects.ts). Written to out-featured/.
  */
-const endedTestBuild = Boolean(process.env.E2E_ENDED_PROJECT);
+const testBuildDir = process.env.E2E_ENDED_PROJECT
+  ? "out-ended"
+  : process.env.E2E_FEATURED_PROJECT
+    ? "out-featured"
+    : undefined;
 
 const nextConfig: NextConfig = {
   output: "export",
-  ...(endedTestBuild ? { distDir: "out-ended" } : {}),
+  ...(testBuildDir ? { distDir: testBuildDir } : {}),
   trailingSlash: true,
   devIndicators: false,
 };

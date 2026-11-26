@@ -87,7 +87,7 @@ async function pointAt(page: Page, across: number) {
 }
 
 test.describe("Heron på startsidan", () => {
-  test("säger vem Marcel är och har knapparna Läs CV och Se projekten", async ({
+  test("säger vem Marcel är och har knapparna Läs CV och Se projekten @webkit", async ({
     page,
   }) => {
     await page.goto("/");
@@ -184,7 +184,7 @@ test.describe("Ringen i heron", () => {
     await expectRingInTheMiddle(page, browser);
   });
 
-  test("utan WebGL visas en hel hero med en stilla ring", async ({
+  test("utan WebGL visas en hel hero med en stilla ring @webkit", async ({
     page,
     browser,
   }) => {
