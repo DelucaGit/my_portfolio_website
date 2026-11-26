@@ -6,6 +6,8 @@ type BrowserWindowProps = {
   title: string;
   /** `compact` has a lower bar, for windows that stand on a painting in a card. */
   size?: "regular" | "compact";
+  /** A short note at the right end of the bar, for example "03 / 09". */
+  note?: string;
   className?: string;
   /** What the window shows: a film, a screenshot, and anything under it. */
   children: ReactNode;
@@ -18,6 +20,7 @@ type BrowserWindowProps = {
 export function BrowserWindow({
   title,
   size = "regular",
+  note,
   className,
   children,
 }: BrowserWindowProps) {
@@ -38,7 +41,7 @@ export function BrowserWindow({
           <i />
         </span>
         <span className={styles.title}>{title}</span>
-        <span />
+        <span className={styles.note}>{note}</span>
       </div>
       {children}
     </div>

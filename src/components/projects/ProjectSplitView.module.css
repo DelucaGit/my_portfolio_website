@@ -1,0 +1,327 @@
+/**
+ * The split view. There are two layouts and no width rule picks between
+ * them here: the component sets data-mode="split" on .root from 1024 px
+ * (one media query in JavaScript). Without it, and without JavaScript, the
+ * projects are rows.
+ */
+
+.list {
+  list-style: none;
+}
+
+.link {
+  display: grid;
+}
+
+.text {
+  display: grid;
+  min-width: 0;
+}
+
+.name {
+  font-weight: 450;
+  overflow-wrap: break-word;
+}
+
+.about {
+  color: var(--mut);
+}
+
+.year {
+  margin-right: 0.3em;
+  font: 0.75rem/1 var(--mono);
+}
+
+.number {
+  font: 0.75rem/1 var(--mono);
+}
+
+.thumb {
+  width: 7rem;
+  aspect-ratio: 3 / 2;
+  border-radius: var(--r-s);
+  background-color: var(--card);
+  overflow: hidden;
+}
+
+.thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  border-radius: inherit;
+}
+
+.pane {
+  display: none;
+}
+
+/* ── Rows: below 1024 px, and whenever there is no JavaScript ── */
+
+.root:not([data-mode="split"]) .list {
+  display: grid;
+  column-gap: 2rem;
+}
+
+.root:not([data-mode="split"]) .number {
+  display: none;
+}
+
+.root:not([data-mode="split"]) .link {
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.9rem;
+  min-height: 4.5rem;
+  padding: 0.7rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.root:not([data-mode="split"]) .text {
+  gap: 0.2rem;
+}
+
+.root:not([data-mode="split"]) .name {
+  font-size: 1.0625rem;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  transition: color 0.2s;
+}
+
+.root:not([data-mode="split"]) .about {
+  font-size: 0.875rem;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+
+@media (hover: hover) {
+  .root:not([data-mode="split"]) .link:hover .name {
+    color: var(--accent);
+  }
+}
+
+@media (min-width: 700px) {
+  .root:not([data-mode="split"]) .list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ── Split view: names on the left, the preview window on the right ── */
+
+/*
+ * Left column: what stands above the list, the list, what stands under it.
+ * Right column: the window, beside all three, so it starts level with the top.
+ */
+.root[data-mode="split"] {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  /* The last row is the tail that keeps the window in place for the last project. */
+  grid-template-rows: auto auto auto var(--tail, 0px);
+  column-gap: clamp(2rem, 4vw, 4rem);
+  align-items: start;
+}
+
+.root[data-mode="split"] .header {
+  grid-area: 1 / 1;
+}
+
+.root[data-mode="split"] .list {
+  grid-area: 2 / 1;
+  border-left: 1px solid var(--line);
+}
+
+.root[data-mode="split"] .footer {
+  grid-area: 3 / 1;
+}
+
+.root[data-mode="split"] .thumb {
+  display: none;
+}
+
+.root[data-mode="split"] .link {
+  position: relative;
+  grid-template-columns: 2.25rem minmax(0, 1fr);
+  align-items: baseline;
+  padding: 1.1rem 0 1.15rem 1.25rem;
+  color: var(--mut);
+  transition: color 0.2s;
+}
+
+.root[data-mode="split"] .link:focus-visible {
+  outline-offset: -2px;
+}
+
+/* The accent bar beside the active name */
+.root[data-mode="split"] .link::before {
+  content: "";
+  position: absolute;
+  left: -2px;
+  top: 1.1rem;
+  bottom: 1.15rem;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--accent);
+  opacity: 0;
+  transform: scaleY(0.5);
+  transition:
+    opacity 0.2s,
+    transform 0.25s;
+}
+
+.root[data-mode="split"] .text {
+  gap: 0.45rem;
+}
+
+.root[data-mode="split"] .name {
+  font-size: clamp(2rem, 2.9vw, 2.5rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.root[data-mode="split"] .about {
+  font-size: 0.95rem;
+  line-height: 1.45;
+  max-width: 34em;
+  text-wrap: pretty;
+}
+
+.root[data-mode="split"] .link[aria-current] {
+  color: var(--ink);
+}
+
+.root[data-mode="split"] .link[aria-current]::before {
+  opacity: 1;
+  transform: none;
+}
+
+.root[data-mode="split"] .link[aria-current] .number {
+  color: var(--accent);
+}
+
+/* The window stays under the menu while the names scroll past. */
+.root[data-mode="split"] .pane {
+  --pad-y: clamp(1.25rem, 2.6vw, 2.5rem);
+  display: block;
+  grid-area: 1 / 2 / -1 / 2;
+  min-width: 0;
+  position: sticky;
+  top: calc(env(safe-area-inset-top, 0px) + var(--nav-h) + 1rem);
+}
+
+.stage {
+  display: grid;
+  justify-items: center;
+  padding: var(--pad-y) clamp(1.25rem, 3vw, 3rem);
+}
+
+/*
+ * The window is as wide as the stage lets it, but never so wide that the
+ * screenshot (2:1) pushes the facts and the buttons below the screen. 23rem
+ * is everything in the pane except the screenshot and the stage's padding:
+ * the menu, the address bar, the facts, the buttons and the help line.
+ */
+.window {
+  width: min(
+    100%,
+    max(16rem, calc((100vh - 23rem - 2 * var(--pad-y)) * 2))
+  );
+}
+
+.shot {
+  position: relative;
+  aspect-ratio: 2 / 1;
+  background: var(--card);
+}
+
+.shot img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.28s ease;
+}
+
+/* Every row has a fixed height, so the pane is equally tall for every project. */
+.facts {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--line);
+}
+
+.facts div {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  align-items: baseline;
+}
+
+.facts dt {
+  font: 0.68rem/1 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mut);
+}
+
+.facts dd {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Two reserved lines, so a long list never changes the height of the pane. */
+.twoLines dd {
+  white-space: normal;
+  height: 2.7em;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  min-height: 2.75rem;
+}
+
+.code {
+  margin-left: auto;
+  padding: 0.75rem 0;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--mut);
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+
+@media (hover: hover) {
+  .code:hover {
+    color: var(--ink);
+  }
+}
+
+/* The keyboard help shows while a name has keyboard focus. */
+.help {
+  margin-top: 0.6rem;
+  font-size: 0.7rem;
+  line-height: 1rem;
+  color: var(--mut);
+  visibility: hidden;
+}
+
+.root[data-mode="split"]:has(.link:focus-visible) .help {
+  visibility: visible;
+}

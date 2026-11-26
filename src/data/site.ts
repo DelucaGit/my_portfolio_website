@@ -219,13 +219,38 @@ export const site = {
    * exist stops the build.
    */
   featuredProject: "andalus-calendar" satisfies ProjectSlug,
+  /**
+   * How many projects the start page shows: the featured one plus the newest
+   * of the others. The rest are on /projects.
+   */
+  homeProjectCount: 10,
   /** The project section on the start page. */
   projects: {
     heading: "Projekt",
-    featured: {
-      label: "Utvalt",
+    /** The buttons a project has, wherever it is shown. Read out as "Läs caset: TakKoll". */
+    buttons: {
       readCase: "Läs caset",
       visitSite: "Besök sidan",
+      code: "Kod på GitHub",
+    },
+    /** The projects under the featured one on the start page. */
+    more: {
+      heading: "Fler projekt",
+      note: "Nyast först",
+      all: { name: "Alla projekt", href: "/projects" },
+    },
+    /** The split view: project names on one side, a preview window on the other. */
+    splitView: {
+      preview: "Förhandsvisning av valt projekt",
+      /** Followed by the project's name. */
+      screenshot: "Skärmbild av",
+      year: "År",
+      type: "Typ",
+      builtWith: "Byggt med",
+      keyboardHelp: "↑ ↓ bläddrar · Enter öppnar caset · Tab till länkarna",
+    },
+    featured: {
+      label: "Utvalt",
       /** Read by screen readers, followed by the project's name. */
       filmLabel: "Inspelad genomgång av",
       /** Who is clicking around in the film, shown before the step. */

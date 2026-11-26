@@ -1,4 +1,5 @@
 import SiteLink from "@/components/SiteLink";
+import { ArrowOut } from "@/components/ui/ArrowOut";
 import { BrowserWindow } from "@/components/ui/BrowserWindow";
 import { PaintedScene } from "@/components/ui/Painting";
 import { site } from "@/data/site";
@@ -10,21 +11,8 @@ import {
 } from "@/lib/projects";
 import shared from "@/styles/shared.module.css";
 import styles from "./FeaturedProject.module.css";
+import VisitSiteLink from "./VisitSiteLink";
 import WalkthroughFilm from "./WalkthroughFilm";
-
-function ArrowOut() {
-  return (
-    <svg
-      viewBox="0 0 16 16"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      aria-hidden="true"
-    >
-      <path d="M5 11 11 5M6 5h5v5" />
-    </svg>
-  );
-}
 
 /**
  * The featured project: a browser window on a painted landscape, playing a
@@ -35,6 +23,7 @@ export default function FeaturedProject() {
   const project = getFeaturedProject();
   const walkthrough = getProjectWalkthrough(project);
   const copy = site.projects.featured;
+  const buttons = site.projects.buttons;
   const titleId = `utvalt-${project.slug}`;
 
   return (
@@ -80,22 +69,12 @@ export default function FeaturedProject() {
           <SiteLink
             href={`/projects/${project.slug}`}
             className={`${shared.pill} ${shared.pillInk}`}
-            aria-label={`${copy.readCase}: ${project.name}`}
+            aria-label={`${buttons.readCase}: ${project.name}`}
           >
-            {copy.readCase}
+            {buttons.readCase}
             <ArrowOut />
           </SiteLink>
-          {project.siteUrl && (
-            <SiteLink
-              href={project.siteUrl}
-              external
-              className={`${shared.pill} ${shared.pillSoft}`}
-              aria-label={`${copy.visitSite}: ${project.name}`}
-            >
-              {copy.visitSite}
-              <ArrowOut />
-            </SiteLink>
-          )}
+          <VisitSiteLink name={project.name} siteUrl={project.siteUrl} />
         </p>
       </div>
     </article>

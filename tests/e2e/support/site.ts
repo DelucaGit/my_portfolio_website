@@ -1,7 +1,11 @@
 import { existsSync, readdirSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import { expect, type Locator, type Page } from "@playwright/test";
-import { getFeaturedProject, type Project } from "@/lib/projects";
+import {
+  getFeaturedProject,
+  getHomeProjects,
+  type Project,
+} from "@/lib/projects";
 
 /**
  * Shared helpers for every Playwright suite. Later tickets extend this file:
@@ -137,6 +141,136 @@ export async function scrollUntilShowing(
       return box ? Math.round((viewport.height - box.y) / box.height / 0.05) : -1;
     })
     .toBe(Math.round(share / 0.05));
+}
+
+// ── The split view (project names + preview window) ──
+
+/** The width the split view starts at; below it the projects are rows. */
+export const SPLIT_FROM = 1024;
+
+/**
+ * The projects under the featured one on the start page, read from the data
+ * layer the same way the site reads them.
+ */
+export function homeProjects(): Project[] {
+  return getHomeProjects();
+}
+
+/** A split view's list of projects. On the start page it is called "Fler projekt". */
+export function projectList(page: Page, name = "Fler projekt"): Locator {
+  return page.getByRole("list", { name, exact: true });
+}
+
+/** The links in a split view's list, one per project, in order. */
+export function projectLinks(page: Page, name?: string): Locator {
+  return projectList(page, name).getByRole("link");
+}
+
+/** The split view's preview window (only there from SPLIT_FROM). */
+export function previewWindow(page: Page): Locator {
+  return page.getByRole("complementary", {
+    name: "Förhandsvisning av valt projekt",
+  });
+}
+
+const READ_CASE = "Läs caset: ";
+
+/**
+ * The name of the project the preview window shows right now, read from its
+ * "Läs caset: …" button.
+ */
+export async function previewedProject(page: Page): Promise<string> {
+  const name = await previewWindow(page)
+    .getByRole("link", { name: new RegExp(`^${READ_CASE}`) })
+    .getAttribute("aria-label");
+  return (name ?? "").slice(READ_CASE.length);
+}
+
+/**
+ * The preview window shows this project: its buttons are about it, its
+ * screenshot is on screen and its name is the marked one in the list.
+ */
+export async function expectPreviewing(
+  page: Page,
+  project: Project,
+  listName?: string,
+) {
+  const pane = previewWindow(page);
+  await expect(
+    pane.getByRole("link", { name: READ_CASE + project.name, exact: true }),
+  ).toBeVisible();
+  await expect(
+    pane.getByRole("img", { name: `Skärmbild av ${project.name}`, exact: true }),
+  ).toBeVisible();
+  await expect(
+    projectList(page, listName).locator('[aria-current="true"]'),
+  ).toContainText(project.name);
+}
+
+/** The page has stopped moving (the smooth scroll has caught up). */
+export async function scrollSettled(page: Page) {
+  let last = -1;
+  await expect
+    .poll(
+      async () => {
+        const now = await page.evaluate(() => window.scrollY);
+        const still = now === last;
+        last = now;
+        return still;
+      },
+      { intervals: [150] },
+    )
+    .toBe(true);
+}
+
+/**
+ * The visitor turns the mouse wheel, a notch at a time, until `done` says
+ * stop. A negative `step` scrolls up.
+ */
+export async function wheelUntil(
+  page: Page,
+  done: () => Promise<boolean>,
+  { step = 70, pause = 100, notches = 400 } = {},
+) {
+  for (let n = 0; n < notches; n++) {
+    if (await done()) return;
+    await page.mouse.wheel(0, step);
+    await page.waitForTimeout(pause);
+  }
+  throw new Error("wheelUntil: turned the wheel to the end without getting there");
+}
+
+/**
+ * The visitor scrolls down with quick turns of the wheel until the split
+ * view's list has come up into the window.
+ */
+export async function wheelToProjectList(page: Page, listName?: string) {
+  const first = projectLinks(page, listName).first();
+  const height = page.viewportSize()?.height ?? 0;
+  await wheelUntil(
+    page,
+    async () => ((await first.boundingBox())?.y ?? Infinity) < height * 0.9,
+    { step: 250, pause: 120 },
+  );
+  await scrollSettled(page);
+}
+
+/** The visitor scrolls with the wheel until the preview window shows the project. */
+export async function wheelToProject(
+  page: Page,
+  project: Project,
+  { gently = false } = {},
+) {
+  if ((await previewedProject(page)) !== project.name) {
+    await wheelToProjectList(page);
+  }
+  // The page glides on a little after the wheel stops; `gently` keeps that short.
+  await wheelUntil(
+    page,
+    async () => (await previewedProject(page)) === project.name,
+    gently ? { step: 30 } : undefined,
+  );
+  await scrollSettled(page);
 }
 
 /** The visitor picks a theme with the switcher in the footer. */

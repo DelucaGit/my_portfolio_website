@@ -16,8 +16,36 @@ export function getAllProjects(): Project[] {
   return getProjectsNewestFirst();
 }
 
-export function getFeaturedProjects(count = 3): Project[] {
-  return getProjectsNewestFirst().slice(0, count);
+/**
+ * The projects under the featured one on the start page: newest first,
+ * without the featured project, so that the page shows `homeProjectCount`
+ * projects in all.
+ */
+export function getHomeProjects(): Project[] {
+  const featured: ProjectSlug = site.featuredProject;
+  return getProjectsNewestFirst()
+    .filter((project) => project.slug !== featured)
+    .slice(0, site.homeProjectCount - 1);
+}
+
+/** A project's screenshot in the preview format: 2:1, in two sizes. */
+export type ProjectPreview = {
+  /** 1280 x 640 */
+  large: string;
+  /** 640 x 320 */
+  small: string;
+};
+
+/**
+ * The project's 2:1 screenshot for the split view. The files are in
+ * public/previews/, named by the slug: `<slug>.webp` and `<slug>-sm.webp`.
+ * (`project.image` has another shape for every project.)
+ */
+export function getProjectPreview(project: Project): ProjectPreview {
+  return {
+    large: `/previews/${project.slug}.webp`,
+    small: `/previews/${project.slug}-sm.webp`,
+  };
 }
 
 /** The project `featuredProject` in src/data/site.ts points at. */

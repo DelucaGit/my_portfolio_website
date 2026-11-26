@@ -40,6 +40,13 @@
   text-overflow: ellipsis;
 }
 
+.note {
+  justify-self: end;
+  white-space: nowrap;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+}
+
 .compact .bar {
   height: 1.9rem;
   padding-inline: 0.7rem;
