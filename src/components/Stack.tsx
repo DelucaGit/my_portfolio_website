@@ -6,7 +6,11 @@ export default function Stack() {
   const { stack } = site;
 
   return (
-    <section className={styles.section} aria-labelledby="stack-heading">
+    <section
+      id="teknik"
+      className={styles.section}
+      aria-labelledby="stack-heading"
+    >
       <div className={styles.inner}>
         <header className={styles.header}>
           <div>

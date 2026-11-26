@@ -1,0 +1,43 @@
+.themes {
+  display: inline-flex;
+  flex: none;
+  padding: 3px;
+  gap: 2px;
+  border-radius: 999px;
+  background: var(--card-2);
+}
+
+.themes button {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--mut);
+}
+
+.themes button[aria-pressed="true"] {
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.themes svg {
+  width: 0.95rem;
+  height: 0.95rem;
+}
+
+.large button {
+  width: 2.75rem;
+  height: 2.75rem;
+}
+
+.large svg {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+@media (hover: hover) {
+  .themes button:hover {
+    color: var(--ink);
+  }
+}

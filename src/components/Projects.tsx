@@ -8,7 +8,7 @@ export default function Projects() {
 
   return (
     <section
-      id="projects"
+      id="projekt"
       className={styles.section}
       aria-labelledby="projects-heading"
     >

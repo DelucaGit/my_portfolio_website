@@ -6,7 +6,7 @@ export default function About() {
 
   return (
     <section
-      id="about"
+      id="om"
       className={styles.section}
       aria-labelledby="about-heading"
     >

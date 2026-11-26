@@ -1,12 +1,16 @@
+const email = "malakdeluca@gmail.com";
+const linkedin = "https://www.linkedin.com/in/marcel-deluca";
+const github = "https://github.com/DelucaGit";
+
 export const site = {
   name: "Marcel Deluca",
   title: "Webbutvecklare",
   description:
     "Jag bygger webbappar och hemsidor med React och Java. Jag söker en fast anställning där jag får växa i ett team.",
   url: "https://marceldeluca.se",
-  email: "malakdeluca@gmail.com",
-  linkedin: "https://www.linkedin.com/in/marcel-deluca",
-  github: "https://github.com/DelucaGit",
+  email,
+  linkedin,
+  github,
   phone: "073 879 66 01",
   phoneNote: "Ring efter 12.00",
   location: "Växjö, Sverige",
@@ -201,10 +205,81 @@ export const site = {
       { name: "Franska", level: "Förstår" },
     ],
   },
-  nav: [
-    { name: "Hem", href: "/" },
-    { name: "Projekt", href: "/projects" },
-    { name: "Om", href: "/#about" },
-    { name: "Kontakt", href: "/#contact" },
-  ],
+  /** Headings, labels and button texts on the CV page. The CV itself is `cv`. */
+  cvPage: {
+    back: "Tillbaka",
+    eyebrow: "CV",
+    facts: { email: "Mejl", phone: "Telefon", location: "Plats" },
+    download: { label: "Ladda ner CV (PDF)", fileName: "Marcel_Deluca_CV.pdf" },
+    github: "GitHub",
+    linkedin: "LinkedIn",
+    experience: "Erfarenhet",
+    education: "Utbildning",
+    learnings: "Vad har jag lärt mig?",
+    skills: "Kompetens",
+    languages: "Språk",
+    contact: {
+      heading: "Vill du komma i kontakt?",
+      text: "Skicka ett mejl eller ring om du vill prata om jobb, projekt eller bara säga hej.",
+    },
+  },
+  /** Texts shared by every service page. The services are in `services.ts`. */
+  servicePage: {
+    back: "← Till startsidan",
+  },
+  /** The sticky menu at the top of every page. */
+  nav: {
+    label: "Huvudmeny",
+    brandLabel: "Marcel Deluca, till startsidan",
+    links: [
+      { name: "Projekt", href: "/#projekt" },
+      { name: "Om mig", href: "/#om" },
+      { name: "Teknik", href: "/#teknik" },
+      { name: "Kontakt", href: "/#kontakt" },
+    ],
+    cv: { name: "Läs CV", href: "/cv" },
+    contact: { name: "Hör av dig", href: "/#kontakt" },
+    menuButton: { open: "Öppna menyn", close: "Stäng menyn" },
+  },
+  footer: {
+    lead: "Webbutvecklare i Växjö. Öppen för jobb.",
+    columns: [
+      {
+        heading: "Sidan",
+        links: [
+          { name: "Projekt", href: "/#projekt", external: false },
+          { name: "Om mig", href: "/#om", external: false },
+          { name: "Teknik", href: "/#teknik", external: false },
+          { name: "Kontakt", href: "/#kontakt", external: false },
+        ],
+      },
+      {
+        heading: "Mer",
+        links: [
+          { name: "CV", href: "/cv", external: false },
+          { name: "Alla case", href: "/projects", external: false },
+        ],
+      },
+      {
+        heading: "Kontakt",
+        links: [
+          { name: "LinkedIn", href: linkedin, external: true },
+          { name: "GitHub", href: github, external: true },
+          { name: "E-post", href: `mailto:${email}`, external: false },
+        ],
+      },
+    ],
+  },
+  /** Small texts that belong to the frame around every page. */
+  ui: {
+    skipLink: "Hoppa till innehållet",
+    theme: {
+      label: "Tema",
+      options: [
+        { value: "system", label: "Följ systemet" },
+        { value: "light", label: "Ljust" },
+        { value: "dark", label: "Mörkt" },
+      ],
+    },
+  },
 } as const;

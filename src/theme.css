@@ -1,61 +1,181 @@
 /**
- * Warm editorial tokens — from the Stitch design (cream + magenta).
+ * Tyngdlös design tokens (#52, #53). Names follow the prototype.
+ *
+ * Theme: light by default. Dark applies when the device asks for it and the
+ * visitor has not chosen light, or when the visitor has chosen dark
+ * (<html data-theme="dark">, set by the inline script in the root layout).
+ * The dark values are written twice on purpose: once for "follow the system"
+ * (works without JavaScript) and once for the explicit choice. Keep them equal.
+ *
+ * Dark is for screens only. On paper the page always has the light colours,
+ * on white (see the print block below the dark values).
  */
 
 :root {
-  --nav-height: 5rem;
+  color-scheme: light;
 
-  /* ── Font ── */
-  --font-sans: var(--font-jakarta), system-ui, -apple-system, sans-serif;
+  /* ── Colours ── */
+  --bg: #f7f6f2;
+  --card: #f0efe9;
+  --card-2: #e6e4dc;
+  --win: #fcfbf8;
+  --win-2: #f3f2ed;
+  --ink: #201f1a;
+  --mut: #6a685e;
+  --faint: #b3b1a6;
+  --line: rgba(32, 31, 26, 0.11);
+  --line-2: rgba(32, 31, 26, 0.22);
+  --accent: #c63c00;
+  --ok: #1f8a4c;
+  --dot: rgba(32, 31, 26, 0.2);
+  --panel: #111114;
+  --on-panel: #f4f3ee;
+  --panel-mut: #b5b4bb;
+  --code-k: #a4380b;
+  --code-s: #2c6e49;
+  --code-a: #5a45b8;
+  --shadow:
+    0 30px 60px -26px rgba(48, 38, 18, 0.5),
+    0 10px 22px -14px rgba(48, 38, 18, 0.3);
+  --paint-dim: 1;
 
-  /* ── Core palette (Stitch warm editorial) ── */
-  --color-bg: #fff8f5;
-  --color-text: #1e1b19;
-  --color-text-muted: #584048;
-  --color-heading: #1e1b19;
+  /* ── Type (font variables come from next/font in the root layout) ── */
+  --sans:
+    var(--font-google-sans-flex), "Google Sans", "Helvetica Neue", Helvetica,
+    Arial, sans-serif;
+  --mono:
+    var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Consolas,
+    monospace;
 
-  /* ── Surfaces ── */
-  --color-surface: #faf2ee;
-  --color-surface-hover: #f4ece8;
-  --color-surface-raised: #ffffff;
-  --color-surface-input: #ffffff;
-  --color-surface-dim: #e0d8d5;
+  /* ── Shape and space ── */
+  --r-s: 6px;
+  --r-m: 10px;
+  --r-l: 28px;
+  --gut-l: max(16px, env(safe-area-inset-left, 0px));
+  --gut-r: max(16px, env(safe-area-inset-right, 0px));
+  --space: clamp(4.5rem, 10vw, 9rem);
+  --nav-h: 3.5rem;
+  --wrap-max: 1364px;
+}
 
-  /* ── Buttons ── */
-  --color-btn-primary: #1e1b19;
-  --color-btn-primary-hover: #b30564;
-  --color-btn-secondary: #f4ece8;
-  --color-btn-secondary-hover: #eee7e3;
-  --color-btn-on-primary: #fff8f5;
+@media (min-width: 800px) {
+  :root {
+    --gut-l: max(32px, env(safe-area-inset-left, 0px));
+    --gut-r: max(32px, env(safe-area-inset-right, 0px));
+  }
+}
 
-  /* ── Accent & interactive ── */
-  --color-accent: #b30564;
-  --color-accent-strong: #d52e7e;
-  --color-accent-muted: rgba(179, 5, 100, 0.1);
-  --color-secondary: #5244d3;
-  --color-tertiary: #00685f;
-  --color-focus: #b30564;
-  --color-focus-ring: rgba(179, 5, 100, 0.15);
+@media screen and (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #141310;
+    --card: #1c1b17;
+    --card-2: #26251f;
+    --win: #1b1a16;
+    --win-2: #23221d;
+    --ink: #edece6;
+    --mut: #a3a195;
+    --faint: #5d5b52;
+    --line: rgba(237, 236, 230, 0.12);
+    --line-2: rgba(237, 236, 230, 0.24);
+    --accent: #ff8552;
+    --ok: #4cc27f;
+    --dot: rgba(237, 236, 230, 0.2);
+    --panel: #0a0a0c;
+    --on-panel: #f4f3ee;
+    --panel-mut: #b5b4bb;
+    --code-k: #ff9b73;
+    --code-s: #8fd3a8;
+    --code-a: #b9a8ff;
+    --shadow:
+      0 30px 60px -26px rgba(0, 0, 0, 0.8),
+      0 10px 22px -14px rgba(0, 0, 0, 0.6);
+    --paint-dim: 0.78;
+  }
+}
+
+@media screen {
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #141310;
+    --card: #1c1b17;
+    --card-2: #26251f;
+    --win: #1b1a16;
+    --win-2: #23221d;
+    --ink: #edece6;
+    --mut: #a3a195;
+    --faint: #5d5b52;
+    --line: rgba(237, 236, 230, 0.12);
+    --line-2: rgba(237, 236, 230, 0.24);
+    --accent: #ff8552;
+    --ok: #4cc27f;
+    --dot: rgba(237, 236, 230, 0.2);
+    --panel: #0a0a0c;
+    --on-panel: #f4f3ee;
+    --panel-mut: #b5b4bb;
+    --code-k: #ff9b73;
+    --code-s: #8fd3a8;
+    --code-a: #b9a8ff;
+    --shadow:
+      0 30px 60px -26px rgba(0, 0, 0, 0.8),
+      0 10px 22px -14px rgba(0, 0, 0, 0.6);
+    --paint-dim: 0.78;
+  }
+}
+
+/* Paper is white, whatever theme the screen has */
+@media print {
+  :root {
+    --bg: #fff;
+  }
+}
+
+/**
+ * Old names from the previous design, mapped onto the new tokens so that
+ * sections that have not been rebuilt yet (#54–#62) follow the theme.
+ * Remove a name when nothing uses it any more. Do not use these in new code.
+ */
+:root {
+  --nav-height: var(--nav-h);
+  --font-sans: var(--sans);
+
+  --color-bg: var(--bg);
+  --color-text: var(--ink);
+  --color-text-muted: var(--mut);
+  --color-heading: var(--ink);
+
+  --color-surface: var(--card);
+  --color-surface-hover: var(--card-2);
+  --color-surface-raised: var(--win);
+  --color-surface-input: var(--win);
+  --color-surface-dim: var(--card-2);
+
+  --color-btn-primary: var(--ink);
+  --color-btn-primary-hover: var(--mut);
+  --color-btn-secondary: var(--card-2);
+  --color-btn-secondary-hover: var(--card);
+  --color-btn-on-primary: var(--bg);
+
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent);
+  --color-accent-muted: color-mix(in srgb, var(--accent) 12%, transparent);
+  --color-secondary: var(--code-a);
+  --color-tertiary: var(--code-s);
+  --color-focus: var(--accent);
+  --color-focus-ring: color-mix(in srgb, var(--accent) 18%, transparent);
   --color-linkedin: #0a66c2;
 
-  /* ── Text opacity variants ── */
-  --color-text-subtle: rgba(30, 27, 25, 0.55);
-  --color-text-faint: rgba(30, 27, 25, 0.4);
-  --color-eyebrow: #b30564;
+  --color-text-subtle: var(--mut);
+  --color-text-faint: var(--mut);
+  --color-eyebrow: var(--accent);
 
-  /* ── Borders & shadows ── */
-  --color-border: rgba(30, 27, 25, 0.08);
-  --color-border-light: rgba(30, 27, 25, 0.05);
-  --color-border-input: rgba(30, 27, 25, 0.12);
-  --shadow-card:
-    0 16px 36px -12px rgba(28, 25, 23, 0.06),
-    0 4px 12px -4px rgba(28, 25, 23, 0.03);
-  --shadow-image:
-    0 1px 2px rgba(28, 25, 23, 0.05),
-    0 20px 50px rgba(28, 25, 23, 0.08);
+  --color-border: var(--line);
+  --color-border-light: var(--line);
+  --color-border-input: var(--line-2);
+  --shadow-card: 0 16px 36px -12px rgba(0, 0, 0, 0.08);
+  --shadow-image: 0 20px 50px rgba(0, 0, 0, 0.1);
 
-  /* ── Dark surfaces (video, media) ── */
-  --color-video-bg: #1e1b19;
+  --color-video-bg: var(--panel);
   --color-video-inner: #33302d;
 
   /* ── Section rhythm ── */
@@ -102,26 +222,26 @@
   --radius-xl: 1.5rem;
   --radius-full: 9999px;
 
-  /* ── Project pastel cards (Stitch) ── */
-  --project-theme-warm: #fff1eb;
-  --project-theme-green: #ecf7f2;
-  --project-theme-blue: #edf4ff;
-  --project-theme-amber: #fef9ea;
-  --project-theme-dark: #1e1b19;
-  --project-theme-cool: #f5effe;
-  --project-theme-honey: #fef9ea;
-  --project-theme-steel: #edf4ff;
-  --project-theme-mint: #ecf7f2;
-  --project-theme-roof: #edf4ff;
-  --project-theme-sand: #fff1eb;
-  --project-theme-sage: #ecf7f2;
-  --project-theme-ember: #fff1eb;
-  --project-theme-lime: #ecf7f2;
-  --project-theme-peach: #fff1eb;
-  --project-theme-sky: #edf4ff;
-  --project-theme-forest: #ecf7f2;
-  --project-theme-andalus: #ecf7f2;
-  --project-theme-lilac: #f5effe;
+  /* ── Project pastel cards: pastel on light paper, plain card in the dark ── */
+  --project-theme-warm: light-dark(#fff1eb, var(--card));
+  --project-theme-green: light-dark(#ecf7f2, var(--card));
+  --project-theme-blue: light-dark(#edf4ff, var(--card));
+  --project-theme-amber: light-dark(#fef9ea, var(--card));
+  --project-theme-dark: var(--panel);
+  --project-theme-cool: light-dark(#f5effe, var(--card));
+  --project-theme-honey: light-dark(#fef9ea, var(--card));
+  --project-theme-steel: light-dark(#edf4ff, var(--card));
+  --project-theme-mint: light-dark(#ecf7f2, var(--card));
+  --project-theme-roof: light-dark(#edf4ff, var(--card));
+  --project-theme-sand: light-dark(#fff1eb, var(--card));
+  --project-theme-sage: light-dark(#ecf7f2, var(--card));
+  --project-theme-ember: light-dark(#fff1eb, var(--card));
+  --project-theme-lime: light-dark(#ecf7f2, var(--card));
+  --project-theme-peach: light-dark(#fff1eb, var(--card));
+  --project-theme-sky: light-dark(#edf4ff, var(--card));
+  --project-theme-forest: light-dark(#ecf7f2, var(--card));
+  --project-theme-andalus: light-dark(#ecf7f2, var(--card));
+  --project-theme-lilac: light-dark(#f5effe, var(--card));
 }
 
 /* Mobile: slightly larger body text for easier reading, tighter section spacing */

@@ -23,9 +23,5 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   const project = getProjectBySlug(slug);
   if (!project) notFound();
 
-  return (
-    <main>
-      <ProjectCaseStudy project={project} />
-    </main>
-  );
+  return <ProjectCaseStudy project={project} />;
 }
