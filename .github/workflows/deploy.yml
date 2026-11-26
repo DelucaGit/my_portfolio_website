@@ -1,19 +1,18 @@
 name: Check and build
 
-# Checks the customers' sites and builds the site, as a control.
-# Hostinger publishes the site itself from the repository; nothing is
-# uploaded from here.
+# Only a check: it runs the link check and builds the site to see that both
+# still work. Nothing from this run reaches the published site. Hostinger
+# builds and publishes the site itself from the repository, and the link
+# check's result file (site-check.json) is not in git, so Hostinger's build
+# never sees it.
 on:
   push:
     branches:
       - main
   workflow_dispatch:
-  schedule:
-    # 05:17 UTC on the 1st of every month
-    - cron: "17 5 1 * *"
 
 jobs:
-  build-and-deploy:
+  check-and-build:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,9 +29,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # Writes site-check.json, which the build reads. A site counts as ended
+      # Prints what it finds about every customer site and writes
+      # site-check.json, which the build below reads. A site counts as ended
       # only when its domain is gone or it answers 404/410. The check can
-      # never stop the deploy: without a result every site button stays.
+      # never fail the run.
       - name: Check the customers' sites
         run: npm run check:sites
         continue-on-error: true
