@@ -192,8 +192,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   mask-image: linear-gradient(90deg, transparent, #000 var(--fl), #000 calc(100% - var(--fr)), transparent);
 }
 .strip::-webkit-scrollbar { display: none; }
-.strip.l { --fl: 3.5rem; }
-.strip.r { --fr: 3.5rem; }
+.strip.l { --fl: calc(var(--gut-l) + .5rem); }
+.strip.r { --fr: calc(var(--gut-r) + .5rem); }
 .strip ul { display: flex; gap: .7rem; width: max-content; padding: .5rem var(--gut-r) .9rem var(--gut-l); }
 .strip li { flex: none; width: 8.125rem; scroll-snap-align: start; }
 .th { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); width: 100%; text-align: left; }
@@ -361,7 +361,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
     for (var i = 0; i < btns.length; i++) btns[i].addEventListener('click', function () { set(this.getAttribute('data-theme-set'), true); });
   })();
 
-  /* 3. The paintings: each landscape is a few thousand short brush strokes, drawn once from a seed. */
+  /* 2. The paintings: each landscape is a few thousand short brush strokes, drawn once from a seed. */
   var PAL = {
     morgon: { seed: 11, sky0: [216, 26, 74], sky1: [34, 46, 86], far: [224, 17, 62], near: [96, 17, 43], field: [44, 40, 58] },
     hav:    { seed: 5,  sky0: [204, 30, 78], sky1: [188, 26, 88], far: [208, 28, 58], near: [172, 22, 40], field: [50, 32, 64] },
@@ -423,7 +423,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
     }
   }
 
-  /* 4. The stage. */
+  /* 3. The stage. */
   (function () {
     /* The featured project: it opens the stage, comes first in the strip and carries the label "Utvalt". */
     var FEATURED = 'andalus-calendar';
@@ -538,8 +538,9 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
       if (n === cur) return;
       var old = cur, p = proj(n), inside = slides[old].contains(doc.activeElement);
       cur = n;
-      slides[old].classList.remove('on');
-      slides[n].classList.add('on');
+      /* `inert` takes the old sheet out of the tab order at once, while it is still fading out. */
+      slides[old].classList.remove('on'); slides[old].inert = true;
+      slides[n].classList.add('on'); slides[n].inert = false;
       /* Keep the keyboard where it was if the focused link just went away with its sheet. */
       if (inside) slides[n].querySelector('a').focus({ preventScroll: true });
       thumbs[old].removeAttribute('aria-current');
@@ -557,7 +558,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
     info.textContent = '';
     order.forEach(function (i, n) {
       var p = P[i], li = el('li'), b = el('button', 'th'), w = el('span', 'th-i'), im = el('img'), s = sheet(p), f;
-      if (!n) s.className = 'sl on';
+      if (n) s.inert = true; else s.className = 'sl on';
       info.appendChild(s); slides[n] = s;
       b.type = 'button';
       im.loading = 'lazy'; im.decoding = 'async'; im.width = 640; im.height = 320; im.alt = 'Skärmbild av ' + p[1];

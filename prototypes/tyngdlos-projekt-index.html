@@ -185,7 +185,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .row { position: relative; margin-inline: -.5rem; border-radius: var(--r-m); transition: background-color .2s; }
 .row::before { content: ""; position: absolute; inset: 0 .5rem auto; height: 1px; background: var(--line); transition: opacity .2s; }
 .row.open { background: var(--card); }
-.row.open::before, .row.open + .row::before { opacity: 0; }
+.row:first-child::before, .row.open::before, .row.open + .row::before { opacity: 0; }
 @media (hover: hover) {
   .row:hover { background: var(--card); }
   .row:hover::before, .row:hover + .row::before { opacity: 0; }
@@ -473,7 +473,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
       $('f-case').href = CASE + p[0] + '/';
       site.hidden = !p[7]; if (p[7]) site.href = p[7];
       git.hidden = !p[8]; if (p[8]) git.href = p[8];
-      if (F) cover($('f-img'), p);
+      cover($('f-img'), p);
     })(P[F]);
 
     /* The list: every other project, grouped by year in the order of the data. */
