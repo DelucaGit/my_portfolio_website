@@ -1,8 +1,3 @@
-export type ProjectTheme = {
-  bg: string;
-  dark: boolean;
-};
-
 export type ProjectImage = {
   src: string;
   alt: string;
@@ -54,7 +49,6 @@ export type Project = {
 
   image: string;
   imageAlt: string;
-  theme: ProjectTheme;
 
   /** Recorded walkthrough for the featured card. Without one the card shows `image`. */
   walkthrough?: ProjectWalkthrough;
@@ -115,10 +109,6 @@ export const projects = defineProjects([
     image: "/projects/uniclean-partners/studio-hero.webp",
     imageAlt:
       "UniCleans nya startsida i ett webbläsarfönster och i en telefon",
-    theme: {
-      bg: "var(--project-theme-sky)",
-      dark: false,
-    },
     detail: {
       overview: [
         "UniClean är ett städföretag med hemstäd, storstäd, flyttstäd och fönsterputs. Jag byggde deras förra hemsida i WordPress. När företaget fick en ny app behövde de en ny hemsida som vägleder dit. Jag var utvecklare för hemsidan. Appen är byggd av någon annan.",
@@ -246,10 +236,6 @@ export const projects = defineProjects([
     image: "/projects/sabaah-al-wuruud/hero.png",
     imageAlt:
       "Tre telefoner med adhkar-appen Sabaah Al-Wuruud i lavendel, i ljust och mörkt läge",
-    theme: {
-      bg: "var(--project-theme-lilac)",
-      dark: false,
-    },
     detail: {
       overview: [
         "Min fru och jag har varit gifta i fem år. Sabaah Al-Wuruud är en Android-app jag byggde till henne. Namnet är arabiska och betyder ”rosornas morgon” (Morning of Roses). I appen finns morgon- och kvällsadhkar, bönetider och hennes Koran-memorering på ett ställe. Adhkar är korta böner och åminnelser som vi muslimer läser varje morgon och kväll. Med dem ber vi vår Skapare att skydda oss under dagen och natten.",
@@ -343,10 +329,6 @@ export const projects = defineProjects([
     stack: ["Next.js", "TypeScript", "Tailwind", "Vercel"],
     image: "/projects/zenith-kampsport/hero-viewport.png",
     imageAlt: "Zenith Kampsport startsida med hero och knappar för medlemskap",
-    theme: {
-      bg: "var(--project-theme-dark)",
-      dark: true,
-    },
     detail: {
       overview: [
         "Zenith Kampsport är en kampsportsklubb i Järva. Hemsidan fanns redan i Next.js, med schema, medlemskap och kontakt.",
@@ -434,10 +416,6 @@ export const projects = defineProjects([
     image: "/projects/fcvaxjo-reborn/news-viewport.png",
     imageAlt:
       "FC Växjö Reborn: nyheter och träningstider i Next.js-layout",
-    theme: {
-      bg: "var(--project-theme-ember)",
-      dark: false,
-    },
     detail: {
       overview: [
         "Klubben behövde en hemsida som funkar 2026. Föräldrar ska hitta träningstider och nyheter utan att leta.",
@@ -522,10 +500,6 @@ export const projects = defineProjects([
     image: "/projects/andalus-calendar/hero-viewport.png",
     imageAlt:
       "The Andalus Calendar i månadsvy, bönetider till vänster, hijri-datum i rutnätet och uppgifter till höger",
-    theme: {
-      bg: "var(--project-theme-andalus)",
-      dark: false,
-    },
     walkthrough: {
       duration: 19.7,
       steps: [
@@ -623,10 +597,6 @@ export const projects = defineProjects([
     stack: ["WordPress", "Elementor"],
     image: "/projects/takkoll/hero-viewport.jpg",
     imageAlt: "TakKoll startsida, professionella taklösningar",
-    theme: {
-      bg: "var(--project-theme-roof)",
-      dark: false,
-    },
     detail: {
       overview: [
         "Ett tak är husets viktigaste skydd. Ändå är det ofta det man skjuter på att ta hand om. TakKoll ville ändra på det.",
@@ -708,10 +678,6 @@ export const projects = defineProjects([
     stack: ["WordPress", "Elementor"],
     image: "/projects/bilservicekoll/hero-viewport.png",
     imageAlt: "BilserviceKoll startsida, hero med bilservice och biluppämtning",
-    theme: {
-      bg: "var(--project-theme-sand)",
-      dark: false,
-    },
     detail: {
       overview: [
         "Bilar måste servas. Men för många känns det krångligt.",
@@ -780,10 +746,6 @@ export const projects = defineProjects([
     stack: ["Frontend", "UX & UI-design"],
     image: "/projects/stadkoll/hero-viewport.webp",
     imageAlt: "Städkoll startsida, hero med flyttstädning till fast pris",
-    theme: {
-      bg: "var(--project-theme-sage)",
-      dark: false,
-    },
     detail: {
       overview: [
         "Att flytta är jobbigt nog. Och för många blir flyttstädningen droppen.",
@@ -838,10 +800,6 @@ export const projects = defineProjects([
     stack: ["Frontend", "UX & UI-design"],
     image: "/projects/brand-sakerhetskoll/hero-viewport.webp",
     imageAlt: "Brand & Säkerhetskoll startsida, hero med brandsläckare och trygghet i hemmet",
-    theme: {
-      bg: "var(--project-theme-ember)",
-      dark: false,
-    },
     detail: {
       overview: [
         "Trygghet börjar i hemmet. Men utan rätt brandskydd är den skör.",
@@ -896,10 +854,6 @@ export const projects = defineProjects([
     stack: ["SEO", "Frontend", "UX & UI-design"],
     image: "/projects/scooterkoll/hero-viewport.webp",
     imageAlt: "Scooterkoll startsida, hero med offertformulär och 365+ reparerade scootrar",
-    theme: {
-      bg: "var(--project-theme-lime)",
-      dark: false,
-    },
     detail: {
       overview: [
         "Elscootrar är smidiga. Tills de går sönder.",
@@ -954,10 +908,6 @@ export const projects = defineProjects([
     stack: ["GoHighLevel", "UX & UI-design"],
     image: "/projects/halimapearl/hero-viewport.webp",
     imageAlt: "HalimaPearl startsida, hero med Modesty Is Fashion mot sidentyg",
-    theme: {
-      bg: "var(--project-theme-peach)",
-      dark: false,
-    },
     detail: {
       overview: [
         "När vi först mötte HalimaPearl drevs verksamheten nästan helt av word of mouth. Kvinnor i Gambia hörde talas om hennes kläder genom vänner och familj, och kollektionerna spreds snabbt från hand till hand.",
@@ -1012,10 +962,6 @@ export const projects = defineProjects([
     stack: ["SEO", "Frontend", "UX & UI-design"],
     image: "/projects/ventilationskoll/hero-viewport.webp",
     imageAlt: "Ventilationskoll startsida, hero med pris från 2095 kr och kundomdömen",
-    theme: {
-      bg: "var(--project-theme-sky)",
-      dark: false,
-    },
     detail: {
       overview: [
         "Ventilationskoll kom till oss med ett tydligt mål: de behövde en hemsida som inte bara såg bra ut, utan som faktiskt hjälpte dem att få in kunder. Besökarna skulle enkelt kunna hitta prisinformation och smidigt boka direkt online.",
@@ -1070,10 +1016,6 @@ export const projects = defineProjects([
     image: "/projects/premium-honey-blends/hero-viewport.png",
     imageAlt:
       "Premium Honey Blends startsida, mörk hero med honungsburkar och Handla nu-knapp",
-    theme: {
-      bg: "var(--project-theme-honey)",
-      dark: false,
-    },
     detail: {
       overview: [
         "Kunden ville lansera sin första hemsida. Fram till dess drevs försäljningen via kontakter och sociala medier, ett upplägg som fungerade, tills det blev för stort att hålla i handen.",
@@ -1156,10 +1098,6 @@ export const projects = defineProjects([
     stack: ["WooCommerce", "Polylang", "PHP"],
     image: "/projects/alkama/hero-viewport.png",
     imageAlt: "ALKAMA startsida, hero med bästsäljare i webbutiken",
-    theme: {
-      bg: "var(--project-theme-steel)",
-      dark: false,
-    },
     detail: {
       overview: [
         "Alkama Industry har sedan 2004 byggt verksamheten på högt förtroende och personliga relationer. Men den manuella, telefonbaserade modellen skapade flaskhalsar när ägandet bytte generation.",
@@ -1214,10 +1152,6 @@ export const projects = defineProjects([
     stack: ["WordPress", "Elementor"],
     image: "/projects/uniclean/hero-viewport.png",
     imageAlt: "UniClean startsida, hero med prisoffertformulär",
-    theme: {
-      bg: "var(--project-theme-mint)",
-      dark: false,
-    },
     detail: {
       overview: [
         "Lucas hade drivit en framgångsrik lokal verksamhet med starkt rykte i flera år. Men när kundbasen växte blev bristen på en strukturerad onboarding en flaskhals.",
@@ -1301,10 +1235,6 @@ export const projects = defineProjects([
     stack: ["WordPress", "Elementor", "TranslatePress"],
     image: "/projects/shanasheel/hero-viewport.png",
     imageAlt: "Shanasheel startsida med Akkad Residential City i hero",
-    theme: {
-      bg: "var(--project-theme-forest)",
-      dark: false,
-    },
     detail: {
       overview: [
         "Shanasheel Al-Asima behövde mer än en vanlig företagswebb. De behövde en plats där investerare, familjer och partners kunde känna tyngden i Akkad Residential City, och samtidigt förstå hela bolaget: avfall, solenergi och jordbruk.",
@@ -1386,10 +1316,6 @@ export const projects = defineProjects([
     stack: ["One.com", "UX & UI-design"],
     image: "/projects/fcvaxjo/hero-viewport.png",
     imageAlt: "FC Växjö startsida, hero med klubbmärke och plan",
-    theme: {
-      bg: "var(--project-theme-dark)",
-      dark: true,
-    },
     detail: {
       overview: [
         "FC Växjö har sedan 1989 samlat ungdomar kring fotboll, gemenskap och integration i Växjö. Föreningen behövde en hemsida som kändes som klubben, inte som en generisk mall.",
