@@ -2,6 +2,56 @@
 
 A running log of what we built, what we chose, and why. Written so a later article can tell the story without reconstructing it from git.
 
+## 26 Nov 2026 — The whole site in the Tyngdlös design (#52–#62)
+
+**Goal:** Rebuild the portfolio in the design from the prototype rounds (#47–#51): a paper-coloured page, a light and a dark theme, painted landscapes behind browser windows, and a project list you can browse without clicking into every case. The PRD is #52. It was built as ten issues (#53–#62) on the branch `feat/tyngdlos`, one branch per issue.
+
+**What we built**
+- **#53 Shell:** `dev` and `build` run with `--webpack`. Colour tokens for both themes in `theme.css`, the fonts Google Sans Flex and Geist Mono, a theme switcher (system, light, dark) that is set by a small script before the first paint, the sticky menu, the footer with the name as a wordmark and the skip link. Playwright was set up here: the repo had no automated tests before
+- **#54 Hero:** a ring of strokes in WebGL that follows the pointer. It stands still with reduced motion and has a drawn fallback without WebGL or JavaScript
+- **#55 Featured project:** a card with a recorded walkthrough of the real site and a line under the film that says what happens. The recording script from the prototype moved in as `scripts/record-walkthrough.mjs`
+- **#56 Split view:** the nine next projects as names on the left and a preview window on the right that stays in place. Scroll, pointer and keyboard pick the project. Rows below 1024 px
+- **#57 Archive and project pages:** `/projects/` is the same split view with every project. The case pages got the new style and links to the project before and after
+- **#58 Link check:** `scripts/check-sites.mjs` asks every customer site before the build. A site that is gone gets the button "Kunden har avslutat projektet". The deploy also runs once a month
+- **#59 Om mig and Vad jag gör:** a text that fills in word by word, and three cards
+- **#60 Teknik, Vägen hit and Kontakt:** tools grouped by use, a timeline read from the CV data, and a button that copies the e-mail address
+- **#61 CV and service pages:** the CV in the new style with a print version. The service pages only got the new menu, footer and colours
+- **#62 Final check:** the gaps in the test suite, the loose ends below and the README
+
+**The start page now:** Hero → Projekt (featured card, then "Fler projekt") → Om mig → Vad jag gör → Teknik → Vägen hit → Kontakt.
+
+**Gone:** the grid of project cards (`ProjectCard`), the stack cards with brand logos (`Stack`, `StackIcons`, `public/icons/`), the old pastel theme tokens (`--color-*`, `--project-theme-*` and the rest) and the `theme` field on a project. Older entries in this log describe those parts as they were.
+
+**Decisions**
+- **Webpack, not Turbopack.** Turbopack is the default in Next.js 16, but the site it builds does not work once it is on Hostinger. Still a static export, still uploaded with FTP
+- **One line picks the featured project.** `featuredProject` in `site.ts` is a slug, and its type is the list of slugs that exist, so a wrong slug stops the build. The card, Om mig and the card "Egna produkter" all ask the project layer, which is the only place that reads the line. `homeProjectCount` is the other line: how many projects the start page shows
+- **What the line does not change:** the card "Hemsidor åt kunder" has its own project (`whatIDo.clients.project`) and its text names FC Växjö Reborn in plain words. The CV names projects too
+- **Components never read the project data.** They ask `src/lib/projects.ts`. That is what made the link check and the featured project possible to change in one place
+- **A site is "ended" only on a clear answer:** the domain does not exist, or the site answers 404 or 410. A timeout or a server error is "unknown" and the button stays. The site must never say a customer has left when their site is only down for a moment. `siteStatus: "ended"` on a project wins over the check, for a domain someone else has taken over
+- **The link check cannot stop a deploy.** It always exits with 0, and without a result file nothing counts as ended
+- **The split view has two rules that never alternate.** Scroll: the name that crosses a line at 45 % of the window is active. Point: a pointer that really moves over a name, or keyboard focus, takes over until the page has scrolled 48 px. A name that scrolls in under a resting pointer is not pointed at
+- **One media query in JavaScript decides between split view and rows.** The CSS only reads `data-mode`, so layout and behaviour cannot disagree. Without JavaScript the projects are rows, and every name is a link
+- **Lenis is in use again,** and everything that sticks or follows the scroll works with it. With reduced motion Lenis is off and the page scrolls natively
+- **The film is MP4 first, WebM second,** and its sources are only added when the card is near the screen. Playwright's WebKit on Windows otherwise held back the page's load event
+- **Tests at one seam:** Playwright against the built `out/`, doing only what a visitor does. Chromium runs everything, WebKit a small tagged set
+
+**Tests for things a normal build cannot show.** No project has ended, and the featured project is always the same one. So the suite builds two more copies of the site with the real `next build`: `out-ended/` (two projects ended) and `out-featured/` (another featured project). One environment variable each changes the input and sends the build to its own folder, so neither can end up in `out/`, the only folder that is deployed.
+
+**Found in the final check (#62)**
+- The films for FC Växjö Reborn were in `public/walkthroughs/` but the project had no `walkthrough` in the data, so they could never play. Added the steps from the prototype (17.8 s, 7 steps). A test now fails when a film has no data or data has no film
+- Two scroll tests ran into the 30 second limit when the whole suite ran. Alone they passed. The helper waited 100 ms after every notch of the wheel on top of the 100 ms a notch already takes, and the test that scrolls the whole page did it in small steps all the way. Shorter pause, big steps where nothing is being looked at, three times the time limit for the two long journeys, and at most two WebKit browsers at a time
+- `site.stack.eyebrow` was no longer read by anything. Removed
+- The archive has an empty stretch under the list on a wide screen. It is the room that keeps the preview window in place until the last project is active. Left as it is: the window is beside it the whole time, and a shorter one lets the window scroll away before the last project shows
+
+**Found by the link check on its first real run:** `brandsakerhetskoll.se` does not exist any more. Nothing is committed about it; the first deploy with the check will show "Kunden har avslutat projektet" for BrandsäkerhetsKoll. If the address is a typo, fix `siteUrl`.
+
+**How to:** the README explains how to change the featured project, record a new walkthrough and mark a project as ended.
+
+**Left open**
+- The copy button does nothing without JavaScript (the address can still be selected and the mail link works). The menu button on a phone needs JavaScript too; the same links are in the footer
+- `public/logo.png` and nine old screenshots under `public/projects/` are not used by any page
+- The preview files in `public/previews/` are not checked: a new project without them shows an empty window
+
 ## 25 Nov 2026 — UniClean Partners case study (#43)
 
 **Goal:** Add a case for the new uniclean.nu, the Next.js site that replaces the WordPress site Marcel built earlier.
