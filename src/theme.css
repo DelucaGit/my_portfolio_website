@@ -6,6 +6,9 @@
  * (<html data-theme="dark">, set by the inline script in the root layout).
  * The dark values are written twice on purpose: once for "follow the system"
  * (works without JavaScript) and once for the explicit choice. Keep them equal.
+ *
+ * Dark is for screens only. On paper the page always has the light colours,
+ * on white (see the print block below the dark values).
  */
 
 :root {
@@ -62,7 +65,7 @@
   }
 }
 
-@media (prefers-color-scheme: dark) {
+@media screen and (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     color-scheme: dark;
     --bg: #141310;
@@ -91,31 +94,40 @@
   }
 }
 
-:root[data-theme="dark"] {
-  color-scheme: dark;
-  --bg: #141310;
-  --card: #1c1b17;
-  --card-2: #26251f;
-  --win: #1b1a16;
-  --win-2: #23221d;
-  --ink: #edece6;
-  --mut: #a3a195;
-  --faint: #5d5b52;
-  --line: rgba(237, 236, 230, 0.12);
-  --line-2: rgba(237, 236, 230, 0.24);
-  --accent: #ff8552;
-  --ok: #4cc27f;
-  --dot: rgba(237, 236, 230, 0.2);
-  --panel: #0a0a0c;
-  --on-panel: #f4f3ee;
-  --panel-mut: #b5b4bb;
-  --code-k: #ff9b73;
-  --code-s: #8fd3a8;
-  --code-a: #b9a8ff;
-  --shadow:
-    0 30px 60px -26px rgba(0, 0, 0, 0.8),
-    0 10px 22px -14px rgba(0, 0, 0, 0.6);
-  --paint-dim: 0.78;
+@media screen {
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #141310;
+    --card: #1c1b17;
+    --card-2: #26251f;
+    --win: #1b1a16;
+    --win-2: #23221d;
+    --ink: #edece6;
+    --mut: #a3a195;
+    --faint: #5d5b52;
+    --line: rgba(237, 236, 230, 0.12);
+    --line-2: rgba(237, 236, 230, 0.24);
+    --accent: #ff8552;
+    --ok: #4cc27f;
+    --dot: rgba(237, 236, 230, 0.2);
+    --panel: #0a0a0c;
+    --on-panel: #f4f3ee;
+    --panel-mut: #b5b4bb;
+    --code-k: #ff9b73;
+    --code-s: #8fd3a8;
+    --code-a: #b9a8ff;
+    --shadow:
+      0 30px 60px -26px rgba(0, 0, 0, 0.8),
+      0 10px 22px -14px rgba(0, 0, 0, 0.6);
+    --paint-dim: 0.78;
+  }
+}
+
+/* Paper is white, whatever theme the screen has */
+@media print {
+  :root {
+    --bg: #fff;
+  }
 }
 
 /**
