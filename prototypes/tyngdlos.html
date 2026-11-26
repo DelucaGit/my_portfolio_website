@@ -180,7 +180,13 @@ code, pre, .mono { font-family: var(--mono); }
 .agent { display: none; }
 .doc { min-width: 0; display: flex; flex-direction: column; }
 .tabs { display: flex; border-bottom: 1px solid var(--line); background: var(--win-2); font: .75rem/1 var(--mono); }
-.tab { padding: .7rem .9rem; background: var(--win); border-right: 1px solid var(--line); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tab { flex: none; display: inline-flex; align-items: center; gap: .4rem; min-height: 2.75rem; padding: 0 .9rem; border-right: 1px solid var(--line); color: var(--mut); white-space: nowrap; transition: background-color .15s, color .15s; }
+.tab + .tab { flex: 0 1 auto; min-width: 0; display: block; overflow: hidden; text-overflow: ellipsis; }
+.tab[aria-pressed="true"] { background: var(--win); color: var(--ink); box-shadow: inset 0 2px 0 var(--accent); }
+.tab:focus-visible { outline-offset: -3px; }
+@media (hover: hover) { .tab[aria-pressed="false"]:hover { background: var(--card); color: var(--ink); } }
+.pin { flex: none; width: .8rem; height: .8rem; fill: var(--accent); }
+.it-n .pin { display: inline-block; margin-right: .35rem; vertical-align: -.1em; }
 .doc-in { padding: 1.1rem 1rem 1.25rem; display: grid; gap: .9rem; align-content: start; }
 .crumb { font-size: .8rem; color: var(--mut); }
 .doc h3 { font-size: 1.5rem; font-weight: 500; letter-spacing: -.02em; line-height: 1.15; }
@@ -190,6 +196,22 @@ code, pre, .mono { font-family: var(--mono); }
 .chip { font: .72rem/1 var(--mono); padding: .4rem .55rem; border-radius: 4px; background: var(--card); color: var(--mut); }
 .doc-links { display: flex; flex-wrap: wrap; gap: .25rem 1.25rem; font-size: .92rem; }
 .doc-links a { padding-block: .45rem; }
+/* The featured project gets a spotlight layout: lead line, wide cover, three facts and two pills. */
+.doc-lead, .facts, .doc-cta, .spot .crumb, .spot .doc-d, .spot .chips, .spot .doc-links { display: none; }
+.spot h3 { font-size: clamp(1.75rem, 5vw, 2.25rem); line-height: 1.08; letter-spacing: -.028em; }
+.spot .doc-lead { display: block; font-size: 1.1rem; line-height: 1.4; max-width: 34em; text-wrap: pretty; }
+.spot .facts { display: grid; gap: .55rem 1.25rem; margin: 0; padding-top: .85rem; border-top: 1px solid var(--line); }
+.facts div { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); align-items: baseline; }
+.facts dt { font: .68rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--mut); }
+.facts dd { margin: 0; font-size: .875rem; line-height: 1.35; }
+.spot .doc-cta { display: flex; flex-wrap: wrap; gap: .5rem; }
+.doc-cta .pill { flex: 1 1 auto; }
+@media (min-width: 520px) {
+  .spot .facts { grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr); }
+  .facts div { display: block; }
+  .facts dt { margin-bottom: .45rem; }
+  .doc-cta .pill { flex: none; }
+}
 
 @media (min-width: 760px) {
   .app { grid-template-columns: 15rem minmax(0, 1fr); height: 36rem; }
@@ -201,7 +223,9 @@ code, pre, .mono { font-family: var(--mono); }
   .it-t { display: block; }
   .doc { overflow: hidden auto; }
   .doc-in { padding: 1.5rem 1.75rem 1.75rem; }
+  .spot .facts { gap: .75rem 2rem; }
 }
+@media (min-width: 760px) and (hover: hover) { .tab { min-height: 2.35rem; } }
 @media (min-width: 1120px) {
   .app { grid-template-columns: 15.5rem 19rem minmax(0, 1fr); }
   .agent { display: flex; flex-direction: column; min-height: 0; border-right: 1px solid var(--line); padding: .85rem; gap: .75rem; }
@@ -372,14 +396,14 @@ code, pre, .mono { font-family: var(--mono); }
           <div class="agent">
             <p class="a-h">Agent</p>
             <div class="a-log" aria-hidden="true">
-              <p class="a-you" id="a-you">Visa UniClean Partners</p>
+              <p class="a-you" id="a-you">Visa det du är mest stolt över</p>
               <ul class="a-steps" id="a-steps">
                 <li>Läste <code>projects.ts</code></li>
                 <li>Hämtade omslaget</li>
-                <li>Öppnade <code id="a-open">uniclean-partners.md</code></li>
+                <li>Öppnade <code id="a-open">andalus-calendar.md</code></li>
               </ul>
-              <p class="a-say" id="a-say">Ny hemsida för UniClean som vägleder kunder och städare till den nya appen.</p>
-              <p class="a-file" id="a-file"><span id="a-fn">uniclean-partners.md</span><b id="a-yr">2026</b></p>
+              <p class="a-say" id="a-say">En kalender där bönetiden redan sitter i vyn, så du inte bokar över salah.</p>
+              <p class="a-file" id="a-file"><span id="a-fn">andalus-calendar.md</span><b id="a-yr">2026</b></p>
             </div>
             <div class="a-ask">
               <p class="a-askl" id="ask-l">Be om något annat</p>
@@ -393,14 +417,20 @@ code, pre, .mono { font-family: var(--mono); }
             </div>
           </div>
           <article class="doc" aria-live="polite">
-            <div class="tabs" aria-hidden="true"><span class="tab" id="d-tab">uniclean-partners.md</span></div>
-            <div class="doc-in">
+            <div class="tabs" role="group" aria-label="Öppna flikar">
+              <button class="tab" id="t-feat" type="button" aria-pressed="true"><svg class="pin" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5a3.5 3.5 0 0 1 .75 6.92V14L8 15.2 7.25 14V8.42A3.5 3.5 0 0 1 8 1.5z"/></svg>Utvalt</button>
+              <button class="tab" id="d-tab" type="button" aria-pressed="false" hidden>andalus-calendar.md</button>
+            </div>
+            <div class="doc-in spot" id="d-in">
               <p class="crumb">Projekt › <span id="d-year">2026</span></p>
-              <h3 id="d-name">UniClean Partners</h3>
-              <p class="doc-d" id="d-desc">UniClean har fått en app som fungerar som Uber fast för städning. Jag byggde den nya hemsidan i Next.js som vägleder kunder och städare dit.</p>
-              <img class="doc-img" id="d-img" src="assets/uniclean-partners.webp" srcset="assets/uniclean-partners-sm.webp 640w, assets/uniclean-partners.webp 1280w" sizes="(min-width: 1120px) 560px, (min-width: 760px) 60vw, 90vw" width="1280" height="640" alt="Skärmbild av UniClean Partners" decoding="async">
-              <ul class="chips" id="d-stack" aria-label="Byggt med"><li class="chip">Next.js</li><li class="chip">TypeScript</li><li class="chip">Tailwind CSS</li><li class="chip">Hostinger</li></ul>
-              <p class="doc-links" id="d-links"><a class="go" href="https://marceldeluca.se/projects/uniclean-partners/" target="_blank" rel="noopener noreferrer">Läs caset <span aria-hidden="true">↗</span></a><a class="go" href="https://uniclean.nu" target="_blank" rel="noopener noreferrer">Besök sidan <span aria-hidden="true">↗</span></a><a class="go" href="https://github.com/DelucaGit/UniClean-Website" target="_blank" rel="noopener noreferrer">Kod på GitHub <span aria-hidden="true">↗</span></a></p>
+              <h3 id="d-name">The Andalus Calendar</h3>
+              <p class="doc-lead" id="d-lead">En kalender där bönetiden redan sitter i vyn, så du inte bokar över salah.</p>
+              <p class="doc-d" id="d-desc">Personlig kalenderapp med gregoriansk och hijri-kalender, bönetider i UI:t och uppgifter i samma vy. Live beta.</p>
+              <img class="doc-img" id="d-img" src="assets/andalus-calendar.webp" srcset="assets/andalus-calendar-sm.webp 640w, assets/andalus-calendar.webp 1280w" sizes="(min-width: 1120px) 560px, (min-width: 760px) 60vw, 90vw" width="1280" height="640" alt="Skärmbild av The Andalus Calendar" decoding="async">
+              <ul class="chips" id="d-stack" aria-label="Byggt med"><li class="chip">React</li><li class="chip">Firebase</li><li class="chip">Hostinger</li></ul>
+              <dl class="facts"><div><dt>År</dt><dd id="f-yr">2026</dd></div><div><dt>Typ</dt><dd id="f-typ">React · Firebase · Kalender</dd></div><div><dt>Byggt med</dt><dd id="f-st">React · Firebase · Hostinger</dd></div></dl>
+              <p class="doc-links" id="d-links"><a class="go" href="https://marceldeluca.se/projects/andalus-calendar/" target="_blank" rel="noopener noreferrer">Läs caset <span aria-hidden="true">↗</span></a><a class="go" href="https://andaluscalendar.com/" target="_blank" rel="noopener noreferrer">Besök sidan <span aria-hidden="true">↗</span></a></p>
+              <p class="doc-cta"><a class="pill pill-ink" id="c-case" href="https://marceldeluca.se/projects/andalus-calendar/" target="_blank" rel="noopener noreferrer">Läs caset <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a><a class="pill pill-soft" id="c-site" href="https://andaluscalendar.com/" target="_blank" rel="noopener noreferrer">Besök sidan <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a></p>
             </div>
           </article>
         </div>
@@ -414,7 +444,7 @@ code, pre, .mono { font-family: var(--mono); }
       <img src="assets/portrait.webp" width="640" height="800" alt="Marcel Deluca i profil vid havet" loading="lazy" decoding="async">
       <div class="say" id="say">
         <h2 class="vh" id="om-h">Om mig</h2>
-        <p>Hej, jag är Marcel. Jag bygger hemsidor, webbappar och egna produkter, bland annat The Andalus Calendar.</p>
+        <p>Hej, jag är Marcel. Jag bygger hemsidor, webbappar och egna produkter, bland annat <span id="o-name">The Andalus Calendar</span>.</p>
         <p>Just nu studerar jag Java med cloud på JENSEN yrkeshögskola. Jag vill jobba i ett team där jag får koda, lära mig mer och ta ansvar.</p>
       </div>
     </div>
@@ -440,14 +470,14 @@ code, pre, .mono { font-family: var(--mono); }
       <article class="feat">
         <div class="feat-t">
           <h3>Egna produkter</h3>
-          <p>Jag driver egna produkter, till exempel The Andalus Calendar i React och Firebase. Till min fru byggde jag adhkar-appen Sabaah Al-Wuruud för Android.</p>
-          <a class="go" href="https://marceldeluca.se/projects/andalus-calendar/" target="_blank" rel="noopener noreferrer">Se The Andalus Calendar <span aria-hidden="true">→</span></a>
+          <p>Jag driver egna produkter, till exempel <span id="f-ex">The Andalus Calendar i React och Firebase</span>. Till min fru byggde jag adhkar-appen Sabaah Al-Wuruud för Android.</p>
+          <a class="go" id="f-go" href="https://marceldeluca.se/projects/andalus-calendar/" target="_blank" rel="noopener noreferrer">Se The Andalus Calendar <span aria-hidden="true">→</span></a>
         </div>
         <div class="scene">
           <canvas class="paint" data-paint="kvall" aria-hidden="true"></canvas>
           <div class="win mini" style="left:5%;width:72%">
-            <div class="bar" aria-hidden="true"><span class="lights"><i></i><i></i><i></i></span><span class="ttl">andaluscalendar.com</span><span></span></div>
-            <img src="assets/andalus-calendar.webp" srcset="assets/andalus-calendar-sm.webp 640w, assets/andalus-calendar.webp 1280w" sizes="(min-width: 860px) 44vw, 70vw" width="1280" height="640" alt="Kalendervyn i The Andalus Calendar" loading="lazy" decoding="async">
+            <div class="bar" aria-hidden="true"><span class="lights"><i></i><i></i><i></i></span><span class="ttl" id="f-ttl">andaluscalendar.com</span><span></span></div>
+            <img id="f-img" src="assets/andalus-calendar.webp" srcset="assets/andalus-calendar-sm.webp 640w, assets/andalus-calendar.webp 1280w" sizes="(min-width: 860px) 44vw, 70vw" width="1280" height="640" alt="Skärmbild av The Andalus Calendar" loading="lazy" decoding="async">
           </div>
           <div class="win over">
             <div class="bar" aria-hidden="true"><span class="lights"><i></i><i></i><i></i></span><span class="ttl">Sabaah Al-Wuruud</span><span></span></div>
@@ -741,6 +771,9 @@ code, pre, .mono { font-family: var(--mono); }
 
   /* 4. The project window. */
   (function () {
+    /* The featured project. This one slug stands in for `featuredProject` in src/data/site.ts: the pinned row, the
+       pinned tab, the agent's first request, the card "Egna produkter" and the sentence in "Om mig" all read it. */
+    var FEATURED = 'andalus-calendar';
     var P = [
       ['uniclean-partners', 'UniClean Partners', 2026, 'Ny hemsida för UniClean som vägleder kunder och städare till den nya appen.', 'UniClean har fått en app som fungerar som Uber fast för städning. Jag byggde den nya hemsidan i Next.js som vägleder kunder och städare dit.', 'Next.js · Tailwind · Lokalt', ['Next.js', 'TypeScript', 'Tailwind CSS', 'Hostinger'], 'https://uniclean.nu', 'https://github.com/DelucaGit/UniClean-Website'],
       ['sabaah-al-wuruud', 'Sabaah Al-Wuruud', 2026, 'En minimalistisk adhkar-app för Android som jag byggde till min fru. Utan reklam, utan konto och helt offline.', 'Min frus favoritapp för adhkar hade fyllts med reklam. Jag byggde en egen till henne i hennes favoritfärger, med bara det hon använder, och levererade den som en signerad APK.', 'Android · Capacitor · Personligt projekt', ['JavaScript', 'Vite', 'Capacitor', 'Android Studio', 'Vitest', 'Claude Code'], '', 'https://github.com/DelucaGit/sabaah-al-wuruud'],
@@ -760,23 +793,51 @@ code, pre, .mono { font-family: var(--mono); }
       ['shanasheel', 'Shanasheel', 2025, 'Från första skissen till en tvåspråkig hemsida som berättar om Akkad, och om framtiden i Irak.', 'Hemsida för Shanasheel Al-Asima: fastighet, hållbarhet och investeringar, byggd i WordPress med Elementor.', 'WordPress · Elementor · Fastighet', ['WordPress', 'Elementor', 'TranslatePress'], 'https://shanasheel.se', ''],
       ['fcvaxjo', 'FC Växjö', 2023, 'En digital hemmaplan för föreningen sedan 1989.', 'Hemsida för FC Växjö: nyheter, träningstider, galleri och kontakt, med klubbens svart-guld-identitet i centrum.', 'Webbdesign · UX/UI · Förening', ['One.com', 'UX & UI-design'], 'https://fcvaxjo.se', '']
     ];
-    var list = $('list'), items = [], cur = 0, run = 0;
+    var F = 0, CASE = 'https://marceldeluca.se/projects/', ASK = 'Visa det du är mest stolt över';
+    P.forEach(function (p, i) { if (p[0] === FEATURED) F = i; });
+    function set(id, text) { var e = $(id); if (e) e.textContent = text; }
+    function cover(img, p) {
+      if (!img) return;
+      img.srcset = 'assets/' + p[0] + '-sm.webp 640w, assets/' + p[0] + '.webp 1280w'; img.src = 'assets/' + p[0] + '.webp'; img.alt = 'Skärmbild av ' + p[1];
+    }
+    /* The places outside the window. "Om mig" is set here, before section 5 splits it into words. */
+    (function (p) {
+      var go = $('f-go');
+      set('o-name', p[1]);
+      set('f-ex', p[1] + (p[6].length ? ' i ' + p[6].slice(0, 2).join(' och ') : ''));
+      set('f-ttl', p[7] ? p[7].replace(/^https?:\/\/(www\.)?/, '').replace(/\/.*$/, '') : p[1]);
+      if (go) { go.href = CASE + p[0] + '/'; go.firstChild.nodeValue = 'Se ' + p[1] + ' '; }
+      cover($('f-img'), p);
+    })(P[F]);
+
+    var list = $('list'), items = [], order = [F], cur = F, run = 0, year = 0;
     if (!list) return;
+    var din = $('d-in'), tabF = $('t-feat'), tab = $('d-tab'), you = $('a-you');
     function el(tag, cls, text) { var e = doc.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
-    var year = 0;
-    P.forEach(function (p, i) {
-      if (p[2] !== year) { year = p[2]; list.appendChild(el('span', 'yr', String(year))); }
-      var b = el('button', 'it'); b.type = 'button';
-      b.appendChild(el('span', 'it-n', p[1])); b.appendChild(el('span', 'it-t', p[5]));
+    /* The spotlight parts only ever show the featured project, so they are filled in once. */
+    (function (p) {
+      var site = $('c-site');
+      set('d-lead', p[3]); set('f-yr', p[2]); set('f-typ', p[5]); set('f-st', p[6].join(' · '));
+      $('c-case').href = CASE + p[0] + '/';
+      site.hidden = !p[7]; if (p[7]) site.href = p[7];
+    })(P[F]);
+    /* The list: the featured project first under "Utvalt", then the rest by year. */
+    P.forEach(function (p, i) { if (i !== F) order.push(i); });
+    order.forEach(function (i, n) {
+      var p = P[i], b = el('button', 'it'), name = el('span', 'it-n', p[1]);
+      if (!n) { list.appendChild(el('span', 'yr', 'Utvalt')); name.insertBefore(tabF.firstElementChild.cloneNode(true), name.firstChild); }
+      else if (p[2] !== year) { year = p[2]; list.appendChild(el('span', 'yr', String(year))); }
+      b.type = 'button'; b.appendChild(name); b.appendChild(el('span', 'it-t', p[5]));
       b.addEventListener('click', function () { show(i, true); });
-      list.appendChild(b); items.push(b);
+      list.appendChild(b); items[i] = b;
     });
     list.addEventListener('keydown', function (e) {
       var d = e.key === 'ArrowDown' || e.key === 'ArrowRight' ? 1 : e.key === 'ArrowUp' || e.key === 'ArrowLeft' ? -1 : 0;
       if (!d) return;
       e.preventDefault();
-      var n = (cur + d + P.length) % P.length; show(n, true); items[n].focus({ preventScroll: true });
+      var n = order[(order.indexOf(cur) + d + P.length) % P.length]; show(n, true); items[n].focus({ preventScroll: true });
     });
+    tabF.addEventListener('click', function () { if (cur !== F) { you.textContent = ASK; show(F, true); } });
     function link(href, text) {
       var a = el('a', 'go'); a.href = href; a.target = '_blank'; a.rel = 'noopener noreferrer';
       a.appendChild(doc.createTextNode(text + ' ')); var s = el('span', '', '↗'); s.setAttribute('aria-hidden', 'true'); a.appendChild(s); return a;
@@ -787,14 +848,18 @@ code, pre, .mono { font-family: var(--mono); }
       if (r.top < l.top + 8 || r.bottom > l.bottom - 8) list.scrollTop += r.top - l.top - (l.height - r.height) / 2;
     }
     function show(i, play) {
-      var p = P[i], img = $('d-img'), st = $('d-stack'), ln = $('d-links'), file = p[0] + '.md';
+      var p = P[i], st = $('d-stack'), ln = $('d-links'), file = p[0] + '.md', feat = i === F;
       cur = i;
       items.forEach(function (b, k) { if (k === i) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current'); });
       reveal(items[i]);
-      $('d-tab').textContent = file; $('d-year').textContent = p[2]; $('d-name').textContent = p[1]; $('d-desc').textContent = p[4];
-      img.srcset = 'assets/' + p[0] + '-sm.webp 640w, assets/' + p[0] + '.webp 1280w'; img.src = 'assets/' + p[0] + '.webp'; img.alt = 'Skärmbild av ' + p[1];
+      /* The pinned tab is always there. Any other project opens in a second tab next to it. */
+      din.classList.toggle('spot', feat);
+      tabF.setAttribute('aria-pressed', String(feat)); tab.setAttribute('aria-pressed', String(!feat));
+      tab.hidden = feat; if (!feat) tab.textContent = file;
+      $('d-year').textContent = p[2]; $('d-name').textContent = p[1]; $('d-desc').textContent = p[4];
+      cover($('d-img'), p);
       st.textContent = ''; p[6].forEach(function (t) { st.appendChild(el('li', 'chip', t)); });
-      ln.textContent = ''; ln.appendChild(link('https://marceldeluca.se/projects/' + p[0] + '/', 'Läs caset'));
+      ln.textContent = ''; ln.appendChild(link(CASE + p[0] + '/', 'Läs caset'));
       if (p[7]) ln.appendChild(link(p[7], 'Besök sidan'));
       if (p[8]) ln.appendChild(link(p[8], 'Kod på GitHub'));
 
@@ -817,7 +882,7 @@ code, pre, .mono { font-family: var(--mono); }
         requestAnimationFrame(tick);
       })(start);
     }
-    var asks = doc.querySelectorAll('.ask'), you = $('a-you');
+    var asks = doc.querySelectorAll('.ask');
     function hit(p, q) {
       var hay = (p[5] + ' ' + p[6].join(' ')).toLowerCase();
       if (q === 'app') return /android|kalender/.test(hay);
@@ -831,7 +896,16 @@ code, pre, .mono { font-family: var(--mono); }
       you.textContent = this.textContent; show(n, true);
     });
     list.addEventListener('click', function () { you.textContent = 'Visa ' + P[cur][1]; });
-    show(0, false);
+    show(F, false);
+    /* The first time a third of the window is in view, the agent presents the featured project. Once. */
+    if ('IntersectionObserver' in window && !reduce.matches) {
+      var io = new IntersectionObserver(function (es) {
+        if (es[0].intersectionRatio < 0.3) return;
+        io.disconnect();
+        if (run === 1) { you.textContent = ASK; show(F, true); }
+      }, { threshold: 0.33 });
+      io.observe(list.parentNode);
+    }
   })();
 
   /* 5. The statement fills in word by word as it scrolls through the screen. */
