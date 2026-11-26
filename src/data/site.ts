@@ -228,6 +228,15 @@ export const site = {
       { name: "Franska", level: "Förstår" },
     ],
   },
+  /**
+   * "Vägen hit" on the start page. The steps themselves are read from
+   * cv.education and cv.experience (see src/lib/cv.ts).
+   */
+  timeline: {
+    heading: "Vägen hit",
+    kinds: { education: "Utbildning", work: "Arbete" },
+    cvLink: { name: "Läs hela CV:t", href: "/cv" },
+  },
   /** The sticky menu at the top of every page. */
   nav: {
     label: "Huvudmeny",
