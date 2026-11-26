@@ -159,3 +159,10 @@
     background: var(--card);
   }
 }
+
+/* The menu is for the screen, not for paper */
+@media print {
+  .nav {
+    display: none;
+  }
+}

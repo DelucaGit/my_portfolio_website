@@ -47,8 +47,8 @@ function ScrollOnNavigate() {
   useEffect(() => {
     if (!lenis) return;
     const target = hashTarget();
-    // Lenis still remembers how tall the previous page was and would stop the
-    // scroll there. Measure the new page first.
+    // Lenis still has the height of the page we came from and would stop
+    // where that page ended. Measure the new page first.
     lenis.resize();
     lenis.scrollTo(target ?? 0, { immediate: true });
   }, [pathname, lenis]);

@@ -75,3 +75,10 @@
     grid-column: auto;
   }
 }
+
+/* The footer is for the screen, not for paper */
+@media print {
+  .foot {
+    display: none;
+  }
+}
