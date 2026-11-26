@@ -47,97 +47,81 @@ export const site = {
     ],
     items: [
       {
-        icon: "react",
         name: "React / Next.js",
         label: "Frontend",
         group: "frontend",
       },
       {
-        icon: "tailwind",
         name: "Tailwind CSS",
         label: "Frontend",
         group: "frontend",
       },
       {
-        icon: "htmlcss",
         name: "HTML & CSS",
         label: "Grunder",
         group: "frontend",
       },
       {
-        icon: "java",
         name: "Java",
         label: "Backend",
         group: "backend",
       },
       {
-        icon: "restapi",
         name: "REST API",
         label: "Backend",
         group: "backend",
       },
       {
-        icon: "php",
         name: "PHP",
         label: "Backend",
         group: "backend",
       },
       {
-        icon: "wordpress",
         name: "WordPress / Elementor",
         label: "CMS",
         group: "frontend",
       },
       {
-        icon: "postgresql",
         name: "PostgreSQL",
         label: "Databas",
         group: "backend",
       },
       {
-        icon: "firebase",
         name: "Firebase",
         label: "Data & hosting",
         group: "backend",
       },
       {
-        icon: "docker",
         name: "Docker",
         label: "DevOps",
         group: "cloud",
       },
       {
-        icon: "aws",
         name: "AWS",
         label: "Cloud",
         group: "cloud",
       },
       {
-        icon: "azure",
         name: "Azure",
         label: "Cloud",
         group: "cloud",
       },
       {
-        icon: "git",
         name: "Git",
         label: "Samarbete",
         group: "tools",
       },
       {
-        icon: "jira",
         name: "Jira",
         label: "Samarbete",
         group: "tools",
       },
       {
-        icon: "cursor",
         name: "Cursor",
         label: "Verktyg",
         group: "tools",
       },
       {
-        icon: "claude",
         name: "Claude Code",
         label: "Verktyg",
         group: "tools",
@@ -236,6 +220,35 @@ export const site = {
     heading: "Vägen hit",
     kinds: { education: "Utbildning", work: "Arbete" },
     cvLink: { name: "Läs hela CV:t", href: "/cv" },
+  },
+  /**
+   * "Kontakt" on the start page. The address, the number and phoneNote are the
+   * ones at the top of this file.
+   */
+  contact: {
+    heading: "Ska vi höras?",
+    text: "Jag är öppen för jobb och söker en fast anställning. Mejla eller ring, så berättar jag mer.",
+    mailButton: "Mejla mig",
+    /** The phone number is added after this word. */
+    callButton: "Ring",
+    emailLabel: "E-post",
+    phoneLabel: "Telefon",
+    /** The button that copies the e-mail address. */
+    copy: {
+      button: "Kopiera",
+      /** Only read out by screen readers, after the button text. */
+      buttonHint: "e-postadressen",
+      done: "Kopierad",
+      doneAnnouncement: "E-postadressen är kopierad",
+      /** When the browser does not allow copying, the address is selected. */
+      selected: "Markerad",
+      selectedAnnouncement:
+        "E-postadressen är markerad. Kopiera den med Ctrl+C eller Cmd+C.",
+    },
+    profiles: [
+      { label: "LinkedIn", handle: "marcel-deluca", href: linkedin },
+      { label: "GitHub", handle: "DelucaGit", href: github },
+    ],
   },
   /** The sticky menu at the top of every page. */
   nav: {

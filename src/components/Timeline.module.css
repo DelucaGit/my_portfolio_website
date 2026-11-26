@@ -55,12 +55,13 @@
 }
 
 .more {
-  margin-top: 1.5rem;
+  margin-top: 1rem;
 }
 
 .more a {
-  /* A comfortable touch target without moving the text */
-  padding-block: 0.6rem;
+  /* A comfortable touch target */
+  min-height: 2.75rem;
+  align-items: center;
 }
 
 @media (min-width: 900px) {
