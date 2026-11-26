@@ -1,6 +1,7 @@
 import { existsSync, readdirSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import { expect, type Locator, type Page } from "@playwright/test";
+import { getFeaturedProject, type Project } from "@/lib/projects";
 
 /**
  * Shared helpers for every Playwright suite. Later tickets extend this file:
@@ -70,6 +71,72 @@ export function keyRoutes(): string[] {
     firstUnder("/projects/"),
     firstUnder("/services/"),
   ].filter((route): route is string => Boolean(route));
+}
+
+/**
+ * The featured project, read from the data layer the same way the site reads
+ * it. Change `featuredProject` in src/data/site.ts and the tests follow.
+ */
+export function featuredProject(): Project {
+  return getFeaturedProject();
+}
+
+/** The card for the featured project at the top of the project section. */
+export function featuredCard(page: Page): Locator {
+  return page
+    .locator("#projekt")
+    .getByRole("article", { name: featuredProject().name })
+    .filter({ hasText: "Utvalt" });
+}
+
+/** The recorded walkthrough in the featured card's browser window. */
+export function featuredFilm(page: Page): Locator {
+  return featuredCard(page).getByRole("img", { name: /^Inspelad genomgång/ });
+}
+
+const filmTime = (film: Locator) =>
+  film.evaluate((video: HTMLVideoElement) => video.currentTime);
+
+/** The film is moving: its picture is further along a moment later. */
+export async function expectFilmPlaying(film: Locator) {
+  const before = await filmTime(film);
+  await expect
+    .poll(() => filmTime(film), { timeout: 15_000 })
+    .toBeGreaterThan(before);
+}
+
+/** The film stands still: it has stopped and stays where it is. */
+export async function expectFilmStill(film: Locator) {
+  await expect
+    .poll(() => film.evaluate((video: HTMLVideoElement) => video.paused))
+    .toBe(true);
+  const before = await filmTime(film);
+  await film.page().waitForTimeout(600);
+  expect(await filmTime(film)).toBe(before);
+}
+
+/**
+ * The visitor scrolls until `share` (0 to 1) of the element's height has come
+ * up over the bottom edge of the window.
+ */
+export async function scrollUntilShowing(
+  page: Page,
+  target: Locator,
+  share: number,
+) {
+  await target.evaluate((element, wanted) => {
+    const box = element.getBoundingClientRect();
+    const top = box.top + window.scrollY;
+    window.scrollTo(0, top - window.innerHeight + box.height * wanted);
+  }, share);
+  const viewport = page.viewportSize();
+  if (!viewport) throw new Error("scrollUntilShowing: no viewport");
+  await expect
+    .poll(async () => {
+      const box = await target.boundingBox();
+      return box ? Math.round((viewport.height - box.y) / box.height / 0.05) : -1;
+    })
+    .toBe(Math.round(share / 0.05));
 }
 
 /** The visitor picks a theme with the switcher in the footer. */

@@ -1,6 +1,9 @@
 import Link from "next/link";
+import FeaturedProject from "@/components/projects/FeaturedProject";
 import { ProjectCard } from "@/components/projects/ProjectCard";
+import { site } from "@/data/site";
 import { getFeaturedProjects } from "@/lib/projects";
+import shared from "@/styles/shared.module.css";
 import styles from "./Projects.module.css";
 
 export default function Projects() {
@@ -12,16 +15,15 @@ export default function Projects() {
       className={styles.section}
       aria-labelledby="projects-heading"
     >
-      <div className={styles.inner}>
-        <header className={styles.header}>
-          <h2 id="projects-heading" className={styles.heading}>
-            Projekt
-          </h2>
-          <p className={styles.support}>
-            Några saker jag har byggt, egna produkter och uppdrag.
-          </p>
-        </header>
+      <div className={shared.wrap}>
+        <h2 id="projects-heading" className={shared.vh}>
+          {site.projects.heading}
+        </h2>
+        <FeaturedProject />
+      </div>
 
+      {/* The old grid stays until the split view (#56) replaces it. */}
+      <div className={`${styles.inner} ${styles.more}`}>
         <ul className={styles.list}>
           {projects.map((project) => (
             <li key={project.slug}>
