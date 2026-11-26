@@ -1,0 +1,37 @@
+/**
+ * The frame of a section on the start page: space above, heading row.
+ * Used by Teknik, Vägen hit and Kontakt (#60).
+ */
+
+.sec {
+  padding-top: var(--space);
+}
+
+.top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 2rem;
+  margin-bottom: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+.top p {
+  color: var(--mut);
+}
+
+.heading {
+  font-weight: 450;
+  font-size: clamp(1.6rem, 3vw, 2.25rem);
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+/* Small mono label above or below a value */
+.label {
+  font: 0.68rem/1 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mut);
+}
