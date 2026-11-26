@@ -205,6 +205,28 @@ export const site = {
       { name: "Franska", level: "Förstår" },
     ],
   },
+  /** Headings, labels and button texts on the CV page. The CV itself is `cv`. */
+  cvPage: {
+    back: "Tillbaka",
+    eyebrow: "CV",
+    facts: { email: "Mejl", phone: "Telefon", location: "Plats" },
+    download: { label: "Ladda ner CV (PDF)", fileName: "Marcel_Deluca_CV.pdf" },
+    github: "GitHub",
+    linkedin: "LinkedIn",
+    experience: "Erfarenhet",
+    education: "Utbildning",
+    learnings: "Vad har jag lärt mig?",
+    skills: "Kompetens",
+    languages: "Språk",
+    contact: {
+      heading: "Vill du komma i kontakt?",
+      text: "Skicka ett mejl eller ring om du vill prata om jobb, projekt eller bara säga hej.",
+    },
+  },
+  /** Texts shared by every service page. The services are in `services.ts`. */
+  servicePage: {
+    back: "← Till startsidan",
+  },
   /** The sticky menu at the top of every page. */
   nav: {
     label: "Huvudmeny",
