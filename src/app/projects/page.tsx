@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ProjectsArchive } from "@/components/projects/ProjectsArchive";
+import ProjectsArchive from "@/components/projects/ProjectsArchive";
 import { getProjectsIndexMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = getProjectsIndexMetadata();

@@ -2,6 +2,7 @@ import { existsSync, readdirSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import { expect, type Locator, type Page } from "@playwright/test";
 import {
+  getAllProjects,
   getFeaturedProject,
   getHomeProjects,
   type Project,
@@ -154,6 +155,17 @@ export const SPLIT_FROM = 1024;
  */
 export function homeProjects(): Project[] {
   return getHomeProjects();
+}
+
+/** The name of the split view's list in the project archive (/projects/). */
+export const ARCHIVE_LIST = "Alla projekt";
+
+/**
+ * Every project, in the order the archive lists them, read from the data
+ * layer the same way the site reads them.
+ */
+export function allProjects(): Project[] {
+  return getAllProjects();
 }
 
 /** A split view's list of projects. On the start page it is called "Fler projekt". */
