@@ -1,0 +1,25 @@
+.scene {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--r-s);
+  background: linear-gradient(#c9cfd8, #e6d8c4 48%, #8d9477 49%, #b89f6a);
+}
+
+.rounded {
+  border-radius: var(--r-l);
+}
+
+.painting {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* The dark theme lowers --paint-dim, so the landscape does not glare. */
+  filter: brightness(var(--paint-dim)) saturate(0.92);
+}
+
+/* What stands on the painting lies above it. */
+.scene > :not(.painting) {
+  position: relative;
+}

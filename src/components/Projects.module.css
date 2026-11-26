@@ -93,3 +93,8 @@
     margin-bottom: var(--space-header-gap-lg);
   }
 }
+
+/* Space between the featured card and the old grid below it (gone with #56). */
+.more {
+  margin-top: clamp(1.25rem, 2.5vw, 2rem);
+}

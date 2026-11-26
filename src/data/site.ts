@@ -1,3 +1,5 @@
+import type { ProjectSlug } from "./projects";
+
 const email = "malakdeluca@gmail.com";
 const linkedin = "https://www.linkedin.com/in/marcel-deluca";
 const github = "https://github.com/DelucaGit";
@@ -204,6 +206,25 @@ export const site = {
       { name: "Arabiska", level: "Flytande" },
       { name: "Franska", level: "Förstår" },
     ],
+  },
+  /**
+   * The featured project: the slug of a project in src/data/projects.ts.
+   * Change this one line to feature another project. A slug that does not
+   * exist stops the build.
+   */
+  featuredProject: "andalus-calendar" satisfies ProjectSlug,
+  /** The project section on the start page. */
+  projects: {
+    heading: "Projekt",
+    featured: {
+      label: "Utvalt",
+      readCase: "Läs caset",
+      visitSite: "Besök sidan",
+      /** Read by screen readers, followed by the project's name. */
+      filmLabel: "Inspelad genomgång av",
+      /** Who is clicking around in the film, shown before the step. */
+      filmNarrator: "Agenten",
+    },
   },
   /** The sticky menu at the top of every page. */
   nav: {
