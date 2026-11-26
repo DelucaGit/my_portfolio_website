@@ -1,3 +1,5 @@
+import type { ProjectSlug } from "./projects";
+
 const email = "malakdeluca@gmail.com";
 const linkedin = "https://www.linkedin.com/in/marcel-deluca";
 const github = "https://github.com/DelucaGit";
@@ -25,13 +27,80 @@ export const site = {
     cv: { name: "Läs CV", href: "/cv" },
     projects: { name: "Se projekten", href: "/#projekt" },
   },
+  /**
+   * "Om mig" on the start page. {featured} becomes the name of the featured
+   * project, as a link to its case.
+   */
   about: {
-    eyebrow: "Om mig",
-    heading: "Hej, jag är Marcel",
+    heading: "Om mig",
+    portrait: {
+      src: "/portrait.webp",
+      alt: "Marcel Deluca i profil vid havet",
+    },
     paragraphs: [
-      "Jag är webbutvecklare. Jag bygger hemsidor, webbappar och egna produkter, bland annat The Andalus Calendar.",
+      "Hej, jag är Marcel. Jag bygger hemsidor, webbappar och egna produkter, bland annat {featured}.",
       "Just nu studerar jag Java med cloud på JENSEN yrkeshögskola. Jag vill jobba i ett team där jag får koda, lära mig mer och ta ansvar.",
     ],
+  },
+  /**
+   * "Vad jag gör" on the start page: three cards. In a link text {project}
+   * becomes the project's name.
+   */
+  whatIDo: {
+    heading: "Vad jag gör",
+    clients: {
+      heading: "Hemsidor åt kunder",
+      text: "Jag bygger hemsidor åt företag och föreningar, bland annat FC Växjö Reborn i Next.js. Jag jobbar med allt från design och frontend till publicering via GitHub och Hostinger.",
+      /** The project the card shows and links to. */
+      project: "fcvaxjo-reborn" satisfies ProjectSlug,
+      link: "Se {project}",
+    },
+    /**
+     * This card shows the featured project. {featured} becomes its name and
+     * the first two things it is built with: "The Andalus Calendar i React
+     * och Firebase".
+     */
+    products: {
+      heading: "Egna produkter",
+      text: "Jag driver egna produkter, till exempel {featured}. Till min fru byggde jag adhkar-appen Sabaah Al-Wuruud för Android.",
+      /** The words between the name, the first technology and the second. */
+      builtWith: "i",
+      and: "och",
+      link: "Se {project}",
+      /** The project in the small window on top. */
+      second: "sabaah-al-wuruud" satisfies ProjectSlug,
+    },
+    backend: {
+      heading: "Backend och cloud",
+      text: "På JENSEN yrkeshögskola läser jag Java och Spring Boot, bygger REST API:er och jobbar med AWS, Azure och Docker. Jag har byggt en Reddit-klon där man kan lägga inlägg, kommentera och skicka vänförfrågan.",
+      link: { name: "Läs hela CV:t", href: "/cv" },
+      code: {
+        title: "PostController.java · exempel",
+        /** Read by screen readers instead of the code. */
+        label:
+          "Exempel: en Spring Boot-kontroller som tar emot kommentarer på ett inlägg",
+        source: `@RestController
+@RequestMapping("/api/posts")
+public class PostController {
+
+  @PostMapping("/{id}/comments")
+  public ResponseEntity<CommentDto> comment(
+      @PathVariable Long id,
+      @Valid @RequestBody NewComment body,
+      @AuthenticationPrincipal Jwt user) {
+    return ResponseEntity.status(CREATED)
+        .body(posts.addComment(id, body, user.getSubject()));
+  }
+}`,
+      },
+      terminal: {
+        title: "Terminal",
+        source: `$ docker compose up -d
+✓ postgres  Started
+✓ api       Started
+POST /api/posts/7/comments 201`,
+      },
+    },
   },
   stack: {
     eyebrow: "Teknik",
@@ -210,6 +279,25 @@ export const site = {
       { name: "Arabiska", level: "Flytande" },
       { name: "Franska", level: "Förstår" },
     ],
+  },
+  /**
+   * The featured project: the slug of a project in src/data/projects.ts.
+   * Change this one line to feature another project. A slug that does not
+   * exist stops the build.
+   */
+  featuredProject: "andalus-calendar" satisfies ProjectSlug,
+  /** The project section on the start page. */
+  projects: {
+    heading: "Projekt",
+    featured: {
+      label: "Utvalt",
+      readCase: "Läs caset",
+      visitSite: "Besök sidan",
+      /** Read by screen readers, followed by the project's name. */
+      filmLabel: "Inspelad genomgång av",
+      /** Who is clicking around in the film, shown before the step. */
+      filmNarrator: "Agenten",
+    },
   },
   /**
    * "Vägen hit" on the start page. The steps themselves are read from

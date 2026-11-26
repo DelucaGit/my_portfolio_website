@@ -16,6 +16,13 @@
   DirectoryIndex index.html
 </IfModule>
 
+# The recorded walkthroughs: browsers skip a film that comes with the wrong type.
+<IfModule mod_mime.c>
+  AddType video/webm .webm
+  AddType video/mp4 .mp4
+  AddType image/webp .webp
+</IfModule>
+
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresByType text/css "access plus 1 year"
@@ -25,5 +32,6 @@
   ExpiresByType image/jpeg "access plus 1 hour"
   ExpiresByType image/svg+xml "access plus 1 hour"
   ExpiresByType video/mp4 "access plus 1 hour"
+  ExpiresByType video/webm "access plus 1 hour"
   ExpiresByType font/woff2 "access plus 1 year"
 </IfModule>

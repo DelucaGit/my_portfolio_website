@@ -1,0 +1,23 @@
+/*
+ * Words wait in a faint colour and are filled in one by one. The attributes
+ * are only set by the script, and never with reduced motion, so the text is
+ * in full colour from the start everywhere else.
+ */
+.fill [data-word] {
+  transition: color 0.35s;
+}
+
+.fill[data-filling] [data-word] {
+  color: var(--faint);
+}
+
+.fill[data-filling] [data-word][data-filled] {
+  color: var(--ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fill[data-filling] [data-word] {
+    color: inherit;
+    transition: none;
+  }
+}

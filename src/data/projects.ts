@@ -56,6 +56,9 @@ export type Project = {
   imageAlt: string;
   theme: ProjectTheme;
 
+  /** Recorded walkthrough for the featured card. Without one the card shows `image`. */
+  walkthrough?: ProjectWalkthrough;
+
   detail: {
     overview: string[];
     challenge?: string[];
@@ -72,7 +75,31 @@ export type Project = {
   };
 };
 
-export const projects: Project[] = [
+/**
+ * A recorded walkthrough of the live site, made with
+ * `npm run record:walkthrough -- <slug>`. The films live in
+ * public/walkthroughs/<slug>.webm, .mp4 and .webp (the still image).
+ */
+export type ProjectWalkthrough = {
+  /** Length of the film in seconds */
+  duration: number;
+  /** What happens in the film: [the second it starts, what the visitor sees] */
+  steps: [second: number, text: string][];
+};
+
+/**
+ * Keeps every slug as its own literal type, so `ProjectSlug` below is the
+ * exact list of slugs. A slug that is not in this file fails the build.
+ */
+function defineProjects<Slug extends string>(
+  list: (Project & { slug: Slug })[],
+) {
+  return list;
+}
+
+export type ProjectSlug = (typeof projects)[number]["slug"];
+
+export const projects = defineProjects([
   {
     slug: "uniclean-partners",
     name: "UniClean Partners",
@@ -498,6 +525,18 @@ export const projects: Project[] = [
     theme: {
       bg: "var(--project-theme-andalus)",
       dark: false,
+    },
+    walkthrough: {
+      duration: 19.7,
+      steps: [
+        [0, "Öppnar startsidan"],
+        [2.5, "Läser om dubbla kalendrar"],
+        [5.3, "Tittar på bönetiderna i vyn"],
+        [8.1, "Tittar på uppgiftslistan"],
+        [11, "Läser om integritet"],
+        [13.8, "Stannar vid knappen Get Started Now"],
+        [16.8, "Skrollar tillbaka till toppen"],
+      ],
     },
     detail: {
       overview: [
@@ -1409,4 +1448,4 @@ export const projects: Project[] = [
       },
     },
   },
-];
+]);
