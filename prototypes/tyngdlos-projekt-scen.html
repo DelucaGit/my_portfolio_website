@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Projektvisning Scen</title>
+<meta name="description" content="Prototyp: projekten på en scen, ett i taget, med en filmremsa under.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,300..700&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one project at a time. A painted stage holds a browser window with the screenshot, the text sits
+   beside it on the paper (below it on narrow screens), and a film strip under the stage reaches all projects.
+   Tokens, pills, window chrome and corner radii are the ones from tyngdlos.html. */
+:root {
+  color-scheme: light;
+  --bg: #f7f6f2;
+  --card: #f0efe9;
+  --card-2: #e6e4dc;
+  --win: #fcfbf8;
+  --win-2: #f3f2ed;
+  --ink: #201f1a;
+  --mut: #6a685e;
+  --faint: #b3b1a6;
+  --line: rgba(32, 31, 26, .11);
+  --line-2: rgba(32, 31, 26, .22);
+  --accent: #c63c00;
+  --ok: #1f8a4c;
+  --dot: rgba(32, 31, 26, .2);
+  --panel: #111114;
+  --on-panel: #f4f3ee;
+  --panel-mut: #b5b4bb;
+  --code-k: #a4380b;
+  --code-s: #2c6e49;
+  --code-a: #5a45b8;
+  --shadow: 0 30px 60px -26px rgba(48, 38, 18, .5), 0 10px 22px -14px rgba(48, 38, 18, .3);
+  --paint-dim: 1;
+  --sans: "Google Sans Flex", "Google Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --r-s: 6px;
+  --r-m: 10px;
+  --r-l: 28px;
+  --gut-l: max(16px, env(safe-area-inset-left, 0px));
+  --gut-r: max(16px, env(safe-area-inset-right, 0px));
+  --space: clamp(4.5rem, 10vw, 9rem);
+  --nav-h: 3.5rem;
+}
+@media (min-width: 800px) {
+  :root {
+    --gut-l: max(32px, env(safe-area-inset-left, 0px));
+    --gut-r: max(32px, env(safe-area-inset-right, 0px));
+  }
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #141310; --card: #1c1b17; --card-2: #26251f; --win: #1b1a16; --win-2: #23221d;
+    --ink: #edece6; --mut: #a3a195; --faint: #5d5b52;
+    --line: rgba(237, 236, 230, .12); --line-2: rgba(237, 236, 230, .24);
+    --accent: #ff8552; --ok: #4cc27f; --dot: rgba(237, 236, 230, .2);
+    --panel: #0a0a0c; --on-panel: #f4f3ee; --panel-mut: #b5b4bb;
+    --code-k: #ff9b73; --code-s: #8fd3a8; --code-a: #b9a8ff;
+    --shadow: 0 30px 60px -26px rgba(0, 0, 0, .8), 0 10px 22px -14px rgba(0, 0, 0, .6);
+    --paint-dim: .78;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #141310; --card: #1c1b17; --card-2: #26251f; --win: #1b1a16; --win-2: #23221d;
+  --ink: #edece6; --mut: #a3a195; --faint: #5d5b52;
+  --line: rgba(237, 236, 230, .12); --line-2: rgba(237, 236, 230, .24);
+  --accent: #ff8552; --ok: #4cc27f; --dot: rgba(237, 236, 230, .2);
+  --panel: #0a0a0c; --on-panel: #f4f3ee; --panel-mut: #b5b4bb;
+  --code-k: #ff9b73; --code-s: #8fd3a8; --code-a: #b9a8ff;
+  --shadow: 0 30px 60px -26px rgba(0, 0, 0, .8), 0 10px 22px -14px rgba(0, 0, 0, .6);
+  --paint-dim: .78;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; min-height: 100vh; display: flex; flex-direction: column;
+  background: var(--bg); color: var(--ink);
+  font: 400 1rem/1.5 var(--sans); font-optical-sizing: auto; -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
+main { flex: 1; }
+img, canvas { display: block; max-width: 100%; }
+img { height: auto; }
+h2, h3, p, ul, dl { margin: 0; }
+ul { padding: 0; list-style: none; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.mono { font-family: var(--mono); }
+.wrap { max-width: 1364px; margin-inline: auto; padding-left: var(--gut-l); padding-right: var(--gut-r); }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* Pills and links */
+.pill {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5em;
+  min-height: 2.75rem; padding: .55rem 1.25rem; border-radius: 999px;
+  font-size: 1rem; line-height: 1.2; white-space: nowrap;
+  border: 1px solid transparent; transition: background-color .2s, color .2s, border-color .2s;
+}
+.pill-ink { background: var(--ink); color: var(--bg); }
+.pill-soft { background: var(--card-2); color: var(--ink); }
+.pill svg { width: 1em; height: 1em; flex: none; }
+.go { color: var(--accent); display: inline-flex; gap: .35em; align-items: baseline; }
+.go span { transition: transform .2s; }
+@media (hover: hover) {
+  .pill-ink:hover { background: var(--mut); }
+  .pill-soft:hover { background: var(--card); border-color: var(--line-2); }
+  .go:hover span { transform: translateX(3px); }
+}
+
+/* Top bar */
+.nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--bg) 86%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.nav-in { display: flex; align-items: center; gap: .75rem; min-height: var(--nav-h); }
+.brand { display: inline-flex; align-items: center; gap: .5rem; min-height: 2.75rem; font-weight: 500; font-size: 1.05rem; letter-spacing: -.01em; white-space: nowrap; }
+.brand svg { width: 1.25rem; height: 1.25rem; }
+.tag { margin-right: auto; padding-left: .75rem; border-left: 1px solid var(--line-2); font-size: .72rem; line-height: 1.4; letter-spacing: .04em; color: var(--mut); white-space: nowrap; }
+.tag span { display: none; }
+@media (min-width: 560px) { .tag span { display: inline; } }
+.themes { display: inline-flex; padding: 3px; gap: 2px; border-radius: 999px; background: var(--card-2); }
+.themes button { width: 2rem; height: 2rem; border-radius: 50%; display: grid; place-items: center; color: var(--mut); }
+.themes button[aria-pressed="true"] { background: var(--bg); color: var(--ink); }
+.themes svg { width: .95rem; height: .95rem; }
+
+/* Section head */
+.sec { padding-top: clamp(1.75rem, 4.5vw, 3.75rem); }
+.sec-top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: .5rem 2rem; margin-bottom: clamp(1.25rem, 2.5vw, 2rem); }
+.eye { font: .72rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--mut); margin-bottom: .7rem; }
+.sec-h { font-weight: 450; font-size: clamp(1.6rem, 3vw, 2.25rem); line-height: 1.12; letter-spacing: -.025em; text-wrap: balance; }
+
+/* The stage: four paintings lie on top of each other, the lit one fades in over the previous one. */
+.scen { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+.scene { position: relative; overflow: hidden; border-radius: var(--r-s); background: linear-gradient(#c9cfd8, #e6d8c4 48%, #8d9477 49%, #b89f6a); }
+.paint { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(var(--paint-dim)) saturate(.92); opacity: 0; transition: opacity 0s .35s; }
+.paint.on { opacity: 1; z-index: 1; transition: opacity .35s; }
+.stage { border-radius: var(--r-l); display: grid; align-items: center; padding: 1.25rem .625rem; touch-action: pan-y pinch-zoom; }
+.win { position: relative; z-index: 2; min-width: 0; background: var(--win); border: 1px solid var(--line-2); border-radius: var(--r-m); box-shadow: var(--shadow); overflow: hidden; }
+.bar { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: .75rem; height: 2.25rem; padding-inline: .8rem; background: var(--win-2); border-bottom: 1px solid var(--line); }
+.lights { display: flex; gap: .4rem; }
+.lights i { width: .6rem; height: .6rem; border-radius: 50%; background: var(--card-2); border: 1px solid var(--line); }
+.addr { min-width: 9rem; max-width: 100%; padding: .32rem .9rem; border-radius: 999px; background: var(--win); border: 1px solid var(--line); font: .72rem/1 var(--mono); color: var(--mut); text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* The screenshots are 2:1. The box keeps that shape, so nothing moves when an image arrives. */
+.shot { position: relative; aspect-ratio: 2 / 1; background: var(--card); }
+.shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0s .3s; -webkit-user-drag: none; user-select: none; }
+.shot img.on { opacity: 1; z-index: 1; transition: opacity .3s; }
+
+/* Counter and the two round buttons */
+.ctl { display: flex; align-items: center; gap: .5rem; }
+.meta { flex: 1; display: flex; flex-direction: column; align-items: center; gap: .4rem; }
+.cnt { font: .8rem/1 var(--mono); letter-spacing: .06em; color: var(--mut); font-variant-numeric: tabular-nums; }
+.cnt b { font-weight: 500; color: var(--ink); }
+.utv { display: inline-flex; align-items: center; gap: .35rem; padding: .35rem .5rem; border-radius: 4px; background: var(--card); font: 500 .66rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+.utv.off { visibility: hidden; }
+.pin { flex: none; width: .8rem; height: .8rem; fill: var(--accent); }
+.rb { flex: none; width: 3.25rem; height: 3.25rem; border-radius: 50%; display: grid; place-items: center; background: var(--card); border: 1px solid var(--line-2); transition: background-color .2s, transform .15s; }
+.rb svg { width: 1.1rem; height: 1.1rem; }
+.rb:active { transform: scale(.95); }
+@media (hover: hover) { .rb:hover { background: var(--card-2); } }
+#prev { order: -1; }
+
+/* The text. Every project has its own sheet and all sheets share one grid cell, so the cell is as tall as
+   the longest one and nothing below it moves when the project changes. */
+.info { display: grid; grid-template-columns: minmax(0, 1fr); }
+.sl { grid-area: 1 / 1; display: grid; grid-template-rows: auto 1fr auto auto; gap: .8rem; opacity: 0; visibility: hidden; transform: translateY(6px); transition: opacity .15s, transform .15s, visibility 0s .15s; }
+.sl.on { opacity: 1; visibility: visible; transform: none; transition: opacity .3s .1s, transform .3s .1s, visibility 0s; }
+.sl h3 { font-weight: 450; font-size: clamp(1.75rem, 3.1vw, 2.5rem); line-height: 1.06; letter-spacing: -.03em; text-wrap: balance; }
+.sl-t { font-size: 1.0625rem; line-height: 1.45; color: var(--mut); max-width: 34em; padding-bottom: .4rem; text-wrap: pretty; }
+.facts { display: grid; gap: .55rem 2rem; padding-top: .9rem; border-top: 1px solid var(--line); }
+.facts div { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); align-items: baseline; }
+.facts dt { font: .68rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--mut); }
+.facts dd { margin: 0; font-size: .875rem; line-height: 1.35; }
+.sl-c { display: flex; align-items: center; gap: .5rem; padding-top: .3rem; }
+.sl-c .pill { flex: 1 1 0; padding-inline: .75rem; }
+.gh { flex: none; width: 2.75rem; height: 2.75rem; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--line-2); color: var(--mut); transition: color .2s, background-color .2s; }
+.gh svg { width: 1.15rem; height: 1.15rem; fill: currentColor; }
+@media (hover: hover) { .gh:hover { color: var(--ink); background: var(--card); } }
+
+/* Film strip: bleeds out into the page gutters and fades where there is more to scroll to. */
+.strip {
+  position: relative; margin: clamp(1rem, 2.2vw, 1.75rem) calc(var(--gut-r) * -1) 0 calc(var(--gut-l) * -1);
+  overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity;
+  scroll-padding-inline: var(--gut-l) var(--gut-r); scrollbar-width: none;
+  --fl: 0px; --fr: 0px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 var(--fl), #000 calc(100% - var(--fr)), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 var(--fl), #000 calc(100% - var(--fr)), transparent);
+}
+.strip::-webkit-scrollbar { display: none; }
+.strip.l { --fl: 3.5rem; }
+.strip.r { --fr: 3.5rem; }
+.strip ul { display: flex; gap: .7rem; width: max-content; padding: .5rem var(--gut-r) .9rem var(--gut-l); }
+.strip li { flex: none; width: 8.125rem; scroll-snap-align: start; }
+.th { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); width: 100%; text-align: left; }
+.th-i { display: block; margin-bottom: .55rem; border-radius: var(--r-s); overflow: hidden; background: var(--card); opacity: .66; transition: opacity .2s, box-shadow .2s; }
+.th img { width: 100%; aspect-ratio: 2 / 1; object-fit: cover; }
+.th-n { font-size: .875rem; line-height: 1.3; color: var(--mut); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color .2s; }
+.th-y { font: .7rem/1.5 var(--mono); color: var(--mut); }
+.th-f { position: absolute; left: .35rem; top: .35rem; display: inline-flex; align-items: center; gap: .25rem; padding: .25rem .4rem; border-radius: 4px; background: var(--win); font: 500 .6rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+.th-f .pin { width: .65rem; height: .65rem; }
+.th[aria-current="true"] .th-i { opacity: 1; box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--ink); }
+.th[aria-current="true"] .th-n { color: var(--ink); font-weight: 500; }
+@media (hover: hover) { .th:hover .th-i { opacity: 1; } .th:hover .th-n { color: var(--ink); } }
+@media (hover: hover) and (pointer: fine) {
+  .strip { scrollbar-width: thin; }
+  .strip::-webkit-scrollbar { display: block; height: 6px; }
+  .strip::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 3px; }
+}
+
+/* Without JavaScript: a plain list of every case */
+.plain { margin-top: 1.5rem; columns: 2 11rem; column-gap: 2rem; }
+.plain a { display: inline-block; padding-block: .6rem; text-decoration: underline; text-underline-offset: 3px; }
+
+.foot { margin-top: clamp(3rem, 7vw, 6rem); background: var(--card); }
+.base { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .25rem 1rem; padding-block: 1.1rem; font-size: .82rem; color: var(--mut); }
+
+@media (pointer: coarse) {
+  .go { min-height: 2.75rem; align-items: center; }
+  .themes button { width: 2.75rem; height: 2.75rem; }
+}
+@media (min-width: 560px) {
+  .sl-c .pill { flex: none; padding-inline: 1.25rem; }
+}
+@media (min-width: 560px) and (max-width: 939.98px) {
+  .facts { grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr); }
+  .facts div { display: block; }
+  .facts dt { margin-bottom: .45rem; }
+}
+@media (min-width: 600px) {
+  .stage { padding: clamp(1.5rem, 3.6vw, 3rem); }
+  .strip li { width: 10rem; }
+  .strip ul { gap: .9rem; }
+}
+/* Wide screens: the window on the left, the text in a column on the right, as tall as the stage. */
+@media (min-width: 940px) {
+  .scen { grid-template-columns: minmax(0, 1fr) clamp(21rem, 31vw, 26rem); grid-template-rows: auto 1fr; gap: 1.25rem clamp(1.75rem, 3.4vw, 3.25rem); }
+  .stage { grid-row: 1 / 3; }
+  .ctl { padding-top: .35rem; }
+  .info { padding-bottom: .35rem; }
+  .meta { flex-direction: row; justify-content: flex-start; gap: .75rem; }
+  .rb { width: 2.75rem; height: 2.75rem; }
+  #prev { order: 0; }
+  .sl-c .pill { padding-inline: 1.1rem; }
+  .strip li { width: 11rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: .01ms !important; transition-delay: 0s !important; animation-duration: .01ms !important; }
+}
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top" aria-label="Marcel Deluca, till toppen">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2" y="9" width="6" height="2.6" rx="1.3" fill="#e2401a" transform="rotate(-62 5 10.3)"/><rect x="7" y="3.4" width="6" height="2.6" rx="1.3" fill="#8a4fe0" transform="rotate(-8 10 4.7)"/><rect x="12" y="9" width="6" height="2.6" rx="1.3" fill="#2f6bf6" transform="rotate(62 15 10.3)"/></svg>
+      Marcel Deluca
+    </a>
+    <p class="tag mono"><span>Projektvisning · </span>Scen</p>
+    <div class="themes" role="group" aria-label="Tema">
+      <button type="button" data-theme-set="system" aria-pressed="true" aria-label="Följ systemet"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="2" y="3" width="12" height="8" rx="1.5"/><path d="M6 13.5h4"/></svg></button>
+      <button type="button" data-theme-set="light" aria-pressed="false" aria-label="Ljust"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="8" cy="8" r="2.8"/><path d="M8 1.5v1.6M8 12.9v1.6M1.5 8h1.6M12.9 8h1.6M3.4 3.4l1.1 1.1M11.5 11.5l1.1 1.1M3.4 12.6l1.1-1.1M11.5 4.5l1.1-1.1"/></svg></button>
+      <button type="button" data-theme-set="dark" aria-pressed="false" aria-label="Mörkt"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M13 9.6A5.5 5.5 0 0 1 6.4 3 5.5 5.5 0 1 0 13 9.6Z"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="wrap sec" id="projekt" aria-labelledby="projekt-h">
+    <div class="sec-top">
+      <div>
+        <p class="eye">Projekt · <span id="n-all">17</span> st</p>
+        <h2 class="sec-h" id="projekt-h">Det här har jag byggt</h2>
+      </div>
+      <a class="go" href="https://marceldeluca.se/projects/" target="_blank" rel="noopener">Alla case <span aria-hidden="true">↗</span></a>
+    </div>
+
+    <div class="scen" id="scen" role="group" aria-roledescription="karusell" aria-label="Projekt, ett i taget">
+      <div class="scene stage" id="stage">
+        <canvas class="paint on" data-paint="morgon" aria-hidden="true"></canvas>
+        <canvas class="paint" data-paint="hav" aria-hidden="true"></canvas>
+        <canvas class="paint" data-paint="kvall" aria-hidden="true"></canvas>
+        <canvas class="paint" data-paint="skog" aria-hidden="true"></canvas>
+        <div class="win">
+          <div class="bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="addr" id="addr">andaluscalendar.com</span><span></span></div>
+          <div class="shot" id="shot"><img class="on" data-slug="andalus-calendar" src="assets/andalus-calendar.webp" srcset="assets/andalus-calendar-sm.webp 640w, assets/andalus-calendar.webp 1280w" sizes="(min-width: 1400px) 760px, (min-width: 940px) 52vw, 94vw" width="1280" height="640" alt="Skärmbild av The Andalus Calendar" decoding="async"></div>
+        </div>
+      </div>
+      <div class="ctl">
+        <p class="meta"><span class="cnt" id="cnt" hidden><b id="c-n">01</b> / <span id="c-t">17</span></span><span class="utv" id="utv"><svg class="pin" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5a3.5 3.5 0 0 1 .75 6.92V14L8 15.2 7.25 14V8.42A3.5 3.5 0 0 1 8 1.5z"/></svg>Utvalt</span></p>
+        <button class="rb" id="prev" type="button" aria-label="Föregående projekt" hidden><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg></button>
+        <button class="rb" id="next" type="button" aria-label="Nästa projekt" hidden><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg></button>
+      </div>
+      <div class="info" id="info">
+        <article class="sl on">
+          <h3>The Andalus Calendar</h3>
+          <p class="sl-t">En kalender där bönetiden redan sitter i vyn, så du inte bokar över salah.</p>
+          <dl class="facts"><div><dt>År</dt><dd>2026</dd></div><div><dt>Typ</dt><dd>React · Firebase · Kalender</dd></div><div><dt>Byggt med</dt><dd>React · Firebase · Hostinger</dd></div></dl>
+          <p class="sl-c"><a class="pill pill-ink" href="https://marceldeluca.se/projects/andalus-calendar/" target="_blank" rel="noopener">Läs caset <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a><a class="pill pill-soft" href="https://andaluscalendar.com/" target="_blank" rel="noopener">Besök sidan <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a></p>
+        </article>
+      </div>
+      <p class="vh" id="live" aria-live="polite"></p>
+    </div>
+
+    <div class="strip" id="strip" hidden><ul id="thumbs" aria-label="Alla projekt"></ul></div>
+    <noscript>
+      <ul class="plain" aria-label="Alla projekt">
+        <li><a href="https://marceldeluca.se/projects/uniclean-partners/" target="_blank" rel="noopener">UniClean Partners</a></li>
+        <li><a href="https://marceldeluca.se/projects/sabaah-al-wuruud/" target="_blank" rel="noopener">Sabaah Al-Wuruud</a></li>
+        <li><a href="https://marceldeluca.se/projects/zenith-kampsport/" target="_blank" rel="noopener">Zenith Kampsport</a></li>
+        <li><a href="https://marceldeluca.se/projects/fcvaxjo-reborn/" target="_blank" rel="noopener">FC Växjö Reborn</a></li>
+        <li><a href="https://marceldeluca.se/projects/andalus-calendar/" target="_blank" rel="noopener">The Andalus Calendar</a></li>
+        <li><a href="https://marceldeluca.se/projects/premium-honey-blends/" target="_blank" rel="noopener">Premium Honey Blends</a></li>
+        <li><a href="https://marceldeluca.se/projects/alkama/" target="_blank" rel="noopener">ALKAMA</a></li>
+        <li><a href="https://marceldeluca.se/projects/uniclean/" target="_blank" rel="noopener">UniClean</a></li>
+        <li><a href="https://marceldeluca.se/projects/takkoll/" target="_blank" rel="noopener">TakKoll</a></li>
+        <li><a href="https://marceldeluca.se/projects/bilservicekoll/" target="_blank" rel="noopener">BilserviceKoll</a></li>
+        <li><a href="https://marceldeluca.se/projects/stadkoll/" target="_blank" rel="noopener">Städkoll</a></li>
+        <li><a href="https://marceldeluca.se/projects/brandsakerhetskoll/" target="_blank" rel="noopener">Brand &amp; Säkerhetskoll</a></li>
+        <li><a href="https://marceldeluca.se/projects/scooterkoll/" target="_blank" rel="noopener">Scooterkoll</a></li>
+        <li><a href="https://marceldeluca.se/projects/halimapearl/" target="_blank" rel="noopener">HalimaPearl</a></li>
+        <li><a href="https://marceldeluca.se/projects/ventilationskoll/" target="_blank" rel="noopener">Ventilationskoll</a></li>
+        <li><a href="https://marceldeluca.se/projects/shanasheel/" target="_blank" rel="noopener">Shanasheel</a></li>
+        <li><a href="https://marceldeluca.se/projects/fcvaxjo/" target="_blank" rel="noopener">FC Växjö</a></li>
+      </ul>
+    </noscript>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap base">
+    <span>Prototyp · Projektvisning Scen · © 2026 Marcel Deluca</span>
+    <a class="go" href="tyngdlos.html">Till Tyngdlös <span aria-hidden="true">→</span></a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var doc = document, root = doc.documentElement;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function $(id) { return doc.getElementById(id); }
+  function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+
+  /* 1. Theme: system, light or dark. The choice is remembered on this device. */
+  (function () {
+    var KEY = 'tyngdlos-tema', btns = doc.querySelectorAll('[data-theme-set]');
+    function set(v, save) {
+      if (v === 'system') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', v);
+      for (var i = 0; i < btns.length; i++) btns[i].setAttribute('aria-pressed', String(btns[i].getAttribute('data-theme-set') === v));
+      if (save) { try { localStorage.setItem(KEY, v); } catch (e) {} }
+    }
+    var saved = null;
+    try { saved = localStorage.getItem(KEY); } catch (e) {}
+    set(saved === 'light' || saved === 'dark' ? saved : (root.getAttribute('data-theme') || 'system'), false);
+    for (var i = 0; i < btns.length; i++) btns[i].addEventListener('click', function () { set(this.getAttribute('data-theme-set'), true); });
+  })();
+
+  /* 3. The paintings: each landscape is a few thousand short brush strokes, drawn once from a seed. */
+  var PAL = {
+    morgon: { seed: 11, sky0: [216, 26, 74], sky1: [34, 46, 86], far: [224, 17, 62], near: [96, 17, 43], field: [44, 40, 58] },
+    hav:    { seed: 5,  sky0: [204, 30, 78], sky1: [188, 26, 88], far: [208, 28, 58], near: [172, 22, 40], field: [50, 32, 64] },
+    kvall:  { seed: 23, sky0: [252, 22, 66], sky1: [22, 62, 80], far: [266, 16, 48], near: [206, 20, 34], field: [28, 46, 50] },
+    skog:   { seed: 41, sky0: [190, 18, 80], sky1: [60, 30, 86], far: [150, 16, 52], near: [128, 22, 32], field: [78, 30, 46] }
+  };
+  function paint(cv) {
+    var P = PAL[cv.getAttribute('data-paint')], c = cv.getContext && cv.getContext('2d');
+    if (!P || !c) return;
+    var W = cv.width = 760, H = cv.height = 500, s = P.seed * 9301 + 49297;
+    function rnd() { s |= 0; s = s + 0x6D2B79F5 | 0; var t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }
+    var a = rnd() * 6, b = rnd() * 6, d = rnd() * 6;
+    function r1(x) { return H * (0.5 + 0.05 * Math.sin(x * 0.007 + a) + 0.025 * Math.sin(x * 0.019 + b)); }
+    function r2(x) { return H * (0.66 + 0.07 * Math.sin(x * 0.005 + d) + 0.02 * Math.sin(x * 0.023 + a)); }
+    function r3(x) { return H * (0.85 + 0.035 * Math.sin(x * 0.009 + b)); }
+    function mix(p, q, k) { var dh = ((q[0] - p[0] + 540) % 360) - 180; return [(p[0] + dh * k + 360) % 360, p[1] + (q[1] - p[1]) * k, p[2] + (q[2] - p[2]) * k]; }
+    function hsl(v) { return 'hsl(' + v[0].toFixed(0) + ' ' + v[1].toFixed(0) + '% ' + v[2].toFixed(0) + '%)'; }
+    var g = c.createLinearGradient(0, 0, 0, H * 0.6), n;
+    for (n = 0; n <= 6; n++) g.addColorStop(n / 6, hsl(mix(P.sky0, P.sky1, n / 6 * n / 6)));
+    c.fillStyle = g; c.fillRect(0, 0, W, H);
+    [[r1, P.far], [r2, P.near], [r3, P.field]].forEach(function (L) {
+      c.fillStyle = hsl(L[1]); c.beginPath(); c.moveTo(0, H);
+      for (n = 0; n <= W; n += 8) c.lineTo(n, L[0](n));
+      c.lineTo(W, H); c.fill();
+    });
+    function dab(x, y, len, wid, ang, col, al) {
+      c.save(); c.translate(x, y); c.rotate(ang); c.globalAlpha = al;
+      c.fillStyle = hsl([col[0] + (rnd() - 0.5) * 10, col[1] + (rnd() - 0.5) * 8, col[2] + (rnd() - 0.5) * 9]);
+      c.beginPath();
+      if (c.roundRect) c.roundRect(-len / 2, -wid / 2, len, wid, wid / 2); else c.rect(-len / 2, -wid / 2, len, wid);
+      c.fill(); c.restore();
+    }
+    var i, x, y, k, t, top, bot, col;
+    /* Back to front: sky, far hills, near hills, meadow. Each layer overlaps the one behind it. */
+    for (i = 0; i < 1700; i++) {
+      x = rnd() * W; y = rnd() * H * 0.62; k = clamp(y / (H * 0.52), 0, 1);
+      col = mix(P.sky0, P.sky1, k * k);
+      t = Math.sin(x * 0.009 + a + y * 0.03) * Math.sin(y * 0.035 + b) + 0.5 * Math.sin(x * 0.004 + d);
+      if (t > 0.5) col = [col[0], col[1] * 0.55, Math.min(96, col[2] + 6 + t * 5)];
+      dab(x, y, 30 + rnd() * 50, 4 + rnd() * 6, (rnd() - 0.5) * 0.22, col, 0.55);
+    }
+    for (i = 0; i < 1300; i++) {
+      x = rnd() * W; top = r1(x); bot = r2(x) + 12; t = Math.pow(rnd(), 1.25); y = top + t * (bot - top);
+      col = mix(mix(P.far, P.sky1, 0.3 * (1 - t)), P.near, t * 0.3);
+      dab(x, y, 16 + rnd() * 26, 3 + rnd() * 4, Math.atan((r1(x + 8) - top) / 8) + (rnd() - 0.5) * 0.35, col, 0.8);
+    }
+    for (i = 0; i < 1500; i++) {
+      x = rnd() * W; top = r2(x); bot = r3(x) + 12; t = Math.pow(rnd(), 1.2); y = top + t * (bot - top);
+      k = 0.5 + 0.5 * Math.sin(x * 0.013 + b + y * 0.02);
+      col = mix(P.near, P.field, t * 0.3 + k * 0.25); col = [col[0], col[1], col[2] + (k - 0.5) * 10];
+      dab(x, y, 12 + rnd() * 22, 3 + rnd() * 4, Math.atan((r2(x + 8) - top) / 8) + (rnd() - 0.5) * 0.5, col, 0.85);
+    }
+    for (i = 0; i < 1900; i++) {
+      x = rnd() * W; top = r3(x); t = Math.pow(rnd(), 0.9); y = top + t * (H - top);
+      k = 0.5 + 0.5 * Math.sin(x * 0.01 + d - y * 0.03);
+      col = mix(P.field, P.near, k * 0.3); col = [col[0], col[1], col[2] + (k - 0.5) * 12 - t * 6];
+      if (rnd() < 0.05) col = [P.sky1[0], 60, 84];
+      dab(x, y, 9 + rnd() * 16 + t * 8, 2.5 + rnd() * 3, -1.15 + (rnd() - 0.5) * 0.7, col, 0.85);
+    }
+  }
+
+  /* 4. The stage. */
+  (function () {
+    /* The featured project: it opens the stage, comes first in the strip and carries the label "Utvalt". */
+    var FEATURED = 'andalus-calendar';
+    var P = [
+      ['uniclean-partners', 'UniClean Partners', 2026, 'Ny hemsida för UniClean som vägleder kunder och städare till den nya appen.', 'UniClean har fått en app som fungerar som Uber fast för städning. Jag byggde den nya hemsidan i Next.js som vägleder kunder och städare dit.', 'Next.js · Tailwind · Lokalt', ['Next.js', 'TypeScript', 'Tailwind CSS', 'Hostinger'], 'https://uniclean.nu', 'https://github.com/DelucaGit/UniClean-Website'],
+      ['sabaah-al-wuruud', 'Sabaah Al-Wuruud', 2026, 'En minimalistisk adhkar-app för Android som jag byggde till min fru. Utan reklam, utan konto och helt offline.', 'Min frus favoritapp för adhkar hade fyllts med reklam. Jag byggde en egen till henne i hennes favoritfärger, med bara det hon använder, och levererade den som en signerad APK.', 'Android · Capacitor · Personligt projekt', ['JavaScript', 'Vite', 'Capacitor', 'Android Studio', 'Vitest', 'Claude Code'], '', 'https://github.com/DelucaGit/sabaah-al-wuruud'],
+      ['zenith-kampsport', 'Zenith Kampsport', 2026, 'Underhåll och förbättring av en Next.js-klubbhemsida. Schema och layout för mindre laptopskärmar.', 'Jag tog över Zenith Kampsports hemsida när den tidigare utvecklaren inte kunde fortsätta. Jobbar med schema, layout och publicering via GitHub och Vercel.', 'Next.js · Underhåll · Förening', ['Next.js', 'TypeScript', 'Tailwind', 'Vercel'], 'https://www.zenithkampsport.se', 'https://github.com/esam95/usc-nextjs'],
+      ['fcvaxjo-reborn', 'FC Växjö Reborn', 2026, 'Ny klubbhemsida i Next.js. Byggd för träningstider, nyheter och en kommande app.', 'Ombyggd hemsida för FC Växjö med Next.js, GitHub och Hostinger CI. Förberedd för schemauppdateringar från mobil.', 'Next.js · Förening · CI/CD', ['Next.js', 'GitHub', 'Hostinger'], 'https://fcvaxjo.se', 'https://github.com/DelucaGit/FC-Vaxjo-Website'],
+      ['andalus-calendar', 'The Andalus Calendar', 2026, 'En kalender där bönetiden redan sitter i vyn, så du inte bokar över salah.', 'Personlig kalenderapp med gregoriansk och hijri-kalender, bönetider i UI:t och uppgifter i samma vy. Live beta.', 'React · Firebase · Kalender', ['React', 'Firebase', 'Hostinger'], 'https://andaluscalendar.com/', ''],
+      ['premium-honey-blends', 'Premium Honey Blends', 2026, 'Från meddelanden och kontakter till en butik som aldrig sover.', 'Shopify-butik för Premium Honey Blends: live lagerstatus och beställningar dygnet runt, utan att något försvinner i chatten.', 'Shopify · E-handel · Varumärke', ['Shopify'], 'https://premiumhoneyblends.com', ''],
+      ['alkama', 'ALKAMA', 2026, 'WooCommerce-butik på svenska, finska och norska, utan att tappa 20 års förtroende.', 'Flerspråkig WooCommerce-butik för Alkama Industry: fakturabetalning, självbetjäning och lokal SEO i Norden.', 'WooCommerce · Polylang · B2B', ['WooCommerce', 'Polylang', 'PHP'], '', ''],
+      ['uniclean', 'UniClean', 2026, 'Från samma frågor om och om igen, till en hemsida som onboardingar själv.', 'WordPress-hemsida för UniClean: tjänster, ungefärliga priser och förväntningar synliga från start, så teamet kan fokusera på jobbet.', 'WordPress · Elementor · Lokalt', ['WordPress', 'Elementor'], '', ''],
+      ['takkoll', 'TakKoll', 2025, 'Skyddar svenska hem – ett tak i taget.', 'Hemsida för TakKoll: takmålning, omläggning, tvätt, isolering och service, med bokning och ROT synligt från start.', 'WordPress · Lokalt · Leadgen', ['WordPress', 'Elementor'], 'https://takkoll.se', ''],
+      ['bilservicekoll', 'BilserviceKoll', 2025, 'Bilverkstaden i Gävle som gör det enkelt att serva bilen.', 'Hemsida för BilserviceKoll: service, oljebyten, däck och besiktningskontroll, med onlinebokning och bilupphämtning.', 'WordPress · Lokalt · Leadgen', ['WordPress', 'Elementor'], 'https://bilservicekoll.se', ''],
+      ['stadkoll', 'Städkoll', 2025, 'Flyttstädning utan stress – till fast pris.', 'Hemsida för Städkoll: professionell flyttstädning till fast pris, med 14 dagars garanti och RUT-avdrag.', 'Frontend · UX/UI · Leadgen', ['Frontend', 'UX & UI-design'], 'https://stadkoll.se', ''],
+      ['brandsakerhetskoll', 'Brand & Säkerhetskoll', 2025, 'Din lokala expert på brandskydd i Gävle.', 'Hemsida för Brand & Säkerhetskoll: brandsläckare, brandvarnare och brandfiltar, med tydliga produkter och offert direkt på sidan.', 'Frontend · UX/UI · Leadgen', ['Frontend', 'UX & UI-design'], 'https://brandsakerhetskoll.se', ''],
+      ['scooterkoll', 'Scooterkoll', 2025, 'Elscootrar är smidiga. Tills de går sönder.', 'Hemsida för Scooterkoll i Gävle: reparation av alla märken, med tydlig bokning, FAQ och offert nära till hands.', 'Frontend · UX/UI · SEO', ['SEO', 'Frontend', 'UX & UI-design'], 'https://scooterkoll.se', ''],
+      ['halimapearl', 'HalimaPearl', 2025, 'Från lokalt rykte till en växande varumärkesresa.', 'GoHighLevel-hemsida för HalimaPearl: en plattform som visar kollektionerna, stärker varumärket och öppnar nya marknader.', 'GoHighLevel · UX/UI · Varumärke', ['GoHighLevel', 'UX & UI-design'], 'https://halimapearl.com', ''],
+      ['ventilationskoll', 'Ventilationskoll', 2025, 'En hemsida som gör jobbet.', 'Hemsida för Ventilationskoll: tydlig prisinformation och smidig onlinebokning, byggd för att dra in kunder.', 'Frontend · UX/UI · SEO', ['SEO', 'Frontend', 'UX & UI-design'], 'https://ventilationskoll.se', ''],
+      ['shanasheel', 'Shanasheel', 2025, 'Från första skissen till en tvåspråkig hemsida som berättar om Akkad, och om framtiden i Irak.', 'Hemsida för Shanasheel Al-Asima: fastighet, hållbarhet och investeringar, byggd i WordPress med Elementor.', 'WordPress · Elementor · Fastighet', ['WordPress', 'Elementor', 'TranslatePress'], 'https://shanasheel.se', ''],
+      ['fcvaxjo', 'FC Växjö', 2023, 'En digital hemmaplan för föreningen sedan 1989.', 'Hemsida för FC Växjö: nyheter, träningstider, galleri och kontakt, med klubbens svart-guld-identitet i centrum.', 'Webbdesign · UX/UI · Förening', ['One.com', 'UX & UI-design'], 'https://fcvaxjo.se', '']
+    ];
+    var F = 0, N = P.length, CASE = 'https://marceldeluca.se/projects/';
+    var OUT = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg>';
+    var GH = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>';
+    P.forEach(function (p, i) { if (p[0] === FEATURED) F = i; });
+    /* The running order: the featured project first, then the rest as they stand in the data. */
+    var order = [F];
+    P.forEach(function (p, i) { if (i !== F) order.push(i); });
+
+    var scen = $('scen'), stage = $('stage'), shot = $('shot'), info = $('info'), strip = $('strip'), list = $('thumbs');
+    var addr = $('addr'), utv = $('utv'), live = $('live'), cn = $('c-n');
+    if (!scen || !list) return;
+    var slides = [], thumbs = [], imgs = [], cur = 0, tok = 0;
+
+    function el(tag, cls, text) { var e = doc.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+    function pad(n) { return (n < 10 ? '0' : '') + n; }
+    function proj(n) { return P[order[n]]; }
+    function domain(p) { return p[7] ? p[7].replace(/^https?:\/\/(www\.)?/, '').replace(/\/.*$/, '') : p[0]; }
+    function ext(cls, href, text, icon) {
+      var a = el('a', cls, text ? text + ' ' : null);
+      a.href = href; a.target = '_blank'; a.rel = 'noopener';
+      a.insertAdjacentHTML('beforeend', icon);
+      return a;
+    }
+
+    /* One text sheet per project. Only the lit one is visible and reachable. */
+    function sheet(p) {
+      var s = el('article', 'sl'), dl = el('dl', 'facts'), c = el('p', 'sl-c'), g;
+      s.appendChild(el('h3', '', p[1]));
+      s.appendChild(el('p', 'sl-t', p[3]));
+      [['År', p[2]], ['Typ', p[5]], ['Byggt med', p[6].join(' · ')]].forEach(function (f) {
+        var d = el('div'); d.appendChild(el('dt', '', f[0])); d.appendChild(el('dd', '', f[1])); dl.appendChild(d);
+      });
+      s.appendChild(dl);
+      c.appendChild(ext('pill pill-ink', CASE + p[0] + '/', 'Läs caset', OUT));
+      if (p[7]) c.appendChild(ext('pill pill-soft', p[7], 'Besök sidan', OUT));
+      if (p[8]) { g = ext('gh', p[8], '', GH); g.title = 'GitHub'; g.setAttribute('aria-label', 'Koden till ' + p[1] + ' på GitHub'); c.appendChild(g); }
+      s.appendChild(c);
+      return s;
+    }
+
+    /* The screenshots are stacked in the window. A layer is made the first time its project is asked for. */
+    function layer(n) {
+      if (imgs[n]) return imgs[n];
+      var p = proj(n), im = el('img');
+      im.alt = 'Skärmbild av ' + p[1]; im.width = 1280; im.height = 640; im.decoding = 'async';
+      im.sizes = '(min-width: 1400px) 760px, (min-width: 940px) 52vw, 94vw';
+      im.srcset = 'assets/' + p[0] + '-sm.webp 640w, assets/' + p[0] + '.webp 1280w';
+      im.src = 'assets/' + p[0] + '.webp';
+      im.setAttribute('aria-hidden', 'true');
+      shot.appendChild(im);
+      return imgs[n] = im;
+    }
+    /* The old screenshot stays until the new one has arrived, so the window is never empty. */
+    function picture(n) {
+      var im = layer(n), t = ++tok;
+      function swap() {
+        if (t !== tok) return;
+        for (var k = 0; k < N; k++) if (imgs[k]) { imgs[k].classList.toggle('on', k === n); imgs[k].setAttribute('aria-hidden', String(k !== n)); }
+      }
+      if (im.complete) swap(); else { im.addEventListener('load', swap); im.addEventListener('error', swap); }
+    }
+
+    /* The backdrop: four palettes, each painted the first time it is needed and never before the stage is near the screen. */
+    var cvs = stage.querySelectorAll('.paint'), painted = [], near = !('IntersectionObserver' in window);
+    function backdrop() {
+      var k = cur % cvs.length, i;
+      if (!near) return;
+      if (!painted[k]) { painted[k] = 1; paint(cvs[k]); }
+      for (i = 0; i < cvs.length; i++) cvs[i].classList.toggle('on', i === k);
+    }
+    if (near) backdrop();
+    else new IntersectionObserver(function (en, io) {
+      if (en[0].isIntersecting) { io.disconnect(); near = true; backdrop(); }
+    }, { rootMargin: '600px' }).observe(stage);
+
+    /* The strip only ever scrolls sideways: the position is set on the strip itself, never with scrollIntoView. */
+    function reveal(n, smooth) {
+      var per = thumbs[1].parentNode.offsetLeft - thumbs[0].parentNode.offsetLeft;
+      var room = Math.max(1, Math.floor(strip.clientWidth / per));
+      var first = clamp(n - Math.floor((room - 1) / 2), 0, N - 1);
+      strip.scrollTo({ left: thumbs[first].parentNode.offsetLeft - thumbs[0].parentNode.offsetLeft, behavior: smooth && !reduce.matches ? 'smooth' : 'auto' });
+    }
+    function edges() {
+      strip.classList.toggle('l', strip.scrollLeft > 8);
+      strip.classList.toggle('r', strip.scrollLeft < strip.scrollWidth - strip.clientWidth - 8);
+    }
+
+    function show(n) {
+      n = (n % N + N) % N;
+      if (n === cur) return;
+      var old = cur, p = proj(n), inside = slides[old].contains(doc.activeElement);
+      cur = n;
+      slides[old].classList.remove('on');
+      slides[n].classList.add('on');
+      /* Keep the keyboard where it was if the focused link just went away with its sheet. */
+      if (inside) slides[n].querySelector('a').focus({ preventScroll: true });
+      thumbs[old].removeAttribute('aria-current');
+      thumbs[n].setAttribute('aria-current', 'true');
+      cn.textContent = pad(n + 1);
+      utv.classList.toggle('off', n !== 0);
+      addr.textContent = domain(p);
+      live.textContent = 'Projekt ' + (n + 1) + ' av ' + N + ': ' + p[1];
+      picture(n); backdrop(); reveal(n, true);
+      /* After the first step the neighbours are fetched ahead, so the next step is instant. */
+      layer((n + 1) % N); layer((n + N - 1) % N);
+    }
+
+    /* Build: sheets, thumbnails, first state. The static sheet in the markup is the no-script fallback. */
+    info.textContent = '';
+    order.forEach(function (i, n) {
+      var p = P[i], li = el('li'), b = el('button', 'th'), w = el('span', 'th-i'), im = el('img'), s = sheet(p), f;
+      if (!n) s.className = 'sl on';
+      info.appendChild(s); slides[n] = s;
+      b.type = 'button';
+      im.loading = 'lazy'; im.decoding = 'async'; im.width = 640; im.height = 320; im.alt = 'Skärmbild av ' + p[1];
+      im.src = 'assets/' + p[0] + '-sm.webp';
+      w.appendChild(im); b.appendChild(w);
+      if (!n) { f = el('span', 'th-f', 'Utvalt'); f.insertBefore(utv.firstElementChild.cloneNode(true), f.firstChild); b.appendChild(f); b.setAttribute('aria-current', 'true'); }
+      b.appendChild(el('span', 'th-n', p[1]));
+      b.appendChild(el('span', 'th-y', String(p[2])));
+      b.addEventListener('click', function () { show(n); });
+      li.appendChild(b); list.appendChild(li); thumbs[n] = b;
+    });
+    (function (first) {
+      if (first && first.getAttribute('data-slug') === proj(0)[0]) imgs[0] = first;
+      else { if (first) shot.removeChild(first); layer(0).className = 'on'; imgs[0].setAttribute('aria-hidden', 'false'); }
+    })(shot.querySelector('img'));
+    addr.textContent = domain(proj(0));
+    cn.textContent = pad(1); $('c-t').textContent = pad(N); $('n-all').textContent = N;
+    $('cnt').hidden = false; $('prev').hidden = false; $('next').hidden = false; strip.hidden = false;
+    edges();
+    strip.addEventListener('scroll', edges, { passive: true });
+    window.addEventListener('resize', function () { reveal(cur, false); edges(); });
+
+    $('prev').addEventListener('click', function () { show(cur - 1); });
+    $('next').addEventListener('click', function () { show(cur + 1); });
+    /* Arrow keys step through the projects while focus is anywhere in the stage group. */
+    scen.addEventListener('keydown', function (e) {
+      var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (!d || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+      e.preventDefault(); show(cur + d);
+    });
+    /* In the strip the arrows move focus between thumbnails; Enter or Space opens the one in focus. */
+    list.addEventListener('keydown', function (e) {
+      var k = thumbs.indexOf(doc.activeElement), to = e.key === 'ArrowRight' ? k + 1 : e.key === 'ArrowLeft' ? k - 1 : e.key === 'Home' ? 0 : e.key === 'End' ? N - 1 : -1;
+      if (k < 0 || to < 0 || to >= N || e.altKey || e.ctrlKey || e.metaKey) return;
+      e.preventDefault(); thumbs[to].focus({ preventScroll: true }); reveal(to, true);
+    });
+    /* Swipe: a mostly sideways flick over the stage. `touch-action: pan-y` leaves vertical scrolling to the page. */
+    var sx = 0, sy = 0, sid = null;
+    stage.addEventListener('pointerdown', function (e) { if (e.pointerType !== 'mouse') { sid = e.pointerId; sx = e.clientX; sy = e.clientY; } });
+    stage.addEventListener('pointercancel', function () { sid = null; });
+    stage.addEventListener('pointerup', function (e) {
+      if (e.pointerId !== sid) return;
+      sid = null;
+      var dx = e.clientX - sx, dy = e.clientY - sy;
+      if (Math.abs(dx) > 44 && Math.abs(dx) > Math.abs(dy) * 1.5) show(cur + (dx < 0 ? 1 : -1));
+    });
+  })();
+})();
+</script>
+</body>
+</html>

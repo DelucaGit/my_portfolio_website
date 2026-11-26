@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Projektvisning Index</title>
+<meta name="description" content="Förslag på projektdelen för Tyngdlös: ett utvalt projekt och resten som en lista per år.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,300..700&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+/* Variant "Index" of the Tyngdlös project section. Everything is visible at once and text comes first:
+   the featured project as one large card, then every other project as a row, grouped by year.
+   A row opens in place. Tokens, pills, window chrome and the painting are taken from tyngdlos.html. */
+:root {
+  color-scheme: light;
+  --bg: #f7f6f2;
+  --card: #f0efe9;
+  --card-2: #e6e4dc;
+  --win: #fcfbf8;
+  --win-2: #f3f2ed;
+  --ink: #201f1a;
+  --mut: #6a685e;
+  --faint: #b3b1a6;
+  --line: rgba(32, 31, 26, .11);
+  --line-2: rgba(32, 31, 26, .22);
+  --accent: #c63c00;
+  --ok: #1f8a4c;
+  --dot: rgba(32, 31, 26, .2);
+  --panel: #111114;
+  --on-panel: #f4f3ee;
+  --panel-mut: #b5b4bb;
+  --code-k: #a4380b;
+  --code-s: #2c6e49;
+  --code-a: #5a45b8;
+  --shadow: 0 30px 60px -26px rgba(48, 38, 18, .5), 0 10px 22px -14px rgba(48, 38, 18, .3);
+  --paint-dim: 1;
+  --sans: "Google Sans Flex", "Google Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --r-s: 6px;
+  --r-m: 10px;
+  --r-l: 28px;
+  --gut-l: max(16px, env(safe-area-inset-left, 0px));
+  --gut-r: max(16px, env(safe-area-inset-right, 0px));
+  --space: clamp(4.5rem, 10vw, 9rem);
+  --nav-h: 3.5rem;
+}
+@media (min-width: 800px) {
+  :root {
+    --gut-l: max(32px, env(safe-area-inset-left, 0px));
+    --gut-r: max(32px, env(safe-area-inset-right, 0px));
+  }
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #141310; --card: #1c1b17; --card-2: #26251f; --win: #1b1a16; --win-2: #23221d;
+    --ink: #edece6; --mut: #a3a195; --faint: #5d5b52;
+    --line: rgba(237, 236, 230, .12); --line-2: rgba(237, 236, 230, .24);
+    --accent: #ff8552; --ok: #4cc27f; --dot: rgba(237, 236, 230, .2);
+    --panel: #0a0a0c; --on-panel: #f4f3ee; --panel-mut: #b5b4bb;
+    --code-k: #ff9b73; --code-s: #8fd3a8; --code-a: #b9a8ff;
+    --shadow: 0 30px 60px -26px rgba(0, 0, 0, .8), 0 10px 22px -14px rgba(0, 0, 0, .6);
+    --paint-dim: .78;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #141310; --card: #1c1b17; --card-2: #26251f; --win: #1b1a16; --win-2: #23221d;
+  --ink: #edece6; --mut: #a3a195; --faint: #5d5b52;
+  --line: rgba(237, 236, 230, .12); --line-2: rgba(237, 236, 230, .24);
+  --accent: #ff8552; --ok: #4cc27f; --dot: rgba(237, 236, 230, .2);
+  --panel: #0a0a0c; --on-panel: #f4f3ee; --panel-mut: #b5b4bb;
+  --code-k: #ff9b73; --code-s: #8fd3a8; --code-a: #b9a8ff;
+  --shadow: 0 30px 60px -26px rgba(0, 0, 0, .8), 0 10px 22px -14px rgba(0, 0, 0, .6);
+  --paint-dim: .78;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--nav-h) + 1rem); }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 1rem/1.5 var(--sans);
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
+img, canvas { display: block; max-width: 100%; }
+img { height: auto; }
+h1, h2, h3, h4, p, ul, ol, dl { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.mono { font-family: var(--mono); }
+.wrap { max-width: 1364px; margin-inline: auto; padding-left: var(--gut-l); padding-right: var(--gut-r); }
+.skip { position: absolute; left: var(--gut-l); top: -4rem; z-index: 40; background: var(--ink); color: var(--bg); padding: .5rem .9rem; border-radius: 999px; }
+.skip:focus { top: calc(env(safe-area-inset-top, 0px) + .5rem); }
+
+/* Pills and links */
+.pill {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5em;
+  min-height: 2.75rem; padding: .55rem 1.25rem; border-radius: 999px;
+  font-size: 1rem; line-height: 1.2; white-space: nowrap;
+  border: 1px solid transparent; transition: background-color .2s, color .2s, border-color .2s, transform .2s;
+}
+.pill-ink { background: var(--ink); color: var(--bg); }
+.pill-soft { background: var(--card-2); color: var(--ink); }
+.pill-line { border-color: var(--line-2); }
+.pill svg { width: 1em; height: 1em; flex: none; }
+@media (hover: hover) {
+  .pill-ink:hover { background: var(--mut); }
+  .pill-soft:hover, .pill-line:hover { background: var(--bg); border-color: var(--line-2); }
+}
+.go { color: var(--accent); display: inline-flex; gap: .35em; align-items: center; min-height: 2.75rem; }
+.go span { transition: transform .2s; }
+@media (hover: hover) { .go:hover span { transform: translate(2px, -2px); } }
+
+/* Top bar */
+.nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--bg) 86%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.nav-in { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: var(--nav-h); }
+.brand { display: inline-flex; align-items: center; gap: .5rem; min-height: 2.75rem; font-weight: 500; font-size: 1.05rem; letter-spacing: -.01em; white-space: nowrap; }
+.brand svg { width: 1.25rem; height: 1.25rem; }
+.tag { font: .68rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--mut); white-space: nowrap; }
+.tag span { display: none; }
+@media (min-width: 560px) { .tag span { display: inline; } }
+.themes { display: inline-flex; padding: 3px; gap: 2px; border-radius: 999px; background: var(--card-2); }
+.themes button { width: 2rem; height: 2rem; border-radius: 50%; display: grid; place-items: center; color: var(--mut); }
+.themes button[aria-pressed="true"] { background: var(--bg); color: var(--ink); }
+.themes svg { width: .95rem; height: .95rem; }
+@media (pointer: coarse) { .themes button { width: 2.75rem; height: 2.75rem; } }
+
+/* Section head */
+.sec { padding-top: clamp(2.5rem, 6vw, 5rem); }
+.eye, .cnt, .lab, .yr small { font: 500 .68rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--mut); }
+.eye { margin-bottom: .75rem; }
+.sec-h { font-weight: 450; font-size: clamp(1.6rem, 3vw, 2.25rem); line-height: 1.12; letter-spacing: -.025em; text-wrap: balance; }
+.sec-top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: .5rem 2rem; margin-bottom: clamp(1.25rem, 2.5vw, 2rem); }
+.sec-top > p { color: var(--mut); max-width: 26em; }
+
+/* Painted stage and window, as in the "Vad jag gör" cards */
+.scene { position: relative; overflow: hidden; border-radius: var(--r-s); background: linear-gradient(#c9cfd8, #e6d8c4 48%, #8d9477 49%, #b89f6a); }
+.paint { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(var(--paint-dim)) saturate(.92); }
+.win { position: relative; background: var(--win); border: 1px solid var(--line-2); border-radius: var(--r-m); box-shadow: var(--shadow); overflow: hidden; }
+.bar { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: .75rem; height: 1.7rem; padding-inline: .6rem; background: var(--win-2); border-bottom: 1px solid var(--line); font-size: .68rem; color: var(--mut); }
+.bar .lights { display: flex; gap: .4rem; }
+.bar .lights i { width: .45rem; height: .45rem; border-radius: 50%; background: var(--card-2); border: 1px solid var(--line); }
+.bar .ttl { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* The featured project: one large card. On narrow screens the picture leads and the text follows. */
+.feat { background: var(--card); border-radius: var(--r-m); padding: clamp(.6rem, 1vw, .8rem); display: grid; gap: .5rem; }
+.feat .scene { order: -1; aspect-ratio: 16 / 11; min-width: 0; }
+.mini { position: absolute; left: 7%; top: 50%; width: 86%; transform: translateY(-50%); }
+.mini img { width: 100%; aspect-ratio: 2 / 1; object-fit: cover; background: var(--win-2); }
+.feat-t { padding: .75rem .6rem .6rem; display: flex; flex-direction: column; gap: .75rem; min-width: 0; }
+.lab { display: flex; align-items: center; gap: .45rem; color: var(--ink); }
+.pin { flex: none; width: .8rem; height: .8rem; fill: var(--accent); }
+.feat h3 { font-size: clamp(1.75rem, 3.2vw, 2.5rem); font-weight: 450; line-height: 1.08; letter-spacing: -.028em; text-wrap: balance; }
+.lead { font-size: 1.1rem; line-height: 1.4; max-width: 30em; text-wrap: pretty; }
+.desc { font-size: .95rem; color: var(--mut); max-width: 60ch; }
+.facts { display: grid; gap: .55rem; padding-top: .85rem; border-top: 1px solid var(--line); }
+.facts div { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); align-items: baseline; }
+.facts dt { font: .68rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--mut); }
+.facts dd { margin: 0; font-size: .875rem; line-height: 1.35; }
+.cta { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .25rem; }
+.cta .pill { flex: 1 1 auto; }
+@media (min-width: 520px) { .cta .pill { flex: none; } }
+@media (min-width: 860px) {
+  .feat { grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: 1.25rem; }
+  .feat .scene { order: 0; aspect-ratio: auto; min-height: min(36vw, 30rem); }
+  .feat-t { padding: 1rem 1rem 1.1rem; }
+  .lab { margin-bottom: auto; padding-bottom: 2rem; }
+}
+
+/* The index: one group per year, one row per project */
+.idx { margin-top: clamp(2.5rem, 5vw, 4rem); overflow-anchor: none; }
+.cnt { margin-bottom: 1rem; }
+.grp { border-top: 1px solid var(--line-2); padding-block: .5rem 1.25rem; }
+.yr { display: flex; align-items: baseline; gap: .75rem; padding-block: .5rem; font-size: 1.3125rem; font-weight: 450; line-height: 1.3; letter-spacing: -.015em; font-variant-numeric: tabular-nums; }
+.row { position: relative; margin-inline: -.5rem; border-radius: var(--r-m); transition: background-color .2s; }
+.row::before { content: ""; position: absolute; inset: 0 .5rem auto; height: 1px; background: var(--line); transition: opacity .2s; }
+.row.open { background: var(--card); }
+.row.open::before, .row.open + .row::before { opacity: 0; }
+@media (hover: hover) {
+  .row:hover { background: var(--card); }
+  .row:hover::before, .row:hover + .row::before { opacity: 0; }
+  .row:hover .chev { color: var(--ink); }
+}
+/* Phone: two lines, the name with the chevron and then the tagline. */
+.rb { display: grid; grid-template-columns: minmax(0, 1fr) 1rem; gap: .1rem 1rem; align-items: center; width: 100%; min-height: 2.75rem; padding: .85rem .5rem; text-align: left; border-radius: var(--r-m); }
+.rb:focus-visible { outline-offset: -2px; border-radius: var(--r-m); }
+.r-n { font-size: 1.25rem; font-weight: 450; line-height: 1.3; letter-spacing: -.015em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.r-t { grid-area: 2 / 1; display: grid; grid-template-rows: 1fr; min-width: 0; font-size: .9rem; color: var(--mut); transition: grid-template-rows .3s ease, opacity .2s; }
+.r-t span { min-height: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.open .r-t { grid-template-rows: 0fr; opacity: 0; }
+.r-g { display: none; font: .72rem/1.3 var(--mono); color: var(--mut); white-space: nowrap; }
+.chev { grid-area: 1 / 2; width: 1rem; height: 1rem; color: var(--mut); transition: transform .25s, color .2s; }
+.open .chev { transform: rotate(180deg); color: var(--ink); }
+
+/* The panel under a row. The height animates from 0fr to 1fr; closed panels are out of the tab order. */
+.pan { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .3s ease; }
+.pan-c { min-height: 0; overflow: hidden; visibility: hidden; transition: visibility 0s .3s; }
+.open .pan { grid-template-rows: 1fr; }
+.open .pan-c { visibility: visible; transition-delay: 0s; }
+.pan-in { display: grid; gap: 1rem; padding: .25rem .5rem 1rem; opacity: 0; transform: translateY(-6px); transition: opacity .25s, transform .3s; }
+.open .pan-in { opacity: 1; transform: none; }
+.p-img { width: 100%; aspect-ratio: 2 / 1; object-fit: cover; border-radius: var(--r-s); border: 1px solid var(--line); background: var(--card-2); }
+.p-tx { display: grid; gap: .75rem; align-content: start; min-width: 0; }
+.p-g { font: .72rem/1.4 var(--mono); color: var(--mut); }
+.chips { display: flex; flex-wrap: wrap; gap: .35rem; }
+.chip { font: .72rem/1 var(--mono); padding: .4rem .55rem; border-radius: 4px; background: var(--bg); color: var(--mut); }
+.p-ln { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem 1.25rem; }
+
+@media (min-width: 760px) {
+  .row { margin-inline: -.9rem; }
+  .row::before { inset-inline: .9rem; }
+  .rb { grid-template-columns: 14rem minmax(0, 1fr) 1rem; gap: 1.5rem; align-items: baseline; padding: 1.05rem .9rem; }
+  .r-n { font-size: 1.3125rem; }
+  .r-t { grid-area: auto; font-size: .95rem; }
+  .open .r-t { grid-template-rows: 1fr; }
+  .chev { grid-area: auto; align-self: center; }
+  .pan-in { grid-template-columns: minmax(0, min(34rem, 50%)) minmax(0, 1fr); gap: 2rem; padding: .25rem .9rem 1.5rem; }
+}
+/* Wide: the year sits in its own column and stays put while its group scrolls past. */
+@media (min-width: 860px) {
+  .grp { display: grid; grid-template-columns: 5rem minmax(0, 1fr); gap: 0 2.5rem; padding-block: .5rem 2rem; }
+  .yr { position: sticky; top: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + .5rem); align-self: start; display: grid; gap: .6rem; padding-block: 1.05rem .5rem; }
+}
+@media (min-width: 1024px) {
+  .rb { grid-template-columns: 15rem minmax(0, 1fr) auto 1rem; }
+  .r-g { display: block; }
+  .p-g { display: none; }
+}
+
+/* The floating preview: decoration for mouse users on wide screens. */
+.peek { position: fixed; left: 0; top: 0; z-index: 15; width: 280px; pointer-events: none; opacity: 0; transition: opacity .18s; border: 1px solid var(--line-2); border-radius: var(--r-m); overflow: hidden; background: var(--win); box-shadow: var(--shadow); }
+.peek.on { opacity: 1; }
+.peek img { width: 100%; aspect-ratio: 2 / 1; object-fit: cover; }
+
+/* Without JavaScript: a plain list of every project. */
+.plain { margin-top: 2.5rem; border-top: 1px solid var(--line-2); padding-top: 1rem; }
+.plain ul { margin-top: .5rem; columns: 16rem 3; column-gap: 2.5rem; }
+.plain a { display: inline-flex; align-items: center; min-height: 2.75rem; font-size: 1.1rem; }
+.plain a:hover { color: var(--accent); }
+
+.foot { margin-top: clamp(3.5rem, 8vw, 6rem); background: var(--card); }
+.foot-in { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 1.5rem; padding-block: .75rem; font-size: .82rem; color: var(--mut); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Hoppa till innehållet</a>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top" aria-label="Marcel Deluca, till toppen">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2" y="9" width="6" height="2.6" rx="1.3" fill="#e2401a" transform="rotate(-62 5 10.3)"/><rect x="7" y="3.4" width="6" height="2.6" rx="1.3" fill="#8a4fe0" transform="rotate(-8 10 4.7)"/><rect x="12" y="9" width="6" height="2.6" rx="1.3" fill="#2f6bf6" transform="rotate(62 15 10.3)"/></svg>
+      Marcel Deluca
+    </a>
+    <p class="tag"><span>Projektvisning · </span>Index</p>
+    <div class="themes" role="group" aria-label="Tema">
+      <button type="button" data-theme-set="system" aria-pressed="true" aria-label="Följ systemet"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="2" y="3" width="12" height="8" rx="1.5"/><path d="M6 13.5h4"/></svg></button>
+      <button type="button" data-theme-set="light" aria-pressed="false" aria-label="Ljust"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="8" cy="8" r="2.8"/><path d="M8 1.5v1.6M8 12.9v1.6M1.5 8h1.6M12.9 8h1.6M3.4 3.4l1.1 1.1M11.5 11.5l1.1 1.1M3.4 12.6l1.1-1.1M11.5 4.5l1.1-1.1"/></svg></button>
+      <button type="button" data-theme-set="dark" aria-pressed="false" aria-label="Mörkt"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M13 9.6A5.5 5.5 0 0 1 6.4 3 5.5 5.5 0 1 0 13 9.6Z"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="wrap sec" id="top" aria-labelledby="projekt-h">
+    <div class="sec-top">
+      <div>
+        <p class="eye">Projekt</p>
+        <h2 class="sec-h" id="projekt-h">Det jag har byggt</h2>
+      </div>
+      <p>Hemsidor åt kunder, egna produkter och en app. Öppna en rad för att se mer.</p>
+    </div>
+
+    <article class="feat" aria-labelledby="f-name">
+      <div class="feat-t">
+        <p class="lab"><svg class="pin" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5a3.5 3.5 0 0 1 .75 6.92V14L8 15.2 7.25 14V8.42A3.5 3.5 0 0 1 8 1.5z"/></svg>Utvalt</p>
+        <h3 id="f-name">The Andalus Calendar</h3>
+        <p class="lead" id="f-lead">En kalender där bönetiden redan sitter i vyn, så du inte bokar över salah.</p>
+        <p class="desc" id="f-desc">Personlig kalenderapp med gregoriansk och hijri-kalender, bönetider i UI:t och uppgifter i samma vy. Live beta.</p>
+        <dl class="facts"><div><dt>År</dt><dd id="f-yr">2026</dd></div><div><dt>Typ</dt><dd id="f-typ">React · Firebase · Kalender</dd></div><div><dt>Byggt med</dt><dd id="f-st">React · Firebase · Hostinger</dd></div></dl>
+        <p class="cta"><a class="pill pill-ink" id="f-case" href="https://marceldeluca.se/projects/andalus-calendar/" target="_blank" rel="noopener">Läs caset <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a><a class="pill pill-soft" id="f-site" href="https://andaluscalendar.com/" target="_blank" rel="noopener">Besök sidan <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a><a class="pill pill-line" id="f-git" href="https://github.com/DelucaGit" target="_blank" rel="noopener" hidden>GitHub <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a></p>
+      </div>
+      <div class="scene">
+        <canvas class="paint" data-paint="morgon" aria-hidden="true"></canvas>
+        <div class="win mini">
+          <div class="bar" aria-hidden="true"><span class="lights"><i></i><i></i><i></i></span><span class="ttl" id="f-ttl">andaluscalendar.com</span><span></span></div>
+          <img id="f-img" src="assets/andalus-calendar.webp" srcset="assets/andalus-calendar-sm.webp 640w, assets/andalus-calendar.webp 1280w" sizes="(min-width: 860px) 50vw, 85vw" width="1280" height="640" alt="Skärmbild av The Andalus Calendar" loading="lazy" decoding="async">
+        </div>
+      </div>
+    </article>
+
+    <div class="idx" id="idx" hidden>
+      <h3 class="cnt" id="cnt">Fler projekt</h3>
+    </div>
+
+    <noscript>
+      <div class="plain">
+        <h3 class="cnt">Alla 17 projekt</h3>
+        <ul>
+          <li><a href="https://marceldeluca.se/projects/uniclean-partners/">UniClean Partners</a></li>
+          <li><a href="https://marceldeluca.se/projects/sabaah-al-wuruud/">Sabaah Al-Wuruud</a></li>
+          <li><a href="https://marceldeluca.se/projects/zenith-kampsport/">Zenith Kampsport</a></li>
+          <li><a href="https://marceldeluca.se/projects/fcvaxjo-reborn/">FC Växjö Reborn</a></li>
+          <li><a href="https://marceldeluca.se/projects/andalus-calendar/">The Andalus Calendar</a></li>
+          <li><a href="https://marceldeluca.se/projects/premium-honey-blends/">Premium Honey Blends</a></li>
+          <li><a href="https://marceldeluca.se/projects/alkama/">ALKAMA</a></li>
+          <li><a href="https://marceldeluca.se/projects/uniclean/">UniClean</a></li>
+          <li><a href="https://marceldeluca.se/projects/takkoll/">TakKoll</a></li>
+          <li><a href="https://marceldeluca.se/projects/bilservicekoll/">BilserviceKoll</a></li>
+          <li><a href="https://marceldeluca.se/projects/stadkoll/">Städkoll</a></li>
+          <li><a href="https://marceldeluca.se/projects/brandsakerhetskoll/">Brand &amp; Säkerhetskoll</a></li>
+          <li><a href="https://marceldeluca.se/projects/scooterkoll/">Scooterkoll</a></li>
+          <li><a href="https://marceldeluca.se/projects/halimapearl/">HalimaPearl</a></li>
+          <li><a href="https://marceldeluca.se/projects/ventilationskoll/">Ventilationskoll</a></li>
+          <li><a href="https://marceldeluca.se/projects/shanasheel/">Shanasheel</a></li>
+          <li><a href="https://marceldeluca.se/projects/fcvaxjo/">FC Växjö</a></li>
+        </ul>
+      </div>
+    </noscript>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <span>© 2026 Marcel Deluca · Växjö, Sverige</span>
+    <a class="go" href="https://marceldeluca.se/projects/" target="_blank" rel="noopener">Alla case <span aria-hidden="true">↗</span></a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var doc = document, root = doc.documentElement;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function $(id) { return doc.getElementById(id); }
+  function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+
+  /* 1. Theme: system, light or dark. The choice is remembered on this device. */
+  (function () {
+    var KEY = 'tyngdlos-tema', btns = doc.querySelectorAll('[data-theme-set]');
+    function set(v, save) {
+      if (v === 'system') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', v);
+      for (var i = 0; i < btns.length; i++) btns[i].setAttribute('aria-pressed', String(btns[i].getAttribute('data-theme-set') === v));
+      if (save) { try { localStorage.setItem(KEY, v); } catch (e) {} }
+    }
+    var saved = null;
+    try { saved = localStorage.getItem(KEY); } catch (e) {}
+    set(saved === 'light' || saved === 'dark' ? saved : (root.getAttribute('data-theme') || 'system'), false);
+    for (var i = 0; i < btns.length; i++) btns[i].addEventListener('click', function () { set(this.getAttribute('data-theme-set'), true); });
+  })();
+
+  /* 2. The paintings: each landscape is a few thousand short brush strokes, drawn once from a seed. */
+  var PAL = {
+    morgon: { seed: 11, sky0: [216, 26, 74], sky1: [34, 46, 86], far: [224, 17, 62], near: [96, 17, 43], field: [44, 40, 58] },
+    hav:    { seed: 5,  sky0: [204, 30, 78], sky1: [188, 26, 88], far: [208, 28, 58], near: [172, 22, 40], field: [50, 32, 64] },
+    kvall:  { seed: 23, sky0: [252, 22, 66], sky1: [22, 62, 80], far: [266, 16, 48], near: [206, 20, 34], field: [28, 46, 50] },
+    skog:   { seed: 41, sky0: [190, 18, 80], sky1: [60, 30, 86], far: [150, 16, 52], near: [128, 22, 32], field: [78, 30, 46] }
+  };
+  function paint(cv) {
+    var P = PAL[cv.getAttribute('data-paint')], c = cv.getContext && cv.getContext('2d');
+    if (!P || !c) return;
+    var W = cv.width = 760, H = cv.height = 500, s = P.seed * 9301 + 49297;
+    function rnd() { s |= 0; s = s + 0x6D2B79F5 | 0; var t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }
+    var a = rnd() * 6, b = rnd() * 6, d = rnd() * 6;
+    function r1(x) { return H * (0.5 + 0.05 * Math.sin(x * 0.007 + a) + 0.025 * Math.sin(x * 0.019 + b)); }
+    function r2(x) { return H * (0.66 + 0.07 * Math.sin(x * 0.005 + d) + 0.02 * Math.sin(x * 0.023 + a)); }
+    function r3(x) { return H * (0.85 + 0.035 * Math.sin(x * 0.009 + b)); }
+    function mix(p, q, k) { var dh = ((q[0] - p[0] + 540) % 360) - 180; return [(p[0] + dh * k + 360) % 360, p[1] + (q[1] - p[1]) * k, p[2] + (q[2] - p[2]) * k]; }
+    function hsl(v) { return 'hsl(' + v[0].toFixed(0) + ' ' + v[1].toFixed(0) + '% ' + v[2].toFixed(0) + '%)'; }
+    var g = c.createLinearGradient(0, 0, 0, H * 0.6), n;
+    for (n = 0; n <= 6; n++) g.addColorStop(n / 6, hsl(mix(P.sky0, P.sky1, n / 6 * n / 6)));
+    c.fillStyle = g; c.fillRect(0, 0, W, H);
+    [[r1, P.far], [r2, P.near], [r3, P.field]].forEach(function (L) {
+      c.fillStyle = hsl(L[1]); c.beginPath(); c.moveTo(0, H);
+      for (n = 0; n <= W; n += 8) c.lineTo(n, L[0](n));
+      c.lineTo(W, H); c.fill();
+    });
+    function dab(x, y, len, wid, ang, col, al) {
+      c.save(); c.translate(x, y); c.rotate(ang); c.globalAlpha = al;
+      c.fillStyle = hsl([col[0] + (rnd() - 0.5) * 10, col[1] + (rnd() - 0.5) * 8, col[2] + (rnd() - 0.5) * 9]);
+      c.beginPath();
+      if (c.roundRect) c.roundRect(-len / 2, -wid / 2, len, wid, wid / 2); else c.rect(-len / 2, -wid / 2, len, wid);
+      c.fill(); c.restore();
+    }
+    var i, x, y, k, t, top, bot, col;
+    /* Back to front: sky, far hills, near hills, meadow. Each layer overlaps the one behind it. */
+    for (i = 0; i < 1700; i++) {
+      x = rnd() * W; y = rnd() * H * 0.62; k = clamp(y / (H * 0.52), 0, 1);
+      col = mix(P.sky0, P.sky1, k * k);
+      t = Math.sin(x * 0.009 + a + y * 0.03) * Math.sin(y * 0.035 + b) + 0.5 * Math.sin(x * 0.004 + d);
+      if (t > 0.5) col = [col[0], col[1] * 0.55, Math.min(96, col[2] + 6 + t * 5)];
+      dab(x, y, 30 + rnd() * 50, 4 + rnd() * 6, (rnd() - 0.5) * 0.22, col, 0.55);
+    }
+    for (i = 0; i < 1300; i++) {
+      x = rnd() * W; top = r1(x); bot = r2(x) + 12; t = Math.pow(rnd(), 1.25); y = top + t * (bot - top);
+      col = mix(mix(P.far, P.sky1, 0.3 * (1 - t)), P.near, t * 0.3);
+      dab(x, y, 16 + rnd() * 26, 3 + rnd() * 4, Math.atan((r1(x + 8) - top) / 8) + (rnd() - 0.5) * 0.35, col, 0.8);
+    }
+    for (i = 0; i < 1500; i++) {
+      x = rnd() * W; top = r2(x); bot = r3(x) + 12; t = Math.pow(rnd(), 1.2); y = top + t * (bot - top);
+      k = 0.5 + 0.5 * Math.sin(x * 0.013 + b + y * 0.02);
+      col = mix(P.near, P.field, t * 0.3 + k * 0.25); col = [col[0], col[1], col[2] + (k - 0.5) * 10];
+      dab(x, y, 12 + rnd() * 22, 3 + rnd() * 4, Math.atan((r2(x + 8) - top) / 8) + (rnd() - 0.5) * 0.5, col, 0.85);
+    }
+    for (i = 0; i < 1900; i++) {
+      x = rnd() * W; top = r3(x); t = Math.pow(rnd(), 0.9); y = top + t * (H - top);
+      k = 0.5 + 0.5 * Math.sin(x * 0.01 + d - y * 0.03);
+      col = mix(P.field, P.near, k * 0.3); col = [col[0], col[1], col[2] + (k - 0.5) * 12 - t * 6];
+      if (rnd() < 0.05) col = [P.sky1[0], 60, 84];
+      dab(x, y, 9 + rnd() * 16 + t * 8, 2.5 + rnd() * 3, -1.15 + (rnd() - 0.5) * 0.7, col, 0.85);
+    }
+  }
+  (function () {
+    var all = doc.querySelectorAll('.paint'), i;
+    if (!('IntersectionObserver' in window)) { for (i = 0; i < all.length; i++) paint(all[i]); return; }
+    var io = new IntersectionObserver(function (en) {
+      en.forEach(function (e) { if (e.isIntersecting) { io.unobserve(e.target); paint(e.target); } });
+    }, { rootMargin: '600px' });
+    for (i = 0; i < all.length; i++) io.observe(all[i]);
+  })();
+
+  /* 3. The projects. FEATURED stands in for `featuredProject` in src/data/site.ts: that project gets the
+        card on top and is left out of the list. An unknown slug falls back to the first project. */
+  (function () {
+    var FEATURED = 'andalus-calendar';
+    var P = [
+      ['uniclean-partners', 'UniClean Partners', 2026, 'Ny hemsida för UniClean som vägleder kunder och städare till den nya appen.', 'UniClean har fått en app som fungerar som Uber fast för städning. Jag byggde den nya hemsidan i Next.js som vägleder kunder och städare dit.', 'Next.js · Tailwind · Lokalt', ['Next.js', 'TypeScript', 'Tailwind CSS', 'Hostinger'], 'https://uniclean.nu', 'https://github.com/DelucaGit/UniClean-Website'],
+      ['sabaah-al-wuruud', 'Sabaah Al-Wuruud', 2026, 'En minimalistisk adhkar-app för Android som jag byggde till min fru. Utan reklam, utan konto och helt offline.', 'Min frus favoritapp för adhkar hade fyllts med reklam. Jag byggde en egen till henne i hennes favoritfärger, med bara det hon använder, och levererade den som en signerad APK.', 'Android · Capacitor · Personligt projekt', ['JavaScript', 'Vite', 'Capacitor', 'Android Studio', 'Vitest', 'Claude Code'], '', 'https://github.com/DelucaGit/sabaah-al-wuruud'],
+      ['zenith-kampsport', 'Zenith Kampsport', 2026, 'Underhåll och förbättring av en Next.js-klubbhemsida. Schema och layout för mindre laptopskärmar.', 'Jag tog över Zenith Kampsports hemsida när den tidigare utvecklaren inte kunde fortsätta. Jobbar med schema, layout och publicering via GitHub och Vercel.', 'Next.js · Underhåll · Förening', ['Next.js', 'TypeScript', 'Tailwind', 'Vercel'], 'https://www.zenithkampsport.se', 'https://github.com/esam95/usc-nextjs'],
+      ['fcvaxjo-reborn', 'FC Växjö Reborn', 2026, 'Ny klubbhemsida i Next.js. Byggd för träningstider, nyheter och en kommande app.', 'Ombyggd hemsida för FC Växjö med Next.js, GitHub och Hostinger CI. Förberedd för schemauppdateringar från mobil.', 'Next.js · Förening · CI/CD', ['Next.js', 'GitHub', 'Hostinger'], 'https://fcvaxjo.se', 'https://github.com/DelucaGit/FC-Vaxjo-Website'],
+      ['andalus-calendar', 'The Andalus Calendar', 2026, 'En kalender där bönetiden redan sitter i vyn, så du inte bokar över salah.', 'Personlig kalenderapp med gregoriansk och hijri-kalender, bönetider i UI:t och uppgifter i samma vy. Live beta.', 'React · Firebase · Kalender', ['React', 'Firebase', 'Hostinger'], 'https://andaluscalendar.com/', ''],
+      ['premium-honey-blends', 'Premium Honey Blends', 2026, 'Från meddelanden och kontakter till en butik som aldrig sover.', 'Shopify-butik för Premium Honey Blends: live lagerstatus och beställningar dygnet runt, utan att något försvinner i chatten.', 'Shopify · E-handel · Varumärke', ['Shopify'], 'https://premiumhoneyblends.com', ''],
+      ['alkama', 'ALKAMA', 2026, 'WooCommerce-butik på svenska, finska och norska, utan att tappa 20 års förtroende.', 'Flerspråkig WooCommerce-butik för Alkama Industry: fakturabetalning, självbetjäning och lokal SEO i Norden.', 'WooCommerce · Polylang · B2B', ['WooCommerce', 'Polylang', 'PHP'], '', ''],
+      ['uniclean', 'UniClean', 2026, 'Från samma frågor om och om igen, till en hemsida som onboardingar själv.', 'WordPress-hemsida för UniClean: tjänster, ungefärliga priser och förväntningar synliga från start, så teamet kan fokusera på jobbet.', 'WordPress · Elementor · Lokalt', ['WordPress', 'Elementor'], '', ''],
+      ['takkoll', 'TakKoll', 2025, 'Skyddar svenska hem – ett tak i taget.', 'Hemsida för TakKoll: takmålning, omläggning, tvätt, isolering och service, med bokning och ROT synligt från start.', 'WordPress · Lokalt · Leadgen', ['WordPress', 'Elementor'], 'https://takkoll.se', ''],
+      ['bilservicekoll', 'BilserviceKoll', 2025, 'Bilverkstaden i Gävle som gör det enkelt att serva bilen.', 'Hemsida för BilserviceKoll: service, oljebyten, däck och besiktningskontroll, med onlinebokning och bilupphämtning.', 'WordPress · Lokalt · Leadgen', ['WordPress', 'Elementor'], 'https://bilservicekoll.se', ''],
+      ['stadkoll', 'Städkoll', 2025, 'Flyttstädning utan stress – till fast pris.', 'Hemsida för Städkoll: professionell flyttstädning till fast pris, med 14 dagars garanti och RUT-avdrag.', 'Frontend · UX/UI · Leadgen', ['Frontend', 'UX & UI-design'], 'https://stadkoll.se', ''],
+      ['brandsakerhetskoll', 'Brand & Säkerhetskoll', 2025, 'Din lokala expert på brandskydd i Gävle.', 'Hemsida för Brand & Säkerhetskoll: brandsläckare, brandvarnare och brandfiltar, med tydliga produkter och offert direkt på sidan.', 'Frontend · UX/UI · Leadgen', ['Frontend', 'UX & UI-design'], 'https://brandsakerhetskoll.se', ''],
+      ['scooterkoll', 'Scooterkoll', 2025, 'Elscootrar är smidiga. Tills de går sönder.', 'Hemsida för Scooterkoll i Gävle: reparation av alla märken, med tydlig bokning, FAQ och offert nära till hands.', 'Frontend · UX/UI · SEO', ['SEO', 'Frontend', 'UX & UI-design'], 'https://scooterkoll.se', ''],
+      ['halimapearl', 'HalimaPearl', 2025, 'Från lokalt rykte till en växande varumärkesresa.', 'GoHighLevel-hemsida för HalimaPearl: en plattform som visar kollektionerna, stärker varumärket och öppnar nya marknader.', 'GoHighLevel · UX/UI · Varumärke', ['GoHighLevel', 'UX & UI-design'], 'https://halimapearl.com', ''],
+      ['ventilationskoll', 'Ventilationskoll', 2025, 'En hemsida som gör jobbet.', 'Hemsida för Ventilationskoll: tydlig prisinformation och smidig onlinebokning, byggd för att dra in kunder.', 'Frontend · UX/UI · SEO', ['SEO', 'Frontend', 'UX & UI-design'], 'https://ventilationskoll.se', ''],
+      ['shanasheel', 'Shanasheel', 2025, 'Från första skissen till en tvåspråkig hemsida som berättar om Akkad, och om framtiden i Irak.', 'Hemsida för Shanasheel Al-Asima: fastighet, hållbarhet och investeringar, byggd i WordPress med Elementor.', 'WordPress · Elementor · Fastighet', ['WordPress', 'Elementor', 'TranslatePress'], 'https://shanasheel.se', ''],
+      ['fcvaxjo', 'FC Växjö', 2023, 'En digital hemmaplan för föreningen sedan 1989.', 'Hemsida för FC Växjö: nyheter, träningstider, galleri och kontakt, med klubbens svart-guld-identitet i centrum.', 'Webbdesign · UX/UI · Förening', ['One.com', 'UX & UI-design'], 'https://fcvaxjo.se', '']
+    ];
+    var F = 0, CASE = 'https://marceldeluca.se/projects/';
+    var ARROW = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg>';
+    P.forEach(function (p, i) { if (p[0] === FEATURED) F = i; });
+    function el(tag, cls, text) { var e = doc.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+    function set(id, text) { $(id).textContent = text; }
+    function cover(img, p) {
+      img.srcset = 'assets/' + p[0] + '-sm.webp 640w, assets/' + p[0] + '.webp 1280w'; img.src = 'assets/' + p[0] + '.webp'; img.alt = 'Skärmbild av ' + p[1];
+    }
+    function ext(a, href) { a.href = href; a.target = '_blank'; a.rel = 'noopener'; return a; }
+
+    /* The card on top. */
+    (function (p) {
+      var site = $('f-site'), git = $('f-git');
+      set('f-name', p[1]); set('f-lead', p[3]); set('f-desc', p[4]); set('f-yr', p[2]); set('f-typ', p[5]); set('f-st', p[6].join(' · '));
+      set('f-ttl', p[7] ? p[7].replace(/^https?:\/\/(www\.)?/, '').replace(/\/.*$/, '') : p[1]);
+      $('f-case').href = CASE + p[0] + '/';
+      site.hidden = !p[7]; if (p[7]) site.href = p[7];
+      git.hidden = !p[8]; if (p[8]) git.href = p[8];
+      if (F) cover($('f-img'), p);
+    })(P[F]);
+
+    /* The list: every other project, grouped by year in the order of the data. */
+    var idx = $('idx'), nav = doc.querySelector('.nav'), btns = [], open = null, run = 0, year = 0, ul, head;
+    P.forEach(function (p, i) {
+      if (i === F) return;
+      if (p[2] !== year) {
+        var g = el('section', 'grp');
+        year = p[2]; head = el('h4', 'yr', String(year)); head.id = 'y' + year; head.n = 0;
+        head.appendChild(el('small')); g.setAttribute('aria-labelledby', head.id);
+        ul = el('ul'); g.appendChild(head); g.appendChild(ul); idx.appendChild(g);
+      }
+      head.lastChild.textContent = ++head.n + ' projekt';
+      var row = el('li', 'row'), b = el('button', 'rb'), tag = el('span', 'r-t'), pan = el('div', 'pan');
+      b.type = 'button'; b.id = 'r-' + p[0]; b.setAttribute('aria-expanded', 'false'); b.setAttribute('aria-controls', 'p-' + p[0]);
+      tag.appendChild(el('span', '', p[3]));
+      b.appendChild(el('span', 'r-n', p[1])); b.appendChild(tag); b.appendChild(el('span', 'r-g', p[5]));
+      b.insertAdjacentHTML('beforeend', '<svg class="chev" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg>');
+      pan.id = 'p-' + p[0]; pan.setAttribute('role', 'region'); pan.setAttribute('aria-labelledby', b.id);
+      pan.appendChild(el('div', 'pan-c'));
+      row.appendChild(b); row.appendChild(pan); ul.appendChild(row);
+      row.p = p; row.btn = b; row.pan = pan; btns.push(b);
+    });
+    set('cnt', btns.length + ' projekt till');
+    idx.hidden = false;
+
+    /* A panel is built the first time its row opens, so its picture is not fetched before that. */
+    function fill(row) {
+      if (row.done) return;
+      row.done = true;
+      var p = row.p, box = el('div', 'pan-in'), img = el('img', 'p-img'), tx = el('div', 'p-tx'), chips = el('ul', 'chips'), ln = el('p', 'p-ln'), a;
+      img.width = 1280; img.height = 640; img.loading = 'lazy'; img.decoding = 'async';
+      img.sizes = '(min-width: 760px) min(544px, 46vw), 92vw'; cover(img, p);
+      tx.appendChild(el('p', 'lead', p[3])); tx.appendChild(el('p', 'desc', p[4])); tx.appendChild(el('p', 'p-g', p[5]));
+      chips.setAttribute('aria-label', 'Byggt med');
+      p[6].forEach(function (t) { chips.appendChild(el('li', 'chip', t)); });
+      a = ext(el('a', 'pill pill-ink', 'Läs caset '), CASE + p[0] + '/'); a.insertAdjacentHTML('beforeend', ARROW); ln.appendChild(a);
+      [[p[7], 'Besök sidan'], [p[8], 'GitHub']].forEach(function (l) {
+        if (!l[0]) return;
+        a = ext(el('a', 'go', l[1] + ' '), l[0]); a.insertAdjacentHTML('beforeend', '<span aria-hidden="true">↗</span>'); ln.appendChild(a);
+      });
+      tx.appendChild(chips); tx.appendChild(ln); box.appendChild(img); box.appendChild(tx); row.pan.firstChild.appendChild(box);
+    }
+    function state(row, on) { row.classList.toggle('open', on); row.btn.setAttribute('aria-expanded', String(on)); }
+    /* After opening: scroll only if the row is cut off, and never push its top under the bar. */
+    function inView(row) {
+      var r = row.getBoundingClientRect(), top = nav.getBoundingClientRect().bottom + 12, d = 0;
+      if (r.bottom > window.innerHeight - 16) d = Math.min(r.bottom - window.innerHeight + 16, r.top - top);
+      else if (r.top < top) d = r.top - top;
+      if (Math.abs(d) > 1) window.scrollBy({ top: d, behavior: reduce.matches ? 'instant' : 'smooth' });
+    }
+    /* One row open at a time. When the row that closes sits above the one that opens, the page is scrolled
+       by the same amount as it shrinks, so the row that was clicked stays under the pointer. */
+    function toggle(row) {
+      var prev = open, same = prev === row, id = ++run, t0 = performance.now();
+      var above = prev && !same && (prev.compareDocumentPosition(row) & 4) ? prev : null, last = above ? above.offsetHeight : 0;
+      hide();
+      if (!same) { fill(row); void row.pan.offsetHeight; }
+      if (prev) state(prev, false);
+      open = same ? null : row;
+      if (open) state(row, true);
+      function pin() {
+        var h = above.offsetHeight;
+        if (h !== last) { window.scrollBy({ top: h - last, behavior: 'instant' }); last = h; }
+      }
+      if (reduce.matches) { if (above) pin(); if (open) inView(row); return; }
+      (function tick(now) {
+        if (id !== run) return;
+        if (above) pin();
+        if (now - t0 < 340) requestAnimationFrame(tick); else if (!same) inView(row);
+      })(t0);
+    }
+    idx.addEventListener('click', function (e) {
+      var b = e.target.closest('.rb');
+      if (b) toggle(b.parentNode);
+    });
+    /* Enter and Space come with the button. Arrows, Home and End move between rows, Escape closes. */
+    idx.addEventListener('keydown', function (e) {
+      var k = e.key, i = btns.indexOf(e.target), n, row = open;
+      if (k === 'Escape' && row) { toggle(row); row.btn.focus(); return; }
+      if (i < 0) return;
+      n = k === 'ArrowDown' ? i + 1 : k === 'ArrowUp' ? i - 1 : k === 'Home' ? 0 : k === 'End' ? btns.length - 1 : -2;
+      if (n === -2) return;
+      e.preventDefault(); hide(); btns[clamp(n, 0, btns.length - 1)].focus();
+    });
+
+    /* The floating preview. Mouse only, wide screens only, never while a row is open. It sits just above
+       the row under the pointer (below it when there is no room), so it never covers that row's text.
+       It follows the pointer sideways with a soft lag. */
+    var fine = window.matchMedia('(hover: hover) and (pointer: fine) and (min-width: 1024px)');
+    var peek = el('div', 'peek'), pim = el('img'), at = null, x = 0, y = 0, tx = 0, raf = 0;
+    peek.setAttribute('aria-hidden', 'true'); pim.alt = ''; pim.width = 640; pim.height = 320; pim.decoding = 'async';
+    peek.appendChild(pim); doc.body.appendChild(peek);
+    pim.addEventListener('load', function () { if (at) peek.classList.add('on'); });
+    function hide() { at = null; peek.classList.remove('on'); }
+    function place() { peek.style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + Math.round(y) + 'px,0) rotate(-2deg)'; }
+    function step() {
+      raf = 0; x += (tx - x) * 0.16; place();
+      if (at && Math.abs(tx - x) > 0.4) raf = requestAnimationFrame(step);
+    }
+    idx.addEventListener('pointermove', function (e) {
+      var b = e.pointerType === 'mouse' && !open && !reduce.matches && fine.matches && e.target.closest('.rb');
+      if (!b) { if (at) hide(); return; }
+      var r = b.getBoundingClientRect(), h = peek.offsetHeight, fresh = !at;
+      tx = clamp(e.clientX + 20, 8, root.clientWidth - peek.offsetWidth - 8);
+      y = r.top - h - 14 < nav.getBoundingClientRect().bottom + 6 ? r.bottom + 14 : r.top - h - 14;
+      if (fresh) x = tx;
+      if (at !== b) {
+        at = b; peek.classList.remove('on');
+        pim.src = 'assets/' + b.parentNode.p[0] + '-sm.webp';
+        if (pim.complete && pim.naturalWidth) peek.classList.add('on');
+        place();
+      }
+      if (!raf) raf = requestAnimationFrame(step);
+    });
+    idx.addEventListener('pointerleave', hide);
+    window.addEventListener('scroll', function () { if (at) hide(); }, { passive: true });
+  })();
+})();
+</script>
+</body>
+</html>
