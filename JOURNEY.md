@@ -2,6 +2,25 @@
 
 A running log of what we built, what we chose, and why. Written so a later article can tell the story without reconstructing it from git.
 
+## 26 Nov 2026 — Tyngdlös: walkthrough on top, split view below (#51)
+
+**Goal:** Of the five variants in #50, Marcel liked Genomgång and Delad vy. He asked for the featured project on top with the walkthrough video, the split view below for more projects, about ten projects on the home page with the rest on the projects page, and a visit button that becomes unavailable when a customer's site no longer answers.
+
+**What we did**
+- Replaced the app window in `prototypes/tyngdlos.html` (now 82 KB) with the featured card from Genomgång, the split view from Delad vy for the next nine projects, and a row "Se alla 17 projekt"
+- Three lines steer it: `FEATURED`, `HOME_COUNT = 10` and `ENDED = []`. A slug in `ENDED` swaps the visit link for an unavailable button and the text "Kunden har avslutat projektet"
+- New overview thumbnail, and the decisions written into the build plan (#49)
+
+**Decisions**
+- **The link check belongs to the build, not the prototype.** It will run in GitHub Actions on every push to `main` and once a month (Marcel's choice), and republish the site.
+- **Only certain failures count as ended:** the domain is gone, or the site answers 404 or 410. Timeouts and server errors leave the button alone, so a short outage at a customer cannot make the site claim the customer has left. A manual `siteStatus` field overrides the check.
+- **Build and test in separate subagents.** The build task still used 178k tokens and the test task 166k, both over the 150k limit, because each had to read an 80 KB single-file page. In Next.js the units are components, which are far smaller.
+
+**Tested**
+- 177 Playwright checks at 390 to 1920 px by the test subagent: video rules, reduced motion, data saver, JavaScript off, other featured slugs, ended sites, keyboard, contrast in both themes, touch targets
+- It found and fixed three defects: the pane fetched images at page load, keyboard focus and the shown project drifted apart during smooth scrolling, and the last project became active after the pane had slid under the nav
+- Known: later items in the list activate a little lower than 45% of the viewport, and the card and the pane use different link styles for the same action
+
 ## 26 Nov 2026 — Five ways to show the projects (#50)
 
 **Goal:** Marcel loves Tyngdlös but was still not happy with how the project section feels to use. He asked for several different proposals for just that part. While they were being built he sent a screenshot of a feature card on cursor.com and added his own idea: a recorded walkthrough of a project, where an agent plays a visitor clicking around the site.

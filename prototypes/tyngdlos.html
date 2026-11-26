@@ -935,7 +935,7 @@ html:not(.wide) .it-m { font-size: .875rem; line-height: 1.4; display: -webkit-b
     (function () {
       var list = $('list'), wide = window.matchMedia('(min-width: 1024px)'), SIZES = '(min-width: 1024px) 50vw, 1px';
       if (!list || !order.length) return;
-      var els = [], cur = order[0], rest = P.length - 1 - order.length;
+      var els = [], cur = order[0], rest = P.length - 1 - order.length, split = list.parentNode.parentNode, pane = split.querySelector('.pane');
       function out(a, href, label) { a.href = href; a.target = '_blank'; a.rel = 'noopener noreferrer'; if (label) a.setAttribute('aria-label', label); return a; }
       set('n-all', P.length); set('n-rest', rest); $('all-n').hidden = rest < 1;
 
@@ -964,6 +964,12 @@ html:not(.wide) .it-m { font-size: .875rem; line-height: 1.4; display: -webkit-b
 
       /* The preview: two stacked images. The new one loads hidden on top and fades in over the old one. */
       var L = [$('v-a'), $('v-b')], front = 0, pre = [];
+      /* No image is fetched while the split view is still far below the screen. */
+      var near = !('IntersectionObserver' in window);
+      if (!near) new IntersectionObserver(function (en, io) {
+        if (!en.some(function (e) { return e.isIntersecting; })) return;
+        io.disconnect(); near = true; if (wide.matches) view(cur);
+      }, { rootMargin: '400px 0px' }).observe(split);
       var vCase = $('v-case'), vSite = $('v-site'), vGone = $('v-gone'), vGh = $('v-gh');
       L.forEach(function (im) { im.sizes = SIZES; im.i = -1; im.onload = function () { im.ok = true; if (im.go) im.go(); }; });
       function picture(i) {
@@ -989,6 +995,7 @@ html:not(.wide) .it-m { font-size: .875rem; line-height: 1.4; display: -webkit-b
         vSite.hidden = !p[7] || off; if (!vSite.hidden) out(vSite, p[7], 'Besök sidan: ' + p[1]);
         vGone.hidden = !p[7] || !off;
         vGh.hidden = !p[8]; if (p[8]) out(vGh, p[8], 'Kod på GitHub: ' + p[1]);
+        if (!near) return;
         picture(i);
         /* Fetch the neighbours now, so the next swap has its image ready. */
         for (k = n - 2; k <= n + 2; k++) if (k >= 0 && k < order.length && k !== n && !pre[k]) { pre[k] = new Image(); pre[k].sizes = SIZES; cover(pre[k], P[order[k]]); }
@@ -1002,20 +1009,27 @@ html:not(.wide) .it-m { font-size: .875rem; line-height: 1.4; display: -webkit-b
 
       /* Two rules pick the active item. Pointing (pointer movement or keyboard focus) wins until the page has
          scrolled a bit further; scrolling wins until the pointer has really moved. So they never alternate. */
-      var mode = 'scroll', lockY = 0, anchor = null, tick = false, tops = [], T0 = 0, B = 0, max = 0;
+      var mode = 'scroll', lockY = 0, hold = 0, anchor = null, tick = false, tops = [], T0 = 0, B = 0, E = 0, max = 0;
       function measure() {
         var s = window.scrollY, r = list.getBoundingClientRect();
         T0 = r.top + s; B = r.bottom + s;
         tops = order.map(function (i) { return els[i].getBoundingClientRect().top + s; });
         max = Math.max(0, root.scrollHeight - window.innerHeight);
+        /* The scroll position at which the sticky pane starts to leave with the end of the split view. */
+        E = split.getBoundingClientRect().bottom + s - pane.offsetHeight - (parseFloat(getComputedStyle(pane).top) || 0);
       }
+      /* The scroll the browser makes to show a focused element does not count, however long it glides. */
+      function held() { lockY = window.scrollY; clearTimeout(hold); hold = setTimeout(function () { hold = 0; }, 200); }
       /* The item that crosses 45% of the viewport height. Near the top and the bottom of the page that line
          cannot reach the first and last items, so there it slides towards them. */
       function probe() {
         var s = window.scrollY, line = window.innerHeight * 0.45, R = Math.min(line, max / 2) || 1;
         var a = Math.min(line, T0 + 48), b = Math.max(line, B - 48 - max), off = line, n = 0, k;
+        var c = Math.min(tops[tops.length - 1] - E + 64, window.innerHeight - 48);
         if (s < R) off = a + (line - a) * (s / R);
         else if (max - s < R) off = b + (line - b) * ((max - s) / R);
+        /* Towards the end of the list the line moves down too, so the last item is active while the pane is still whole. */
+        if (c > line && s > E - 64 - line) off = Math.max(off, line + (c - line) * Math.min(1, (s - E + 64 + line) / line));
         for (k = 0; k < tops.length; k++) if (tops[k] <= s + off) n = k;
         return order[n];
       }
@@ -1024,7 +1038,7 @@ html:not(.wide) .it-m { font-size: .875rem; line-height: 1.4; display: -webkit-b
         if (!wide.matches) return;
         var s = window.scrollY;
         if (mode === 'point') {
-          if (lockY !== lockY) lockY = s;   /* the jump the browser made to show a focused item does not count */
+          if (hold) { held(); return; }
           if (Math.abs(s - lockY) < 48) return;
         }
         /* The sections above the list can change height (fonts, images), so its place is read again here. */
@@ -1043,10 +1057,11 @@ html:not(.wide) .it-m { font-size: .875rem; line-height: 1.4; display: -webkit-b
         }
         mode = 'point'; lockY = window.scrollY; activate(+a.getAttribute('data-i'));
       }, { passive: true });
-      list.addEventListener('focusin', function (e) {
+      /* Focus on an item shows it. Focus on the link row or on the pane's links keeps the project that is shown. */
+      split.addEventListener('focusin', function (e) {
         var a = item(e);
-        if (!a) return;
-        mode = 'point'; lockY = NaN; activate(+a.getAttribute('data-i'));
+        if (!wide.matches) return;
+        mode = 'point'; held(); if (a) activate(+a.getAttribute('data-i'));
       });
       /* In the split view the list is one tab stop: arrows move between projects, Tab goes on to the links in the pane. */
       list.addEventListener('keydown', function (e) {
