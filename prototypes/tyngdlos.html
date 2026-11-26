@@ -91,8 +91,8 @@ body {
   overflow-x: clip;
 }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
-img, canvas { display: block; max-width: 100%; }
-img { height: auto; }
+img, canvas, video { display: block; max-width: 100%; }
+img, video { height: auto; }
 h1, h2, h3, p, ul, ol, pre { margin: 0; }
 ul, ol { padding: 0; list-style: none; }
 a { color: inherit; text-decoration: none; }
@@ -161,92 +161,118 @@ code, pre, .mono { font-family: var(--mono); }
 /* Painted stage and app windows */
 .scene { position: relative; overflow: hidden; border-radius: var(--r-s); background: linear-gradient(#c9cfd8, #e6d8c4 48%, #8d9477 49%, #b89f6a); }
 .paint { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(var(--paint-dim)) saturate(.92); }
-.stage { border-radius: var(--r-l); padding: clamp(.75rem, 4.2vw, 3.75rem) clamp(.75rem, 6vw, 6.5rem); }
+.stage { border-radius: var(--r-l); }
 .win { position: relative; background: var(--win); border: 1px solid var(--line-2); border-radius: var(--r-m); box-shadow: var(--shadow); overflow: hidden; }
 .bar { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: .75rem; height: 2.25rem; padding-inline: .8rem; background: var(--win-2); border-bottom: 1px solid var(--line); font-size: .78rem; color: var(--mut); }
 .bar .lights { display: flex; gap: .4rem; }
 .bar .lights i { width: .6rem; height: .6rem; border-radius: 50%; background: var(--card-2); border: 1px solid var(--line); }
 .bar .ttl { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.bar .side { justify-self: end; white-space: nowrap; padding: .5rem 0 .5rem .5rem; }
 
-.app { display: grid; grid-template-columns: minmax(0, 1fr); }
-.app-list { border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: .25rem; padding: .5rem; overflow-x: auto; scrollbar-width: thin; }
-.yr { flex: none; font: 500 .68rem/1 var(--mono); letter-spacing: .08em; color: var(--mut); padding: 0 .5rem 0 .6rem; }
-.it { flex: none; display: grid; gap: .15rem; text-align: left; padding: .5rem .7rem; border-radius: var(--r-s); min-height: 2.75rem; transition: background-color .15s; }
-.it-n { font-size: .875rem; line-height: 1.25; white-space: nowrap; }
-.it-t { display: none; font-size: .75rem; line-height: 1.3; color: var(--mut); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.it[aria-current="true"] { background: var(--card-2); }
-@media (hover: hover) { .it:hover { background: var(--card); } .it[aria-current="true"]:hover { background: var(--card-2); } }
-.agent { display: none; }
-.doc { min-width: 0; display: flex; flex-direction: column; }
-.tabs { display: flex; border-bottom: 1px solid var(--line); background: var(--win-2); font: .75rem/1 var(--mono); }
-.tab { flex: none; display: inline-flex; align-items: center; gap: .4rem; min-height: 2.75rem; padding: 0 .9rem; border-right: 1px solid var(--line); color: var(--mut); white-space: nowrap; transition: background-color .15s, color .15s; }
-.tab + .tab { flex: 0 1 auto; min-width: 0; display: block; overflow: hidden; text-overflow: ellipsis; }
-.tab[aria-pressed="true"] { background: var(--win); color: var(--ink); box-shadow: inset 0 2px 0 var(--accent); }
-.tab:focus-visible { outline-offset: -3px; }
-@media (hover: hover) { .tab[aria-pressed="false"]:hover { background: var(--card); color: var(--ink); } }
-.pin { flex: none; width: .8rem; height: .8rem; fill: var(--accent); }
-.it-n .pin { display: inline-block; margin-right: .35rem; vertical-align: -.1em; }
-.doc-in { padding: 1.1rem 1rem 1.25rem; display: grid; gap: .9rem; align-content: start; }
-.crumb { font-size: .8rem; color: var(--mut); }
-.doc h3 { font-size: 1.5rem; font-weight: 500; letter-spacing: -.02em; line-height: 1.15; }
-.doc-d { font-size: .95rem; color: var(--mut); max-width: 60ch; }
-.doc-img { width: 100%; aspect-ratio: 2 / 1; object-fit: cover; border-radius: var(--r-s); border: 1px solid var(--line); background: var(--card); }
-.chips { display: flex; flex-wrap: wrap; gap: .35rem; }
-.chip { font: .72rem/1 var(--mono); padding: .4rem .55rem; border-radius: 4px; background: var(--card); color: var(--mut); }
-.doc-links { display: flex; flex-wrap: wrap; gap: .25rem 1.25rem; font-size: .92rem; }
-.doc-links a { padding-block: .45rem; }
-/* The featured project gets a spotlight layout: lead line, wide cover, three facts and two pills. */
-.doc-lead, .facts, .doc-cta, .spot .crumb, .spot .doc-d, .spot .chips, .spot .doc-links { display: none; }
-.spot h3 { font-size: clamp(1.75rem, 5vw, 2.25rem); line-height: 1.08; letter-spacing: -.028em; }
-.spot .doc-lead { display: block; font-size: 1.1rem; line-height: 1.4; max-width: 34em; text-wrap: pretty; }
-.spot .facts { display: grid; gap: .55rem 1.25rem; margin: 0; padding-top: .85rem; border-top: 1px solid var(--line); }
+/* The featured project: a card with the stage on two thirds and the text on one third. */
+.card { background: var(--card); border-radius: var(--r-m); padding: clamp(.6rem, 1vw, .8rem); display: grid; gap: .25rem; }
+.st { min-width: 0; padding: clamp(.6rem, 3.4vw, 2.75rem); display: grid; align-items: center; }
+.st .win { min-width: 0; }
+.st .bar { height: 1.9rem; padding-inline: .7rem; font-size: .72rem; }
+.st .bar .lights { gap: .35rem; }
+.st .bar .lights i { width: .5rem; height: .5rem; }
+/* The film (or the still screenshot). The whole frame shows, nothing is cropped. It takes no pointer events. */
+.shot { width: 100%; aspect-ratio: 16 / 10; background: var(--win-2); pointer-events: none; -webkit-user-select: none; user-select: none; }
+img.shot { aspect-ratio: 2 / 1; }
+/* The agent's line: a status strip with a fixed height at the foot of the window. */
+.cap { height: 1.75rem; padding-inline: .7rem; border-top: 1px solid var(--line); background: var(--win-2); font-size: .64rem; line-height: 1.75rem; color: var(--mut); white-space: nowrap; overflow: hidden; }
+.cap-in { display: flex; align-items: center; gap: .4rem; opacity: 0; transition: opacity .25s; }
+.cap.on .cap-in { opacity: 1; }
+.cap i { flex: none; width: .4rem; height: .4rem; border-radius: 50%; background: var(--accent); }
+.cap-a { flex: none; display: none; }
+.cap-x { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+@media (min-width: 480px) { .cap { font-size: .7rem; } .cap-a { display: block; } }
+
+.card-t { min-width: 0; padding: .9rem .6rem .6rem; display: grid; align-content: center; justify-items: start; }
+.card-f { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem .65rem; margin-bottom: .9rem; font-size: .68rem; line-height: 1.3; letter-spacing: .06em; text-transform: uppercase; color: var(--mut); }
+.lab { display: inline-flex; align-items: center; gap: .35rem; padding: .3rem .5rem; border-radius: 4px; background: var(--card-2); color: var(--ink); }
+.pin { flex: none; width: .75rem; height: .75rem; fill: var(--accent); }
+/* Two tones at one size: the name in ink, the tagline in muted grey. */
+.card-t h3, .tag { font-size: clamp(1.375rem, 1.8vw, 1.625rem); font-weight: 450; line-height: 1.2; letter-spacing: -.02em; overflow-wrap: break-word; }
+.tag { color: var(--mut); max-width: 24em; text-wrap: pretty; }
+.links { display: flex; flex-wrap: wrap; gap: 0 1.5rem; margin-top: .75rem; }
+.links .go { min-height: 2.25rem; align-items: center; }
+@media (pointer: coarse) { .links .go { min-height: 2.75rem; } }
+@media (min-width: 900px) {
+  .card { grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr); gap: 1.25rem; }
+  .card-t { padding: 1rem clamp(.5rem, 1.6vw, 1.5rem); }
+  .links { flex-direction: column; margin-top: 1rem; }
+}
+/* A site the customer has taken down: a button shape that is not a link, and a short note after it. */
+.gone { display: inline-flex; flex-wrap: wrap; align-items: center; align-self: flex-start; gap: .3rem .6rem; padding-block: .25rem; }
+.off { display: inline-flex; align-items: center; min-height: 2rem; padding: .3rem .8rem; border-radius: 999px; border: 1px dashed var(--line-2); color: var(--mut); font-size: .875rem; line-height: 1.2; white-space: nowrap; cursor: not-allowed; }
+.gone-t { font-size: .8rem; line-height: 1.15; color: var(--mut); }
+
+/* The next projects. List items, shared parts */
+.next { margin-top: clamp(2.5rem, 5vw, 4rem); }
+.col { min-width: 0; }
+.eye { font: .68rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--mut); margin-bottom: .9rem; }
+.it-a { display: grid; }
+.it-b { display: grid; min-width: 0; }
+.it-n { font-weight: 450; }
+.it-m { color: var(--mut); }
+.it-y { font: .75rem/1 var(--mono); margin-right: .6em; }
+.it-num { font: .75rem/1 var(--mono); }
+.pane { display: none; }
+/* The row that leads to every project. */
+.all { display: flex; flex-wrap: wrap; align-items: baseline; gap: .2rem 1rem; min-height: 2.75rem; padding: 1.1rem 0; border-top: 1px solid var(--line); }
+.all b { font-weight: 450; font-size: 1.25rem; line-height: 1.25; letter-spacing: -.015em; transition: color .2s; }
+.all small { font-size: .875rem; color: var(--mut); }
+.all-i { margin-left: auto; color: var(--accent); transition: transform .2s; }
+@media (hover: hover) { .all:hover b { color: var(--accent); } .all:hover .all-i { transform: translateX(3px); } }
+
+/* Below 1024px (and without JavaScript): compact rows with a thumbnail */
+html:not(.wide) .list { display: grid; column-gap: 2rem; }
+html:not(.wide) .it-num { display: none; }
+html:not(.wide) .it-a { grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: .9rem; min-height: 4.5rem; padding: .7rem 0; border-top: 1px solid var(--line); }
+.it-th { width: 7rem; aspect-ratio: 3 / 2; border-radius: var(--r-s); background-color: var(--card); overflow: hidden; }
+.it-th > img { width: 100%; height: 100%; object-fit: cover; border: 1px solid var(--line); border-radius: inherit; }
+html:not(.wide) .it-b { gap: .2rem; }
+html:not(.wide) .it-n { font-size: 1.0625rem; line-height: 1.25; letter-spacing: -.01em; transition: color .2s; }
+html:not(.wide) .it-m { font-size: .875rem; line-height: 1.4; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+@media (hover: hover) { html:not(.wide) .it-a:hover .it-n { color: var(--accent); } }
+@media (min-width: 700px) { html:not(.wide) .list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* From 1024px: the split view. Big names on the left, one sticky preview on the right. */
+.wide .split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(2rem, 4vw, 4rem); align-items: start; }
+.wide .list { border-left: 1px solid var(--line); }
+.wide .it-th { display: none; }
+.wide .it-a { position: relative; grid-template-columns: 2.25rem minmax(0, 1fr); align-items: baseline; padding: 1.1rem 0 1.15rem 1.25rem; color: var(--mut); transition: color .2s; }
+.wide .it-a:focus-visible { outline-offset: -2px; }
+.wide .it-a::before { content: ""; position: absolute; left: -2px; top: 1.1rem; bottom: 1.15rem; width: 3px; border-radius: 2px; background: var(--accent); opacity: 0; transform: scaleY(.5); transition: opacity .2s, transform .25s; }
+.wide .it-b { gap: .45rem; }
+.wide .it-n { font-size: clamp(2rem, 2.9vw, 2.5rem); line-height: 1.08; letter-spacing: -.03em; text-wrap: balance; }
+.wide .it-m { font-size: .95rem; line-height: 1.45; max-width: 34em; text-wrap: pretty; }
+.wide .it-a[aria-current] { color: var(--ink); }
+.wide .it-a[aria-current]::before { opacity: 1; transform: none; }
+.wide .it-a[aria-current] .it-num { color: var(--accent); }
+.wide .all { padding-left: 3.5rem; }
+
+/* The pane sticks under the top nav. */
+.wide .pane { display: block; position: sticky; top: calc(env(safe-area-inset-top, 0px) + var(--nav-h) + 1rem); --py: clamp(1.25rem, 2.6vw, 2.5rem); }
+.pane .stage { display: grid; justify-items: center; padding: var(--py) clamp(1.25rem, 3vw, 3rem); }
+/* The window shrinks on low screens so the whole pane always fits under the top nav. */
+.pane .win { width: min(100%, max(16rem, calc((100vh - 23rem - 2 * var(--py)) * 2))); }
+.view { position: relative; aspect-ratio: 2 / 1; background: var(--card); }
+.view img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .28s ease; }
+.facts { display: grid; gap: .5rem; margin-top: 1rem; padding-top: .85rem; border-top: 1px solid var(--line); }
 .facts div { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); align-items: baseline; }
 .facts dt { font: .68rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--mut); }
-.facts dd { margin: 0; font-size: .875rem; line-height: 1.35; }
-.spot .doc-cta { display: flex; flex-wrap: wrap; gap: .5rem; }
-.doc-cta .pill { flex: 1 1 auto; }
-@media (min-width: 520px) {
-  .spot .facts { grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr); }
-  .facts div { display: block; }
-  .facts dt { margin-bottom: .45rem; }
-  .doc-cta .pill { flex: none; }
-}
-
-@media (min-width: 760px) {
-  .app { grid-template-columns: 15rem minmax(0, 1fr); height: 36rem; }
-  .app-list { border-bottom: 0; border-right: 1px solid var(--line); flex-direction: column; align-items: stretch; gap: 1px; padding: .5rem; overflow: hidden auto; }
-  .yr { padding: .9rem .6rem .45rem; }
-  .yr:first-child { padding-top: .5rem; }
-  .it { min-height: 0; padding: .45rem .6rem; }
-  .it-n { overflow: hidden; text-overflow: ellipsis; }
-  .it-t { display: block; }
-  .doc { overflow: hidden auto; }
-  .doc-in { padding: 1.5rem 1.75rem 1.75rem; }
-  .spot .facts { gap: .75rem 2rem; }
-}
-@media (min-width: 760px) and (hover: hover) { .tab { min-height: 2.35rem; } }
-@media (min-width: 1120px) {
-  .app { grid-template-columns: 15.5rem 19rem minmax(0, 1fr); }
-  .agent { display: flex; flex-direction: column; min-height: 0; border-right: 1px solid var(--line); padding: .85rem; gap: .75rem; }
-  .a-h { font-size: .85rem; font-weight: 500; }
-  .a-log { display: grid; gap: .7rem; align-content: start; flex: 1; min-height: 0; overflow: hidden; }
-  .a-you { border: 1px solid var(--line); border-radius: var(--r-s); padding: .55rem .7rem; font-size: .875rem; background: var(--win-2); }
-  .a-steps { display: grid; gap: .35rem; font-size: .8rem; color: var(--mut); padding-left: .2rem; }
-  .a-steps li { display: flex; gap: .5rem; align-items: baseline; transition: opacity .25s; }
-  .a-steps li::before { content: "✓"; color: var(--ok); font-size: .75rem; }
-  .a-steps li.wait { opacity: .28; }
-  .a-steps code { font-size: .74rem; color: var(--ink); }
-  .a-file { display: inline-flex; align-items: center; gap: .5rem; justify-self: start; border: 1px solid var(--line); border-radius: var(--r-s); padding: .45rem .65rem; font: .74rem/1 var(--mono); transition: opacity .25s; }
-  .a-file b { font-weight: 500; color: var(--ok); }
-  .a-file.wait { opacity: 0; }
-  .a-say { font-size: .9rem; line-height: 1.45; min-height: 4.4em; }
-  .a-say.typing::after { content: ""; display: inline-block; width: .5em; height: 1em; margin-left: 2px; vertical-align: -.15em; background: var(--accent); }
-  .a-ask { border: 1px solid var(--line); border-radius: var(--r-m); padding: .65rem; display: grid; gap: .55rem; background: var(--win-2); }
-  .a-askl { font-size: .8rem; color: var(--mut); }
-  .ask { font-size: .8rem; padding: .4rem .65rem; border-radius: 999px; border: 1px solid var(--line-2); background: var(--win); transition: background-color .15s; }
-}
-@media (hover: hover) { .ask:hover { background: var(--card-2); } }
+.facts dd { margin: 0; font-size: .875rem; line-height: 1.35; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* Two reserved lines, so a long stack never changes the height of the pane. */
+.facts .two dd { white-space: normal; height: 2.7em; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+/* One row with a fixed height, whether the project has a site, no site or an ended site. */
+.act { display: flex; align-items: center; gap: .5rem; margin-top: 1rem; height: 2.75rem; }
+.act .gone { flex-wrap: nowrap; align-self: center; min-width: 0; padding: 0; }
+.act .off { min-height: 2.75rem; padding: .55rem 1.25rem; font-size: 1rem; }
+.gh { margin-left: auto; padding: .75rem 0; font-size: .875rem; line-height: 1.25rem; color: var(--mut); white-space: nowrap; transition: color .2s; }
+@media (hover: hover) { .gh:hover { color: var(--ink); } }
+.hint { margin-top: .6rem; font: .7rem/1rem var(--mono); color: var(--mut); visibility: hidden; }
+.split:has(.it-a:focus-visible) .hint { visibility: visible; }
 
 /* Sections */
 .sec { padding-top: var(--space); }
@@ -387,56 +413,59 @@ code, pre, .mono { font-family: var(--mono); }
 
   <section class="wrap" id="projekt" aria-labelledby="projekt-h">
     <h2 class="vh" id="projekt-h">Projekt</h2>
-    <div class="scene stage">
-      <canvas class="paint" data-paint="morgon" aria-hidden="true"></canvas>
-      <div class="win">
-        <div class="bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="ttl">Marcel Deluca · 17 projekt</span><a class="side" href="https://marceldeluca.se/projects/" target="_blank" rel="noopener noreferrer">Alla case ↗</a></div>
-        <div class="app">
-          <div class="app-list" id="list" role="group" aria-label="Välj projekt"></div>
-          <div class="agent">
-            <p class="a-h">Agent</p>
-            <div class="a-log" aria-hidden="true">
-              <p class="a-you" id="a-you">Visa det du är mest stolt över</p>
-              <ul class="a-steps" id="a-steps">
-                <li>Läste <code>projects.ts</code></li>
-                <li>Hämtade omslaget</li>
-                <li>Öppnade <code id="a-open">andalus-calendar.md</code></li>
-              </ul>
-              <p class="a-say" id="a-say">En kalender där bönetiden redan sitter i vyn, så du inte bokar över salah.</p>
-              <p class="a-file" id="a-file"><span id="a-fn">andalus-calendar.md</span><b id="a-yr">2026</b></p>
-            </div>
-            <div class="a-ask">
-              <p class="a-askl" id="ask-l">Be om något annat</p>
-              <div class="chips" role="group" aria-labelledby="ask-l">
-                <button class="ask" type="button" data-ask="Next.js">Något i Next.js</button>
-                <button class="ask" type="button" data-ask="app">En app</button>
-                <button class="ask" type="button" data-ask="butik">En webbutik</button>
-                <button class="ask" type="button" data-ask="WordPress">WordPress</button>
-                <button class="ask" type="button" data-ask="*">Överraska mig</button>
-              </div>
-            </div>
+    <!-- The featured card is drawn from the data in the script. This one is the fallback without JavaScript. -->
+    <div id="card">
+      <article class="card" aria-labelledby="c-andalus-calendar">
+        <div class="scene st">
+          <canvas class="paint" data-paint="morgon" aria-hidden="true"></canvas>
+          <div class="win">
+            <div class="bar" aria-hidden="true"><span class="lights"><i></i><i></i><i></i></span><span class="ttl">andaluscalendar.com</span><span></span></div>
+            <video class="shot" poster="assets/walk-andalus-calendar.webp" width="1280" height="800" muted loop playsinline preload="none" disablepictureinpicture disableremoteplayback tabindex="-1" role="img" aria-label="Inspelad genomgång av The Andalus Calendar"><source src="assets/walk-andalus-calendar.webm" type="video/webm"><source src="assets/walk-andalus-calendar.mp4" type="video/mp4"></video>
           </div>
-          <article class="doc" aria-live="polite">
-            <div class="tabs" role="group" aria-label="Öppna flikar">
-              <button class="tab" id="t-feat" type="button" aria-pressed="true"><svg class="pin" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5a3.5 3.5 0 0 1 .75 6.92V14L8 15.2 7.25 14V8.42A3.5 3.5 0 0 1 8 1.5z"/></svg>Utvalt</button>
-              <button class="tab" id="d-tab" type="button" aria-pressed="false" hidden>andalus-calendar.md</button>
-            </div>
-            <div class="doc-in spot" id="d-in">
-              <p class="crumb">Projekt › <span id="d-year">2026</span></p>
-              <h3 id="d-name">The Andalus Calendar</h3>
-              <p class="doc-lead" id="d-lead">En kalender där bönetiden redan sitter i vyn, så du inte bokar över salah.</p>
-              <p class="doc-d" id="d-desc">Personlig kalenderapp med gregoriansk och hijri-kalender, bönetider i UI:t och uppgifter i samma vy. Live beta.</p>
-              <img class="doc-img" id="d-img" src="assets/andalus-calendar.webp" srcset="assets/andalus-calendar-sm.webp 640w, assets/andalus-calendar.webp 1280w" sizes="(min-width: 1120px) 560px, (min-width: 760px) 60vw, 90vw" width="1280" height="640" alt="Skärmbild av The Andalus Calendar" decoding="async">
-              <ul class="chips" id="d-stack" aria-label="Byggt med"><li class="chip">React</li><li class="chip">Firebase</li><li class="chip">Hostinger</li></ul>
-              <dl class="facts"><div><dt>År</dt><dd id="f-yr">2026</dd></div><div><dt>Typ</dt><dd id="f-typ">React · Firebase · Kalender</dd></div><div><dt>Byggt med</dt><dd id="f-st">React · Firebase · Hostinger</dd></div></dl>
-              <p class="doc-links" id="d-links"><a class="go" href="https://marceldeluca.se/projects/andalus-calendar/" target="_blank" rel="noopener noreferrer">Läs caset <span aria-hidden="true">↗</span></a><a class="go" href="https://andaluscalendar.com/" target="_blank" rel="noopener noreferrer">Besök sidan <span aria-hidden="true">↗</span></a></p>
-              <p class="doc-cta"><a class="pill pill-ink" id="c-case" href="https://marceldeluca.se/projects/andalus-calendar/" target="_blank" rel="noopener noreferrer">Läs caset <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a><a class="pill pill-soft" id="c-site" href="https://andaluscalendar.com/" target="_blank" rel="noopener noreferrer">Besök sidan <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a></p>
-            </div>
-          </article>
         </div>
-      </div>
+        <div class="card-t">
+          <p class="card-f mono"><span class="lab"><svg class="pin" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5a3.5 3.5 0 0 1 .75 6.92V14L8 15.2 7.25 14V8.42A3.5 3.5 0 0 1 8 1.5z"/></svg>Utvalt</span><span>2026 · React · Firebase · Kalender</span></p>
+          <h3 id="c-andalus-calendar">The Andalus Calendar</h3>
+          <p class="tag">En kalender där bönetiden redan sitter i vyn, så du inte bokar över salah.</p>
+          <p class="links"><a class="go" href="https://marceldeluca.se/projects/andalus-calendar/" target="_blank" rel="noopener noreferrer">Läs caset <span aria-hidden="true">→</span></a><a class="go" href="https://andaluscalendar.com/" target="_blank" rel="noopener noreferrer">Besök andaluscalendar.com <span aria-hidden="true">↗</span></a></p>
+        </div>
+      </article>
     </div>
-    <noscript><p style="margin-top:1rem">Alla 17 projekt finns på <a class="go" href="https://marceldeluca.se/projects/">marceldeluca.se/projects</a>.</p></noscript>
+
+    <div class="split next">
+      <div class="col">
+        <h3 class="eye" id="fler-h">Fler projekt</h3>
+        <!-- Without JavaScript the names stay as plain links to the cases. The script rebuilds the list. -->
+        <ol class="list" id="list" aria-labelledby="fler-h">
+          <li class="it"><a class="it-a" href="https://marceldeluca.se/projects/uniclean-partners/" target="_blank" rel="noopener noreferrer"><span class="it-n">UniClean Partners</span></a></li>
+          <li class="it"><a class="it-a" href="https://marceldeluca.se/projects/sabaah-al-wuruud/" target="_blank" rel="noopener noreferrer"><span class="it-n">Sabaah Al-Wuruud</span></a></li>
+          <li class="it"><a class="it-a" href="https://marceldeluca.se/projects/zenith-kampsport/" target="_blank" rel="noopener noreferrer"><span class="it-n">Zenith Kampsport</span></a></li>
+          <li class="it"><a class="it-a" href="https://marceldeluca.se/projects/fcvaxjo-reborn/" target="_blank" rel="noopener noreferrer"><span class="it-n">FC Växjö Reborn</span></a></li>
+          <li class="it"><a class="it-a" href="https://marceldeluca.se/projects/premium-honey-blends/" target="_blank" rel="noopener noreferrer"><span class="it-n">Premium Honey Blends</span></a></li>
+          <li class="it"><a class="it-a" href="https://marceldeluca.se/projects/alkama/" target="_blank" rel="noopener noreferrer"><span class="it-n">ALKAMA</span></a></li>
+          <li class="it"><a class="it-a" href="https://marceldeluca.se/projects/uniclean/" target="_blank" rel="noopener noreferrer"><span class="it-n">UniClean</span></a></li>
+          <li class="it"><a class="it-a" href="https://marceldeluca.se/projects/takkoll/" target="_blank" rel="noopener noreferrer"><span class="it-n">TakKoll</span></a></li>
+          <li class="it"><a class="it-a" href="https://marceldeluca.se/projects/bilservicekoll/" target="_blank" rel="noopener noreferrer"><span class="it-n">BilserviceKoll</span></a></li>
+        </ol>
+        <a class="all" href="https://marceldeluca.se/projects/" target="_blank" rel="noopener noreferrer"><b>Se alla <span id="n-all">17</span> projekt</b><small id="all-n"><span id="n-rest">7</span> till på projektsidan</small><span class="all-i" aria-hidden="true">→</span></a>
+      </div>
+      <aside class="pane" aria-label="Förhandsvisning av valt projekt">
+        <div class="scene stage">
+          <canvas class="paint" data-paint="kvall" aria-hidden="true"></canvas>
+          <div class="win">
+            <div class="bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="ttl" id="v-ttl"></span><span></span></div>
+            <div class="view"><img id="v-a" width="1280" height="640" alt="" loading="lazy" decoding="async"><img id="v-b" width="1280" height="640" alt="" loading="lazy" decoding="async"></div>
+          </div>
+        </div>
+        <dl class="facts">
+          <div><dt>År</dt><dd id="f-yr"></dd></div>
+          <div><dt>Typ</dt><dd id="f-typ"></dd></div>
+          <div class="two"><dt>Byggt med</dt><dd id="f-st"></dd></div>
+        </dl>
+        <p class="act"><a class="pill pill-ink" id="v-case" target="_blank" rel="noopener noreferrer">Läs caset <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a><a class="pill pill-soft" id="v-site" target="_blank" rel="noopener noreferrer">Besök sidan <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a><span class="gone" id="v-gone" hidden><span class="off" aria-disabled="true">Besök sidan</span><span class="gone-t">Kunden har avslutat projektet</span></span><a class="gh" id="v-gh" target="_blank" rel="noopener noreferrer">Kod på GitHub <span aria-hidden="true">↗</span></a></p>
+        <p class="hint" aria-hidden="true">↑ ↓ bläddrar · Enter öppnar caset · Tab till länkarna</p>
+      </aside>
+    </div>
   </section>
 
   <section class="wrap sec" id="om" aria-labelledby="om-h">
@@ -760,20 +789,26 @@ code, pre, .mono { font-family: var(--mono); }
       dab(x, y, 9 + rnd() * 16 + t * 8, 2.5 + rnd() * 3, -1.15 + (rnd() - 0.5) * 0.7, col, 0.85);
     }
   }
-  (function () {
+  /* A canvas is painted the first time it comes near the screen. A hidden one never is. */
+  function paintLazy() {
     var all = doc.querySelectorAll('.paint'), i;
     if (!('IntersectionObserver' in window)) { for (i = 0; i < all.length; i++) paint(all[i]); return; }
     var io = new IntersectionObserver(function (en) {
       en.forEach(function (e) { if (e.isIntersecting) { io.unobserve(e.target); paint(e.target); } });
     }, { rootMargin: '600px' });
     for (i = 0; i < all.length; i++) io.observe(all[i]);
-  })();
+  }
 
-  /* 4. The project window. */
+  /* 4. The projects: one featured card with a recorded walkthrough, then a split view of the next ones. */
   (function () {
-    /* The featured project. This one slug stands in for `featuredProject` in src/data/site.ts: the pinned row, the
-       pinned tab, the agent's first request, the card "Egna produkter" and the sentence in "Om mig" all read it. */
+    /* The featured project. This one slug stands in for `featuredProject` in src/data/site.ts: the card at the top of
+       the project section, the card "Egna produkter" and the sentence in "Om mig" all read it. */
     var FEATURED = 'andalus-calendar';
+    /* The slugs whose live site no longer answers. The real site fills this from a link check at build time.
+       Such a project gets an unavailable button and a short note where its "Besök" link would be. */
+    var ENDED = [];
+    /* How many projects the home page shows, the featured one included. The rest are on the project page. */
+    var HOME_COUNT = 10;
     var P = [
       ['uniclean-partners', 'UniClean Partners', 2026, 'Ny hemsida för UniClean som vägleder kunder och städare till den nya appen.', 'UniClean har fått en app som fungerar som Uber fast för städning. Jag byggde den nya hemsidan i Next.js som vägleder kunder och städare dit.', 'Next.js · Tailwind · Lokalt', ['Next.js', 'TypeScript', 'Tailwind CSS', 'Hostinger'], 'https://uniclean.nu', 'https://github.com/DelucaGit/UniClean-Website'],
       ['sabaah-al-wuruud', 'Sabaah Al-Wuruud', 2026, 'En minimalistisk adhkar-app för Android som jag byggde till min fru. Utan reklam, utan konto och helt offline.', 'Min frus favoritapp för adhkar hade fyllts med reklam. Jag byggde en egen till henne i hennes favoritfärger, med bara det hon använder, och levererade den som en signerad APK.', 'Android · Capacitor · Personligt projekt', ['JavaScript', 'Vite', 'Capacitor', 'Android Studio', 'Vitest', 'Claude Code'], '', 'https://github.com/DelucaGit/sabaah-al-wuruud'],
@@ -793,119 +828,250 @@ code, pre, .mono { font-family: var(--mono); }
       ['shanasheel', 'Shanasheel', 2025, 'Från första skissen till en tvåspråkig hemsida som berättar om Akkad, och om framtiden i Irak.', 'Hemsida för Shanasheel Al-Asima: fastighet, hållbarhet och investeringar, byggd i WordPress med Elementor.', 'WordPress · Elementor · Fastighet', ['WordPress', 'Elementor', 'TranslatePress'], 'https://shanasheel.se', ''],
       ['fcvaxjo', 'FC Växjö', 2023, 'En digital hemmaplan för föreningen sedan 1989.', 'Hemsida för FC Växjö: nyheter, träningstider, galleri och kontakt, med klubbens svart-guld-identitet i centrum.', 'Webbdesign · UX/UI · Förening', ['One.com', 'UX & UI-design'], 'https://fcvaxjo.se', '']
     ];
-    var F = 0, CASE = 'https://marceldeluca.se/projects/', ASK = 'Visa det du är mest stolt över';
+    /* Recorded walkthroughs: assets/walk-<slug>.webm, .mp4 and .webp (poster). Steps are [second, what the agent does]. */
+    var WALK = {
+      'andalus-calendar': { dur: 19.7, steps: [[0, 'Öppnar startsidan'], [2.5, 'Läser om dubbla kalendrar'], [5.3, 'Tittar på bönetiderna i vyn'], [8.1, 'Tittar på uppgiftslistan'], [11, 'Läser om integritet'], [13.8, 'Stannar vid knappen Get Started Now'], [16.8, 'Skrollar tillbaka till toppen']] },
+      'fcvaxjo-reborn': { dur: 17.8, steps: [[0, 'Öppnar startsidan'], [1.4, 'Skrollar till kommande matcher'], [4, 'Öppnar Matcher i menyn'], [6.9, 'Växlar till spelade matcher och resultat'], [9.4, 'Skrollar bland resultaten'], [11.4, 'Öppnar Träningstider'], [14.3, 'Går tillbaka till startsidan']] }
+    };
+    var F = 0, CASE = 'https://marceldeluca.se/projects/', EXT = ' target="_blank" rel="noopener noreferrer"';
+    var ALT = 'Skärmbild av ', GONE = 'Kunden har avslutat projektet', order = [];
     P.forEach(function (p, i) { if (p[0] === FEATURED) F = i; });
+    /* The split view holds the next projects in the order of the data (newest first), without the featured one. */
+    P.forEach(function (p, i) { if (i !== F && order.length < HOME_COUNT - 1) order.push(i); });
     function set(id, text) { var e = $(id); if (e) e.textContent = text; }
+    function el(tag, cls, text) { var e = doc.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+    function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+    function host(p) { return p[7] ? p[7].replace(/^https?:\/\/(www\.)?/, '').replace(/\/.*$/, '') : p[1]; }
+    function two(n) { return (n < 10 ? '0' : '') + n; }
+    function ended(p) { return ENDED.indexOf(p[0]) > -1; }
     function cover(img, p) {
       if (!img) return;
-      img.srcset = 'assets/' + p[0] + '-sm.webp 640w, assets/' + p[0] + '.webp 1280w'; img.src = 'assets/' + p[0] + '.webp'; img.alt = 'Skärmbild av ' + p[1];
+      img.srcset = 'assets/' + p[0] + '-sm.webp 640w, assets/' + p[0] + '.webp 1280w'; img.src = 'assets/' + p[0] + '.webp'; img.alt = ALT + p[1];
     }
-    /* The places outside the window. "Om mig" is set here, before section 5 splits it into words. */
+    /* The places outside the section. "Om mig" is set here, before section 5 splits it into words. */
     (function (p) {
       var go = $('f-go');
       set('o-name', p[1]);
       set('f-ex', p[1] + (p[6].length ? ' i ' + p[6].slice(0, 2).join(' och ') : ''));
-      set('f-ttl', p[7] ? p[7].replace(/^https?:\/\/(www\.)?/, '').replace(/\/.*$/, '') : p[1]);
+      set('f-ttl', host(p));
       if (go) { go.href = CASE + p[0] + '/'; go.firstChild.nodeValue = 'Se ' + p[1] + ' '; }
       cover($('f-img'), p);
     })(P[F]);
 
-    var list = $('list'), items = [], order = [F], cur = F, run = 0, year = 0;
-    if (!list) return;
-    var din = $('d-in'), tabF = $('t-feat'), tab = $('d-tab'), you = $('a-you');
-    function el(tag, cls, text) { var e = doc.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
-    /* The spotlight parts only ever show the featured project, so they are filled in once. */
-    (function (p) {
-      var site = $('c-site');
-      set('d-lead', p[3]); set('f-yr', p[2]); set('f-typ', p[5]); set('f-st', p[6].join(' · '));
-      $('c-case').href = CASE + p[0] + '/';
-      site.hidden = !p[7]; if (p[7]) site.href = p[7];
-    })(P[F]);
-    /* The list: the featured project first under "Utvalt", then the rest by year. */
-    P.forEach(function (p, i) { if (i !== F) order.push(i); });
-    order.forEach(function (i, n) {
-      var p = P[i], b = el('button', 'it'), name = el('span', 'it-n', p[1]);
-      if (!n) { list.appendChild(el('span', 'yr', 'Utvalt')); name.insertBefore(tabF.firstElementChild.cloneNode(true), name.firstChild); }
-      else if (p[2] !== year) { year = p[2]; list.appendChild(el('span', 'yr', String(year))); }
-      b.type = 'button'; b.appendChild(name); b.appendChild(el('span', 'it-t', p[5]));
-      b.addEventListener('click', function () { show(i, true); });
-      list.appendChild(b); items[i] = b;
-    });
-    list.addEventListener('keydown', function (e) {
-      var d = e.key === 'ArrowDown' || e.key === 'ArrowRight' ? 1 : e.key === 'ArrowUp' || e.key === 'ArrowLeft' ? -1 : 0;
-      if (!d) return;
-      e.preventDefault();
-      var n = order[(order.indexOf(cur) + d + P.length) % P.length]; show(n, true); items[n].focus({ preventScroll: true });
-    });
-    tabF.addEventListener('click', function () { if (cur !== F) { you.textContent = ASK; show(F, true); } });
-    function link(href, text) {
-      var a = el('a', 'go'); a.href = href; a.target = '_blank'; a.rel = 'noopener noreferrer';
-      a.appendChild(doc.createTextNode(text + ' ')); var s = el('span', '', '↗'); s.setAttribute('aria-hidden', 'true'); a.appendChild(s); return a;
+    /* 4a. The featured card. */
+    /* The film only plays when motion is welcome and data is not being saved. Otherwise the poster stays. */
+    function canPlay() { var c = navigator.connection; return !reduce.matches && !(c && c.saveData); }
+    var motion = canPlay();
+    function card(p) {
+      var s = p[0], w = WALK[s], h = host(p), a = 'assets/' + s, v = 'assets/walk-' + s;
+      var media = w
+        ? '<video class="shot" data-slug="' + s + '" poster="' + v + '.webp" width="1280" height="800" muted loop playsinline preload="none" disablepictureinpicture disableremoteplayback tabindex="-1" role="img" aria-label="Inspelad genomgång av ' + esc(p[1]) + '">' +
+          '<source src="' + v + '.webm" type="video/webm"><source src="' + v + '.mp4" type="video/mp4"></video>' +
+          (motion ? '<p class="cap mono" aria-hidden="true"><span class="cap-in"><i></i><span class="cap-a">Agenten ·</span><span class="cap-x"></span></span></p>' : '')
+        : '<img class="shot" src="' + a + '.webp" srcset="' + a + '-sm.webp 640w, ' + a + '.webp 1280w" sizes="(min-width: 900px) 56vw, 90vw" width="1280" height="640" alt="' + ALT + esc(p[1]) + '" decoding="async">';
+      /* A site the customer has taken down keeps its place, as a button shape that is not a link. */
+      var site = !p[7] ? '' : ended(p)
+        ? '<span class="gone"><span class="off" aria-disabled="true">Besök ' + esc(h) + '</span><span class="gone-t">' + GONE + '</span></span>'
+        : '<a class="go" href="' + esc(p[7]) + '"' + EXT + '>Besök ' + esc(h) + ' <span aria-hidden="true">↗</span></a>';
+      return '<article class="card" aria-labelledby="c-' + s + '">' +
+        '<div class="scene st"><canvas class="paint" data-paint="morgon" aria-hidden="true"></canvas>' +
+        '<div class="win"><div class="bar" aria-hidden="true"><span class="lights"><i></i><i></i><i></i></span><span class="ttl">' + esc(h) + '</span><span></span></div>' + media + '</div></div>' +
+        '<div class="card-t"><p class="card-f mono"><span class="lab"><svg class="pin" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5a3.5 3.5 0 0 1 .75 6.92V14L8 15.2 7.25 14V8.42A3.5 3.5 0 0 1 8 1.5z"/></svg>Utvalt</span><span>' + p[2] + ' · ' + esc(p[5]) + '</span></p>' +
+        '<h3 id="c-' + s + '">' + esc(p[1]) + '</h3><p class="tag">' + esc(p[3]) + '</p>' +
+        '<p class="links"><a class="go" href="' + CASE + s + '/"' + EXT + '>Läs caset <span aria-hidden="true">→</span></a>' + site + '</p></div></article>';
     }
-    function reveal(b) {
-      var r = b.getBoundingClientRect(), l = list.getBoundingClientRect();
-      if (r.left < l.left + 8 || r.right > l.right - 8) list.scrollLeft += r.left - l.left - (l.width - r.width) / 2;
-      if (r.top < l.top + 8 || r.bottom > l.bottom - 8) list.scrollTop += r.top - l.top - (l.height - r.height) / 2;
-    }
-    function show(i, play) {
-      var p = P[i], st = $('d-stack'), ln = $('d-links'), file = p[0] + '.md', feat = i === F;
-      cur = i;
-      items.forEach(function (b, k) { if (k === i) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current'); });
-      reveal(items[i]);
-      /* The pinned tab is always there. Any other project opens in a second tab next to it. */
-      din.classList.toggle('spot', feat);
-      tabF.setAttribute('aria-pressed', String(feat)); tab.setAttribute('aria-pressed', String(!feat));
-      tab.hidden = feat; if (!feat) tab.textContent = file;
-      $('d-year').textContent = p[2]; $('d-name').textContent = p[1]; $('d-desc').textContent = p[4];
-      cover($('d-img'), p);
-      st.textContent = ''; p[6].forEach(function (t) { st.appendChild(el('li', 'chip', t)); });
-      ln.textContent = ''; ln.appendChild(link(CASE + p[0] + '/', 'Läs caset'));
-      if (p[7]) ln.appendChild(link(p[7], 'Besök sidan'));
-      if (p[8]) ln.appendChild(link(p[8], 'Kod på GitHub'));
+    if ($('card')) $('card').innerHTML = card(P[F]);
+    paintLazy();
 
-      /* The agent column replays the same request as a short log. It is decoration: the facts are in the document. */
-      var say = $('a-say'), steps = $('a-steps').children, af = $('a-file'), id = ++run, k;
-      $('a-open').textContent = file; $('a-fn').textContent = file; $('a-yr').textContent = p[2];
-      if (!play || reduce.matches) {
-        for (k = 0; k < steps.length; k++) steps[k].classList.remove('wait');
-        af.classList.remove('wait'); say.classList.remove('typing'); say.textContent = p[3]; return;
+    /* The film. No controls: the script starts it when about a third of it is on screen and pauses it
+       when it leaves the screen or the tab is hidden. */
+    (function () {
+      var vids = [].slice.call(doc.querySelectorAll('video.shot'));
+      function sync(v) {
+        if (v._want && !doc.hidden && canPlay()) { var pr = v.play(); if (pr && pr.catch) pr.catch(function () {}); }
+        else if (!v.paused) v.pause();
       }
-      for (k = 0; k < steps.length; k++) steps[k].classList.add('wait');
-      af.classList.add('wait'); say.textContent = ''; say.classList.add('typing');
-      var start = performance.now();
-      (function tick(now) {
-        if (id !== run) return;
-        var t = now - start, n = Math.floor((t - 620) / 14);
-        for (k = 0; k < steps.length; k++) if (t > 140 + k * 170) steps[k].classList.remove('wait');
-        if (n > 0) say.textContent = p[3].slice(0, n);
-        if (n >= p[3].length) { say.classList.remove('typing'); af.classList.remove('wait'); return; }
-        requestAnimationFrame(tick);
-      })(start);
-    }
-    var asks = doc.querySelectorAll('.ask');
-    function hit(p, q) {
-      var hay = (p[5] + ' ' + p[6].join(' ')).toLowerCase();
-      if (q === 'app') return /android|kalender/.test(hay);
-      if (q === 'butik') return /shopify|woocommerce/.test(hay);
-      return hay.indexOf(q.toLowerCase()) > -1;
-    }
-    for (var a = 0; a < asks.length; a++) asks[a].addEventListener('click', function () {
-      var q = this.getAttribute('data-ask'), n = cur, k;
-      if (q === '*') { do { n = Math.floor(Math.random() * P.length); } while (n === cur); }
-      else for (k = 1; k <= P.length; k++) { n = (cur + k) % P.length; if (hit(P[n], q)) break; }
-      you.textContent = this.textContent; show(n, true);
-    });
-    list.addEventListener('click', function () { you.textContent = 'Visa ' + P[cur][1]; });
-    show(F, false);
-    /* The first time a third of the window is in view, the agent presents the featured project. Once. */
-    if ('IntersectionObserver' in window && !reduce.matches) {
-      var io = new IntersectionObserver(function (es) {
-        if (es[0].intersectionRatio < 0.3) return;
-        io.disconnect();
-        if (run === 1) { you.textContent = ASK; show(F, true); }
-      }, { threshold: 0.33 });
-      io.observe(list.parentNode);
-    }
+      /* The agent's line follows the film: "Agenten · 03/07 · Tittar på bönetiderna i vyn". */
+      function step(v) {
+        var st = WALK[v.getAttribute('data-slug')].steps, t = v.currentTime, n = 0, i;
+        for (i = 0; i < st.length; i++) if (st[i][0] <= t) n = i;
+        if (n !== v._n) { v._n = n; v._cap.textContent = two(n + 1) + '/' + two(st.length) + ' · ' + st[n][1]; }
+      }
+      vids.forEach(function (v) {
+        var cap = v.parentNode.querySelector('.cap');
+        v.muted = true;
+        /* A film that was asked to play before it had loaded starts as soon as it can. */
+        v.addEventListener('canplay', function () { if (v.paused) sync(v); });
+        if (!cap) return;
+        v._cap = cap.querySelector('.cap-x');
+        v.addEventListener('timeupdate', function () { step(v); });
+        v.addEventListener('playing', function () { step(v); cap.classList.add('on'); });
+        v.addEventListener('pause', function () { cap.classList.remove('on'); });
+      });
+      if (!('IntersectionObserver' in window)) return;
+      var ioNear = new IntersectionObserver(function (en) {
+        en.forEach(function (e) {
+          var v = e.target;
+          if (!e.isIntersecting) return;
+          ioNear.unobserve(v);
+          if (canPlay() && v.paused && !v._want) { v.preload = 'auto'; v.load(); }
+        });
+      }, { rootMargin: '500px 0px' });
+      var ioPlay = new IntersectionObserver(function (en) {
+        en.forEach(function (e) {
+          var v = e.target;
+          if (e.intersectionRatio >= 0.35) v._want = true; else if (!e.isIntersecting) v._want = false;
+          sync(v);
+        });
+      }, { threshold: [0, 0.35] });
+      vids.forEach(function (v) { ioNear.observe(v); ioPlay.observe(v); });
+      doc.addEventListener('visibilitychange', function () { vids.forEach(sync); });
+      /* If the visitor turns on reduced motion while the film runs, it stops and goes back to its poster. */
+      function onReduce() { vids.forEach(function (v) { sync(v); if (reduce.matches && v.currentTime) v.load(); }); }
+      if (reduce.addEventListener) reduce.addEventListener('change', onReduce); else if (reduce.addListener) reduce.addListener(onReduce);
+    })();
+
+    /* 4b. The split view. */
+    (function () {
+      var list = $('list'), wide = window.matchMedia('(min-width: 1024px)'), SIZES = '(min-width: 1024px) 50vw, 1px';
+      if (!list || !order.length) return;
+      var els = [], cur = order[0], rest = P.length - 1 - order.length;
+      function out(a, href, label) { a.href = href; a.target = '_blank'; a.rel = 'noopener noreferrer'; if (label) a.setAttribute('aria-label', label); return a; }
+      set('n-all', P.length); set('n-rest', rest); $('all-n').hidden = rest < 1;
+
+      list.textContent = '';
+      order.forEach(function (i, n) {
+        var p = P[i], li = el('li', 'it'), a = out(el('a', 'it-a'), CASE + p[0] + '/');
+        var b = el('span', 'it-b'), m = el('span', 'it-m'), num = el('span', 'it-num', two(n + 1));
+        a.setAttribute('data-i', i); num.setAttribute('aria-hidden', 'true');
+        a.appendChild(el('span', 'it-th')); a.appendChild(num);
+        b.appendChild(el('span', 'it-n', p[1]));
+        m.appendChild(el('span', 'it-y', p[2])); m.appendChild(doc.createTextNode(p[3]));
+        b.appendChild(m); a.appendChild(b); li.appendChild(a);
+        list.appendChild(li); els[i] = a;
+      });
+
+      /* Thumbnails for the narrow layout. They are only created once that layout is used. */
+      var built = false;
+      function media() {
+        if (built) return; built = true;
+        order.forEach(function (i) {
+          var im = el('img');
+          im.width = 640; im.height = 320; im.loading = 'lazy'; im.decoding = 'async'; im.alt = ALT + P[i][1];
+          im.src = 'assets/' + P[i][0] + '-sm.webp'; els[i].firstChild.appendChild(im);
+        });
+      }
+
+      /* The preview: two stacked images. The new one loads hidden on top and fades in over the old one. */
+      var L = [$('v-a'), $('v-b')], front = 0, pre = [];
+      var vCase = $('v-case'), vSite = $('v-site'), vGone = $('v-gone'), vGh = $('v-gh');
+      L.forEach(function (im) { im.sizes = SIZES; im.i = -1; im.onload = function () { im.ok = true; if (im.go) im.go(); }; });
+      function picture(i) {
+        var f = L[front], b = L[1 - front], p = P[i];
+        b.go = null;
+        if (f.i === i) return;
+        /* Finish a fade that is still running, so the layer below can change unseen. */
+        f.style.transition = 'none'; f.style.opacity = 1; f.style.zIndex = 1;
+        b.style.transition = 'none'; b.style.opacity = 0; b.style.zIndex = 2;
+        b.go = function () {
+          b.go = null; void b.offsetWidth;
+          b.style.transition = ''; b.style.opacity = 1; b.alt = ALT + p[1]; f.alt = ''; front = 1 - front;
+        };
+        if (b.i === i) { if (b.ok) b.go(); }
+        else { b.i = i; b.ok = false; cover(b, p); }
+      }
+      function view(i) {
+        var p = P[i], n = order.indexOf(i), off = ended(p), k;
+        set('v-ttl', host(p));
+        set('f-yr', p[2]); set('f-typ', p[5]); set('f-st', p[6].join(' · '));
+        out(vCase, CASE + p[0] + '/', 'Läs caset: ' + p[1]);
+        /* The row keeps its height with a site, without one and with an ended one. */
+        vSite.hidden = !p[7] || off; if (!vSite.hidden) out(vSite, p[7], 'Besök sidan: ' + p[1]);
+        vGone.hidden = !p[7] || !off;
+        vGh.hidden = !p[8]; if (p[8]) out(vGh, p[8], 'Kod på GitHub: ' + p[1]);
+        picture(i);
+        /* Fetch the neighbours now, so the next swap has its image ready. */
+        for (k = n - 2; k <= n + 2; k++) if (k >= 0 && k < order.length && k !== n && !pre[k]) { pre[k] = new Image(); pre[k].sizes = SIZES; cover(pre[k], P[order[k]]); }
+      }
+      function activate(i) {
+        if (i === cur) return;
+        els[cur].removeAttribute('aria-current'); els[cur].tabIndex = -1;
+        cur = i; els[i].setAttribute('aria-current', 'true'); els[i].tabIndex = 0;
+        view(i);
+      }
+
+      /* Two rules pick the active item. Pointing (pointer movement or keyboard focus) wins until the page has
+         scrolled a bit further; scrolling wins until the pointer has really moved. So they never alternate. */
+      var mode = 'scroll', lockY = 0, anchor = null, tick = false, tops = [], T0 = 0, B = 0, max = 0;
+      function measure() {
+        var s = window.scrollY, r = list.getBoundingClientRect();
+        T0 = r.top + s; B = r.bottom + s;
+        tops = order.map(function (i) { return els[i].getBoundingClientRect().top + s; });
+        max = Math.max(0, root.scrollHeight - window.innerHeight);
+      }
+      /* The item that crosses 45% of the viewport height. Near the top and the bottom of the page that line
+         cannot reach the first and last items, so there it slides towards them. */
+      function probe() {
+        var s = window.scrollY, line = window.innerHeight * 0.45, R = Math.min(line, max / 2) || 1;
+        var a = Math.min(line, T0 + 48), b = Math.max(line, B - 48 - max), off = line, n = 0, k;
+        if (s < R) off = a + (line - a) * (s / R);
+        else if (max - s < R) off = b + (line - b) * ((max - s) / R);
+        for (k = 0; k < tops.length; k++) if (tops[k] <= s + off) n = k;
+        return order[n];
+      }
+      function onScroll() {
+        tick = false;
+        if (!wide.matches) return;
+        var s = window.scrollY;
+        if (mode === 'point') {
+          if (lockY !== lockY) lockY = s;   /* the jump the browser made to show a focused item does not count */
+          if (Math.abs(s - lockY) < 48) return;
+        }
+        /* The sections above the list can change height (fonts, images), so its place is read again here. */
+        measure();
+        mode = 'scroll'; anchor = null; activate(probe());
+      }
+      function item(e) { var a = e.target.closest && e.target.closest('.it-a'); return a && wide.matches ? a : null; }
+      window.addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(onScroll); } }, { passive: true });
+      /* pointermove, not mouseover: an item that scrolls in under a resting pointer has not been pointed at. */
+      list.addEventListener('pointermove', function (e) {
+        var a = item(e);
+        if (!a || e.pointerType === 'touch') return;
+        if (mode === 'scroll') {
+          if (!anchor) { anchor = [e.clientX, e.clientY]; return; }
+          if (Math.abs(e.clientX - anchor[0]) + Math.abs(e.clientY - anchor[1]) < 6) return;
+        }
+        mode = 'point'; lockY = window.scrollY; activate(+a.getAttribute('data-i'));
+      }, { passive: true });
+      list.addEventListener('focusin', function (e) {
+        var a = item(e);
+        if (!a) return;
+        mode = 'point'; lockY = NaN; activate(+a.getAttribute('data-i'));
+      });
+      /* In the split view the list is one tab stop: arrows move between projects, Tab goes on to the links in the pane. */
+      list.addEventListener('keydown', function (e) {
+        var a = item(e), n = a ? order.indexOf(+a.getAttribute('data-i')) : -1, k = e.key, last = order.length - 1;
+        var to = k === 'ArrowDown' ? n + 1 : k === 'ArrowUp' ? n - 1 : k === 'Home' ? 0 : k === 'End' ? last : -1;
+        if (n < 0 || to < 0 || to > last || to === n) return;
+        e.preventDefault(); els[order[to]].focus();
+      });
+
+      function layout() {
+        var w = wide.matches;
+        root.classList.toggle('wide', w);
+        els.forEach(function (a, i) {
+          if (w) a.tabIndex = i === cur ? 0 : -1; else a.removeAttribute('tabindex');
+          if (w && i === cur) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+        });
+        if (w) { measure(); view(cur); } else media();
+      }
+      if (wide.addEventListener) wide.addEventListener('change', layout); else wide.addListener(layout);
+      if ('ResizeObserver' in window) new ResizeObserver(function () { if (wide.matches) measure(); }).observe(list);
+      window.addEventListener('resize', function () { if (wide.matches) measure(); });
+      /* A reload can restore a scroll position further down the page. */
+      window.addEventListener('load', function () { if (wide.matches) { measure(); if (window.scrollY) onScroll(); } });
+      layout();
+    })();
   })();
 
   /* 5. The statement fills in word by word as it scrolls through the screen. */
