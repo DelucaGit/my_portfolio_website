@@ -1,8 +1,8 @@
-name: Deploy to Hostinger
+name: Check and build
 
-# Every run checks the customers' sites, builds and deploys:
-# on a push to main, by hand, and once a month so the site buttons stay
-# right even when nothing is published.
+# Checks the customers' sites and builds the site, as a control.
+# Hostinger publishes the site itself from the repository; nothing is
+# uploaded from here.
 on:
   push:
     branches:
@@ -40,14 +40,3 @@ jobs:
 
       - name: Build static site
         run: npm run build
-
-      - name: Deploy to Hostinger via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./out/
-          # FTP account is already rooted in the site public_html — upload to ./
-          server-dir: ./
-          dangerous-clean-slate: true
