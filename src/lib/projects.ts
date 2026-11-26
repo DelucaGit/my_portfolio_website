@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import {
-  projects,
+  projects as projectData,
   type Project,
   type ProjectSlug,
 } from "@/data/projects";
@@ -9,18 +9,37 @@ import { site } from "@/data/site";
 
 export type { Project, ProjectSlug };
 
-/** See `hasEndedSite` and next.config.ts. Never set in a real build. */
+/*
+ * The two test hooks below are set only by the Playwright suite's own builds
+ * (tests/e2e/support/build-test-sites.ts). Hostinger runs its own build from
+ * the repository, where neither variable is set, so they never change the
+ * published site. next.config.ts also sends those test builds to their own
+ * folders, so a local `out/` is never overwritten by one.
+ */
+/** One project's slug: that project gets `siteStatus: "ended"`. */
 const ENDED_FOR_TEST = process.env.E2E_ENDED_PROJECT;
-/** See `featuredSlug` and next.config.ts. Never set in a real build. */
+/** See `featuredSlug`. */
 const FEATURED_FOR_TEST = process.env.E2E_FEATURED_PROJECT;
+
+/**
+ * The projects in src/data/projects.ts. In the tests' build with an ended
+ * project, that project carries `siteStatus: "ended"`, as if the line had
+ * been added to the data file, so the real field is what the test exercises.
+ */
+const projects: Project[] = ENDED_FOR_TEST
+  ? projectData.map((project) =>
+      project.slug === ENDED_FOR_TEST
+        ? { ...project, siteStatus: "ended" }
+        : project,
+    )
+  : projectData;
 
 /**
  * The slug of the featured project: `featuredProject` in src/data/site.ts.
  * This is the only place that reads that line.
  */
 function featuredSlug(): string {
-  // Only for the tests' own build, which next.config.ts sends to
-  // out-featured/ and never to out/: it stands in for a changed line.
+  // Only in the tests' own build (see above): it stands in for a changed line.
   if (FEATURED_FOR_TEST) return FEATURED_FOR_TEST;
   const slug: ProjectSlug = site.featuredProject;
   return slug;
@@ -127,8 +146,9 @@ type CheckedSite = { status?: string };
 let checkedSites: Record<string, CheckedSite> | undefined;
 
 /**
- * The link check's result file. It is written before the build in the deploy
- * workflow and is not in git: without the file no site counts as ended.
+ * The link check's result file, written by `npm run check:sites`. It is not
+ * in git, so Hostinger's build never has it: there no site counts as ended
+ * through the check, only through `siteStatus: "ended"`.
  * SITE_CHECK_FILE points at another file (the tests use that).
  */
 function getCheckedSites(): Record<string, CheckedSite> {
@@ -156,9 +176,6 @@ function getCheckedSites(): Record<string, CheckedSite> {
  */
 export function hasEndedSite(project: Project): boolean {
   if (project.siteStatus === "ended") return true;
-  // Only for the tests' own build, which next.config.ts sends to out-ended/
-  // and never to out/: it stands in for `siteStatus: "ended"` on one project.
-  if (ENDED_FOR_TEST && project.slug === ENDED_FOR_TEST) return true;
   if (!project.siteUrl) return false;
   return getCheckedSites()[project.siteUrl]?.status === "ended";
 }

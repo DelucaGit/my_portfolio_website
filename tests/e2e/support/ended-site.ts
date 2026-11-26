@@ -10,8 +10,8 @@ import { featuredProject, homeProjects } from "./site";
  * `build-test-sites.ts` builds it into out-ended/ before the tests start and
  * the suite serves it on its own port. It is the real site built by the real
  * `next build`, with two inputs changed:
- *  - one project is marked as ended by hand (E2E_ENDED_PROJECT stands in for
- *    `siteStatus: "ended"` in src/data/projects.ts), and
+ *  - one project is marked as ended by hand: E2E_ENDED_PROJECT gives it
+ *    `siteStatus: "ended"`, as if the line were in src/data/projects.ts, and
  *  - the link check's result file says another project's site is gone and
  *    that a third could not be reached.
  */
