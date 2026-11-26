@@ -2,6 +2,7 @@ import { existsSync, readdirSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import { expect, type Locator, type Page } from "@playwright/test";
 import {
+  getAllProjects,
   getFeaturedProject,
   getHomeProjects,
   type Project,
@@ -156,6 +157,17 @@ export function homeProjects(): Project[] {
   return getHomeProjects();
 }
 
+/** The name of the split view's list in the project archive (/projects/). */
+export const ARCHIVE_LIST = "Alla projekt";
+
+/**
+ * Every project, in the order the archive lists them, read from the data
+ * layer the same way the site reads them.
+ */
+export function allProjects(): Project[] {
+  return getAllProjects();
+}
+
 /** A split view's list of projects. On the start page it is called "Fler projekt". */
 export function projectList(page: Page, name = "Fler projekt"): Locator {
   return page.getByRole("list", { name, exact: true });
@@ -226,11 +238,17 @@ export async function scrollSettled(page: Page) {
 /**
  * The visitor turns the mouse wheel, a notch at a time, until `done` says
  * stop. A negative `step` scrolls up.
+ *
+ * The pause between two notches is short on purpose. Sending a notch and
+ * asking `done` already take about 100 ms together (twice that in WebKit),
+ * so a longer pause only made the long scrolls slow: the page was scrolled
+ * at 300 px a second and two tests ran into the time limit when the machine
+ * was busy. The page still moves at most `step` px between two looks.
  */
 export async function wheelUntil(
   page: Page,
   done: () => Promise<boolean>,
-  { step = 70, pause = 100, notches = 400 } = {},
+  { step = 70, pause = 30, notches = 400 } = {},
 ) {
   for (let n = 0; n < notches; n++) {
     if (await done()) return;
@@ -250,7 +268,7 @@ export async function wheelToProjectList(page: Page, listName?: string) {
   await wheelUntil(
     page,
     async () => ((await first.boundingBox())?.y ?? Infinity) < height * 0.9,
-    { step: 250, pause: 120 },
+    { step: 250 },
   );
   await scrollSettled(page);
 }

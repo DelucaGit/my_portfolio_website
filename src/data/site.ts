@@ -103,7 +103,6 @@ POST /api/posts/7/comments 201`,
     },
   },
   stack: {
-    eyebrow: "Teknik",
     heading: "Vilka språk jag kan",
     note: "(förutom svenska, engelska, spanska, arabiska och franska…)",
     /** What the languages and tools are used for, in the order shown. */
@@ -298,6 +297,8 @@ POST /api/posts/7/comments 201`,
     buttons: {
       readCase: "Läs caset",
       visitSite: "Besök sidan",
+      /** Stands instead of "Besök sidan" when the customer's site is gone. */
+      siteEnded: "Kunden har avslutat projektet",
       code: "Kod på GitHub",
     },
     /** The projects under the featured one on the start page. */
@@ -378,6 +379,57 @@ POST /api/posts/7/comments 201`,
     contact: {
       heading: "Vill du komma i kontakt?",
       text: "Skicka ett mejl eller ring om du vill prata om jobb, projekt eller bara säga hej.",
+    },
+  },
+  /** The project archive (/projects): every project in the split view. */
+  projectsPage: {
+    back: "Tillbaka",
+    eyebrow: "Portfolio",
+    heading: "Alla projekt",
+    text: "En samling webbprojekt jag har byggt, egna produkter och uppdrag.",
+    note: "Nyast först",
+  },
+  /**
+   * Headings, labels and button texts on a project's own page
+   * (/projects/<slug>). The projects themselves are in `projects.ts`.
+   */
+  projectPage: {
+    back: { name: "Alla projekt", href: "/projects" },
+    stack: { label: "Teknik", heading: "Det här använde jag" },
+    duo: {
+      label: "Problemet och svaret",
+      heading: "Utmaning & lösning",
+      challenge: "Utmaningen",
+      solution: "Lösningen",
+    },
+    results: { label: "Resultat", heading: "Vad det ledde till" },
+    /** Used when the project has no texts of its own for the part. */
+    video: { eyebrow: "Film", heading: "Se hemsidan i rörelse" },
+    feature: { eyebrow: "Detalj", heading: "En viktig del av UI:t" },
+    mobile: {
+      eyebrow: "Mobil",
+      heading: "Så ser det ut i telefonen",
+      support: "Scrolla i sidled för att se fler vyer.",
+    },
+    desktop: { eyebrow: "Desktop", heading: "Desktop-vyn" },
+    fullPage: {
+      eyebrow: "Hela sidan",
+      heading: "Scrolla igenom hela flödet",
+      support: "Scrolla inne i ramen för att se layouten från topp till botten.",
+    },
+    gallery: { eyebrow: "Fler bilder", heading: "Fler vyer från projektet" },
+    /** The links to the projects before and after this one. */
+    adjacent: {
+      label: "Fler projekt",
+      previous: "Föregående projekt",
+      next: "Nästa projekt",
+      /** On the last project, instead of a next one. */
+      all: { label: "Portfolio", name: "Se alla projekt", href: "/projects" },
+    },
+    contact: {
+      heading: "Vill du prata mer?",
+      text: "Mejla mig om du har frågor om projektet eller om ett jobb.",
+      cv: { name: "Läs CV", href: "/cv" },
     },
   },
   /** Texts shared by every service page. The services are in `services.ts`. */

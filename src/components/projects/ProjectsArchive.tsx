@@ -1,34 +1,38 @@
-import Link from "next/link";
-import { ProjectCard } from "@/components/projects/ProjectCard";
+import ProjectSplitView from "@/components/projects/ProjectSplitView";
+import SiteLink from "@/components/SiteLink";
+import { site } from "@/data/site";
 import { getAllProjects } from "@/lib/projects";
+import shared from "@/styles/shared.module.css";
 import styles from "./ProjectsArchive.module.css";
 
-export function ProjectsArchive() {
-  const projects = getAllProjects();
+/**
+ * The project archive (/projects): every project, the featured one too,
+ * newest first, in the same split view as the start page.
+ */
+export default function ProjectsArchive() {
+  const text = site.projectsPage;
 
   return (
-    <div className={styles.page}>
-      <div className={styles.inner}>
-        <p className={styles.back}>
-          <Link href="/">← Tillbaka till startsidan</Link>
-        </p>
+    <div className={`${shared.wrap} ${styles.page}`}>
+      <p className={styles.back}>
+        <SiteLink href="/">
+          <span aria-hidden="true">←</span> {text.back}
+        </SiteLink>
+      </p>
 
-        <header className={styles.header}>
-          <p className={styles.eyebrow}>Portfolio</p>
-          <h1 className={styles.heading}>Alla projekt</h1>
-          <p className={styles.support}>
-            En samling webbprojekt jag har byggt, egna produkter och uppdrag.
-          </p>
-        </header>
-
-        <ul className={styles.grid}>
-          {projects.map((project) => (
-            <li key={project.slug}>
-              <ProjectCard project={project} />
-            </li>
-          ))}
-        </ul>
-      </div>
+      <ProjectSplitView
+        projects={getAllProjects()}
+        label={text.heading}
+        header={
+          <header className={styles.header}>
+            <p className={styles.label}>
+              {text.eyebrow} <span aria-hidden="true">·</span> {text.note}
+            </p>
+            <h1 className={styles.heading}>{text.heading}</h1>
+            <p className={styles.text}>{text.text}</p>
+          </header>
+        }
+      />
     </div>
   );
 }
