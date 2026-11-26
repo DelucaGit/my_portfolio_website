@@ -14,7 +14,7 @@
  *   <work>/sheet-<slug>.png  contact sheet for a quick visual check
  *
  * Needs: Playwright with Chromium, and ffmpeg with libx264, libvpx-vp9, libwebp.
- * The visit is read-only: it only moves, scrolls and clicks links/tabs.
+ * The visit is read-only: it only moves, hovers, scrolls and clicks links/tabs.
  */
 
 const fs = require('fs');
@@ -38,6 +38,10 @@ const FFMPEG = process.env.FFMPEG || 'ffmpeg';
  *                                        `url` = glob to wait for when the click
  *                                        changes page, `rest` = ms to wait after
  *   ['move', x, y]                       move the pointer to a viewport point
+ *   ['hover', selector, ms]              move to the element and stay there for
+ *                                        ms without clicking (shows hover states)
+ * A negative dy scrolls up. The wheel acts on whatever is under the pointer, so
+ * pages that scroll inside a full-height container work as well.
  * `start` is where the pointer rests at the beginning and the end. The last
  * step must bring the page back to the start state so the loop is seamless.
  * `prepare` (optional) lists selectors clicked before the take starts, for
@@ -56,6 +60,26 @@ const SITES = {
       { text: 'Skrollar bland resultaten', do: [['scroll', 420, 1100], ['rest', 900]] },
       { text: 'Öppnar Träningstider', do: [['click', 'header a[href="/traningstider/"]', { url: '**/traningstider/', rest: 1500 }]] },
       { text: 'Går tillbaka till startsidan', do: [['click', 'header nav a[href="/"]', { url: 'https://fcvaxjo.se/', rest: 300 }], ['move', 660, 610], ['rest', 1100]] },
+    ],
+  },
+  /*
+   * A landing page where everything else needs an account, so this is a calm
+   * read-through: no clicks at all, the buttons (which lead to sign-in and
+   * registration) are only hovered. The page scrolls inside a full-height
+   * container; the scroll amounts put each 450 px section in the middle.
+   */
+  'andalus-calendar': {
+    url: 'https://andaluscalendar.com/',
+    start: { x: 800, y: 700 },
+    prepare: [],
+    steps: [
+      { text: 'Öppnar startsidan', do: [['rest', 1200], ['hover', 'button:has-text("Create Free Account")', 600]] },
+      { text: 'Läser om dubbla kalendrar', do: [['scroll', 650, 1200], ['move', 964, 430], ['rest', 800]] },
+      { text: 'Tittar på bönetiderna i vyn', do: [['scroll', 580, 1200], ['move', 316, 430], ['rest', 800]] },
+      { text: 'Ser hur uppgifter och planering hänger ihop', do: [['scroll', 580, 1200], ['move', 964, 430], ['rest', 800]] },
+      { text: 'Läser om integritet', do: [['scroll', 790, 1400], ['move', 900, 300], ['rest', 800]] },
+      { text: 'Stannar vid knappen Get Started Now', do: [['scroll', 920, 1400], ['hover', 'button:has-text("Get Started Now")', 800]] },
+      { text: 'Skrollar tillbaka till toppen', do: [['scroll', -3600, 1500], ['move', 800, 700], ['rest', 700]] },
     ],
   },
 };
@@ -168,6 +192,15 @@ async function clickOn(page, mouse, selector, opts = {}) {
   await sleep(opts.rest ?? 1000);
 }
 
+/** Move to an element and stay on it without clicking, so its hover state shows. */
+async function hoverOn(page, mouse, selector, ms = 800) {
+  const target = page.locator(selector).first();
+  await target.waitFor({ state: 'visible', timeout: 10000 });
+  const box = await target.boundingBox();
+  await moveTo(page, mouse, box.x + box.width / 2, box.y + box.height / 2);
+  await sleep(ms);
+}
+
 // ─────────────────────────────── Recording ───────────────────────────────
 
 async function record(slug, site, workDir) {
@@ -210,11 +243,16 @@ async function record(slug, site, workDir) {
       else if (kind === 'scroll') await scrollBy(page, a, b);
       else if (kind === 'click') await clickOn(page, mouse, a, b);
       else if (kind === 'move') await moveTo(page, mouse, a, b);
+      else if (kind === 'hover') await hoverOn(page, mouse, a, b);
       else throw new Error(`Unknown action: ${kind}`);
     }
   }
   const takeEnd = Date.now();
-  const endState = await page.evaluate(() => ({ url: location.href, scrollY: window.scrollY }));
+  // Some pages scroll inside a container instead of the window; report that too.
+  const endState = await page.evaluate(() => {
+    const inner = [...document.querySelectorAll('*')].find((e) => e.scrollTop > 0);
+    return { url: location.href, scrollY: window.scrollY || (inner ? inner.scrollTop : 0) };
+  });
   await sleep(300);
 
   const video = page.video();
