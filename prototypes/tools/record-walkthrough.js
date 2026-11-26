@@ -76,7 +76,7 @@ const SITES = {
       { text: 'Öppnar startsidan', do: [['rest', 1200], ['hover', 'button:has-text("Create Free Account")', 600]] },
       { text: 'Läser om dubbla kalendrar', do: [['scroll', 650, 1200], ['move', 964, 430], ['rest', 800]] },
       { text: 'Tittar på bönetiderna i vyn', do: [['scroll', 580, 1200], ['move', 316, 430], ['rest', 800]] },
-      { text: 'Ser hur uppgifter och planering hänger ihop', do: [['scroll', 580, 1200], ['move', 964, 430], ['rest', 800]] },
+      { text: 'Tittar på uppgiftslistan', do: [['scroll', 580, 1200], ['move', 964, 430], ['rest', 800]] },
       { text: 'Läser om integritet', do: [['scroll', 790, 1400], ['move', 900, 300], ['rest', 800]] },
       { text: 'Stannar vid knappen Get Started Now', do: [['scroll', 920, 1400], ['hover', 'button:has-text("Get Started Now")', 800]] },
       { text: 'Skrollar tillbaka till toppen', do: [['scroll', -3600, 1500], ['move', 800, 700], ['rest', 700]] },
@@ -356,7 +356,6 @@ async function main() {
       bytes: { mp4: bytes(enc.files.mp4), webm: bytes(enc.files.webm), poster: bytes(enc.files.poster) },
     },
     steps: take.steps,
-    blockedHosts: take.blocked,
   };
 
   // walk.json holds one object per recorded site; replace this slug's entry.
