@@ -170,7 +170,7 @@ const contact = (page: Page) =>
   page.getByRole("region", { name: "Ska vi höras?" });
 
 test.describe("Kontakt", () => {
-  test("har knappar för att mejla och ringa", async ({ page }) => {
+  test("har knappar för att mejla och ringa @webkit", async ({ page }) => {
     await page.goto("/");
     await expect(page.locator("#kontakt")).toHaveAccessibleName(
       "Ska vi höras?",

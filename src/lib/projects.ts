@@ -11,6 +11,20 @@ export type { Project, ProjectSlug };
 
 /** See `hasEndedSite` and next.config.ts. Never set in a real build. */
 const ENDED_FOR_TEST = process.env.E2E_ENDED_PROJECT;
+/** See `featuredSlug` and next.config.ts. Never set in a real build. */
+const FEATURED_FOR_TEST = process.env.E2E_FEATURED_PROJECT;
+
+/**
+ * The slug of the featured project: `featuredProject` in src/data/site.ts.
+ * This is the only place that reads that line.
+ */
+function featuredSlug(): string {
+  // Only for the tests' own build, which next.config.ts sends to
+  // out-featured/ and never to out/: it stands in for a changed line.
+  if (FEATURED_FOR_TEST) return FEATURED_FOR_TEST;
+  const slug: ProjectSlug = site.featuredProject;
+  return slug;
+}
 
 /** Newest year first; keep original order within the same year. */
 function getProjectsNewestFirst(): Project[] {
@@ -27,7 +41,7 @@ export function getAllProjects(): Project[] {
  * projects in all.
  */
 export function getHomeProjects(): Project[] {
-  const featured: ProjectSlug = site.featuredProject;
+  const featured = featuredSlug();
   return getProjectsNewestFirst()
     .filter((project) => project.slug !== featured)
     .slice(0, site.homeProjectCount - 1);
@@ -55,9 +69,12 @@ export function getProjectPreview(project: Project): ProjectPreview {
 
 /** The project `featuredProject` in src/data/site.ts points at. */
 export function getFeaturedProject(): Project {
-  const slug: ProjectSlug = site.featuredProject;
-  // The type of `featuredProject` only allows slugs that exist, so this always finds one.
-  return projects.find((project) => project.slug === slug) as Project;
+  const slug = featuredSlug();
+  const project = projects.find((candidate) => candidate.slug === slug);
+  // The type of `featuredProject` only allows slugs that exist, so the real
+  // line always finds one. This stops a test build that names a wrong slug.
+  if (!project) throw new Error(`No project has the slug "${slug}"`);
+  return project;
 }
 
 /** A recorded walkthrough, ready to play: the files plus what happens when. */

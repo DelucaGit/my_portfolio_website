@@ -45,7 +45,7 @@ async function expectWholeTextFilledIn(page: Page) {
 }
 
 test.describe("Om mig", () => {
-  test("ligger på #om och nämner och länkar till det utvalda projektet", async ({
+  test("ligger på #om och nämner och länkar till det utvalda projektet @webkit", async ({
     page,
   }) => {
     await page.goto("/");
@@ -160,7 +160,7 @@ test.describe("Vad jag gör", () => {
     ).toBeVisible();
   });
 
-  test("kortet Egna produkter visar och länkar till det utvalda projektet", async ({
+  test("kortet Egna produkter visar och länkar till det utvalda projektet @webkit", async ({
     page,
   }) => {
     await page.goto("/");

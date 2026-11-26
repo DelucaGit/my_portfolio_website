@@ -103,7 +103,6 @@ POST /api/posts/7/comments 201`,
     },
   },
   stack: {
-    eyebrow: "Teknik",
     heading: "Vilka språk jag kan",
     note: "(förutom svenska, engelska, spanska, arabiska och franska…)",
     /** What the languages and tools are used for, in the order shown. */

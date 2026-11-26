@@ -422,6 +422,18 @@ export const projects = defineProjects([
     image: "/projects/fcvaxjo-reborn/news-viewport.png",
     imageAlt:
       "FC Växjö Reborn: nyheter och träningstider i Next.js-layout",
+    walkthrough: {
+      duration: 17.8,
+      steps: [
+        [0, "Öppnar startsidan"],
+        [1.4, "Skrollar till kommande matcher"],
+        [4, "Öppnar Matcher i menyn"],
+        [6.9, "Växlar till spelade matcher och resultat"],
+        [9.4, "Skrollar bland resultaten"],
+        [11.4, "Öppnar Träningstider"],
+        [14.3, "Går tillbaka till startsidan"],
+      ],
+    },
     detail: {
       overview: [
         "Klubben behövde en hemsida som funkar 2026. Föräldrar ska hitta träningstider och nyheter utan att leta.",
