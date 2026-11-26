@@ -16,15 +16,14 @@ export const site = {
   location: "Växjö, Sverige",
   status: "Öppen för jobb",
   cvPdf: "/cv.pdf",
-  heroImage: "/hero-portrait.jpg",
-  heroImageAlt: "Marcel Deluca i profil vid havet",
-  intro: {
-    eyebrow: "Om mig",
-    heading: "Så här brukar det börja",
-    description:
-      "En kort film om hur jag tänker, från första idén till något som faktiskt fungerar.",
-    video: "/videos/intro.mp4",
-    poster: "/videos/intro-poster.jpg",
+  /** The start page's hero: status row, the big sentence and two buttons. */
+  hero: {
+    status: "Öppen för jobb",
+    place: "Växjö",
+    heading: "Jag bygger webbappar och hemsidor med React och Java.",
+    lede: "Jag söker en fast anställning där jag får växa i ett team.",
+    cv: { name: "Läs CV", href: "/cv" },
+    projects: { name: "Se projekten", href: "/#projekt" },
   },
   about: {
     eyebrow: "Om mig",
@@ -249,6 +248,28 @@ export const site = {
       { label: "LinkedIn", handle: "marcel-deluca", href: linkedin },
       { label: "GitHub", handle: "DelucaGit", href: github },
     ],
+  },
+  /** Headings, labels and button texts on the CV page. The CV itself is `cv`. */
+  cvPage: {
+    back: "Tillbaka",
+    eyebrow: "CV",
+    facts: { email: "Mejl", phone: "Telefon", location: "Plats" },
+    download: { label: "Ladda ner CV (PDF)", fileName: "Marcel_Deluca_CV.pdf" },
+    github: "GitHub",
+    linkedin: "LinkedIn",
+    experience: "Erfarenhet",
+    education: "Utbildning",
+    learnings: "Vad har jag lärt mig?",
+    skills: "Kompetens",
+    languages: "Språk",
+    contact: {
+      heading: "Vill du komma i kontakt?",
+      text: "Skicka ett mejl eller ring om du vill prata om jobb, projekt eller bara säga hej.",
+    },
+  },
+  /** Texts shared by every service page. The services are in `services.ts`. */
+  servicePage: {
+    back: "← Till startsidan",
   },
   /** The sticky menu at the top of every page. */
   nav: {

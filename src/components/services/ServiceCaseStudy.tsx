@@ -1,8 +1,8 @@
-import Link from "next/link";
 import { site } from "@/data/site";
 import type { Service } from "@/lib/services";
 import { getAdjacentServices } from "@/lib/services";
 import { asset } from "@/lib/asset";
+import SiteLink from "@/components/SiteLink";
 import styles from "./ServiceCaseStudy.module.css";
 
 type ServiceCaseStudyProps = {
@@ -19,15 +19,15 @@ export function ServiceCaseStudy({ service }: ServiceCaseStudyProps) {
     <article className={styles.page}>
       <div className={styles.inner}>
         <p className={styles.back}>
-          <Link href="/#services">← Tillbaka till tjänsterna</Link>
+          <SiteLink href="/">{site.servicePage.back}</SiteLink>
         </p>
 
         <header className={styles.hero}>
           <h1 className={styles.title}>{service.title}</h1>
           <p className={styles.subtitle}>{service.description}</p>
-          <a href={`mailto:${site.email}`} className={styles.heroCta}>
+          <SiteLink href={`mailto:${site.email}`} className={styles.heroCta}>
             Hör av dig
-          </a>
+          </SiteLink>
 
           <div className={styles.heroStage}>
             <div className={styles.heroGlow} aria-hidden="true" />
@@ -126,24 +126,24 @@ export function ServiceCaseStudy({ service }: ServiceCaseStudyProps) {
         {(prev || next) && (
           <nav className={styles.adjacent} aria-label="Andra tjänster">
             {prev ? (
-              <Link
+              <SiteLink
                 href={`/services/${prev.slug}`}
                 className={styles.adjacentLink}
               >
                 <span className={styles.adjacentLabel}>Föregående</span>
                 <span className={styles.adjacentName}>{prev.title}</span>
-              </Link>
+              </SiteLink>
             ) : (
               <span />
             )}
             {next ? (
-              <Link
+              <SiteLink
                 href={`/services/${next.slug}`}
                 className={`${styles.adjacentLink} ${styles.adjacentNext}`}
               >
                 <span className={styles.adjacentLabel}>Nästa</span>
                 <span className={styles.adjacentName}>{next.title}</span>
-              </Link>
+              </SiteLink>
             ) : (
               <span />
             )}
@@ -157,9 +157,9 @@ export function ServiceCaseStudy({ service }: ServiceCaseStudyProps) {
           <h2 id="service-cta-heading" className={styles.ctaHeading}>
             Redo att komma igång med {service.title.toLowerCase()}?
           </h2>
-          <a href={`mailto:${site.email}`} className={styles.ctaBtn}>
+          <SiteLink href={`mailto:${site.email}`} className={styles.ctaBtn}>
             Mejla mig
-          </a>
+          </SiteLink>
         </div>
       </section>
     </article>

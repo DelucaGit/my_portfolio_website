@@ -1,4 +1,5 @@
-import { expect, test, type Locator, type Page } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
+import { expectReadableText } from "./support/readable";
 import {
   expectNoSidewaysScroll,
   expectTheme,
@@ -156,49 +157,10 @@ for (const theme of THEMES) {
       await page.goto("/");
       await expectTheme(page, theme);
 
-      const readable = [
-        tech(page).getByRole("heading", { name: "Vilka språk jag kan" }),
-        tech(page).getByText("Java", { exact: true }),
-        road(page).getByRole("heading", { name: "Vägen hit" }),
-        road(page).getByText("Webmaster", { exact: true }),
-        contact(page).getByRole("heading", { name: "Ska vi höras?" }),
-        contact(page).getByText("073 879 66 01", { exact: true }),
-        contact(page).getByRole("button", { name: "Kopiera e-postadressen" }),
-      ];
-      for (const text of readable) {
-        expect(await contrast(text)).toBeGreaterThanOrEqual(4.5);
+      for (const section of [tech(page), road(page), contact(page)]) {
+        await expectReadableText(section);
       }
     });
-  });
-}
-
-/** WCAG contrast between an element's text and the colour painted behind it. */
-async function contrast(target: Locator): Promise<number> {
-  return target.evaluate((node) => {
-    const parse = (value: string) => {
-      const [r, g, b, a = 1] = (value.match(/[\d.]+/g) ?? []).map(Number);
-      return { r, g, b, a };
-    };
-    const luminance = ({ r, g, b }: { r: number; g: number; b: number }) => {
-      const [R, G, B] = [r, g, b].map((channel) => {
-        const c = channel / 255;
-        return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
-      });
-      return 0.2126 * R + 0.7152 * G + 0.0722 * B;
-    };
-    let behind = { r: 255, g: 255, b: 255, a: 1 };
-    for (let el: Element | null = node; el; el = el.parentElement) {
-      const colour = parse(getComputedStyle(el).backgroundColor);
-      if (colour.a === 1) {
-        behind = colour;
-        break;
-      }
-    }
-    const [light, dark] = [
-      luminance(parse(getComputedStyle(node).color)),
-      luminance(behind),
-    ].sort((a, b) => b - a);
-    return (light + 0.05) / (dark + 0.05);
   });
 }
 
