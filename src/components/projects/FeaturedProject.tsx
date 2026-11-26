@@ -33,7 +33,6 @@ export default function FeaturedProject() {
               poster={walkthrough.poster}
               label={`${copy.filmLabel} ${project.name}`}
               steps={walkthrough.steps}
-              narrator={copy.filmNarrator}
             />
           ) : (
             // eslint-disable-next-line @next/next/no-img-element
