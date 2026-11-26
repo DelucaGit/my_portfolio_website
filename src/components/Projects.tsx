@@ -1,39 +1,52 @@
-import Link from "next/link";
-import { ProjectCard } from "@/components/projects/ProjectCard";
-import { getFeaturedProjects } from "@/lib/projects";
+import FeaturedProject from "@/components/projects/FeaturedProject";
+import ProjectSplitView from "@/components/projects/ProjectSplitView";
+import SiteLink from "@/components/SiteLink";
+import { site } from "@/data/site";
+import { getHomeProjects } from "@/lib/projects";
+import home from "@/styles/homeSection.module.css";
+import shared from "@/styles/shared.module.css";
 import styles from "./Projects.module.css";
 
+/**
+ * The project section on the start page: the featured project as a card,
+ * then the next projects in the split view, then the way to all of them.
+ */
 export default function Projects() {
-  const projects = getFeaturedProjects(4);
+  const more = site.projects.more;
 
   return (
     <section
       id="projekt"
-      className={styles.section}
+      className={home.sec}
       aria-labelledby="projects-heading"
     >
-      <div className={styles.inner}>
-        <header className={styles.header}>
-          <h2 id="projects-heading" className={styles.heading}>
-            Projekt
-          </h2>
-          <p className={styles.support}>
-            Några saker jag har byggt, egna produkter och uppdrag.
-          </p>
-        </header>
+      <div className={shared.wrap}>
+        <h2 id="projects-heading" className={shared.vh}>
+          {site.projects.heading}
+        </h2>
+        <FeaturedProject />
 
-        <ul className={styles.list}>
-          {projects.map((project) => (
-            <li key={project.slug}>
-              <ProjectCard project={project} featured />
-            </li>
-          ))}
-        </ul>
-
-        <div className={styles.footer}>
-          <Link href="/projects" className={styles.allLink}>
-            Se alla projekt <span aria-hidden="true">→</span>
-          </Link>
+        <div className={styles.more}>
+          <ProjectSplitView
+            projects={getHomeProjects()}
+            label={more.heading}
+            header={
+              <div className={home.top}>
+                <h3 className={home.heading}>{more.heading}</h3>
+                <p>{more.note}</p>
+              </div>
+            }
+            footer={
+              <p className={styles.all}>
+                <SiteLink
+                  href={more.all.href}
+                  className={`${shared.pill} ${shared.pillLine}`}
+                >
+                  {more.all.name} <span aria-hidden="true">→</span>
+                </SiteLink>
+              </p>
+            }
+          />
         </div>
       </div>
     </section>

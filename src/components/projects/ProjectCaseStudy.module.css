@@ -1,424 +1,290 @@
+/* A project's own page in the Tyngdlös design: mono labels, quiet cards,
+   pills, and the first picture in a browser window on a painted landscape. */
+
 .page {
-  background: var(--color-bg);
-  color: var(--color-text);
+  padding-top: clamp(1.25rem, 3vw, 2.5rem);
 }
 
-.inner {
-  width: 100%;
-  max-width: var(--content-max);
-  margin: 0 auto;
-  padding: 1.5rem var(--page-pad) 0;
+/* Small mono label: facts above the name, the label above every heading */
+.label {
+  font: 0.68rem/1.4 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mut);
 }
 
 .back {
-  margin: 0 0 1.75rem;
-  font-size: 0.95rem;
+  margin-bottom: clamp(1.25rem, 3vw, 2.5rem);
+  font-size: 0.9rem;
+  color: var(--mut);
 }
 
 .back a {
-  color: var(--color-text-muted);
-  text-decoration: none;
-  font-weight: var(--weight-semibold);
-}
-
-.back a:hover {
-  color: var(--color-accent);
-}
-
-.back a:focus-visible {
-  outline: 2px solid var(--color-focus);
-  outline-offset: 3px;
-}
-
-/* ── Header ── */
-
-.header {
-  display: flex;
-  flex-direction: column;
-  gap: 1.75rem;
-  margin-bottom: 2.75rem;
-  padding-bottom: 2.75rem;
-  border-bottom: 1px solid var(--color-border);
-}
-
-.headerMain {
-  max-width: 48rem;
-}
-
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-}
-
-.tagAccent,
-.tagMuted {
   display: inline-flex;
-  padding: 0.35rem 0.85rem;
-  border-radius: var(--radius-full);
-  font-size: var(--text-eyebrow);
-  font-weight: var(--weight-bold);
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
+  align-items: center;
+  gap: 0.4em;
+  /* Tall enough to tap */
+  min-height: 2.75rem;
 }
 
-.tagAccent {
-  background: #ffd9e3;
-  color: #8d004e;
+@media (hover: hover) {
+  .back a:hover {
+    color: var(--ink);
+  }
 }
 
-.tagMuted {
-  background: transparent;
-  color: var(--color-text-muted);
+/* ── Top: facts, name, tagline, summary and the buttons ── */
+
+.top {
+  display: grid;
+  gap: 1.5rem;
 }
 
-.title {
-  margin: 0 0 0.85rem;
-  font-size: clamp(2rem, 4vw, 3.5rem);
-  font-weight: 800;
-  line-height: 1.08;
+.intro {
+  display: grid;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.name {
+  font-weight: 450;
+  font-size: clamp(2.1rem, 5.4vw, 4rem);
+  line-height: 1.04;
   letter-spacing: -0.035em;
-  color: var(--color-heading);
   text-wrap: balance;
+  overflow-wrap: break-word;
 }
 
-.lead {
-  margin: 0 0 0.85rem;
-  font-size: clamp(1.1rem, 2vw, 1.25rem);
-  font-weight: var(--weight-semibold);
-  line-height: 1.45;
-  color: var(--color-heading);
+.tagline {
+  max-width: 30em;
+  font-size: clamp(1.1rem, 1.8vw, 1.35rem);
+  font-weight: 450;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  text-wrap: pretty;
 }
 
 .summary {
-  margin: 0;
-  max-width: 42rem;
-  font-size: var(--text-body);
-  line-height: var(--leading-body);
-  color: var(--color-text-muted);
+  max-width: 38em;
+  color: var(--mut);
+  font-size: clamp(1rem, 1.3vw, 1.125rem);
 }
 
-.headerActions {
+.actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.65rem;
+  gap: 0.5rem;
 }
 
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.9rem 1.4rem;
-  border-radius: var(--radius-full);
-  font-size: var(--btn-font);
-  font-weight: var(--weight-semibold);
-  line-height: 1;
-  text-decoration: none;
-  transition:
-    background-color 0.2s ease,
-    transform 0.2s ease;
+/* ── First picture: a browser window on a painted landscape ── */
+
+.hero {
+  margin-top: clamp(1.75rem, 4vw, 3rem);
 }
 
-.btnPrimary {
-  background: var(--color-btn-primary);
-  color: var(--color-btn-on-primary);
-}
-
-.btnPrimary:hover {
-  background: var(--color-btn-primary-hover);
-  transform: translateY(-1px);
-}
-
-.btnSecondary {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  color: var(--color-heading);
-}
-
-.btnSecondary:hover {
-  background: var(--color-surface-hover);
-  transform: translateY(-1px);
-}
-
-.btn:focus-visible {
-  outline: 2px solid var(--color-focus);
-  outline-offset: 3px;
-}
-
-/* ── Hero ── */
-
-.heroBlock {
-  margin-bottom: 3.5rem;
-}
-
-.heroFrame {
-  padding: 0.65rem;
-  border-radius: 1.25rem;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border-light);
-  box-shadow: var(--shadow-card);
-  overflow: hidden;
+.stage {
+  padding: clamp(0.6rem, 4vw, 3.5rem);
 }
 
 .heroImage {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 0.85rem;
-  background: var(--color-surface-dim);
+  background: var(--win-2);
 }
 
-.heroCaption {
-  margin: 0.85rem 0.35rem 0;
-  font-size: var(--text-body-sm);
-  color: var(--color-text-muted);
+.caption {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  color: var(--mut);
 }
 
-/* ── Stack bar ── */
+/* ── Built with: one card, the technologies as pills ── */
 
-.stackBar {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  margin-bottom: 3.5rem;
-  padding: 1.5rem;
-  border-radius: 1.25rem;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border-light);
+.stack {
+  display: grid;
+  gap: 1.1rem;
+  margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  padding: 1.25rem;
+  border-radius: var(--r-m);
+  background: var(--card);
 }
 
-.stackEyebrow {
-  margin: 0 0 0.25rem;
-  font-size: var(--text-eyebrow);
-  font-weight: var(--weight-bold);
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
-  color: var(--color-text-muted);
+.stack > div {
+  display: grid;
+  gap: 0.35rem;
 }
 
 .stackHeading {
-  margin: 0;
-  font-size: 1.2rem;
-  font-weight: var(--weight-semibold);
-  color: var(--color-heading);
+  font-size: 1.15rem;
+  font-weight: 450;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
 }
 
-.stackPills {
+.pills {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+  gap: 0.4rem;
 }
 
-.stackPills li {
-  padding: 0.45rem 0.9rem;
-  border-radius: var(--radius-full);
-  border: 1px solid var(--color-border);
-  background: var(--color-surface-raised);
-  font-size: 0.9rem;
-  font-weight: var(--weight-semibold);
-  color: var(--color-heading);
+.pills li {
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  background: var(--win);
+  border: 1px solid var(--line);
+  font-size: 0.95rem;
 }
 
-/* ── Challenge / solution ── */
+/* ── A part of the page: label, heading, then its content ── */
 
-.duoSection,
-.results,
-.mediaSection {
-  margin-bottom: 3.5rem;
+.part,
+.row {
+  margin-top: clamp(3rem, 7vw, 5.5rem);
 }
 
-.duoIntro {
-  margin-bottom: 1.5rem;
-}
-
-.eyebrow {
-  margin: 0 0 0.4rem;
-  font-size: var(--text-eyebrow);
-  font-weight: var(--weight-bold);
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
-  color: var(--color-accent);
-}
-
-.sectionHeading {
-  margin: 0;
-  font-size: clamp(1.6rem, 3vw, 2.25rem);
-  font-weight: var(--weight-bold);
-  letter-spacing: var(--tracking-tight);
-  line-height: 1.2;
-  color: var(--color-heading);
-}
-
-.duoGrid {
+.partTop {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
+  gap: 0.5rem;
+  margin-bottom: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+.heading {
+  font-weight: 450;
+  font-size: clamp(1.6rem, 3vw, 2.25rem);
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+.support {
+  max-width: 38em;
+  color: var(--mut);
+}
+
+/* ── The problem and the answer: two cards ── */
+
+.duo {
+  display: grid;
+  gap: 0.5rem;
 }
 
 .duoCard {
-  padding: 1.5rem;
-  border-radius: 1.25rem;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border-light);
-}
-
-.duoChallenge {
-  border-color: rgba(186, 26, 26, 0.18);
-}
-
-.duoSolution {
-  border-color: rgba(0, 104, 95, 0.18);
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+  padding: 1.25rem;
+  border-radius: var(--r-m);
+  background: var(--card);
 }
 
 .duoTitle {
-  margin: 0 0 1rem;
-  font-size: 1.35rem;
-  font-weight: var(--weight-bold);
-  color: var(--color-heading);
+  font-size: 1.15rem;
+  font-weight: 450;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
 }
 
-.duoList {
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.bullets {
+  display: grid;
+  gap: 0.7rem;
 }
 
-.duoList li {
+.bullets li {
   position: relative;
-  padding-left: 1.15rem;
-  font-size: 1rem;
-  line-height: 1.55;
-  color: var(--color-text-muted);
+  padding-left: 1.1rem;
+  color: var(--mut);
 }
 
-.duoList li::before {
-  content: "•";
+/* A short line for the problem, a dot in the accent colour for the answer */
+.bullets li::before {
+  content: "";
   position: absolute;
   left: 0;
-  color: var(--color-accent);
-  font-weight: var(--weight-bold);
+  top: 0.72em;
+  width: 0.4rem;
+  border-top: 1px solid var(--mut);
 }
 
-.duoSolution .duoList li::before {
-  color: var(--color-tertiary);
+.duoSolution .bullets li::before {
+  top: 0.55em;
+  height: 0.4rem;
+  border: 0;
+  border-radius: 50%;
+  background: var(--accent);
 }
 
-.resultsBody {
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
-  margin-top: 1rem;
-  max-width: 42rem;
-}
-
-.resultsBody p {
-  margin: 0;
-  font-size: var(--text-body);
-  line-height: var(--leading-body);
-  color: var(--color-text-muted);
-}
-
-/* ── Alternating feature rows ── */
-
-.featureRow {
+.results {
   display: grid;
-  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  max-width: 38em;
+  font-size: clamp(1rem, 1.3vw, 1.125rem);
+}
+
+/* ── A picture next to a short text ── */
+
+.row {
+  display: grid;
   gap: 1.5rem;
   align-items: center;
-  margin-bottom: 3.5rem;
 }
 
-/* Mobile: text first, image after (order: 1). Desktop puts the image back on its side. */
-.featureMedia {
-  order: 1;
-  margin: 0;
-  padding: 0.65rem;
-  border-radius: 1.25rem;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border-light);
-  overflow: hidden;
+.rowText {
+  display: grid;
+  gap: 0.5rem;
+  max-width: 30rem;
 }
 
-.featureMedia img {
+.rowHeading {
+  font-weight: 450;
+  font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+/* A picture in a card */
+.frame {
+  min-width: 0;
+  padding: clamp(0.4rem, 1vw, 0.6rem);
+  border-radius: var(--r-m);
+  background: var(--card);
+}
+
+.frame img {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 0.85rem;
+  border-radius: var(--r-s);
 }
 
-.featureCopy {
-  max-width: 28rem;
-}
+/* ── Phone screenshots: a strip that scrolls sideways ── */
 
-.featureHeading {
-  margin: 0 0 0.75rem;
-  font-size: clamp(1.35rem, 2.5vw, 1.75rem);
-  font-weight: var(--weight-bold);
-  letter-spacing: -0.015em;
-  color: var(--color-heading);
-}
-
-.featureText {
-  margin: 0;
-  font-size: var(--text-body);
-  line-height: var(--leading-body);
-  color: var(--color-text-muted);
-}
-
-.mediaIntro,
-.mediaIntroWide {
-  margin-bottom: 1.25rem;
-}
-
-.mediaSupport {
-  margin: 0.65rem 0 0;
-  font-size: 0.98rem;
-  line-height: var(--leading-body);
-  color: var(--color-text-muted);
-}
-
-/* ── Mobile strip ── */
-
-.mobileScroll {
-  margin: 0 calc(var(--page-pad) * -1);
-  padding: 0.25rem var(--page-pad) 0.75rem;
+.phones {
+  margin-left: calc(var(--gut-l) * -1);
+  margin-right: calc(var(--gut-r) * -1);
+  padding: 0.25rem var(--gut-r) 0.75rem var(--gut-l);
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scroll-snap-type: x mandatory;
+  scroll-padding-left: var(--gut-l);
   scrollbar-width: thin;
 }
 
-.mobileScroll:focus-visible {
-  outline: 2px solid var(--color-focus);
-  outline-offset: 2px;
-}
-
-.mobileList {
+.phoneList {
   display: flex;
   gap: 1rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
   width: max-content;
 }
 
 .phone {
   position: relative;
-  flex: 0 0 auto;
+  flex: none;
   width: 12.5rem;
   scroll-snap-align: start;
   padding: 0.55rem;
   border-radius: 1.75rem;
-  background: #1e1b19;
-  box-shadow: var(--shadow-image);
+  background: var(--panel);
+  box-shadow: var(--shadow);
 }
 
 .phoneNotch {
@@ -429,14 +295,14 @@
   width: 4.25rem;
   height: 1.05rem;
   border-radius: 999px;
-  background: #1e1b19;
+  background: var(--panel);
   transform: translateX(-50%);
 }
 
 .phoneScreen {
   overflow: hidden;
   border-radius: 1.3rem;
-  background: var(--color-surface);
+  background: var(--card);
 }
 
 .phoneScreen img {
@@ -445,38 +311,9 @@
   height: auto;
 }
 
-/* ── Full page frame ── */
+/* ── The whole page in a window: scroll inside it ── */
 
-.fullPageFrame {
-  border-radius: 1rem;
-  overflow: hidden;
-  border: 1px solid var(--color-border);
-  background: var(--color-surface);
-  box-shadow: var(--shadow-card);
-}
-
-.fullPageFrame:focus-visible {
-  outline: 2px solid var(--color-focus);
-  outline-offset: 3px;
-}
-
-.fullPageChrome {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.7rem 0.9rem;
-  border-bottom: 1px solid var(--color-border);
-  background: var(--color-surface-hover);
-}
-
-.fullPageChrome span {
-  width: 0.55rem;
-  height: 0.55rem;
-  border-radius: 50%;
-  background: var(--color-border);
-}
-
-.fullPageScroll {
+.fullPage {
   height: 70vh;
   max-height: 36rem;
   overflow-y: auto;
@@ -484,218 +321,174 @@
   scrollbar-width: thin;
 }
 
-.fullPageScroll img {
+.fullPage img {
   display: block;
   width: 100%;
   height: auto;
 }
-
-/* ── Video ── */
 
 .video {
   display: block;
   width: 100%;
   height: auto;
   aspect-ratio: 16 / 10;
-  background: var(--color-surface-dim);
+  background: var(--win-2);
 }
-
-/* ── Gallery ── */
 
 .gallery {
-  list-style: none;
-  margin: 0;
-  padding: 0;
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
+  gap: 0.5rem;
 }
 
-.galleryItem {
-  margin: 0;
-  padding: 0.5rem;
-  border-radius: 1.15rem;
-  overflow: hidden;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border-light);
+/* ── The projects before and after ── */
+
+.adjacent {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: clamp(3rem, 7vw, 5.5rem);
 }
 
-.galleryItem img {
-  display: block;
-  width: 100%;
-  height: auto;
-  border-radius: 0.75rem;
+.neighbour {
+  display: grid;
+  gap: 0.5rem;
+  align-content: space-between;
+  min-width: 0;
+  min-height: 6.5rem;
+  padding: 1.1rem 1.25rem 1.2rem;
+  border-radius: var(--r-m);
+  background: var(--card);
+  transition: background-color 0.2s;
 }
 
-/* ── Next nav ── */
+.neighbourName {
+  font-weight: 450;
+  font-size: clamp(1.35rem, 2.6vw, 1.9rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  overflow-wrap: break-word;
+}
 
-.nextNav {
-  display: flex;
-  flex-direction: column;
+@media (hover: hover) {
+  .neighbour:hover {
+    background: var(--card-2);
+  }
+
+  /* On the darker card the label needs the ink colour to stay readable */
+  .neighbour:hover .label {
+    color: var(--ink);
+  }
+}
+
+/* ── Contact: the dark panel ── */
+
+.panel {
+  display: grid;
   gap: 1.25rem;
-  padding: 2rem 0 3rem;
-  border-top: 1px solid var(--color-border);
+  justify-items: start;
+  margin-top: clamp(3rem, 7vw, 5.5rem);
+  padding: clamp(1.5rem, 4.5vw, 4rem);
+  border-radius: var(--r-l);
+  background: var(--panel);
+  color: var(--on-panel);
 }
 
-.nextLink {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  text-decoration: none;
-  color: inherit;
+.panel h2 {
+  font-weight: 450;
+  font-size: clamp(1.9rem, 4.4vw, 3.25rem);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
 }
 
-.nextLink:hover .nextName {
-  color: var(--color-accent);
+.panel p {
+  max-width: 30em;
+  color: var(--panel-mut);
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
 }
 
-.nextLabel {
-  font-size: var(--text-eyebrow);
-  font-weight: var(--weight-bold);
-  letter-spacing: var(--tracking-eyebrow);
+.panel .status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font: 0.72rem/1.2 var(--mono);
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--color-text-muted);
 }
 
-.nextName {
-  font-size: clamp(1.35rem, 3vw, 1.85rem);
-  font-weight: var(--weight-bold);
-  letter-spacing: var(--tracking-tight);
-  color: var(--color-heading);
-  transition: color 0.15s ease;
+.status i {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: #4cc27f;
+  box-shadow: 0 0 0 4px rgba(76, 194, 127, 0.22);
 }
 
-.nextCv {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  align-self: flex-start;
-  padding: 0.75rem 1.25rem;
-  border-radius: var(--radius-full);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  font-size: var(--btn-font);
-  font-weight: var(--weight-semibold);
-  color: var(--color-heading);
-  text-decoration: none;
+.panel :focus-visible {
+  outline-color: var(--on-panel);
 }
 
-.nextCv:hover {
-  color: var(--color-accent);
-}
-
-/* ── CTA ── */
-
-.cta {
-  padding: 4rem var(--page-pad);
-  background: var(--color-surface);
-  text-align: center;
-}
-
-.ctaInner {
-  max-width: 28rem;
-  margin: 0 auto;
+.panelActions {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
-.ctaBadge {
-  margin: 0 0 1rem;
-  padding: 0.4rem 0.9rem;
-  border-radius: var(--radius-full);
-  border: 1px solid var(--color-border);
-  background: var(--color-bg);
-  font-size: 0.8rem;
-  font-weight: var(--weight-medium);
-  color: var(--color-text-muted);
+.pillLight {
+  min-height: 3rem;
+  padding-inline: 1.5rem;
+  background: var(--on-panel);
+  color: var(--panel);
 }
 
-.ctaHeading {
-  margin: 0 0 0.65rem;
-  font-size: var(--text-heading-sm);
-  font-weight: var(--weight-bold);
-  letter-spacing: var(--tracking-tight);
-  color: var(--color-heading);
+.pillGhost {
+  min-height: 3rem;
+  padding-inline: 1.5rem;
+  border-color: color-mix(in srgb, var(--on-panel) 35%, transparent);
+  color: var(--on-panel);
 }
 
-.ctaText {
-  margin: 0 0 1.5rem;
-  font-size: var(--text-body);
-  line-height: var(--leading-body);
-  color: var(--color-text-muted);
-}
-
-.ctaBtn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.95rem 1.5rem;
-  border-radius: var(--radius-full);
-  background: var(--color-btn-primary);
-  color: var(--color-btn-on-primary);
-  font-size: var(--btn-font);
-  font-weight: var(--weight-semibold);
-  text-decoration: none;
-  transition:
-    background-color 0.2s ease,
-    transform 0.2s ease;
-}
-
-.ctaBtn:hover {
-  background: var(--color-btn-primary-hover);
-  transform: translateY(-1px);
-}
-
-.ctaBtn:focus-visible {
-  outline: 2px solid var(--color-focus);
-  outline-offset: 3px;
-}
-
-/* Mobile: less noise above the title, and two even buttons */
-@media (max-width: 639px) {
-  /* Client, role and year pills are hidden; the info is still in the page body */
-  .tagMuted {
-    display: none;
+@media (hover: hover) {
+  .pillLight:hover {
+    background: #fff;
   }
 
-  .headerActions {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+  .pillGhost:hover {
+    border-color: var(--on-panel);
   }
 }
 
-@media (min-width: 640px) {
-  .inner {
-    padding: 2rem var(--page-pad-md) 0;
-  }
+/* ── Wider screens ── */
 
-  .stackBar {
-    flex-direction: row;
+@media (min-width: 620px) {
+  .stack {
+    grid-template-columns: auto minmax(0, 1fr);
     align-items: center;
-    justify-content: space-between;
-    padding: 1.75rem 2rem;
+    gap: 2rem;
+    padding: 1.5rem 1.75rem;
   }
 
-  .duoGrid {
-    grid-template-columns: 1fr 1fr;
-    gap: 1.25rem;
+  .pills {
+    justify-content: flex-end;
   }
 
+  .duo,
   .gallery {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .nextNav {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+  .duoCard {
+    padding: 1.5rem;
   }
 
-  .mobileScroll {
-    margin: 0 calc(var(--page-pad-md) * -1);
-    padding-left: var(--page-pad-md);
-    padding-right: var(--page-pad-md);
+  .adjacent {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* The next project stands to the right, also when there is no previous one */
+  .neighbourNext {
+    grid-column: 2;
+    justify-items: end;
+    text-align: right;
   }
 
   .phone {
@@ -704,50 +497,24 @@
 }
 
 @media (min-width: 960px) {
-  .inner {
-    padding: 2.5rem var(--page-pad-lg) 0;
-  }
-
-  .header {
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: space-between;
+  /* Name and text to the left, the buttons at the foot to the right */
+  .top {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
     gap: 2rem;
   }
 
-  .featureRow {
-    grid-template-columns: 1.15fr 0.85fr;
+  .row {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
     gap: 2.5rem;
   }
 
-  .featureRowFlip {
-    grid-template-columns: 0.85fr 1.15fr;
+  /* Picture first, text second, unless the row is flipped */
+  .row:not(.rowFlip) .frame {
+    order: -1;
   }
 
-  .featureMedia {
-    order: 0;
-  }
-
-  .mobileScroll {
-    margin: 0;
-    padding-left: 0;
-    padding-right: 0;
-  }
-
-  .gallery {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.25rem;
-  }
-
-  .cta {
-    padding: 5rem var(--page-pad-lg);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .btnPrimary:hover,
-  .btnSecondary:hover,
-  .ctaBtn:hover {
-    transform: none;
+  .row:not(.rowFlip) {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
   }
 }

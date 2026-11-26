@@ -1,6 +1,12 @@
 import { existsSync, readdirSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import { expect, type Locator, type Page } from "@playwright/test";
+import {
+  getAllProjects,
+  getFeaturedProject,
+  getHomeProjects,
+  type Project,
+} from "@/lib/projects";
 
 /**
  * Shared helpers for every Playwright suite. Later tickets extend this file:
@@ -70,6 +76,219 @@ export function keyRoutes(): string[] {
     firstUnder("/projects/"),
     firstUnder("/services/"),
   ].filter((route): route is string => Boolean(route));
+}
+
+/**
+ * The featured project, read from the data layer the same way the site reads
+ * it. Change `featuredProject` in src/data/site.ts and the tests follow.
+ */
+export function featuredProject(): Project {
+  return getFeaturedProject();
+}
+
+/** The card for the featured project at the top of the project section. */
+export function featuredCard(page: Page): Locator {
+  return page
+    .locator("#projekt")
+    .getByRole("article", { name: featuredProject().name })
+    .filter({ hasText: "Utvalt" });
+}
+
+/** The recorded walkthrough in the featured card's browser window. */
+export function featuredFilm(page: Page): Locator {
+  return featuredCard(page).getByRole("img", { name: /^Inspelad genomgång/ });
+}
+
+const filmTime = (film: Locator) =>
+  film.evaluate((video: HTMLVideoElement) => video.currentTime);
+
+/** The film is moving: its picture is further along a moment later. */
+export async function expectFilmPlaying(film: Locator) {
+  const before = await filmTime(film);
+  await expect
+    .poll(() => filmTime(film), { timeout: 15_000 })
+    .toBeGreaterThan(before);
+}
+
+/** The film stands still: it has stopped and stays where it is. */
+export async function expectFilmStill(film: Locator) {
+  await expect
+    .poll(() => film.evaluate((video: HTMLVideoElement) => video.paused))
+    .toBe(true);
+  const before = await filmTime(film);
+  await film.page().waitForTimeout(600);
+  expect(await filmTime(film)).toBe(before);
+}
+
+/**
+ * The visitor scrolls until `share` (0 to 1) of the element's height has come
+ * up over the bottom edge of the window.
+ */
+export async function scrollUntilShowing(
+  page: Page,
+  target: Locator,
+  share: number,
+) {
+  await target.evaluate((element, wanted) => {
+    const box = element.getBoundingClientRect();
+    const top = box.top + window.scrollY;
+    window.scrollTo(0, top - window.innerHeight + box.height * wanted);
+  }, share);
+  const viewport = page.viewportSize();
+  if (!viewport) throw new Error("scrollUntilShowing: no viewport");
+  await expect
+    .poll(async () => {
+      const box = await target.boundingBox();
+      return box ? Math.round((viewport.height - box.y) / box.height / 0.05) : -1;
+    })
+    .toBe(Math.round(share / 0.05));
+}
+
+// ── The split view (project names + preview window) ──
+
+/** The width the split view starts at; below it the projects are rows. */
+export const SPLIT_FROM = 1024;
+
+/**
+ * The projects under the featured one on the start page, read from the data
+ * layer the same way the site reads them.
+ */
+export function homeProjects(): Project[] {
+  return getHomeProjects();
+}
+
+/** The name of the split view's list in the project archive (/projects/). */
+export const ARCHIVE_LIST = "Alla projekt";
+
+/**
+ * Every project, in the order the archive lists them, read from the data
+ * layer the same way the site reads them.
+ */
+export function allProjects(): Project[] {
+  return getAllProjects();
+}
+
+/** A split view's list of projects. On the start page it is called "Fler projekt". */
+export function projectList(page: Page, name = "Fler projekt"): Locator {
+  return page.getByRole("list", { name, exact: true });
+}
+
+/** The links in a split view's list, one per project, in order. */
+export function projectLinks(page: Page, name?: string): Locator {
+  return projectList(page, name).getByRole("link");
+}
+
+/** The split view's preview window (only there from SPLIT_FROM). */
+export function previewWindow(page: Page): Locator {
+  return page.getByRole("complementary", {
+    name: "Förhandsvisning av valt projekt",
+  });
+}
+
+const READ_CASE = "Läs caset: ";
+
+/**
+ * The name of the project the preview window shows right now, read from its
+ * "Läs caset: …" button.
+ */
+export async function previewedProject(page: Page): Promise<string> {
+  const name = await previewWindow(page)
+    .getByRole("link", { name: new RegExp(`^${READ_CASE}`) })
+    .getAttribute("aria-label");
+  return (name ?? "").slice(READ_CASE.length);
+}
+
+/**
+ * The preview window shows this project: its buttons are about it, its
+ * screenshot is on screen and its name is the marked one in the list.
+ */
+export async function expectPreviewing(
+  page: Page,
+  project: Project,
+  listName?: string,
+) {
+  const pane = previewWindow(page);
+  await expect(
+    pane.getByRole("link", { name: READ_CASE + project.name, exact: true }),
+  ).toBeVisible();
+  await expect(
+    pane.getByRole("img", { name: `Skärmbild av ${project.name}`, exact: true }),
+  ).toBeVisible();
+  await expect(
+    projectList(page, listName).locator('[aria-current="true"]'),
+  ).toContainText(project.name);
+}
+
+/** The page has stopped moving (the smooth scroll has caught up). */
+export async function scrollSettled(page: Page) {
+  let last = -1;
+  await expect
+    .poll(
+      async () => {
+        const now = await page.evaluate(() => window.scrollY);
+        const still = now === last;
+        last = now;
+        return still;
+      },
+      { intervals: [150] },
+    )
+    .toBe(true);
+}
+
+/**
+ * The visitor turns the mouse wheel, a notch at a time, until `done` says
+ * stop. A negative `step` scrolls up.
+ *
+ * The pause between two notches is short on purpose. Sending a notch and
+ * asking `done` already take about 100 ms together (twice that in WebKit),
+ * so a longer pause only made the long scrolls slow: the page was scrolled
+ * at 300 px a second and two tests ran into the time limit when the machine
+ * was busy. The page still moves at most `step` px between two looks.
+ */
+export async function wheelUntil(
+  page: Page,
+  done: () => Promise<boolean>,
+  { step = 70, pause = 30, notches = 400 } = {},
+) {
+  for (let n = 0; n < notches; n++) {
+    if (await done()) return;
+    await page.mouse.wheel(0, step);
+    await page.waitForTimeout(pause);
+  }
+  throw new Error("wheelUntil: turned the wheel to the end without getting there");
+}
+
+/**
+ * The visitor scrolls down with quick turns of the wheel until the split
+ * view's list has come up into the window.
+ */
+export async function wheelToProjectList(page: Page, listName?: string) {
+  const first = projectLinks(page, listName).first();
+  const height = page.viewportSize()?.height ?? 0;
+  await wheelUntil(
+    page,
+    async () => ((await first.boundingBox())?.y ?? Infinity) < height * 0.9,
+    { step: 250 },
+  );
+  await scrollSettled(page);
+}
+
+/** The visitor scrolls with the wheel until the preview window shows the project. */
+export async function wheelToProject(
+  page: Page,
+  project: Project,
+  { gently = false } = {},
+) {
+  if ((await previewedProject(page)) !== project.name) {
+    await wheelToProjectList(page);
+  }
+  // The page glides on a little after the wheel stops; `gently` keeps that short.
+  await wheelUntil(
+    page,
+    async () => (await previewedProject(page)) === project.name,
+    gently ? { step: 30 } : undefined,
+  );
+  await scrollSettled(page);
 }
 
 /** The visitor picks a theme with the switcher in the footer. */

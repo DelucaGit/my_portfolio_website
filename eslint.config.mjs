@@ -10,6 +10,8 @@ const eslintConfig = defineConfig([
     // Default ignores of eslint-config-next:
     ".next/**",
     "out/**",
+    "out-ended/**",
+    "out-featured/**",
     "build/**",
     "next-env.d.ts",
   ]),

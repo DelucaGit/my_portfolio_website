@@ -1,12 +1,16 @@
-// Serves the static export in out/ for Playwright. No dependencies.
+// Serves a static export for Playwright. No dependencies.
+//   node serve-out.mjs [port] [folder]   (folder: out, or out-ended)
 // Works like a plain web host: /cv/ serves /cv/index.html, unknown paths get 404.html.
 import { createServer } from "node:http";
 import { readFile, stat } from "node:fs/promises";
 import { extname, join, normalize, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const root = resolve(fileURLToPath(new URL("../../../out", import.meta.url)));
 const port = Number(process.argv[2] ?? 4173);
+const folder = process.argv[3] ?? "out";
+const root = resolve(
+  fileURLToPath(new URL(`../../../${folder}`, import.meta.url)),
+);
 
 const types = {
   ".html": "text/html; charset=utf-8",

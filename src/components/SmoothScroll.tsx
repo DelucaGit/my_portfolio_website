@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useSyncExternalStore, type ReactNode } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useSyncExternalStore,
+  type ReactNode,
+} from "react";
 import { usePathname } from "next/navigation";
 import { ReactLenis, useLenis } from "lenis/react";
 import "lenis/dist/lenis.css";
@@ -31,6 +37,23 @@ function hashTarget(): HTMLElement | null {
 }
 
 /**
+ * Tells whether the visitor is still on the page they arrived on and has not
+ * navigated yet. Call the returned function inside an effect.
+ */
+function useArriving(pathname: string): () => boolean {
+  const state = useRef<{ first: string | null; left: boolean }>({
+    first: null,
+    left: false,
+  });
+  return useCallback(() => {
+    const seen = state.current;
+    if (seen.first === null) seen.first = pathname;
+    if (seen.first !== pathname) seen.left = true;
+    return !seen.left;
+  }, [pathname]);
+}
+
+/**
  * Lenis keeps its own scroll position, so a Next.js page navigation doesn't
  * reset it the way native scroll would: the new page can open wherever the
  * old page was scrolled to. On every route change this jumps to the section
@@ -44,11 +67,19 @@ function ScrollOnNavigate() {
   const pathname = usePathname();
   const lenis = useLenis();
 
+  const arriving = useArriving(pathname);
+
   useEffect(() => {
     if (!lenis) return;
     const target = hashTarget();
+    // The page the visitor arrived on (or reloaded) is not a navigation: the
+    // browser puts it back where it was, and that position is left alone.
+    if (arriving() && !target) return;
+    // Lenis still has the height of the page we came from and would stop
+    // where that page ended. Measure the new page first.
+    lenis.resize();
     lenis.scrollTo(target ?? 0, { immediate: true });
-  }, [pathname, lenis]);
+  }, [pathname, lenis, arriving]);
 
   return null;
 }
@@ -62,12 +93,16 @@ function ScrollOnNavigate() {
 function NativeScrollOnNavigate() {
   const pathname = usePathname();
 
+  const arriving = useArriving(pathname);
+
   useEffect(() => {
     const target = hashTarget();
+    // As in ScrollOnNavigate: a reload stays where the browser restores it.
+    if (arriving() && !target) return;
     // scrollIntoView respects scroll-padding-top, so the menu doesn't cover it
     if (target) target.scrollIntoView();
     else window.scrollTo(0, 0);
-  }, [pathname]);
+  }, [pathname, arriving]);
 
   useEffect(() => {
     const onClick = (event: MouseEvent) => {
