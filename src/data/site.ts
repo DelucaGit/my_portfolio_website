@@ -298,6 +298,8 @@ POST /api/posts/7/comments 201`,
     buttons: {
       readCase: "Läs caset",
       visitSite: "Besök sidan",
+      /** Stands instead of "Besök sidan" when the customer's site is gone. */
+      siteEnded: "Kunden har avslutat projektet",
       code: "Kod på GitHub",
     },
     /** The projects under the featured one on the start page. */

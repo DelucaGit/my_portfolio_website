@@ -40,7 +40,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# link check: the result scripts/check-sites.mjs writes before a build
+/site-check.json
+
 # playwright
+/out-ended/
 /test-results/
 /playwright-report/
 /blob-report/

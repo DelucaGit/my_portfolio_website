@@ -8,6 +8,7 @@ import {
   getFeaturedProject,
   getProjectHost,
   getProjectWalkthrough,
+  hasEndedSite,
 } from "@/lib/projects";
 import shared from "@/styles/shared.module.css";
 import styles from "./FeaturedProject.module.css";
@@ -74,7 +75,11 @@ export default function FeaturedProject() {
             {buttons.readCase}
             <ArrowOut />
           </SiteLink>
-          <VisitSiteLink name={project.name} siteUrl={project.siteUrl} />
+          <VisitSiteLink
+            name={project.name}
+            siteUrl={project.siteUrl}
+            ended={hasEndedSite(project)}
+          />
         </p>
       </div>
     </article>

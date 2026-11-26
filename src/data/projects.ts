@@ -42,6 +42,12 @@ export type Project = {
   tagline: string;
   description: string;
   siteUrl: string;
+  /**
+   * Set to "ended" when the customer has closed the project. The button to
+   * the site then becomes unavailable, whatever the link check says (for
+   * example when someone else has taken over the old domain).
+   */
+  siteStatus?: "ended";
   githubUrl: string;
   tags: string[];
   year: number;

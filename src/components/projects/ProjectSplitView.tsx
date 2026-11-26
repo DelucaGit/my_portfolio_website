@@ -3,6 +3,7 @@ import { asset } from "@/lib/asset";
 import {
   getProjectHost,
   getProjectPreview,
+  hasEndedSite,
   type Project,
 } from "@/lib/projects";
 import ProjectSplitViewClient, {
@@ -33,6 +34,7 @@ function toSplitViewProject(project: Project): SplitViewProject {
     builtWith: project.stack.join(" · "),
     caseHref: `/projects/${project.slug}`,
     siteUrl: project.siteUrl,
+    siteEnded: hasEndedSite(project),
     githubUrl: project.githubUrl,
     image: asset(preview.large),
     imageSmall: asset(preview.small),

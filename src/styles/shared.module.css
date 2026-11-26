@@ -68,6 +68,13 @@
   border-color: var(--line-2);
 }
 
+/* A button that is switched off: it is there, but it leads nowhere. */
+.pillOff {
+  border: 1px dashed var(--line-2);
+  color: var(--mut);
+  cursor: not-allowed;
+}
+
 .pillSm {
   min-height: 2rem;
   padding: 0.3rem 0.8rem;
