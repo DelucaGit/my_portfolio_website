@@ -1,44 +1,44 @@
-import Link from "next/link";
 import { site } from "@/data/site";
+import shared from "@/styles/shared.module.css";
+import SiteLink from "./SiteLink";
+import ThemeSwitcher from "./ThemeSwitcher";
 import styles from "./Footer.module.css";
 
 export default function Footer() {
   const year = new Date().getFullYear();
+  const { footer } = site;
 
   return (
-    <footer className={styles.footer}>
-      <div className={styles.inner}>
-        <div className={styles.top}>
-          <div>
-            <p className={styles.eyebrow}>Kontakt</p>
-            <p className={styles.tagline}>
-              Enkel kod. Tydliga hemsidor. Redo för nästa jobb.
-            </p>
-            <p className={styles.meta}>{site.status}</p>
-          </div>
-
-          <div className={styles.links}>
-            <a
-              href={site.github}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              GitHub
-            </a>
-            <a
-              href={site.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              LinkedIn
-            </a>
-            <Link href="/cv">CV</Link>
-            <a href={`mailto:${site.email}`}>Mejl</a>
-          </div>
+    <footer className={styles.foot}>
+      <div className={`${shared.wrap} ${styles.inner}`}>
+        <div className={styles.cols}>
+          <p className={styles.lead}>{footer.lead}</p>
+          {footer.columns.map((column, index) => (
+            <nav key={column.heading} aria-labelledby={`footer-col-${index}`}>
+              <h2 id={`footer-col-${index}`}>{column.heading}</h2>
+              <ul>
+                {column.links.map((link) => (
+                  <li key={link.href}>
+                    <SiteLink href={link.href} external={link.external}>
+                      {link.name}
+                    </SiteLink>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ))}
         </div>
 
-        <p className={styles.copy}>
-          © {year} {site.name}. Byggd med omsorg.
+        <div className={styles.base}>
+          <span>
+            © {year} {site.name} · {site.location}
+          </span>
+          <ThemeSwitcher />
+        </div>
+
+        {/* The name as a wordmark. Decorative: the name is already in the line above. */}
+        <p className={styles.word} aria-hidden="true">
+          {site.name}
         </p>
       </div>
     </footer>

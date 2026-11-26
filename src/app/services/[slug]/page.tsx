@@ -23,9 +23,5 @@ export default async function ServicePage({ params }: ServicePageProps) {
   const service = getServiceBySlug(slug);
   if (!service) notFound();
 
-  return (
-    <main>
-      <ServiceCaseStudy service={service} />
-    </main>
-  );
+  return <ServiceCaseStudy service={service} />;
 }

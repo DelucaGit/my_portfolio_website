@@ -18,7 +18,7 @@ export default function CvPage() {
   const { cv } = site;
 
   return (
-    <main className={styles.page}>
+    <div className={styles.page}>
       <div className={styles.inner}>
         <p className={styles.back}>
           <Link href="/">← Tillbaka</Link>
@@ -192,6 +192,6 @@ export default function CvPage() {
           </div>
         </section>
       </div>
-    </main>
+    </div>
   );
 }

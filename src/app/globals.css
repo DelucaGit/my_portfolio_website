@@ -8,6 +8,10 @@
   padding: 0;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 html,
 body {
   /* min-height (not height) lets the page grow, so <html> stays the scroll container */
@@ -15,18 +19,42 @@ body {
 }
 
 html {
-  /* Only on <html>: overflow on <body> would turn it into its own scroll box
-     and break position: sticky for the navbar and the CV side column */
-  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+  /* Anchors land below the sticky menu */
+  scroll-padding-top: calc(var(--nav-h) + 1rem);
 }
 
 body {
-  font-family: var(--font-sans);
-  font-size: var(--text-body);
-  background: var(--color-bg);
-  color: var(--color-text);
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 1rem/1.5 var(--sans);
+  font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* No overflow-x guard here on purpose: nothing may stick out sideways, and
+     the Playwright width suite can only see that when the page is not clipped.
+     Clip decoration that overflows on its own section instead. */
+}
+
+/* Covers the notch area above the sticky menu on phones */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px);
+  z-index: 30;
+  background: var(--bg);
+}
+
+img,
+canvas,
+video {
+  max-width: 100%;
+}
+
+ul,
+ol {
+  list-style: none;
 }
 
 a {
@@ -36,7 +64,33 @@ a {
 
 button {
   font: inherit;
+  color: inherit;
   cursor: pointer;
   border: none;
   background: none;
+}
+
+code,
+pre {
+  font-family: var(--mono);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* <main> takes focus from the skip link; it needs no ring of its own */
+main:focus {
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }
