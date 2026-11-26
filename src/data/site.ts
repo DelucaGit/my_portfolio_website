@@ -321,8 +321,6 @@ POST /api/posts/7/comments 201`,
       label: "Utvalt",
       /** Read by screen readers, followed by the project's name. */
       filmLabel: "Inspelad genomgång av",
-      /** Who is clicking around in the film, shown before the step. */
-      filmNarrator: "Agenten",
     },
   },
   /**
