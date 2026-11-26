@@ -72,6 +72,15 @@ async function tabIntoList(page: Page) {
   throw new Error("Tab never reached the project list");
 }
 
+/*
+ * LONG_JOURNEY: two tests below scroll a long way a notch of the wheel at a
+ * time (one of them the whole start page, down and up again) and wait for
+ * the smooth scroll to come to rest several times on the way. In a full run
+ * they take 15 to 25 seconds, and a busy moment on the machine has pushed
+ * one of them past the normal limit of 30. So they get three times the
+ * normal time limit (`test.slow()`). What they check is unchanged.
+ */
+
 test.describe("Fler projekt på startsidan", () => {
   test("listar nio projekt till, nyast först och utan det utvalda", async ({
     page,
@@ -149,6 +158,7 @@ test.describe("Delad vy: skroll", () => {
   test("fönstret ligger kvar under menyn medan skrollen byter projekt @webkit", async ({
     page,
   }) => {
+    test.slow(); // See LONG_JOURNEY.
     await page.goto("/");
     const pane = previewWindow(page);
 
@@ -174,6 +184,7 @@ test.describe("Delad vy: skroll", () => {
   test("varje projekt går att nå med skrollen, det första och det sista också", async ({
     page,
   }) => {
+    test.slow(); // See LONG_JOURNEY.
     await page.goto("/");
     const seen: string[] = [];
     const note = async () => {
@@ -194,19 +205,20 @@ test.describe("Delad vy: skroll", () => {
       await note();
       return seen.at(-1) === projects.at(-1)!.name;
     });
+    // The rest of the page is long: big turns of the wheel from here on.
     await wheelUntil(
       page,
       async () => {
         await note();
         return atTheEnd();
       },
-      { step: 400 },
+      { step: 1200 },
     );
     expect(seen).toEqual(projects.map((project) => project.name));
     await expectPreviewing(page, projects.at(-1)!);
 
     await wheelUntil(page, () => page.evaluate(() => window.scrollY === 0), {
-      step: -600,
+      step: -1500,
     });
     await expectPreviewing(page, projects[0]);
   });
@@ -433,7 +445,7 @@ test.describe("Delad vy: fönstret", () => {
 });
 
 test.describe("Delad vy: smal skärm", () => {
-  test("under 1024 px är projekten rader med skärmbild, namn, år och tagline, och hela raden är en länk", async ({
+  test("under 1024 px är projekten rader med skärmbild, namn, år och tagline, och hela raden är en länk @webkit", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 800, height: 900 });

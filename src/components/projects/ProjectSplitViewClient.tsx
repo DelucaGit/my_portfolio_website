@@ -31,6 +31,8 @@ export type SplitViewProject = {
   caseHref: string;
   /** Empty when the project has no live site */
   siteUrl: string;
+  /** The customer has closed the site: the button to it is unavailable */
+  siteEnded: boolean;
   /** Empty when the project has no public code */
   githubUrl: string;
   /** The 2:1 screenshot, 1280 px wide */
@@ -544,7 +546,11 @@ export default function ProjectSplitViewClient({
             {buttons.readCase}
             <ArrowOut />
           </SiteLink>
-          <VisitSiteLink name={project.name} siteUrl={project.siteUrl} />
+          <VisitSiteLink
+            name={project.name}
+            siteUrl={project.siteUrl}
+            ended={project.siteEnded}
+          />
           {project.githubUrl && (
             <SiteLink
               href={project.githubUrl}

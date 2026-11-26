@@ -8,21 +8,49 @@ type VisitSiteLinkProps = {
   name: string;
   /** The live site. Empty when the project has none: then nothing is rendered. */
   siteUrl: string;
+  /**
+   * The customer has closed the site. Ask the project layer:
+   * `hasEndedSite(project)` in src/lib/projects.ts.
+   */
+  ended?: boolean;
   className?: string;
 };
 
 /**
  * The "Besök sidan" button, the same wherever a project is shown (the
- * featured card and the split view's preview window). This is the one place
- * to change how the button to a project's live site looks and behaves.
+ * featured card, the split view's preview window and the project pages).
+ * This is the one place to change how the button to a project's live site
+ * looks and behaves.
+ *
+ * When the customer has closed the site the button is not a link any more:
+ * it stands there switched off with the text "Kunden har avslutat projektet".
+ * It cannot be clicked or reached with Tab, and a screen reader announces it
+ * as a link that is unavailable.
  */
 export default function VisitSiteLink({
   name,
   siteUrl,
+  ended = false,
   className,
 }: VisitSiteLinkProps) {
   if (!siteUrl) return null;
-  const label = site.projects.buttons.visitSite;
+  const { visitSite, siteEnded } = site.projects.buttons;
+
+  if (ended) {
+    return (
+      <span
+        role="link"
+        aria-disabled="true"
+        aria-label={`${siteEnded}: ${name}`}
+        className={[shared.pill, shared.pillOff, className]
+          .filter(Boolean)
+          .join(" ")}
+      >
+        {siteEnded}
+      </span>
+    );
+  }
+
   return (
     <SiteLink
       href={siteUrl}
@@ -30,9 +58,9 @@ export default function VisitSiteLink({
       className={[shared.pill, shared.pillSoft, className]
         .filter(Boolean)
         .join(" ")}
-      aria-label={`${label}: ${name}`}
+      aria-label={`${visitSite}: ${name}`}
     >
-      {label}
+      {visitSite}
       <ArrowOut />
     </SiteLink>
   );

@@ -103,7 +103,6 @@ POST /api/posts/7/comments 201`,
     },
   },
   stack: {
-    eyebrow: "Teknik",
     heading: "Vilka språk jag kan",
     note: "(förutom svenska, engelska, spanska, arabiska och franska…)",
     /** What the languages and tools are used for, in the order shown. */
@@ -298,6 +297,8 @@ POST /api/posts/7/comments 201`,
     buttons: {
       readCase: "Läs caset",
       visitSite: "Besök sidan",
+      /** Stands instead of "Besök sidan" when the customer's site is gone. */
+      siteEnded: "Kunden har avslutat projektet",
       code: "Kod på GitHub",
     },
     /** The projects under the featured one on the start page. */
