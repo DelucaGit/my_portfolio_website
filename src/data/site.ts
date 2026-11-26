@@ -16,15 +16,14 @@ export const site = {
   location: "Växjö, Sverige",
   status: "Öppen för jobb",
   cvPdf: "/cv.pdf",
-  heroImage: "/hero-portrait.jpg",
-  heroImageAlt: "Marcel Deluca i profil vid havet",
-  intro: {
-    eyebrow: "Om mig",
-    heading: "Så här brukar det börja",
-    description:
-      "En kort film om hur jag tänker, från första idén till något som faktiskt fungerar.",
-    video: "/videos/intro.mp4",
-    poster: "/videos/intro-poster.jpg",
+  /** The start page's hero: status row, the big sentence and two buttons. */
+  hero: {
+    status: "Öppen för jobb",
+    place: "Växjö",
+    heading: "Jag bygger webbappar och hemsidor med React och Java.",
+    lede: "Jag söker en fast anställning där jag får växa i ett team.",
+    cv: { name: "Läs CV", href: "/cv" },
+    projects: { name: "Se projekten", href: "/#projekt" },
   },
   about: {
     eyebrow: "Om mig",
