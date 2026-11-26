@@ -2,6 +2,32 @@
 
 A running log of what we built, what we chose, and why. Written so a later article can tell the story without reconstructing it from git.
 
+## 26 Nov 2026 — Five ways to show the projects (#50)
+
+**Goal:** Marcel loves Tyngdlös but was still not happy with how the project section feels to use. He asked for several different proposals for just that part. While they were being built he sent a screenshot of a feature card on cursor.com and added his own idea: a recorded walkthrough of a project, where an agent plays a visitor clicking around the site.
+
+**What we did**
+- Five standalone pages that hold only the project section, all with the 17 projects, the same `FEATURED` line and the Tyngdlös look:
+  - `tyngdlos-projekt-scen.html`: one project at a time in a large window on the painted stage, with arrows, swipe and a film strip of all 17
+  - `tyngdlos-projekt-index.html`: the featured project as a large card, the other 16 as rows per year that open in place
+  - `tyngdlos-projekt-galleri.html`: image tiles with the featured one largest, filter chips computed from the data, and a detail panel built on `<dialog>`
+  - `tyngdlos-projekt-delad.html`: big names on the left and a sticky window on the right that follows scroll and pointer
+  - `tyngdlos-projekt-genomgang.html`: Cursor-style cards where the window plays a recording of the real site, with a one-line "Agenten · 03/07 · …" caption that follows the video
+- `prototypes/tools/record-walkthrough.js`: drives a live site in Playwright with an injected pointer (headless Chromium draws none), eased moves and click ripples, then encodes MP4, WebM and a poster with ffmpeg. Sites and steps are data at the top
+- Two recordings in `prototypes/assets/`: fcvaxjo.se (a real click-through, 17.8 s) and andaluscalendar.com (a read-through of the landing page, 19.7 s), each about 1 MB
+
+**Decisions**
+- **Video, not GIF.** A muted looping video is a fraction of a GIF's size and keeps full colour.
+- **No pause button.** Marcel wants a moving picture that cannot be interacted with, so the video has no controls and ignores clicks. It still stops off screen, and it stays on its poster with reduced motion or data saver.
+- **The whole frame, uncropped.** Cursor crops its windows at the card edge. A walkthrough needs the pointer visible wherever it goes, so the window shows the full 16:10 frame.
+- **The Andalus Calendar is only scrolled.** Every button on its public page leads to sign-in, and the recorder does not sign in or submit anything. Showing the app itself needs a demo account.
+- **One variant per subagent.** Each built and tested one file in the same tree, and the main session committed. Marcel's limit is 150k tokens per task; the variant tasks used 162k to 202k, mostly on test-and-fix rounds, so the tasks for the real build need to be cut smaller.
+
+**Tested**
+- Each variant from 390 to 1920 px, light and dark, keyboard, reduced motion, JavaScript off, another featured slug and an unknown slug (Playwright, by the subagent that built it). The main session looked at desktop and phone screenshots of each.
+- Genomgång: the video plays in view, pauses out of view, and a click changes nothing. Only Chromium was tested, so the MP4 path for Safari is unverified.
+- Recording first failed on blocked third-party hosts (the club crest and Tailwind's CDN). The hosts were allowed in the cloud environment and both sites were recorded again.
+
 ## 25 Nov 2026 — Tyngdlös: between Cursor's site and Antigravity's (#48)
 
 **Goal:** After Festaffisch, Marcel wanted to try something new. He likes the websites of Cursor and Google Antigravity and asked for something in between.

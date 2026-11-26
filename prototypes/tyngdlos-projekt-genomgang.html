@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Projektvisning Genomgång</title>
+<meta name="description" content="Prototyp av projektdelen i Tyngdlös, variant Genomgång: inspelade genomgångar av de riktiga sidorna.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,300..700&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: the project part of Tyngdlös as feature cards. Each card is a quiet grey box with a painted
+   landscape on two thirds and a short two-tone text block on the last third. On the landscape sits an app
+   window that plays a recorded walkthrough of the real site. The film has no controls and cannot be
+   touched. Every other project is a small tile below. */
+:root {
+  color-scheme: light;
+  --bg: #f7f6f2;
+  --card: #f0efe9;
+  --card-2: #e6e4dc;
+  --win: #fcfbf8;
+  --win-2: #f3f2ed;
+  --ink: #201f1a;
+  --mut: #6a685e;
+  --faint: #b3b1a6;
+  --line: rgba(32, 31, 26, .11);
+  --line-2: rgba(32, 31, 26, .22);
+  --accent: #c63c00;
+  --ok: #1f8a4c;
+  --dot: rgba(32, 31, 26, .2);
+  --panel: #111114;
+  --on-panel: #f4f3ee;
+  --panel-mut: #b5b4bb;
+  --code-k: #a4380b;
+  --code-s: #2c6e49;
+  --code-a: #5a45b8;
+  --shadow: 0 30px 60px -26px rgba(48, 38, 18, .5), 0 10px 22px -14px rgba(48, 38, 18, .3);
+  --paint-dim: 1;
+  --sans: "Google Sans Flex", "Google Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --r-s: 6px;
+  --r-m: 10px;
+  --r-l: 28px;
+  --gut-l: max(16px, env(safe-area-inset-left, 0px));
+  --gut-r: max(16px, env(safe-area-inset-right, 0px));
+  --space: clamp(4.5rem, 10vw, 9rem);
+  --nav-h: 3.5rem;
+}
+@media (min-width: 800px) {
+  :root {
+    --gut-l: max(32px, env(safe-area-inset-left, 0px));
+    --gut-r: max(32px, env(safe-area-inset-right, 0px));
+  }
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #141310; --card: #1c1b17; --card-2: #26251f; --win: #1b1a16; --win-2: #23221d;
+    --ink: #edece6; --mut: #a3a195; --faint: #5d5b52;
+    --line: rgba(237, 236, 230, .12); --line-2: rgba(237, 236, 230, .24);
+    --accent: #ff8552; --ok: #4cc27f; --dot: rgba(237, 236, 230, .2);
+    --panel: #0a0a0c; --on-panel: #f4f3ee; --panel-mut: #b5b4bb;
+    --code-k: #ff9b73; --code-s: #8fd3a8; --code-a: #b9a8ff;
+    --shadow: 0 30px 60px -26px rgba(0, 0, 0, .8), 0 10px 22px -14px rgba(0, 0, 0, .6);
+    --paint-dim: .78;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #141310; --card: #1c1b17; --card-2: #26251f; --win: #1b1a16; --win-2: #23221d;
+  --ink: #edece6; --mut: #a3a195; --faint: #5d5b52;
+  --line: rgba(237, 236, 230, .12); --line-2: rgba(237, 236, 230, .24);
+  --accent: #ff8552; --ok: #4cc27f; --dot: rgba(237, 236, 230, .2);
+  --panel: #0a0a0c; --on-panel: #f4f3ee; --panel-mut: #b5b4bb;
+  --code-k: #ff9b73; --code-s: #8fd3a8; --code-a: #b9a8ff;
+  --shadow: 0 30px 60px -26px rgba(0, 0, 0, .8), 0 10px 22px -14px rgba(0, 0, 0, .6);
+  --paint-dim: .78;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 1rem/1.5 var(--sans);
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
+img, canvas, video { display: block; max-width: 100%; }
+img, video { height: auto; }
+h1, h2, h3, p, ul, ol { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.mono { font-family: var(--mono); }
+.wrap { max-width: 1364px; margin-inline: auto; padding-left: var(--gut-l); padding-right: var(--gut-r); }
+.skip { position: absolute; left: var(--gut-l); top: -4rem; z-index: 40; background: var(--ink); color: var(--bg); padding: .65rem .9rem; border-radius: 999px; }
+.skip:focus { top: calc(env(safe-area-inset-top, 0px) + .5rem); }
+.go { color: var(--accent); display: inline-flex; gap: .35em; align-items: baseline; }
+.go span { transition: transform .2s; }
+@media (hover: hover) { .go:hover span { transform: translateX(3px); } }
+
+/* Top bar */
+.nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--bg) 86%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.nav-in { display: flex; align-items: center; justify-content: space-between; gap: .75rem; min-height: var(--nav-h); }
+.id { display: flex; align-items: center; gap: .5rem 1rem; min-width: 0; }
+.brand { display: inline-flex; align-items: center; gap: .5rem; min-height: 2.75rem; font-weight: 500; font-size: 1.05rem; letter-spacing: -.01em; white-space: nowrap; }
+.brand svg { width: 1.25rem; height: 1.25rem; flex: none; }
+.lbl, .eye { font: .68rem/1.2 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--mut); white-space: nowrap; }
+.themes { display: inline-flex; flex: none; padding: 3px; gap: 2px; border-radius: 999px; background: var(--card-2); }
+.themes button { width: 2rem; height: 2rem; border-radius: 50%; display: grid; place-items: center; color: var(--mut); }
+.themes button[aria-pressed="true"] { background: var(--bg); color: var(--ink); }
+.themes svg { width: .95rem; height: .95rem; }
+@media (pointer: coarse) { .themes button { width: 2.75rem; height: 2.75rem; } }
+@media (max-width: 479px) { .brand svg, .lbl b { display: none; } }
+.lbl b { font-weight: 400; }
+
+/* Section head */
+.sec { padding-top: clamp(1.75rem, 4.5vw, 3.75rem); }
+.eye { margin-bottom: .8rem; }
+.sec-h { font-weight: 450; font-size: clamp(1.6rem, 3vw, 2.25rem); line-height: 1.12; letter-spacing: -.025em; text-wrap: balance; }
+.sec-top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .35rem 2rem; margin-bottom: clamp(1rem, 2vw, 1.5rem); }
+.sec-top p { color: var(--mut); }
+
+/* Painted stage and the app window (as in Tyngdlös) */
+.scene { position: relative; overflow: hidden; border-radius: var(--r-s); background: linear-gradient(#c9cfd8, #e6d8c4 48%, #8d9477 49%, #b89f6a); }
+.paint { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(var(--paint-dim)) saturate(.92); }
+.win { position: relative; background: var(--win); border: 1px solid var(--line-2); border-radius: var(--r-m); box-shadow: var(--shadow); overflow: hidden; }
+.bar { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: .75rem; height: 1.9rem; padding-inline: .7rem; background: var(--win-2); border-bottom: 1px solid var(--line); font-size: .72rem; color: var(--mut); }
+.bar .lights { display: flex; gap: .35rem; }
+.bar .lights i { width: .5rem; height: .5rem; border-radius: 50%; background: var(--card-2); border: 1px solid var(--line); }
+.bar .ttl { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Feature cards: stage on two thirds, text on one third. Every second card is mirrored. */
+.cards { display: grid; gap: clamp(.75rem, 1.5vw, 1.25rem); }
+.card { background: var(--card); border-radius: var(--r-m); padding: clamp(.6rem, 1vw, .8rem); display: grid; gap: .25rem; }
+.st { min-width: 0; padding: clamp(.6rem, 3.4vw, 2.75rem); display: grid; align-items: center; }
+.st .win { min-width: 0; }
+/* The film (or the still screenshot). The whole frame shows, nothing is cropped. It takes no pointer events. */
+.shot { width: 100%; aspect-ratio: 16 / 10; background: var(--win-2); pointer-events: none; -webkit-user-select: none; user-select: none; }
+img.shot { aspect-ratio: 2 / 1; }
+/* The agent's line: a status strip with a fixed height at the foot of the window. */
+.cap { height: 1.75rem; padding-inline: .7rem; border-top: 1px solid var(--line); background: var(--win-2); font-size: .64rem; line-height: 1.75rem; color: var(--mut); white-space: nowrap; overflow: hidden; }
+.cap-in { display: flex; align-items: center; gap: .4rem; opacity: 0; transition: opacity .25s; }
+.cap.on .cap-in { opacity: 1; }
+.cap i { flex: none; width: .4rem; height: .4rem; border-radius: 50%; background: var(--accent); }
+.cap-a { flex: none; display: none; }
+.cap-x { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+@media (min-width: 480px) { .cap { font-size: .7rem; } .cap-a { display: block; } }
+
+.card-t { min-width: 0; padding: .9rem .6rem .6rem; display: grid; align-content: center; justify-items: start; }
+.facts { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem .65rem; margin-bottom: .9rem; font-size: .68rem; line-height: 1.3; letter-spacing: .06em; text-transform: uppercase; color: var(--mut); }
+.lab { display: inline-flex; align-items: center; gap: .35rem; padding: .3rem .5rem; border-radius: 4px; background: var(--card-2); color: var(--ink); }
+.pin { flex: none; width: .75rem; height: .75rem; fill: var(--accent); }
+/* Two tones at one size: the name in ink, the tagline in muted grey. */
+.card-t h3, .tag { font-size: clamp(1.375rem, 1.8vw, 1.625rem); font-weight: 450; line-height: 1.2; letter-spacing: -.02em; overflow-wrap: break-word; }
+.tag { color: var(--mut); max-width: 24em; text-wrap: pretty; }
+.links { display: flex; flex-wrap: wrap; gap: 0 1.5rem; margin-top: .75rem; }
+.links .go { min-height: 2.25rem; align-items: center; }
+@media (pointer: coarse) { .links .go { min-height: 2.75rem; } }
+@media (min-width: 900px) {
+  .card { grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr); gap: 1.25rem; }
+  .card.flip { grid-template-columns: minmax(0, 1fr) minmax(0, 1.9fr); }
+  .flip .card-t { order: -1; }
+  .card-t { padding: 1rem clamp(.5rem, 1.6vw, 1.5rem); }
+  .links { flex-direction: column; margin-top: 1rem; }
+}
+
+/* The other projects: rows on phones, tiles from 640px */
+.more-h { margin-top: clamp(2.5rem, 5vw, 4rem); margin-bottom: 1rem; }
+.more-h h3 { font-size: 1.35rem; font-weight: 450; letter-spacing: -.015em; line-height: 1.2; }
+.more { display: grid; gap: .5rem; }
+.tile { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: .75rem; align-items: center; height: 100%; padding: .5rem; border-radius: var(--r-s); background: var(--card); transition: background-color .2s; }
+.tile img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; object-position: top; border-radius: 4px; background: var(--card-2); }
+.tile-t { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .15rem .75rem; align-items: baseline; }
+.tile-t b { font-weight: 450; line-height: 1.25; letter-spacing: -.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tile-t small { font-size: .7rem; color: var(--mut); }
+.tile-t span { grid-column: 1 / -1; font-size: .875rem; line-height: 1.35; color: var(--mut); display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+.tile:focus-visible { outline-offset: 2px; }
+@media (hover: hover) { .tile:hover { background: var(--card-2); } }
+@media (min-width: 640px) {
+  .more { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+  .tile { grid-template-columns: minmax(0, 1fr); gap: .7rem; align-items: start; align-content: start; padding: .5rem .5rem .9rem; }
+  .tile img { aspect-ratio: 2 / 1; }
+  .tile-t { padding-inline: .35rem; }
+}
+@media (min-width: 1024px) { .more { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+/* Without JavaScript: a plain list of every project. */
+.plain { columns: 2; column-gap: 2rem; }
+.plain a { display: inline-block; padding-block: .6rem; text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 4px; }
+@media (min-width: 640px) { .plain { columns: 3; } }
+
+.foot { padding-block: clamp(2.5rem, 6vw, 4.5rem) 2rem; font-size: .82rem; color: var(--mut); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Hoppa till innehållet</a>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <div class="id">
+      <a class="brand" href="tyngdlos.html" aria-label="Marcel Deluca, till Tyngdlös">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2" y="9" width="6" height="2.6" rx="1.3" fill="#e2401a" transform="rotate(-62 5 10.3)"/><rect x="7" y="3.4" width="6" height="2.6" rx="1.3" fill="#8a4fe0" transform="rotate(-8 10 4.7)"/><rect x="12" y="9" width="6" height="2.6" rx="1.3" fill="#2f6bf6" transform="rotate(62 15 10.3)"/></svg>
+        Marcel Deluca
+      </a>
+      <span class="lbl"><b>Projektvisning · </b>Genomgång</span>
+    </div>
+    <div class="themes" role="group" aria-label="Tema">
+      <button type="button" data-theme-set="system" aria-pressed="true" aria-label="Följ systemet"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="2" y="3" width="12" height="8" rx="1.5"/><path d="M6 13.5h4"/></svg></button>
+      <button type="button" data-theme-set="light" aria-pressed="false" aria-label="Ljust"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="8" cy="8" r="2.8"/><path d="M8 1.5v1.6M8 12.9v1.6M1.5 8h1.6M12.9 8h1.6M3.4 3.4l1.1 1.1M11.5 11.5l1.1 1.1M3.4 12.6l1.1-1.1M11.5 4.5l1.1-1.1"/></svg></button>
+      <button type="button" data-theme-set="dark" aria-pressed="false" aria-label="Mörkt"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M13 9.6A5.5 5.5 0 0 1 6.4 3 5.5 5.5 0 1 0 13 9.6Z"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="wrap sec" id="projekt" aria-labelledby="projekt-h">
+    <p class="eye">Projekt · <span id="n-all">17</span> st</p>
+    <div class="sec-top">
+      <h2 class="sec-h" id="projekt-h">Det jag har byggt</h2>
+      <p id="sub">Skärmbilder från de riktiga sidorna.</p>
+    </div>
+    <!-- The cards are drawn from the data in the script. This one is the fallback without JavaScript. -->
+    <div class="cards" id="cards">
+      <article class="card" aria-labelledby="c-andalus-calendar">
+        <div class="scene st">
+          <canvas class="paint" data-paint="morgon" aria-hidden="true"></canvas>
+          <div class="win">
+            <div class="bar" aria-hidden="true"><span class="lights"><i></i><i></i><i></i></span><span class="ttl">andaluscalendar.com</span><span></span></div>
+            <video class="shot" poster="assets/walk-andalus-calendar.webp" width="1280" height="800" muted loop playsinline preload="none" disablepictureinpicture disableremoteplayback tabindex="-1" role="img" aria-label="Inspelad genomgång av The Andalus Calendar"><source src="assets/walk-andalus-calendar.webm" type="video/webm"><source src="assets/walk-andalus-calendar.mp4" type="video/mp4"></video>
+          </div>
+        </div>
+        <div class="card-t">
+          <p class="facts mono"><span class="lab"><svg class="pin" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5a3.5 3.5 0 0 1 .75 6.92V14L8 15.2 7.25 14V8.42A3.5 3.5 0 0 1 8 1.5z"/></svg>Utvalt</span><span>2026 · React · Firebase · Kalender</span></p>
+          <h3 id="c-andalus-calendar">The Andalus Calendar</h3>
+          <p class="tag">En kalender där bönetiden redan sitter i vyn, så du inte bokar över salah.</p>
+          <p class="links"><a class="go" href="https://marceldeluca.se/projects/andalus-calendar/" target="_blank" rel="noopener noreferrer">Läs caset <span aria-hidden="true">→</span></a><a class="go" href="https://andaluscalendar.com/" target="_blank" rel="noopener noreferrer">Besök andaluscalendar.com <span aria-hidden="true">↗</span></a></p>
+        </div>
+      </article>
+    </div>
+
+    <div class="sec-top more-h">
+      <h3 id="more-h">Alla projekt</h3>
+      <p class="lbl" id="more-n"></p>
+    </div>
+    <ul class="plain" id="more" aria-labelledby="more-h">
+      <li><a href="https://marceldeluca.se/projects/uniclean-partners/" target="_blank" rel="noopener noreferrer">UniClean Partners</a></li>
+      <li><a href="https://marceldeluca.se/projects/sabaah-al-wuruud/" target="_blank" rel="noopener noreferrer">Sabaah Al-Wuruud</a></li>
+      <li><a href="https://marceldeluca.se/projects/zenith-kampsport/" target="_blank" rel="noopener noreferrer">Zenith Kampsport</a></li>
+      <li><a href="https://marceldeluca.se/projects/fcvaxjo-reborn/" target="_blank" rel="noopener noreferrer">FC Växjö Reborn</a></li>
+      <li><a href="https://marceldeluca.se/projects/andalus-calendar/" target="_blank" rel="noopener noreferrer">The Andalus Calendar</a></li>
+      <li><a href="https://marceldeluca.se/projects/premium-honey-blends/" target="_blank" rel="noopener noreferrer">Premium Honey Blends</a></li>
+      <li><a href="https://marceldeluca.se/projects/alkama/" target="_blank" rel="noopener noreferrer">ALKAMA</a></li>
+      <li><a href="https://marceldeluca.se/projects/uniclean/" target="_blank" rel="noopener noreferrer">UniClean</a></li>
+      <li><a href="https://marceldeluca.se/projects/takkoll/" target="_blank" rel="noopener noreferrer">TakKoll</a></li>
+      <li><a href="https://marceldeluca.se/projects/bilservicekoll/" target="_blank" rel="noopener noreferrer">BilserviceKoll</a></li>
+      <li><a href="https://marceldeluca.se/projects/stadkoll/" target="_blank" rel="noopener noreferrer">Städkoll</a></li>
+      <li><a href="https://marceldeluca.se/projects/brandsakerhetskoll/" target="_blank" rel="noopener noreferrer">Brand &amp; Säkerhetskoll</a></li>
+      <li><a href="https://marceldeluca.se/projects/scooterkoll/" target="_blank" rel="noopener noreferrer">Scooterkoll</a></li>
+      <li><a href="https://marceldeluca.se/projects/halimapearl/" target="_blank" rel="noopener noreferrer">HalimaPearl</a></li>
+      <li><a href="https://marceldeluca.se/projects/ventilationskoll/" target="_blank" rel="noopener noreferrer">Ventilationskoll</a></li>
+      <li><a href="https://marceldeluca.se/projects/shanasheel/" target="_blank" rel="noopener noreferrer">Shanasheel</a></li>
+      <li><a href="https://marceldeluca.se/projects/fcvaxjo/" target="_blank" rel="noopener noreferrer">FC Växjö</a></li>
+    </ul>
+  </section>
+</main>
+
+<footer class="wrap foot">© 2026 Marcel Deluca · Prototyp av projektdelen, variant Genomgång</footer>
+
+<script>
+(function () {
+  'use strict';
+  var doc = document, root = doc.documentElement;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function $(id) { return doc.getElementById(id); }
+  function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+
+  /* 1. Theme: system, light or dark. The choice is remembered on this device. */
+  (function () {
+    var KEY = 'tyngdlos-tema', btns = doc.querySelectorAll('[data-theme-set]');
+    function set(v, save) {
+      if (v === 'system') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', v);
+      for (var i = 0; i < btns.length; i++) btns[i].setAttribute('aria-pressed', String(btns[i].getAttribute('data-theme-set') === v));
+      if (save) { try { localStorage.setItem(KEY, v); } catch (e) {} }
+    }
+    var saved = null;
+    try { saved = localStorage.getItem(KEY); } catch (e) {}
+    set(saved === 'light' || saved === 'dark' ? saved : (root.getAttribute('data-theme') || 'system'), false);
+    for (var i = 0; i < btns.length; i++) btns[i].addEventListener('click', function () { set(this.getAttribute('data-theme-set'), true); });
+  })();
+
+  /* 3. The paintings: each landscape is a few thousand short brush strokes, drawn once from a seed. */
+  var PAL = {
+    morgon: { seed: 11, sky0: [216, 26, 74], sky1: [34, 46, 86], far: [224, 17, 62], near: [96, 17, 43], field: [44, 40, 58] },
+    hav:    { seed: 5,  sky0: [204, 30, 78], sky1: [188, 26, 88], far: [208, 28, 58], near: [172, 22, 40], field: [50, 32, 64] },
+    kvall:  { seed: 23, sky0: [252, 22, 66], sky1: [22, 62, 80], far: [266, 16, 48], near: [206, 20, 34], field: [28, 46, 50] },
+    skog:   { seed: 41, sky0: [190, 18, 80], sky1: [60, 30, 86], far: [150, 16, 52], near: [128, 22, 32], field: [78, 30, 46] }
+  };
+  function paint(cv) {
+    var P = PAL[cv.getAttribute('data-paint')], c = cv.getContext && cv.getContext('2d');
+    if (!P || !c) return;
+    var W = cv.width = 760, H = cv.height = 500, s = P.seed * 9301 + 49297;
+    function rnd() { s |= 0; s = s + 0x6D2B79F5 | 0; var t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }
+    var a = rnd() * 6, b = rnd() * 6, d = rnd() * 6;
+    function r1(x) { return H * (0.5 + 0.05 * Math.sin(x * 0.007 + a) + 0.025 * Math.sin(x * 0.019 + b)); }
+    function r2(x) { return H * (0.66 + 0.07 * Math.sin(x * 0.005 + d) + 0.02 * Math.sin(x * 0.023 + a)); }
+    function r3(x) { return H * (0.85 + 0.035 * Math.sin(x * 0.009 + b)); }
+    function mix(p, q, k) { var dh = ((q[0] - p[0] + 540) % 360) - 180; return [(p[0] + dh * k + 360) % 360, p[1] + (q[1] - p[1]) * k, p[2] + (q[2] - p[2]) * k]; }
+    function hsl(v) { return 'hsl(' + v[0].toFixed(0) + ' ' + v[1].toFixed(0) + '% ' + v[2].toFixed(0) + '%)'; }
+    var g = c.createLinearGradient(0, 0, 0, H * 0.6), n;
+    for (n = 0; n <= 6; n++) g.addColorStop(n / 6, hsl(mix(P.sky0, P.sky1, n / 6 * n / 6)));
+    c.fillStyle = g; c.fillRect(0, 0, W, H);
+    [[r1, P.far], [r2, P.near], [r3, P.field]].forEach(function (L) {
+      c.fillStyle = hsl(L[1]); c.beginPath(); c.moveTo(0, H);
+      for (n = 0; n <= W; n += 8) c.lineTo(n, L[0](n));
+      c.lineTo(W, H); c.fill();
+    });
+    function dab(x, y, len, wid, ang, col, al) {
+      c.save(); c.translate(x, y); c.rotate(ang); c.globalAlpha = al;
+      c.fillStyle = hsl([col[0] + (rnd() - 0.5) * 10, col[1] + (rnd() - 0.5) * 8, col[2] + (rnd() - 0.5) * 9]);
+      c.beginPath();
+      if (c.roundRect) c.roundRect(-len / 2, -wid / 2, len, wid, wid / 2); else c.rect(-len / 2, -wid / 2, len, wid);
+      c.fill(); c.restore();
+    }
+    var i, x, y, k, t, top, bot, col;
+    /* Back to front: sky, far hills, near hills, meadow. Each layer overlaps the one behind it. */
+    for (i = 0; i < 1700; i++) {
+      x = rnd() * W; y = rnd() * H * 0.62; k = clamp(y / (H * 0.52), 0, 1);
+      col = mix(P.sky0, P.sky1, k * k);
+      t = Math.sin(x * 0.009 + a + y * 0.03) * Math.sin(y * 0.035 + b) + 0.5 * Math.sin(x * 0.004 + d);
+      if (t > 0.5) col = [col[0], col[1] * 0.55, Math.min(96, col[2] + 6 + t * 5)];
+      dab(x, y, 30 + rnd() * 50, 4 + rnd() * 6, (rnd() - 0.5) * 0.22, col, 0.55);
+    }
+    for (i = 0; i < 1300; i++) {
+      x = rnd() * W; top = r1(x); bot = r2(x) + 12; t = Math.pow(rnd(), 1.25); y = top + t * (bot - top);
+      col = mix(mix(P.far, P.sky1, 0.3 * (1 - t)), P.near, t * 0.3);
+      dab(x, y, 16 + rnd() * 26, 3 + rnd() * 4, Math.atan((r1(x + 8) - top) / 8) + (rnd() - 0.5) * 0.35, col, 0.8);
+    }
+    for (i = 0; i < 1500; i++) {
+      x = rnd() * W; top = r2(x); bot = r3(x) + 12; t = Math.pow(rnd(), 1.2); y = top + t * (bot - top);
+      k = 0.5 + 0.5 * Math.sin(x * 0.013 + b + y * 0.02);
+      col = mix(P.near, P.field, t * 0.3 + k * 0.25); col = [col[0], col[1], col[2] + (k - 0.5) * 10];
+      dab(x, y, 12 + rnd() * 22, 3 + rnd() * 4, Math.atan((r2(x + 8) - top) / 8) + (rnd() - 0.5) * 0.5, col, 0.85);
+    }
+    for (i = 0; i < 1900; i++) {
+      x = rnd() * W; top = r3(x); t = Math.pow(rnd(), 0.9); y = top + t * (H - top);
+      k = 0.5 + 0.5 * Math.sin(x * 0.01 + d - y * 0.03);
+      col = mix(P.field, P.near, k * 0.3); col = [col[0], col[1], col[2] + (k - 0.5) * 12 - t * 6];
+      if (rnd() < 0.05) col = [P.sky1[0], 60, 84];
+      dab(x, y, 9 + rnd() * 16 + t * 8, 2.5 + rnd() * 3, -1.15 + (rnd() - 0.5) * 0.7, col, 0.85);
+    }
+  }
+  function paintLazy() {
+    var all = doc.querySelectorAll('.paint'), i;
+    if (!('IntersectionObserver' in window)) { for (i = 0; i < all.length; i++) paint(all[i]); return; }
+    var io = new IntersectionObserver(function (en) {
+      en.forEach(function (e) { if (e.isIntersecting) { io.unobserve(e.target); paint(e.target); } });
+    }, { rootMargin: '600px' });
+    for (i = 0; i < all.length; i++) io.observe(all[i]);
+  }
+
+  /* 4. The projects. */
+  (function () {
+    /* The featured project. This one slug stands in for `featuredProject` in src/data/site.ts. Its card comes first. */
+    var FEATURED = 'andalus-calendar';
+    var P = [
+      ['uniclean-partners', 'UniClean Partners', 2026, 'Ny hemsida för UniClean som vägleder kunder och städare till den nya appen.', 'UniClean har fått en app som fungerar som Uber fast för städning. Jag byggde den nya hemsidan i Next.js som vägleder kunder och städare dit.', 'Next.js · Tailwind · Lokalt', ['Next.js', 'TypeScript', 'Tailwind CSS', 'Hostinger'], 'https://uniclean.nu', 'https://github.com/DelucaGit/UniClean-Website'],
+      ['sabaah-al-wuruud', 'Sabaah Al-Wuruud', 2026, 'En minimalistisk adhkar-app för Android som jag byggde till min fru. Utan reklam, utan konto och helt offline.', 'Min frus favoritapp för adhkar hade fyllts med reklam. Jag byggde en egen till henne i hennes favoritfärger, med bara det hon använder, och levererade den som en signerad APK.', 'Android · Capacitor · Personligt projekt', ['JavaScript', 'Vite', 'Capacitor', 'Android Studio', 'Vitest', 'Claude Code'], '', 'https://github.com/DelucaGit/sabaah-al-wuruud'],
+      ['zenith-kampsport', 'Zenith Kampsport', 2026, 'Underhåll och förbättring av en Next.js-klubbhemsida. Schema och layout för mindre laptopskärmar.', 'Jag tog över Zenith Kampsports hemsida när den tidigare utvecklaren inte kunde fortsätta. Jobbar med schema, layout och publicering via GitHub och Vercel.', 'Next.js · Underhåll · Förening', ['Next.js', 'TypeScript', 'Tailwind', 'Vercel'], 'https://www.zenithkampsport.se', 'https://github.com/esam95/usc-nextjs'],
+      ['fcvaxjo-reborn', 'FC Växjö Reborn', 2026, 'Ny klubbhemsida i Next.js. Byggd för träningstider, nyheter och en kommande app.', 'Ombyggd hemsida för FC Växjö med Next.js, GitHub och Hostinger CI. Förberedd för schemauppdateringar från mobil.', 'Next.js · Förening · CI/CD', ['Next.js', 'GitHub', 'Hostinger'], 'https://fcvaxjo.se', 'https://github.com/DelucaGit/FC-Vaxjo-Website'],
+      ['andalus-calendar', 'The Andalus Calendar', 2026, 'En kalender där bönetiden redan sitter i vyn, så du inte bokar över salah.', 'Personlig kalenderapp med gregoriansk och hijri-kalender, bönetider i UI:t och uppgifter i samma vy. Live beta.', 'React · Firebase · Kalender', ['React', 'Firebase', 'Hostinger'], 'https://andaluscalendar.com/', ''],
+      ['premium-honey-blends', 'Premium Honey Blends', 2026, 'Från meddelanden och kontakter till en butik som aldrig sover.', 'Shopify-butik för Premium Honey Blends: live lagerstatus och beställningar dygnet runt, utan att något försvinner i chatten.', 'Shopify · E-handel · Varumärke', ['Shopify'], 'https://premiumhoneyblends.com', ''],
+      ['alkama', 'ALKAMA', 2026, 'WooCommerce-butik på svenska, finska och norska, utan att tappa 20 års förtroende.', 'Flerspråkig WooCommerce-butik för Alkama Industry: fakturabetalning, självbetjäning och lokal SEO i Norden.', 'WooCommerce · Polylang · B2B', ['WooCommerce', 'Polylang', 'PHP'], '', ''],
+      ['uniclean', 'UniClean', 2026, 'Från samma frågor om och om igen, till en hemsida som onboardingar själv.', 'WordPress-hemsida för UniClean: tjänster, ungefärliga priser och förväntningar synliga från start, så teamet kan fokusera på jobbet.', 'WordPress · Elementor · Lokalt', ['WordPress', 'Elementor'], '', ''],
+      ['takkoll', 'TakKoll', 2025, 'Skyddar svenska hem – ett tak i taget.', 'Hemsida för TakKoll: takmålning, omläggning, tvätt, isolering och service, med bokning och ROT synligt från start.', 'WordPress · Lokalt · Leadgen', ['WordPress', 'Elementor'], 'https://takkoll.se', ''],
+      ['bilservicekoll', 'BilserviceKoll', 2025, 'Bilverkstaden i Gävle som gör det enkelt att serva bilen.', 'Hemsida för BilserviceKoll: service, oljebyten, däck och besiktningskontroll, med onlinebokning och bilupphämtning.', 'WordPress · Lokalt · Leadgen', ['WordPress', 'Elementor'], 'https://bilservicekoll.se', ''],
+      ['stadkoll', 'Städkoll', 2025, 'Flyttstädning utan stress – till fast pris.', 'Hemsida för Städkoll: professionell flyttstädning till fast pris, med 14 dagars garanti och RUT-avdrag.', 'Frontend · UX/UI · Leadgen', ['Frontend', 'UX & UI-design'], 'https://stadkoll.se', ''],
+      ['brandsakerhetskoll', 'Brand & Säkerhetskoll', 2025, 'Din lokala expert på brandskydd i Gävle.', 'Hemsida för Brand & Säkerhetskoll: brandsläckare, brandvarnare och brandfiltar, med tydliga produkter och offert direkt på sidan.', 'Frontend · UX/UI · Leadgen', ['Frontend', 'UX & UI-design'], 'https://brandsakerhetskoll.se', ''],
+      ['scooterkoll', 'Scooterkoll', 2025, 'Elscootrar är smidiga. Tills de går sönder.', 'Hemsida för Scooterkoll i Gävle: reparation av alla märken, med tydlig bokning, FAQ och offert nära till hands.', 'Frontend · UX/UI · SEO', ['SEO', 'Frontend', 'UX & UI-design'], 'https://scooterkoll.se', ''],
+      ['halimapearl', 'HalimaPearl', 2025, 'Från lokalt rykte till en växande varumärkesresa.', 'GoHighLevel-hemsida för HalimaPearl: en plattform som visar kollektionerna, stärker varumärket och öppnar nya marknader.', 'GoHighLevel · UX/UI · Varumärke', ['GoHighLevel', 'UX & UI-design'], 'https://halimapearl.com', ''],
+      ['ventilationskoll', 'Ventilationskoll', 2025, 'En hemsida som gör jobbet.', 'Hemsida för Ventilationskoll: tydlig prisinformation och smidig onlinebokning, byggd för att dra in kunder.', 'Frontend · UX/UI · SEO', ['SEO', 'Frontend', 'UX & UI-design'], 'https://ventilationskoll.se', ''],
+      ['shanasheel', 'Shanasheel', 2025, 'Från första skissen till en tvåspråkig hemsida som berättar om Akkad, och om framtiden i Irak.', 'Hemsida för Shanasheel Al-Asima: fastighet, hållbarhet och investeringar, byggd i WordPress med Elementor.', 'WordPress · Elementor · Fastighet', ['WordPress', 'Elementor', 'TranslatePress'], 'https://shanasheel.se', ''],
+      ['fcvaxjo', 'FC Växjö', 2023, 'En digital hemmaplan för föreningen sedan 1989.', 'Hemsida för FC Växjö: nyheter, träningstider, galleri och kontakt, med klubbens svart-guld-identitet i centrum.', 'Webbdesign · UX/UI · Förening', ['One.com', 'UX & UI-design'], 'https://fcvaxjo.se', '']
+    ];
+    /* Recorded walkthroughs: assets/walk-<slug>.webm, .mp4 and .webp (poster). Steps are [second, what the agent does]. */
+    var WALK = {
+      'andalus-calendar': { dur: 19.7, steps: [[0, 'Öppnar startsidan'], [2.5, 'Läser om dubbla kalendrar'], [5.3, 'Tittar på bönetiderna i vyn'], [8.1, 'Tittar på uppgiftslistan'], [11, 'Läser om integritet'], [13.8, 'Stannar vid knappen Get Started Now'], [16.8, 'Skrollar tillbaka till toppen']] },
+      'fcvaxjo-reborn': { dur: 17.8, steps: [[0, 'Öppnar startsidan'], [1.4, 'Skrollar till kommande matcher'], [4, 'Öppnar Matcher i menyn'], [6.9, 'Växlar till spelade matcher och resultat'], [9.4, 'Skrollar bland resultaten'], [11.4, 'Öppnar Träningstider'], [14.3, 'Går tillbaka till startsidan']] }
+    };
+    var F = 0, CASE = 'https://marceldeluca.se/projects/', EXT = ' target="_blank" rel="noopener noreferrer"';
+    var PALS = ['morgon', 'hav', 'kvall', 'skog'];
+    var LAB = '<span class="lab"><svg class="pin" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5a3.5 3.5 0 0 1 .75 6.92V14L8 15.2 7.25 14V8.42A3.5 3.5 0 0 1 8 1.5z"/></svg>Utvalt</span>';
+    P.forEach(function (p, i) { if (p[0] === FEATURED) F = i; });
+
+    /* The film only plays when motion is welcome and data is not being saved. Otherwise the poster stays. */
+    function canPlay() { var c = navigator.connection; return !reduce.matches && !(c && c.saveData); }
+    var motion = canPlay();
+    function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+    function host(u) { return u.replace(/^https?:\/\/(www\.)?/, '').replace(/\/.*$/, ''); }
+    function two(n) { return (n < 10 ? '0' : '') + n; }
+
+    function card(p, n) {
+      var s = p[0], w = WALK[s], h = host(p[7]), a = 'assets/' + s, v = 'assets/walk-' + s;
+      /* The first card is on screen from the start and gets its poster at once. The others get theirs when they come near. */
+      var media = w
+        ? '<video class="shot" data-slug="' + s + '" ' + (n ? 'data-poster' : 'poster') + '="' + v + '.webp" width="1280" height="800" muted loop playsinline preload="none" disablepictureinpicture disableremoteplayback tabindex="-1" role="img" aria-label="Inspelad genomgång av ' + esc(p[1]) + '">' +
+          '<source src="' + v + '.webm" type="video/webm"><source src="' + v + '.mp4" type="video/mp4"></video>' +
+          (motion ? '<p class="cap mono" aria-hidden="true"><span class="cap-in"><i></i><span class="cap-a">Agenten ·</span><span class="cap-x"></span></span></p>' : '')
+        : '<img class="shot" src="' + a + '.webp" srcset="' + a + '-sm.webp 640w, ' + a + '.webp 1280w" sizes="(min-width: 900px) 56vw, 90vw" width="1280" height="640" alt="Skärmbild av ' + esc(p[1]) + '"' + (n ? ' loading="lazy"' : '') + ' decoding="async">';
+      return '<article class="card' + (n % 2 ? ' flip' : '') + '" aria-labelledby="c-' + s + '">' +
+        '<div class="scene st"><canvas class="paint" data-paint="' + PALS[n % PALS.length] + '" aria-hidden="true"></canvas>' +
+        '<div class="win"><div class="bar" aria-hidden="true"><span class="lights"><i></i><i></i><i></i></span><span class="ttl">' + esc(h || p[1]) + '</span><span></span></div>' + media + '</div></div>' +
+        '<div class="card-t"><p class="facts mono">' + (n ? '' : LAB) + '<span>' + p[2] + ' · ' + esc(p[5]) + '</span></p>' +
+        '<h3 id="c-' + s + '">' + esc(p[1]) + '</h3><p class="tag">' + esc(p[3]) + '</p>' +
+        '<p class="links"><a class="go" href="' + CASE + s + '/"' + EXT + '>Läs caset <span aria-hidden="true">→</span></a>' +
+        (p[7] ? '<a class="go" href="' + esc(p[7]) + '"' + EXT + '>Besök ' + esc(h) + ' <span aria-hidden="true">↗</span></a>' : '') + '</p></div></article>';
+    }
+    function tile(p) {
+      return '<li><a class="tile" href="' + CASE + p[0] + '/"' + EXT + '><img src="assets/' + p[0] + '-sm.webp" width="640" height="320" alt="Skärmbild av ' + esc(p[1]) + '" loading="lazy" decoding="async">' +
+        '<span class="tile-t"><b>' + esc(p[1]) + '</b><small class="mono">' + p[2] + '</small><span>' + esc(p[3]) + '</span></span></a></li>';
+    }
+
+    /* Cards: the featured project first, then every other project that has a recording. The rest become tiles. */
+    var shown = [P[F]], rest, more = $('more'), films = 0;
+    P.forEach(function (p, i) { if (i !== F && WALK[p[0]]) shown.push(p); });
+    rest = P.filter(function (p) { return shown.indexOf(p) < 0; });
+    shown.forEach(function (p) { if (WALK[p[0]]) films++; });
+    $('cards').innerHTML = shown.map(card).join('');
+    more.className = 'more';
+    more.innerHTML = rest.map(tile).join('');
+    $('n-all').textContent = P.length;
+    $('more-h').textContent = 'Fler projekt';
+    $('more-n').textContent = rest.length + ' till';
+    if (motion && films) $('sub').textContent = 'En agent klickar runt på de riktiga sidorna åt dig.';
+    paintLazy();
+
+    /* The films. No controls: the script starts a film when about a third of it is on screen and pauses it
+       when it leaves the screen or the tab is hidden. */
+    var vids = [].slice.call(doc.querySelectorAll('video.shot'));
+    function sync(v) {
+      if (v._want && !doc.hidden && canPlay()) { var pr = v.play(); if (pr && pr.catch) pr.catch(function () {}); }
+      else if (!v.paused) v.pause();
+    }
+    /* The agent's line follows the film: "Agenten · 03/07 · Öppnar Matcher i menyn". */
+    function step(v) {
+      var st = WALK[v.getAttribute('data-slug')].steps, t = v.currentTime, n = 0, i;
+      for (i = 0; i < st.length; i++) if (st[i][0] <= t) n = i;
+      if (n !== v._n) { v._n = n; v._cap.textContent = two(n + 1) + '/' + two(st.length) + ' · ' + st[n][1]; }
+    }
+    vids.forEach(function (v) {
+      var cap = v.parentNode.querySelector('.cap');
+      v.muted = true;
+      /* A film that was asked to play before it had loaded starts as soon as it can. */
+      v.addEventListener('canplay', function () { if (v.paused) sync(v); });
+      if (!cap) return;
+      v._cap = cap.querySelector('.cap-x');
+      v.addEventListener('timeupdate', function () { step(v); });
+      v.addEventListener('playing', function () { step(v); cap.classList.add('on'); });
+      v.addEventListener('pause', function () { cap.classList.remove('on'); });
+    });
+    function near(v) {
+      var p = v.getAttribute('data-poster');
+      if (p) { v.poster = p; v.removeAttribute('data-poster'); }
+      if (canPlay() && v.paused && !v._want) { v.preload = 'auto'; v.load(); }
+    }
+    if (!('IntersectionObserver' in window)) { vids.forEach(function (v) { var p = v.getAttribute('data-poster'); if (p) v.poster = p; }); return; }
+    var ioNear = new IntersectionObserver(function (en) {
+      en.forEach(function (e) { if (e.isIntersecting) { ioNear.unobserve(e.target); near(e.target); } });
+    }, { rootMargin: '500px 0px' });
+    var ioPlay = new IntersectionObserver(function (en) {
+      en.forEach(function (e) {
+        var v = e.target;
+        if (e.intersectionRatio >= 0.35) v._want = true; else if (!e.isIntersecting) v._want = false;
+        sync(v);
+      });
+    }, { threshold: [0, 0.35] });
+    vids.forEach(function (v) { ioNear.observe(v); ioPlay.observe(v); });
+    doc.addEventListener('visibilitychange', function () { vids.forEach(sync); });
+    /* If the visitor turns on reduced motion while a film runs, it stops and goes back to its poster. */
+    function onReduce() { vids.forEach(function (v) { sync(v); if (reduce.matches && v.currentTime) v.load(); }); }
+    if (reduce.addEventListener) reduce.addEventListener('change', onReduce); else if (reduce.addListener) reduce.addListener(onReduce);
+  })();
+})();
+</script>
+</body>
+</html>
