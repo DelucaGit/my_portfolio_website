@@ -176,18 +176,20 @@ html:not(.wide) .it:not(.feat) .it-b { gap: .2rem; }
 html:not(.wide) .it:not(.feat) .it-n { font-size: 1.0625rem; line-height: 1.25; letter-spacing: -.01em; transition: color .2s; }
 html:not(.wide) .it:not(.feat) .it-m { font-size: .875rem; line-height: 1.4; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
 @media (hover: hover) { html:not(.wide) .it:not(.feat) .it-a:hover .it-n { color: var(--accent); } }
-html:not(.wide) .feat { grid-column: 1 / -1; position: relative; background: var(--card); border-radius: var(--r-m); padding: .6rem; margin-bottom: 1.25rem; }
+html:not(.wide) .feat { grid-column: 1 / -1; background: var(--card); border-radius: var(--r-m); padding: .6rem; margin-bottom: 1.25rem; }
 html:not(.wide) .feat .it-th { width: auto; aspect-ratio: 16 / 10; }
 html:not(.wide) .feat .it-b { gap: .6rem; padding: 1.1rem .5rem .6rem; }
 html:not(.wide) .feat .it-n { font-size: clamp(1.7rem, 6vw, 2.1rem); line-height: 1.08; letter-spacing: -.028em; }
 html:not(.wide) .feat .it-m { font-size: 1rem; line-height: 1.45; text-wrap: pretty; }
 .it-cta { display: flex; flex-wrap: wrap; gap: .5rem; padding: .4rem .5rem .5rem; }
 .it-cta .pill { flex: 1 1 auto; }
+/* Wider: picture left, text right. The link spans the whole card through a subgrid and the pills sit in its free corner. */
 @media (min-width: 640px) {
-  html:not(.wide) .feat .it-a { grid-template-columns: 56% minmax(0, 1fr); }
-  html:not(.wide) .feat .it-b { align-self: end; padding: 1rem 1rem 4.6rem 1.6rem; }
-  .it-cta { position: absolute; left: calc(.6rem + (100% - 1.2rem) * .56 + 1.6rem); bottom: 1.1rem; padding: 0; }
-  .it-cta .pill { flex: none; }
+  html:not(.wide) .feat { display: grid; grid-template-columns: 56% minmax(0, 1fr); grid-template-rows: 1fr auto; }
+  html:not(.wide) .feat .it-a { grid-area: 1 / 1 / -1 / -1; grid-template-columns: subgrid; grid-template-rows: subgrid; }
+  html:not(.wide) .feat .it-th { grid-row: 1 / -1; }
+  html:not(.wide) .feat .it-b { grid-column: 2; align-self: end; padding: 1rem 1rem .9rem 1.6rem; }
+  .it-cta { grid-area: 2 / 2; position: relative; padding: 0 1rem .6rem 1.6rem; }
 }
 @media (min-width: 700px) { html:not(.wide) .list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
@@ -587,7 +589,8 @@ html:not(.wide) .feat .it-m { font-size: 1rem; line-height: 1.45; text-wrap: pre
     if (wide.addEventListener) wide.addEventListener('change', layout); else wide.addListener(layout);
     if ('ResizeObserver' in window) new ResizeObserver(function () { if (wide.matches) measure(); }).observe(list);
     window.addEventListener('resize', function () { if (wide.matches) measure(); });
-    window.addEventListener('load', function () { if (wide.matches) measure(); });
+    /* A reload can restore a scroll position further down the page. */
+    window.addEventListener('load', function () { if (wide.matches) { measure(); if (window.scrollY) onScroll(); } });
     watch(doc.querySelector('.pane .paint'));
     layout();
   })();
