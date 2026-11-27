@@ -116,6 +116,17 @@ function hasEndedSite(project: Project): boolean {
   return checkedSites[project.siteUrl]?.status === "ended";
 }
 
+/**
+ * The project a slug in src/data names. The type only lets through slugs
+ * that are in src/data/projects.ts, so there is always a project.
+ */
+export function getProject(slug: ProjectSlug): Project {
+  const project = getProjectBySlug(slug);
+  if (!project) throw new Error(`No project with the slug "${slug}"`);
+  return project;
+}
+
+/** The project for a slug from outside the code, such as a page address. */
 export function getProjectBySlug(slug: string): Project | undefined {
   return projects.find((project) => project.slug === slug);
 }
