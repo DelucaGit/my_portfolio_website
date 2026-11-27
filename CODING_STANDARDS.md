@@ -2,6 +2,8 @@
 
 Judgement calls for review. Rules a tool can check live in `eslint.config.mjs`, TypeScript and the Playwright suite instead.
 
+Name things with the words in `GLOSSARY.md`. A new concept gets its entry there in the same change.
+
 ## Content lives in the data layer
 
 - Every text a visitor reads lives in `src/data/`. Components render it; they hold no copy of their own.
@@ -16,7 +18,7 @@ Judgement calls for review. Rules a tool can check live in `eslint.config.mjs`, 
 
 - Tests are Playwright against the built static site, and they do what a visitor does: scroll, point, press keys, read what is on screen and what a screen reader gets.
 - A good test names a behaviour ("when I scroll past TakKoll the window shows TakKoll") and breaks only when that behaviour breaks.
-- Tests leave internal functions, component state and CSS class names alone.
+- Tests may read the project layer (`@/lib/projects` and its modules) to know what the site should show: which projects, their names, their case links, which files they need. What they assert on is always the built site: never what an internal function returns, a component's state or a CSS class name.
 - Test-only switches (`E2E_*` variables) build into their own output folder and never change the build Hostinger publishes.
 
 ## Style

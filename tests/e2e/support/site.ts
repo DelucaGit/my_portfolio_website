@@ -244,6 +244,11 @@ export async function scrollSettled(page: Page) {
  * so a longer pause only made the long scrolls slow: the page was scrolled
  * at 300 px a second and two tests ran into the time limit when the machine
  * was busy. The page still moves at most `step` px between two looks.
+ *
+ * Give it a `done` that stays true once it is true ("the list has come up",
+ * "we are at this project or past it"). A `done` that is true only for a
+ * stretch of the page can be missed: a busy machine glides further between
+ * two looks and carries the page past the stretch.
  */
 export async function wheelUntil(
   page: Page,
@@ -273,22 +278,37 @@ export async function wheelToProjectList(page: Page, listName?: string) {
   await scrollSettled(page);
 }
 
-/** The visitor scrolls with the wheel until the preview window shows the project. */
+/**
+ * The visitor scrolls with the wheel until the start page's preview window
+ * shows the project.
+ *
+ * Quick notches down to the project or past it, then small notches back,
+ * each one waiting for the page to stop, if a busy machine glided past it.
+ */
 export async function wheelToProject(
   page: Page,
   project: Project,
   { gently = false } = {},
 ) {
-  if ((await previewedProject(page)) !== project.name) {
+  const order = homeProjects().map((home) => home.name);
+  const target = order.indexOf(project.name);
+  const place = async () => order.indexOf(await previewedProject(page));
+
+  if ((await place()) !== target) {
     await wheelToProjectList(page);
   }
   // The page glides on a little after the wheel stops; `gently` keeps that short.
   await wheelUntil(
     page,
-    async () => (await previewedProject(page)) === project.name,
+    async () => (await place()) >= target,
     gently ? { step: 30 } : undefined,
   );
   await scrollSettled(page);
+
+  for (let notch = 0; notch < 40 && (await place()) !== target; notch++) {
+    await page.mouse.wheel(0, (await place()) > target ? -30 : 30);
+    await scrollSettled(page);
+  }
 }
 
 /** The visitor picks a theme with the switcher in the footer. */

@@ -46,15 +46,23 @@ test.afterAll(async () => {
   await rm(dir, { recursive: true, force: true });
 });
 
-/** Runs the check on these addresses and returns the file it wrote. */
-async function check(name: string, urls: string[]): Promise<SiteCheckResult> {
+/**
+ * Runs the check on these addresses and returns the file it wrote.
+ * 1.5 s is enough for the local server and lets the slow answer time out;
+ * a real name server gets more (see the test of a domain that does not exist).
+ */
+async function check(
+  name: string,
+  urls: string[],
+  timeout = 1500,
+): Promise<SiteCheckResult> {
   const out = join(dir, `${name}.json`);
   await run(process.execPath, [
     "scripts/check-sites.mjs",
     "--out",
     out,
     "--timeout",
-    "1500",
+    String(timeout),
     ...urls,
   ]);
   return JSON.parse(await readFile(out, "utf8")) as SiteCheckResult;
@@ -111,7 +119,9 @@ test("a domain that does not exist counts as ended", async () => {
   test.skip(!online, "no name server to ask");
 
   const url = "https://kunden-har-avslutat-projektet.invalid/";
-  const result = await check("no-domain", [url]);
+  // A busy machine or name server can take longer than 1.5 s to say "no such
+  // domain", and a lookup that times out counts as unknown, not ended.
+  const result = await check("no-domain", [url], 10_000);
 
   expect(result.sites[url].status).toBe("ended");
 });

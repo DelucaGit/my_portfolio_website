@@ -6,6 +6,7 @@ import {
   homeProjects,
   keyRoutes,
   previewedProject,
+  scrollSettled,
 } from "./support/site";
 
 /**
@@ -62,10 +63,13 @@ test("med minskad rörelse byter skrollen fortfarande projekt i den delade vyn",
   await page.goto("/");
   await expectPreviewing(page, projects[0]);
 
+  // Look after every notch, once the page has stopped: on a busy machine
+  // several notches can land before the next look and skip a project.
   const seen = new Set<string>();
   await page.mouse.move(720, 450);
-  for (let notch = 0; notch < 40 && seen.size < projects.length; notch++) {
+  for (let notch = 0; notch < 120 && seen.size < projects.length; notch++) {
     await page.mouse.wheel(0, 90);
+    await scrollSettled(page);
     seen.add(await previewedProject(page));
   }
   expect([...seen]).toEqual(projects.map((project) => project.name));
