@@ -8,27 +8,35 @@ export type ProjectImage = {
   alt: string;
 };
 
+/** The words shown next to a media section. Nothing is filled in for you. */
 export type MediaSectionCopy = {
   eyebrow: string;
   heading: string;
-  support: string;
+  support?: string;
 };
+
+/**
+ * One block of screenshots on a case study page. Sections render in the
+ * order they are listed; a project shows only the sections it lists.
+ */
+export type MediaSection =
+  /** Phone screenshots in a horizontally scrolling strip */
+  | { kind: "phones"; copy: MediaSectionCopy; images: ProjectImage[] }
+  /** One image beside its copy; imageSide picks which side the image sits on */
+  | {
+      kind: "split";
+      copy: MediaSectionCopy;
+      image: ProjectImage;
+      imageSide: "left" | "right";
+    }
+  /** A tall full-page screenshot inside a scrollable browser frame */
+  | { kind: "scrollFrame"; copy: MediaSectionCopy; image: ProjectImage }
+  /** Extra screenshots stacked under a heading */
+  | { kind: "gallery"; copy: MediaSectionCopy; images: ProjectImage[] };
 
 export type ProjectMedia = {
   hero: ProjectImage;
-  feature?: ProjectImage;
-  /** Phone screenshots, shown in the shared mobile mockup strip */
-  mobile: ProjectImage[];
-  fullPage?: ProjectImage;
-  fullPageCopy?: MediaSectionCopy;
-  desktop?: ProjectImage;
-  desktopCopy?: MediaSectionCopy;
-  /** Extra screenshots stacked under a short heading */
-  gallery?: ProjectImage[];
-  galleryCopy?: MediaSectionCopy;
-  /** Optional detail shown after the gallery (e.g. a small feature like branded email) */
-  closing?: ProjectImage;
-  closingCopy?: MediaSectionCopy;
+  sections: MediaSection[];
 };
 
 export type Project = {
@@ -66,13 +74,15 @@ export const projects: Project[] = [
   {
     slug: "sabaah-al-wuruud",
     name: "Sabaah Al-Wuruud",
-    tagline:
-      "En minimalistisk adhkar-app för Android som jag byggde till min fru. Utan reklam, utan konto och helt offline.",
-    description:
-      "Min frus favoritapp för adhkar hade fyllts med reklam. Jag byggde en egen till henne i hennes favoritfärger, med bara det hon använder, och levererade den som en signerad APK.",
+    tagline: "En minimalistisk adhkar-app för Android som jag byggde till min fru. Utan reklam, utan konto och helt offline.",
+    description: "Min frus favoritapp för adhkar hade fyllts med reklam. Jag byggde en egen till henne i hennes favoritfärger, med bara det hon använder, och levererade den som en signerad APK.",
     siteUrl: "",
     githubUrl: "https://github.com/DelucaGit/sabaah-al-wuruud",
-    tags: ["Android", "Capacitor", "Personligt projekt"],
+    tags: [
+      "Android",
+      "Capacitor",
+      "Personligt projekt",
+    ],
     year: 2026,
     stack: [
       "JavaScript",
@@ -83,8 +93,7 @@ export const projects: Project[] = [
       "Claude Code",
     ],
     image: "/projects/sabaah-al-wuruud/hero.png",
-    imageAlt:
-      "Tre telefoner med adhkar-appen Sabaah Al-Wuruud i lavendel, i ljust och mörkt läge",
+    imageAlt: "Tre telefoner med adhkar-appen Sabaah Al-Wuruud i lavendel, i ljust och mörkt läge",
     theme: {
       bg: "var(--project-theme-lilac)",
       dark: false,
@@ -120,66 +129,85 @@ export const projects: Project[] = [
           src: "/projects/sabaah-al-wuruud/hero.png",
           alt: "Dagens adhkar, nästa bön och dagens reflektion, i ljust och mörkt läge",
         },
-        mobile: [
+        sections: [
           {
-            src: "/projects/sabaah-al-wuruud/today.png",
-            alt: "Today: nästa bön, dagens bönetider och dagens reflektion med vers och tafsir",
+            kind: "phones",
+            copy: {
+              eyebrow: "Mobil",
+              heading: "Så ser det ut i telefonen",
+              support: "Scrolla i sidled för att se fler vyer.",
+            },
+            images: [
+              {
+                src: "/projects/sabaah-al-wuruud/today.png",
+                alt: "Today: nästa bön, dagens bönetider och dagens reflektion med vers och tafsir",
+              },
+              {
+                src: "/projects/sabaah-al-wuruud/adhkar.png",
+                alt: "Adhkar: dagen som tidslinje med morgon-, kvälls- och sovadhkar mellan bönerna",
+              },
+              {
+                src: "/projects/sabaah-al-wuruud/morning.png",
+                alt: "Läsaren för morgonadhkar, en dhikr i taget med räknare",
+              },
+              {
+                src: "/projects/sabaah-al-wuruud/quran.png",
+                alt: "Qur'an: memorering sida för sida, här med första sidan markerad",
+              },
+              {
+                src: "/projects/sabaah-al-wuruud/istikhara.png",
+                alt: "Istikhara-bönen med markerade ord där man nämner sitt ärende",
+              },
+              {
+                src: "/projects/sabaah-al-wuruud/settings.png",
+                alt: "Me: namn, färg, utseende, arabisk textstorlek och påminnelser",
+              },
+              {
+                src: "/projects/sabaah-al-wuruud/today-dark.png",
+                alt: "Today i mörkt läge",
+              },
+            ],
           },
           {
-            src: "/projects/sabaah-al-wuruud/adhkar.png",
-            alt: "Adhkar: dagen som tidslinje med morgon-, kvälls- och sovadhkar mellan bönerna",
-          },
-          {
-            src: "/projects/sabaah-al-wuruud/morning.png",
-            alt: "Läsaren för morgonadhkar, en dhikr i taget med räknare",
-          },
-          {
-            src: "/projects/sabaah-al-wuruud/quran.png",
-            alt: "Qur'an: memorering sida för sida, här med första sidan markerad",
-          },
-          {
-            src: "/projects/sabaah-al-wuruud/istikhara.png",
-            alt: "Istikhara-bönen med markerade ord där man nämner sitt ärende",
-          },
-          {
-            src: "/projects/sabaah-al-wuruud/settings.png",
-            alt: "Me: namn, färg, utseende, arabisk textstorlek och påminnelser",
-          },
-          {
-            src: "/projects/sabaah-al-wuruud/today-dark.png",
-            alt: "Today i mörkt läge",
+            kind: "split",
+            imageSide: "left",
+            copy: {
+              eyebrow: "Recension",
+              heading: "Den enda recensionen som räknas.",
+              support: "Appen har en enda användare. Så här svarade hon när jag skickade de första skärmbilderna. Något bättre betyg kan den inte få.",
+            },
+            image: {
+              src: "/projects/sabaah-al-wuruud/review.jpg",
+              alt: "Chatt där min fru svarar på skärmbilderna av appen: Du skojar, jag älskar den",
+            },
           },
         ],
-        closing: {
-          src: "/projects/sabaah-al-wuruud/review.jpg",
-          alt: "Chatt där min fru svarar på skärmbilderna av appen: Du skojar, jag älskar den",
-        },
-        closingCopy: {
-          eyebrow: "Recension",
-          heading: "Den enda recensionen som räknas.",
-          support:
-            "Appen har en enda användare. Så här svarade hon när jag skickade de första skärmbilderna. Något bättre betyg kan den inte få.",
-        },
       },
       seo: {
         title: "Sabaah Al-Wuruud. Adhkar-app för Android",
-        description:
-          "Case: en minimalistisk adhkar-app för Android byggd till min fru. JavaScript, Vite och Capacitor, helt offline och levererad som signerad APK.",
+        description: "Case: en minimalistisk adhkar-app för Android byggd till min fru. JavaScript, Vite och Capacitor, helt offline och levererad som signerad APK.",
       },
     },
   },
   {
     slug: "zenith-kampsport",
     name: "Zenith Kampsport",
-    tagline:
-      "Underhåll och förbättring av en Next.js-klubbhemsida. Schema och layout för mindre laptopskärmar.",
-    description:
-      "Jag tog över Zenith Kampsports hemsida när den tidigare utvecklaren inte kunde fortsätta. Jobbar med schema, layout och publicering via GitHub och Vercel.",
+    tagline: "Underhåll och förbättring av en Next.js-klubbhemsida. Schema och layout för mindre laptopskärmar.",
+    description: "Jag tog över Zenith Kampsports hemsida när den tidigare utvecklaren inte kunde fortsätta. Jobbar med schema, layout och publicering via GitHub och Vercel.",
     siteUrl: "https://www.zenithkampsport.se",
     githubUrl: "https://github.com/esam95/usc-nextjs",
-    tags: ["Next.js", "Underhåll", "Förening"],
+    tags: [
+      "Next.js",
+      "Underhåll",
+      "Förening",
+    ],
     year: 2026,
-    stack: ["Next.js", "TypeScript", "Tailwind", "Vercel"],
+    stack: [
+      "Next.js",
+      "TypeScript",
+      "Tailwind",
+      "Vercel",
+    ],
     image: "/projects/zenith-kampsport/hero-viewport.png",
     imageAlt: "Zenith Kampsport startsida med hero och knappar för medlemskap",
     theme: {
@@ -213,66 +241,79 @@ export const projects: Project[] = [
           src: "/projects/zenith-kampsport/hero-viewport.png",
           alt: "Startsida med hero, logotyp och knappar för medlemskap och klasser",
         },
-        mobile: [],
-        desktop: {
-          src: "/projects/zenith-kampsport/schema-viewport.png",
-          alt: "Veckoschema med färgade pass för boxning, BJJ och brottning",
-        },
-        desktopCopy: {
-          eyebrow: "Schema",
-          heading: "Träningstiderna syns direkt.",
-          support:
-            "Medlemmar och besökare ska snabbt se när passen går och var lokalen ligger.",
-        },
-        gallery: [
+        sections: [
           {
-            src: "/projects/zenith-kampsport/schema-laptop.png",
-            alt: "Samma schema på en mindre laptopbredd, 1280 pixlar",
+            kind: "split",
+            imageSide: "right",
+            copy: {
+              eyebrow: "Schema",
+              heading: "Träningstiderna syns direkt.",
+              support: "Medlemmar och besökare ska snabbt se när passen går och var lokalen ligger.",
+            },
+            image: {
+              src: "/projects/zenith-kampsport/schema-viewport.png",
+              alt: "Veckoschema med färgade pass för boxning, BJJ och brottning",
+            },
           },
           {
-            src: "/projects/zenith-kampsport/om-oss-viewport.png",
-            alt: "Om oss-sidan med hero och klubbens berättelse",
+            kind: "gallery",
+            copy: {
+              eyebrow: "Layout",
+              heading: "Bättre på mindre laptopskärmar.",
+              support: "Många surfar på 13–14 tum. Sidan ska kännas lugn där också, inte bara på stor skärm.",
+            },
+            images: [
+              {
+                src: "/projects/zenith-kampsport/schema-laptop.png",
+                alt: "Samma schema på en mindre laptopbredd, 1280 pixlar",
+              },
+              {
+                src: "/projects/zenith-kampsport/om-oss-viewport.png",
+                alt: "Om oss-sidan med hero och klubbens berättelse",
+              },
+            ],
+          },
+          {
+            kind: "split",
+            imageSide: "left",
+            copy: {
+              eyebrow: "Medlemskap",
+              heading: "Priser och nästa steg på samma ställe.",
+              support: "Besökare som vill börja ska hitta medlemsnivåer utan att leta runt på hemsidan.",
+            },
+            image: {
+              src: "/projects/zenith-kampsport/medlemskap-viewport.png",
+              alt: "Medlemskapssidan med priser och knappar för att bli medlem",
+            },
           },
         ],
-        galleryCopy: {
-          eyebrow: "Layout",
-          heading: "Bättre på mindre laptopskärmar.",
-          support:
-            "Många surfar på 13–14 tum. Sidan ska kännas lugn där också, inte bara på stor skärm.",
-        },
-        closing: {
-          src: "/projects/zenith-kampsport/medlemskap-viewport.png",
-          alt: "Medlemskapssidan med priser och knappar för att bli medlem",
-        },
-        closingCopy: {
-          eyebrow: "Medlemskap",
-          heading: "Priser och nästa steg på samma ställe.",
-          support:
-            "Besökare som vill börja ska hitta medlemsnivåer utan att leta runt på hemsidan.",
-        },
       },
       seo: {
         title: "Zenith Kampsport. Underhåll i Next.js",
-        description:
-          "Case: Zenith Kampsport. Underhåll av en Next.js-klubbhemsida med fokus på schema och layout, publicerad via GitHub och Vercel.",
+        description: "Case: Zenith Kampsport. Underhåll av en Next.js-klubbhemsida med fokus på schema och layout, publicerad via GitHub och Vercel.",
       },
     },
   },
   {
     slug: "fcvaxjo-reborn",
     name: "FC Växjö Reborn",
-    tagline:
-      "Ny klubbhemsida i Next.js. Byggd för träningstider, nyheter och en kommande app.",
-    description:
-      "Ombyggd hemsida för FC Växjö med Next.js, GitHub och Hostinger CI. Förberedd för schemauppdateringar från mobil.",
+    tagline: "Ny klubbhemsida i Next.js. Byggd för träningstider, nyheter och en kommande app.",
+    description: "Ombyggd hemsida för FC Växjö med Next.js, GitHub och Hostinger CI. Förberedd för schemauppdateringar från mobil.",
     siteUrl: "https://fcvaxjo.se",
     githubUrl: "https://github.com/DelucaGit/FC-Vaxjo-Website",
-    tags: ["Next.js", "Förening", "CI/CD"],
+    tags: [
+      "Next.js",
+      "Förening",
+      "CI/CD",
+    ],
     year: 2026,
-    stack: ["Next.js", "GitHub", "Hostinger"],
+    stack: [
+      "Next.js",
+      "GitHub",
+      "Hostinger",
+    ],
     image: "/projects/fcvaxjo-reborn/news-viewport.png",
-    imageAlt:
-      "FC Växjö Reborn: nyheter och träningstider i Next.js-layout",
+    imageAlt: "FC Växjö Reborn: nyheter och träningstider i Next.js-layout",
     theme: {
       bg: "var(--project-theme-ember)",
       dark: false,
@@ -306,44 +347,52 @@ export const projects: Project[] = [
           src: "/projects/fcvaxjo-reborn/hero-viewport.png",
           alt: "Startsida med hero, statistik och knappar för träningstider",
         },
-        mobile: [],
-        desktop: {
-          src: "/projects/fcvaxjo-reborn/news-viewport.png",
-          alt: "Nyhetskort och träningstider på samma sida",
-        },
-        desktopCopy: {
-          eyebrow: "Innehåll",
-          heading: "Nyheter och tider synliga direkt.",
-          support:
-            "Föräldrar och spelare ska snabbt hitta senaste nytt och när lagen tränar.",
-        },
-        gallery: [
+        sections: [
           {
-            src: "/projects/fcvaxjo-reborn/training-viewport.png",
-            alt: "Träningsschema i kortlayout, förberett för uppdateringar från mobil",
+            kind: "split",
+            imageSide: "right",
+            copy: {
+              eyebrow: "Innehåll",
+              heading: "Nyheter och tider synliga direkt.",
+              support: "Föräldrar och spelare ska snabbt hitta senaste nytt och när lagen tränar.",
+            },
+            image: {
+              src: "/projects/fcvaxjo-reborn/news-viewport.png",
+              alt: "Nyhetskort och träningstider på samma sida",
+            },
+          },
+          {
+            kind: "gallery",
+            copy: {
+              eyebrow: "Nästa steg",
+              heading: "Redo för schema från mobilen.",
+              support: "Hemsidan kan senare ta emot träningstider från en app och API, utan att byggas om från grunden.",
+            },
+            images: [
+              {
+                src: "/projects/fcvaxjo-reborn/training-viewport.png",
+                alt: "Träningsschema i kortlayout, förberett för uppdateringar från mobil",
+              },
+            ],
+          },
+          {
+            kind: "split",
+            imageSide: "left",
+            copy: {
+              eyebrow: "Mejl",
+              heading: "Egna mejl till klubben.",
+              support: "När någon skickar en sponsorförfrågan får klubben ett eget mejl, inte ett vanligt systemmejl.",
+            },
+            image: {
+              src: "/projects/fcvaxjo-reborn/email-layout.png",
+              alt: "Eget HTML-mejl till klubben med FC Växjö-header och sponsorförfrågan",
+            },
           },
         ],
-        galleryCopy: {
-          eyebrow: "Nästa steg",
-          heading: "Redo för schema från mobilen.",
-          support:
-            "Hemsidan kan senare ta emot träningstider från en app och API, utan att byggas om från grunden.",
-        },
-        closing: {
-          src: "/projects/fcvaxjo-reborn/email-layout.png",
-          alt: "Eget HTML-mejl till klubben med FC Växjö-header och sponsorförfrågan",
-        },
-        closingCopy: {
-          eyebrow: "Mejl",
-          heading: "Egna mejl till klubben.",
-          support:
-            "När någon skickar en sponsorförfrågan får klubben ett eget mejl, inte ett vanligt systemmejl.",
-        },
       },
       seo: {
         title: "FC Växjö Reborn. Next.js",
-        description:
-          "Case: FC Växjö Reborn. Ny klubbhemsida i Next.js med GitHub CI till Hostinger, förberedd för schema från mobilapp.",
+        description: "Case: FC Växjö Reborn. Ny klubbhemsida i Next.js med GitHub CI till Hostinger, förberedd för schema från mobilapp.",
       },
     },
   },
@@ -351,16 +400,22 @@ export const projects: Project[] = [
     slug: "andalus-calendar",
     name: "The Andalus Calendar",
     tagline: "En kalender där bönetiden redan sitter i vyn, så du inte bokar över salah.",
-    description:
-      "Personlig kalenderapp med gregoriansk och hijri-kalender, bönetider i UI:t och uppgifter i samma vy. Live beta.",
+    description: "Personlig kalenderapp med gregoriansk och hijri-kalender, bönetider i UI:t och uppgifter i samma vy. Live beta.",
     siteUrl: "https://andaluscalendar.com/",
     githubUrl: "",
-    tags: ["React", "Firebase", "Kalender"],
+    tags: [
+      "React",
+      "Firebase",
+      "Kalender",
+    ],
     year: 2026,
-    stack: ["React", "Firebase", "Hostinger"],
+    stack: [
+      "React",
+      "Firebase",
+      "Hostinger",
+    ],
     image: "/projects/andalus-calendar/hero-viewport.png",
-    imageAlt:
-      "The Andalus Calendar i månadsvy, bönetider till vänster, hijri-datum i rutnätet och uppgifter till höger",
+    imageAlt: "The Andalus Calendar i månadsvy, bönetider till vänster, hijri-datum i rutnätet och uppgifter till höger",
     theme: {
       bg: "var(--project-theme-andalus)",
       dark: false,
@@ -386,54 +441,68 @@ export const projects: Project[] = [
           src: "/projects/andalus-calendar/hero-viewport.png",
           alt: "Månadsvy med nedräkning till Maghrib, hijri-datum och uppgifter i sidopanelen",
         },
-        feature: {
-          src: "/projects/andalus-calendar/day-overlay.png",
-          alt: "Dagsvy där Dhuhr, Asr, Maghrib och Isha ritas som linjer i tidsschemat",
-        },
-        mobile: [],
-        desktop: {
-          src: "/projects/andalus-calendar/settings.png",
-          alt: "Inställningar för ljust/mörkt läge, gregoriansk eller hijri-kalender och böneräkningsmetod",
-        },
-        desktopCopy: {
-          eyebrow: "Inställningar",
-          heading: "Hijri, mörkt läge och böneräkning, i samma meny.",
-          support:
-            "Växla kalendertyp, välj böneräkningsmetod och utseende utan att lämna dagen.",
-        },
-        gallery: [
+        sections: [
           {
-            src: "/projects/andalus-calendar/landing-hero.png",
-            alt: "Andalus landningssida. Version 2026.1 now live",
+            kind: "split",
+            imageSide: "left",
+            copy: {
+              eyebrow: "Detalj",
+              heading: "En viktig del av UI:t",
+              support: "Dagsvy där Dhuhr, Asr, Maghrib och Isha ritas som linjer i tidsschemat",
+            },
+            image: {
+              src: "/projects/andalus-calendar/day-overlay.png",
+              alt: "Dagsvy där Dhuhr, Asr, Maghrib och Isha ritas som linjer i tidsschemat",
+            },
           },
           {
-            src: "/projects/andalus-calendar/landing-dual-calendar.png",
-            alt: "Landningssida, dual-calendar med hijri, helgdagar och sol/måne-spårning",
+            kind: "split",
+            imageSide: "right",
+            copy: {
+              eyebrow: "Inställningar",
+              heading: "Hijri, mörkt läge och böneräkning, i samma meny.",
+              support: "Växla kalendertyp, välj böneräkningsmetod och utseende utan att lämna dagen.",
+            },
+            image: {
+              src: "/projects/andalus-calendar/settings.png",
+              alt: "Inställningar för ljust/mörkt läge, gregoriansk eller hijri-kalender och böneräkningsmetod",
+            },
           },
           {
-            src: "/projects/andalus-calendar/landing-prayer.png",
-            alt: "Landningssida, bönetider som överlägg i dagsvyn",
-          },
-          {
-            src: "/projects/andalus-calendar/landing-tasks.png",
-            alt: "Landningssida, uppgifter för vardag och andliga vanor i samma yta",
-          },
-          {
-            src: "/projects/andalus-calendar/landing-privacy.png",
-            alt: "Landningssida, integritet: säker molnlagring och ingen dataförsäljning",
+            kind: "gallery",
+            copy: {
+              eyebrow: "Landningen",
+              heading: "Så möter besökaren appen innan de loggar in.",
+              support: "Hijri-kalender, bönetider och uppgifter, förklarat redan på startsidan.",
+            },
+            images: [
+              {
+                src: "/projects/andalus-calendar/landing-hero.png",
+                alt: "Andalus landningssida. Version 2026.1 now live",
+              },
+              {
+                src: "/projects/andalus-calendar/landing-dual-calendar.png",
+                alt: "Landningssida, dual-calendar med hijri, helgdagar och sol/måne-spårning",
+              },
+              {
+                src: "/projects/andalus-calendar/landing-prayer.png",
+                alt: "Landningssida, bönetider som överlägg i dagsvyn",
+              },
+              {
+                src: "/projects/andalus-calendar/landing-tasks.png",
+                alt: "Landningssida, uppgifter för vardag och andliga vanor i samma yta",
+              },
+              {
+                src: "/projects/andalus-calendar/landing-privacy.png",
+                alt: "Landningssida, integritet: säker molnlagring och ingen dataförsäljning",
+              },
+            ],
           },
         ],
-        galleryCopy: {
-          eyebrow: "Landningen",
-          heading: "Så möter besökaren appen innan de loggar in.",
-          support:
-            "Hijri-kalender, bönetider och uppgifter, förklarat redan på startsidan.",
-        },
       },
       seo: {
         title: "The Andalus Calendar. React & Firebase",
-        description:
-          "Case: The Andalus Calendar, en React- och Firebase-kalender där muslimska bönetider sitter i samma UI som dagen.",
+        description: "Case: The Andalus Calendar, en React- och Firebase-kalender där muslimska bönetider sitter i samma UI som dagen.",
       },
     },
   },
@@ -441,13 +510,19 @@ export const projects: Project[] = [
     slug: "takkoll",
     name: "TakKoll",
     tagline: "Skyddar svenska hem – ett tak i taget.",
-    description:
-      "Hemsida för TakKoll: takmålning, omläggning, tvätt, isolering och service, med bokning och ROT synligt från start.",
+    description: "Hemsida för TakKoll: takmålning, omläggning, tvätt, isolering och service, med bokning och ROT synligt från start.",
     siteUrl: "https://takkoll.se",
     githubUrl: "",
-    tags: ["WordPress", "Lokalt", "Leadgen"],
+    tags: [
+      "WordPress",
+      "Lokalt",
+      "Leadgen",
+    ],
     year: 2025,
-    stack: ["WordPress", "Elementor"],
+    stack: [
+      "WordPress",
+      "Elementor",
+    ],
     image: "/projects/takkoll/hero-viewport.jpg",
     imageAlt: "TakKoll startsida, professionella taklösningar",
     theme: {
@@ -476,49 +551,72 @@ export const projects: Project[] = [
           src: "/projects/takkoll/hero-viewport.jpg",
           alt: "TakKoll-hero med takarbetare och tydlig CTA",
         },
-        feature: {
-          src: "/projects/takkoll/services-viewport.jpg",
-          alt: "TakKolls tjänstekort, målning, omläggning, service och isolering",
-        },
-        mobile: [
+        sections: [
           {
-            src: "/projects/takkoll/mobile-1.png",
-            alt: "TakKoll mobil hero med ROT-avdrag på takrenovering",
+            kind: "split",
+            imageSide: "left",
+            copy: {
+              eyebrow: "Detalj",
+              heading: "En viktig del av UI:t",
+              support: "TakKolls tjänstekort, målning, omläggning, service och isolering",
+            },
+            image: {
+              src: "/projects/takkoll/services-viewport.jpg",
+              alt: "TakKolls tjänstekort, målning, omläggning, service och isolering",
+            },
           },
           {
-            src: "/projects/takkoll/mobile-2.png",
-            alt: "TakKoll mobil tjänstekort, takmålning och takomläggning",
+            kind: "phones",
+            copy: {
+              eyebrow: "Mobil",
+              heading: "Så ser det ut i telefonen",
+              support: "Scrolla i sidled för att se fler vyer.",
+            },
+            images: [
+              {
+                src: "/projects/takkoll/mobile-1.png",
+                alt: "TakKoll mobil hero med ROT-avdrag på takrenovering",
+              },
+              {
+                src: "/projects/takkoll/mobile-2.png",
+                alt: "TakKoll mobil tjänstekort, takmålning och takomläggning",
+              },
+              {
+                src: "/projects/takkoll/mobile-3.png",
+                alt: "TakKoll mobil, därför väljer husägare TakKoll, med kostnadsfri offert",
+              },
+            ],
           },
           {
-            src: "/projects/takkoll/mobile-3.png",
-            alt: "TakKoll mobil, därför väljer husägare TakKoll, med kostnadsfri offert",
+            kind: "split",
+            imageSide: "right",
+            copy: {
+              eyebrow: "Trygghet",
+              heading: "Taksäkerhet enligt boken, inte löst prat.",
+              support: "Snörasskydd, gångbryggor och livlinefästen, installerat och dokumenterat enligt Boverkets regler.",
+            },
+            image: {
+              src: "/projects/takkoll/safety-viewport.png",
+              alt: "TakKoll taksäkerhet, utrustning enligt Boverkets regler",
+            },
+          },
+          {
+            kind: "scrollFrame",
+            copy: {
+              eyebrow: "Hela sidan",
+              heading: "Scrolla igenom hela berättelsen.",
+              support: "Från hero och ROT till tjänster, FAQ och bokning, dra eller scrolla inne i ramen.",
+            },
+            image: {
+              src: "/projects/takkoll/page-home.png",
+              alt: "Hela TakKoll-startsida från topp till botten",
+            },
           },
         ],
-        fullPage: {
-          src: "/projects/takkoll/page-home.png",
-          alt: "Hela TakKoll-startsida från topp till botten",
-        },
-        fullPageCopy: {
-          eyebrow: "Hela sidan",
-          heading: "Scrolla igenom hela berättelsen.",
-          support:
-            "Från hero och ROT till tjänster, FAQ och bokning, dra eller scrolla inne i ramen.",
-        },
-        desktop: {
-          src: "/projects/takkoll/safety-viewport.png",
-          alt: "TakKoll taksäkerhet, utrustning enligt Boverkets regler",
-        },
-        desktopCopy: {
-          eyebrow: "Trygghet",
-          heading: "Taksäkerhet enligt boken, inte löst prat.",
-          support:
-            "Snörasskydd, gångbryggor och livlinefästen, installerat och dokumenterat enligt Boverkets regler.",
-        },
       },
       seo: {
         title: "TakKoll. WordPress",
-        description:
-          "Case: TakKoll, hur en tydligare WordPress-hemsida gjorde takbesiktning enkelt att boka och ROT synligt från start.",
+        description: "Case: TakKoll, hur en tydligare WordPress-hemsida gjorde takbesiktning enkelt att boka och ROT synligt från start.",
       },
     },
   },
@@ -526,13 +624,19 @@ export const projects: Project[] = [
     slug: "bilservicekoll",
     name: "BilserviceKoll",
     tagline: "Bilverkstaden i Gävle som gör det enkelt att serva bilen.",
-    description:
-      "Hemsida för BilserviceKoll: service, oljebyten, däck och besiktningskontroll, med onlinebokning och bilupphämtning.",
+    description: "Hemsida för BilserviceKoll: service, oljebyten, däck och besiktningskontroll, med onlinebokning och bilupphämtning.",
     siteUrl: "https://bilservicekoll.se",
     githubUrl: "",
-    tags: ["WordPress", "Lokalt", "Leadgen"],
+    tags: [
+      "WordPress",
+      "Lokalt",
+      "Leadgen",
+    ],
     year: 2025,
-    stack: ["WordPress", "Elementor"],
+    stack: [
+      "WordPress",
+      "Elementor",
+    ],
     image: "/projects/bilservicekoll/hero-viewport.png",
     imageAlt: "BilserviceKoll startsida, hero med bilservice och biluppämtning",
     theme: {
@@ -561,36 +665,50 @@ export const projects: Project[] = [
           src: "/projects/bilservicekoll/hero-viewport.png",
           alt: "BilserviceKoll startsida, hero med bilservice och biluppämtning",
         },
-        feature: {
-          src: "/projects/bilservicekoll/services-viewport.png",
-          alt: "BilserviceKoll tjänster, bilservice, oljebyte, besiktning, däckbyte och däckhotell",
-        },
-        mobile: [],
-        fullPage: {
-          src: "/projects/bilservicekoll/page-home.webp",
-          alt: "Hela BilserviceKoll-startsida från topp till botten",
-        },
-        fullPageCopy: {
-          eyebrow: "Hela sidan",
-          heading: "Scrolla igenom hela berättelsen.",
-          support:
-            "Dra eller scrolla inne i ramen för att se sidan från topp till botten.",
-        },
-        desktop: {
-          src: "/projects/bilservicekoll/booking-calendar.webp",
-          alt: "Bokningskalender, välj tjänst, datum och tid direkt på hemsidan",
-        },
-        desktopCopy: {
-          eyebrow: "Bokning",
-          heading: "Ingen telefon behövs, tiden bokas direkt.",
-          support:
-            "Kunden väljer tjänst, datum och tid i en kalender som visar lediga tider live.",
-        },
+        sections: [
+          {
+            kind: "split",
+            imageSide: "left",
+            copy: {
+              eyebrow: "Detalj",
+              heading: "En viktig del av UI:t",
+              support: "BilserviceKoll tjänster, bilservice, oljebyte, besiktning, däckbyte och däckhotell",
+            },
+            image: {
+              src: "/projects/bilservicekoll/services-viewport.png",
+              alt: "BilserviceKoll tjänster, bilservice, oljebyte, besiktning, däckbyte och däckhotell",
+            },
+          },
+          {
+            kind: "split",
+            imageSide: "right",
+            copy: {
+              eyebrow: "Bokning",
+              heading: "Ingen telefon behövs, tiden bokas direkt.",
+              support: "Kunden väljer tjänst, datum och tid i en kalender som visar lediga tider live.",
+            },
+            image: {
+              src: "/projects/bilservicekoll/booking-calendar.webp",
+              alt: "Bokningskalender, välj tjänst, datum och tid direkt på hemsidan",
+            },
+          },
+          {
+            kind: "scrollFrame",
+            copy: {
+              eyebrow: "Hela sidan",
+              heading: "Scrolla igenom hela berättelsen.",
+              support: "Dra eller scrolla inne i ramen för att se sidan från topp till botten.",
+            },
+            image: {
+              src: "/projects/bilservicekoll/page-home.webp",
+              alt: "Hela BilserviceKoll-startsida från topp till botten",
+            },
+          },
+        ],
       },
       seo: {
         title: "BilserviceKoll. WordPress",
-        description:
-          "Case: BilserviceKoll, hur en tydligare WordPress-hemsida gjorde bilservice i Gävle enkelt att boka.",
+        description: "Case: BilserviceKoll, hur en tydligare WordPress-hemsida gjorde bilservice i Gävle enkelt att boka.",
       },
     },
   },
@@ -598,13 +716,19 @@ export const projects: Project[] = [
     slug: "stadkoll",
     name: "Städkoll",
     tagline: "Flyttstädning utan stress – till fast pris.",
-    description:
-      "Hemsida för Städkoll: professionell flyttstädning till fast pris, med 14 dagars garanti och RUT-avdrag.",
+    description: "Hemsida för Städkoll: professionell flyttstädning till fast pris, med 14 dagars garanti och RUT-avdrag.",
     siteUrl: "https://stadkoll.se",
     githubUrl: "",
-    tags: ["Frontend", "UX/UI", "Leadgen"],
+    tags: [
+      "Frontend",
+      "UX/UI",
+      "Leadgen",
+    ],
     year: 2025,
-    stack: ["Frontend", "UX & UI-design"],
+    stack: [
+      "Frontend",
+      "UX & UI-design",
+    ],
     image: "/projects/stadkoll/hero-viewport.webp",
     imageAlt: "Städkoll startsida, hero med flyttstädning till fast pris",
     theme: {
@@ -633,22 +757,24 @@ export const projects: Project[] = [
           src: "/projects/stadkoll/hero-viewport.webp",
           alt: "Städkoll startsida, hero med flyttstädning till fast pris",
         },
-        mobile: [],
-        fullPage: {
-          src: "/projects/stadkoll/page-home.webp",
-          alt: "Hela Städkoll-startsida från topp till botten",
-        },
-        fullPageCopy: {
-          eyebrow: "Hela sidan",
-          heading: "Scrolla igenom hela berättelsen.",
-          support:
-            "Dra eller scrolla inne i ramen för att se sidan från topp till botten.",
-        },
+        sections: [
+          {
+            kind: "scrollFrame",
+            copy: {
+              eyebrow: "Hela sidan",
+              heading: "Scrolla igenom hela berättelsen.",
+              support: "Dra eller scrolla inne i ramen för att se sidan från topp till botten.",
+            },
+            image: {
+              src: "/projects/stadkoll/page-home.webp",
+              alt: "Hela Städkoll-startsida från topp till botten",
+            },
+          },
+        ],
       },
       seo: {
         title: "Städkoll. Frontend & UX/UI",
-        description:
-          "Case: Städkoll, hur en tydligare hemsida gjorde flyttstädning till fast pris enkelt att boka.",
+        description: "Case: Städkoll, hur en tydligare hemsida gjorde flyttstädning till fast pris enkelt att boka.",
       },
     },
   },
@@ -656,13 +782,19 @@ export const projects: Project[] = [
     slug: "brandsakerhetskoll",
     name: "Brand & Säkerhetskoll",
     tagline: "Din lokala expert på brandskydd i Gävle.",
-    description:
-      "Hemsida för Brand & Säkerhetskoll: brandsläckare, brandvarnare och brandfiltar, med tydliga produkter och offert direkt på sidan.",
+    description: "Hemsida för Brand & Säkerhetskoll: brandsläckare, brandvarnare och brandfiltar, med tydliga produkter och offert direkt på sidan.",
     siteUrl: "https://brandsakerhetskoll.se",
     githubUrl: "",
-    tags: ["Frontend", "UX/UI", "Leadgen"],
+    tags: [
+      "Frontend",
+      "UX/UI",
+      "Leadgen",
+    ],
     year: 2025,
-    stack: ["Frontend", "UX & UI-design"],
+    stack: [
+      "Frontend",
+      "UX & UI-design",
+    ],
     image: "/projects/brand-sakerhetskoll/hero-viewport.webp",
     imageAlt: "Brand & Säkerhetskoll startsida, hero med brandsläckare och trygghet i hemmet",
     theme: {
@@ -691,22 +823,24 @@ export const projects: Project[] = [
           src: "/projects/brand-sakerhetskoll/hero-viewport.webp",
           alt: "Brand & Säkerhetskoll startsida, hero med brandsläckare och trygghet i hemmet",
         },
-        mobile: [],
-        fullPage: {
-          src: "/projects/brand-sakerhetskoll/page-home.webp",
-          alt: "Hela Brand & Säkerhetskoll-startsida från topp till botten",
-        },
-        fullPageCopy: {
-          eyebrow: "Hela sidan",
-          heading: "Scrolla igenom hela berättelsen.",
-          support:
-            "Dra eller scrolla inne i ramen för att se sidan från topp till botten.",
-        },
+        sections: [
+          {
+            kind: "scrollFrame",
+            copy: {
+              eyebrow: "Hela sidan",
+              heading: "Scrolla igenom hela berättelsen.",
+              support: "Dra eller scrolla inne i ramen för att se sidan från topp till botten.",
+            },
+            image: {
+              src: "/projects/brand-sakerhetskoll/page-home.webp",
+              alt: "Hela Brand & Säkerhetskoll-startsida från topp till botten",
+            },
+          },
+        ],
       },
       seo: {
         title: "Brand & Säkerhetskoll. Frontend & UX/UI",
-        description:
-          "Case: Brand & Säkerhetskoll, hur en tydligare hemsida byggde förtroende kring brandskydd i Gävle.",
+        description: "Case: Brand & Säkerhetskoll, hur en tydligare hemsida byggde förtroende kring brandskydd i Gävle.",
       },
     },
   },
@@ -714,13 +848,20 @@ export const projects: Project[] = [
     slug: "scooterkoll",
     name: "Scooterkoll",
     tagline: "Elscootrar är smidiga. Tills de går sönder.",
-    description:
-      "Hemsida för Scooterkoll i Gävle: reparation av alla märken, med tydlig bokning, FAQ och offert nära till hands.",
+    description: "Hemsida för Scooterkoll i Gävle: reparation av alla märken, med tydlig bokning, FAQ och offert nära till hands.",
     siteUrl: "https://scooterkoll.se",
     githubUrl: "",
-    tags: ["Frontend", "UX/UI", "SEO"],
+    tags: [
+      "Frontend",
+      "UX/UI",
+      "SEO",
+    ],
     year: 2025,
-    stack: ["SEO", "Frontend", "UX & UI-design"],
+    stack: [
+      "SEO",
+      "Frontend",
+      "UX & UI-design",
+    ],
     image: "/projects/scooterkoll/hero-viewport.webp",
     imageAlt: "Scooterkoll startsida, hero med offertformulär och 365+ reparerade scootrar",
     theme: {
@@ -749,22 +890,24 @@ export const projects: Project[] = [
           src: "/projects/scooterkoll/hero-viewport.webp",
           alt: "Scooterkoll startsida, hero med offertformulär och 365+ reparerade scootrar",
         },
-        mobile: [],
-        fullPage: {
-          src: "/projects/scooterkoll/page-home.webp",
-          alt: "Hela Scooterkoll-startsida från topp till botten",
-        },
-        fullPageCopy: {
-          eyebrow: "Hela sidan",
-          heading: "Scrolla igenom hela berättelsen.",
-          support:
-            "Dra eller scrolla inne i ramen för att se sidan från topp till botten.",
-        },
+        sections: [
+          {
+            kind: "scrollFrame",
+            copy: {
+              eyebrow: "Hela sidan",
+              heading: "Scrolla igenom hela berättelsen.",
+              support: "Dra eller scrolla inne i ramen för att se sidan från topp till botten.",
+            },
+            image: {
+              src: "/projects/scooterkoll/page-home.webp",
+              alt: "Hela Scooterkoll-startsida från topp till botten",
+            },
+          },
+        ],
       },
       seo: {
         title: "Scooterkoll. SEO, Frontend & UX/UI",
-        description:
-          "Case: Scooterkoll, hur en tydligare hemsida gjorde elscooter-reparation i Gävle enkelt att boka.",
+        description: "Case: Scooterkoll, hur en tydligare hemsida gjorde elscooter-reparation i Gävle enkelt att boka.",
       },
     },
   },
@@ -772,13 +915,19 @@ export const projects: Project[] = [
     slug: "halimapearl",
     name: "HalimaPearl",
     tagline: "Från lokalt rykte till en växande varumärkesresa.",
-    description:
-      "GoHighLevel-hemsida för HalimaPearl: en plattform som visar kollektionerna, stärker varumärket och öppnar nya marknader.",
+    description: "GoHighLevel-hemsida för HalimaPearl: en plattform som visar kollektionerna, stärker varumärket och öppnar nya marknader.",
     siteUrl: "https://halimapearl.com",
     githubUrl: "",
-    tags: ["GoHighLevel", "UX/UI", "Varumärke"],
+    tags: [
+      "GoHighLevel",
+      "UX/UI",
+      "Varumärke",
+    ],
     year: 2025,
-    stack: ["GoHighLevel", "UX & UI-design"],
+    stack: [
+      "GoHighLevel",
+      "UX & UI-design",
+    ],
     image: "/projects/halimapearl/hero-viewport.webp",
     imageAlt: "HalimaPearl startsida, hero med Modesty Is Fashion mot sidentyg",
     theme: {
@@ -807,22 +956,24 @@ export const projects: Project[] = [
           src: "/projects/halimapearl/hero-viewport.webp",
           alt: "HalimaPearl startsida, hero med Modesty Is Fashion mot sidentyg",
         },
-        mobile: [],
-        fullPage: {
-          src: "/projects/halimapearl/page-collection.webp",
-          alt: "HalimaPearl kimono-kollektion, produktlista från topp till botten",
-        },
-        fullPageCopy: {
-          eyebrow: "Kollektion",
-          heading: "Bläddra i kollektionen, precis som en kund gör.",
-          support:
-            "Sök, filtrera och sortera bland kimonos, dra eller scrolla inne i ramen.",
-        },
+        sections: [
+          {
+            kind: "scrollFrame",
+            copy: {
+              eyebrow: "Kollektion",
+              heading: "Bläddra i kollektionen, precis som en kund gör.",
+              support: "Sök, filtrera och sortera bland kimonos, dra eller scrolla inne i ramen.",
+            },
+            image: {
+              src: "/projects/halimapearl/page-collection.webp",
+              alt: "HalimaPearl kimono-kollektion, produktlista från topp till botten",
+            },
+          },
+        ],
       },
       seo: {
         title: "HalimaPearl. GoHighLevel",
-        description:
-          "Case: HalimaPearl, hur en GoHighLevel-hemsida tog ett lokalt modevarumärke från Gambia till fler marknader.",
+        description: "Case: HalimaPearl, hur en GoHighLevel-hemsida tog ett lokalt modevarumärke från Gambia till fler marknader.",
       },
     },
   },
@@ -830,13 +981,20 @@ export const projects: Project[] = [
     slug: "ventilationskoll",
     name: "Ventilationskoll",
     tagline: "En hemsida som gör jobbet.",
-    description:
-      "Hemsida för Ventilationskoll: tydlig prisinformation och smidig onlinebokning, byggd för att dra in kunder.",
+    description: "Hemsida för Ventilationskoll: tydlig prisinformation och smidig onlinebokning, byggd för att dra in kunder.",
     siteUrl: "https://ventilationskoll.se",
     githubUrl: "",
-    tags: ["Frontend", "UX/UI", "SEO"],
+    tags: [
+      "Frontend",
+      "UX/UI",
+      "SEO",
+    ],
     year: 2025,
-    stack: ["SEO", "Frontend", "UX & UI-design"],
+    stack: [
+      "SEO",
+      "Frontend",
+      "UX & UI-design",
+    ],
     image: "/projects/ventilationskoll/hero-viewport.webp",
     imageAlt: "Ventilationskoll startsida, hero med pris från 2095 kr och kundomdömen",
     theme: {
@@ -864,22 +1022,24 @@ export const projects: Project[] = [
           src: "/projects/ventilationskoll/hero-viewport.webp",
           alt: "Ventilationskoll startsida, hero med pris från 2095 kr och kundomdömen",
         },
-        mobile: [],
-        fullPage: {
-          src: "/projects/ventilationskoll/page-home.webp",
-          alt: "Hela Ventilationskoll-startsida från topp till botten",
-        },
-        fullPageCopy: {
-          eyebrow: "Hela sidan",
-          heading: "Scrolla igenom hela berättelsen.",
-          support:
-            "Dra eller scrolla inne i ramen för att se sidan från topp till botten.",
-        },
+        sections: [
+          {
+            kind: "scrollFrame",
+            copy: {
+              eyebrow: "Hela sidan",
+              heading: "Scrolla igenom hela berättelsen.",
+              support: "Dra eller scrolla inne i ramen för att se sidan från topp till botten.",
+            },
+            image: {
+              src: "/projects/ventilationskoll/page-home.webp",
+              alt: "Hela Ventilationskoll-startsida från topp till botten",
+            },
+          },
+        ],
       },
       seo: {
         title: "Ventilationskoll. SEO, Frontend & UX/UI",
-        description:
-          "Case: Ventilationskoll, hur en hemsida med tydliga priser och onlinebokning drev över 14 000 visningar.",
+        description: "Case: Ventilationskoll, hur en hemsida med tydliga priser och onlinebokning drev över 14 000 visningar.",
       },
     },
   },
@@ -887,16 +1047,20 @@ export const projects: Project[] = [
     slug: "premium-honey-blends",
     name: "Premium Honey Blends",
     tagline: "Från meddelanden och kontakter till en butik som aldrig sover.",
-    description:
-      "Shopify-butik för Premium Honey Blends: live lagerstatus och beställningar dygnet runt, utan att något försvinner i chatten.",
+    description: "Shopify-butik för Premium Honey Blends: live lagerstatus och beställningar dygnet runt, utan att något försvinner i chatten.",
     siteUrl: "https://premiumhoneyblends.com",
     githubUrl: "",
-    tags: ["Shopify", "E-handel", "Varumärke"],
+    tags: [
+      "Shopify",
+      "E-handel",
+      "Varumärke",
+    ],
     year: 2026,
-    stack: ["Shopify"],
+    stack: [
+      "Shopify",
+    ],
     image: "/projects/premium-honey-blends/hero-viewport.png",
-    imageAlt:
-      "Premium Honey Blends startsida, mörk hero med honungsburkar och Handla nu-knapp",
+    imageAlt: "Premium Honey Blends startsida, mörk hero med honungsburkar och Handla nu-knapp",
     theme: {
       bg: "var(--project-theme-honey)",
       dark: false,
@@ -923,64 +1087,93 @@ export const projects: Project[] = [
           src: "/projects/premium-honey-blends/hero-viewport.png",
           alt: "Premium Honey Blends startsida i desktop, hero med honungsburkar mot blomsteräng",
         },
-        feature: {
-          src: "/projects/premium-honey-blends/feature-product.png",
-          alt: "Produktsektion med Power Honey Blend-burk i naturmiljö och text om naturlig honung och örter",
-        },
-        mobile: [
+        sections: [
           {
-            src: "/projects/premium-honey-blends/mobile-1.png",
-            alt: "Mobil startsida, hero med honungsburkar och bästsäljare under",
+            kind: "split",
+            imageSide: "left",
+            copy: {
+              eyebrow: "Detalj",
+              heading: "En viktig del av UI:t",
+              support: "Produktsektion med Power Honey Blend-burk i naturmiljö och text om naturlig honung och örter",
+            },
+            image: {
+              src: "/projects/premium-honey-blends/feature-product.png",
+              alt: "Produktsektion med Power Honey Blend-burk i naturmiljö och text om naturlig honung och örter",
+            },
           },
           {
-            src: "/projects/premium-honey-blends/mobile-2.png",
-            alt: "Mobil produktsida, alla honungsblends listade med pris",
+            kind: "phones",
+            copy: {
+              eyebrow: "Mobil",
+              heading: "Så ser det ut i telefonen",
+              support: "Scrolla i sidled för att se fler vyer.",
+            },
+            images: [
+              {
+                src: "/projects/premium-honey-blends/mobile-1.png",
+                alt: "Mobil startsida, hero med honungsburkar och bästsäljare under",
+              },
+              {
+                src: "/projects/premium-honey-blends/mobile-2.png",
+                alt: "Mobil produktsida, alla honungsblends listade med pris",
+              },
+              {
+                src: "/projects/premium-honey-blends/mobile-3.png",
+                alt: "Mobil kontaktsida. Vi svarar på allt, med kontaktformulär",
+              },
+            ],
           },
           {
-            src: "/projects/premium-honey-blends/mobile-3.png",
-            alt: "Mobil kontaktsida. Vi svarar på allt, med kontaktformulär",
+            kind: "split",
+            imageSide: "right",
+            copy: {
+              eyebrow: "Butik",
+              heading: "Live lager, beställningar dygnet runt.",
+              support: "Shopify som håller koll på lagret och tar emot ordrar utan att något drunknar i chatten.",
+            },
+            image: {
+              src: "/projects/premium-honey-blends/products-viewport.png",
+              alt: "Produktsidan i desktop, tre honungsblends med produktkort under",
+            },
+          },
+          {
+            kind: "scrollFrame",
+            copy: {
+              eyebrow: "Hela sidan",
+              heading: "Scrolla igenom hela berättelsen.",
+              support: "Dra eller scrolla inne i ramen för att se sidan från topp till botten.",
+            },
+            image: {
+              src: "/projects/premium-honey-blends/page-full.png",
+              alt: "Premium Honey Blends-sidan från topp till botten",
+            },
           },
         ],
-        fullPage: {
-          src: "/projects/premium-honey-blends/page-full.png",
-          alt: "Premium Honey Blends-sidan från topp till botten",
-        },
-        fullPageCopy: {
-          eyebrow: "Hela sidan",
-          heading: "Scrolla igenom hela berättelsen.",
-          support:
-            "Dra eller scrolla inne i ramen för att se sidan från topp till botten.",
-        },
-        desktop: {
-          src: "/projects/premium-honey-blends/products-viewport.png",
-          alt: "Produktsidan i desktop, tre honungsblends med produktkort under",
-        },
-        desktopCopy: {
-          eyebrow: "Butik",
-          heading: "Live lager, beställningar dygnet runt.",
-          support:
-            "Shopify som håller koll på lagret och tar emot ordrar utan att något drunknar i chatten.",
-        },
       },
       seo: {
         title: "Premium Honey Blends. Shopify",
-        description:
-          "Case: Premium Honey Blends, hur en Shopify-butik ersatte chattförsäljning med live lager och ordrar dygnet runt.",
+        description: "Case: Premium Honey Blends, hur en Shopify-butik ersatte chattförsäljning med live lager och ordrar dygnet runt.",
       },
     },
   },
   {
     slug: "alkama",
     name: "ALKAMA",
-    tagline:
-      "WooCommerce-butik på svenska, finska och norska, utan att tappa 20 års förtroende.",
-    description:
-      "Flerspråkig WooCommerce-butik för Alkama Industry: fakturabetalning, självbetjäning och lokal SEO i Norden.",
+    tagline: "WooCommerce-butik på svenska, finska och norska, utan att tappa 20 års förtroende.",
+    description: "Flerspråkig WooCommerce-butik för Alkama Industry: fakturabetalning, självbetjäning och lokal SEO i Norden.",
     siteUrl: "",
     githubUrl: "",
-    tags: ["WooCommerce", "Polylang", "B2B"],
+    tags: [
+      "WooCommerce",
+      "Polylang",
+      "B2B",
+    ],
     year: 2026,
-    stack: ["WooCommerce", "Polylang", "PHP"],
+    stack: [
+      "WooCommerce",
+      "Polylang",
+      "PHP",
+    ],
     image: "/projects/alkama/hero-viewport.png",
     imageAlt: "ALKAMA startsida, hero med bästsäljare i webbutiken",
     theme: {
@@ -1009,22 +1202,25 @@ export const projects: Project[] = [
           src: "/projects/alkama/hero-viewport.png",
           alt: "ALKAMA startsida, hero med bästsäljare i webbutiken",
         },
-        mobile: [],
-        desktop: {
-          src: "/projects/alkama/hero-viewport.png",
-          alt: "ALKAMA startsida i desktop, bästsäljare och företagskonto-CTA",
-        },
-        desktopCopy: {
-          eyebrow: "B2B-butik",
-          heading: "Tre språk, samma förtroende.",
-          support:
-            "WooCommerce med Polylang, fakturaflöde och självbetjäning för ombeställning.",
-        },
+        sections: [
+          {
+            kind: "split",
+            imageSide: "right",
+            copy: {
+              eyebrow: "B2B-butik",
+              heading: "Tre språk, samma förtroende.",
+              support: "WooCommerce med Polylang, fakturaflöde och självbetjäning för ombeställning.",
+            },
+            image: {
+              src: "/projects/alkama/hero-viewport.png",
+              alt: "ALKAMA startsida i desktop, bästsäljare och företagskonto-CTA",
+            },
+          },
+        ],
       },
       seo: {
         title: "ALKAMA. WooCommerce & Polylang",
-        description:
-          "Case: ALKAMA, flerspråkig WooCommerce-butik som digitaliserade 20 års B2B-förtroende för Norden.",
+        description: "Case: ALKAMA, flerspråkig WooCommerce-butik som digitaliserade 20 års B2B-förtroende för Norden.",
       },
     },
   },
@@ -1032,13 +1228,19 @@ export const projects: Project[] = [
     slug: "uniclean",
     name: "UniClean",
     tagline: "Från samma frågor om och om igen, till en hemsida som onboardingar själv.",
-    description:
-      "WordPress-hemsida för UniClean: tjänster, ungefärliga priser och förväntningar synliga från start, så teamet kan fokusera på jobbet.",
+    description: "WordPress-hemsida för UniClean: tjänster, ungefärliga priser och förväntningar synliga från start, så teamet kan fokusera på jobbet.",
     siteUrl: "",
     githubUrl: "",
-    tags: ["WordPress", "Elementor", "Lokalt"],
+    tags: [
+      "WordPress",
+      "Elementor",
+      "Lokalt",
+    ],
     year: 2026,
-    stack: ["WordPress", "Elementor"],
+    stack: [
+      "WordPress",
+      "Elementor",
+    ],
     image: "/projects/uniclean/hero-viewport.png",
     imageAlt: "UniClean startsida, hero med prisoffertformulär",
     theme: {
@@ -1068,64 +1270,93 @@ export const projects: Project[] = [
           src: "/projects/uniclean/hero-viewport.png",
           alt: "UniClean startsida, hero med prisoffertformulär",
         },
-        feature: {
-          src: "/projects/uniclean/booking-viewport.png",
-          alt: "Så bokar du hos UniClean, fyra steg från klick till städning",
-        },
-        mobile: [
+        sections: [
           {
-            src: "/projects/uniclean/mobile-1.png",
-            alt: "UniClean mobil startsida, hero med offertformulär och Google-betyg",
+            kind: "split",
+            imageSide: "left",
+            copy: {
+              eyebrow: "Detalj",
+              heading: "En viktig del av UI:t",
+              support: "Så bokar du hos UniClean, fyra steg från klick till städning",
+            },
+            image: {
+              src: "/projects/uniclean/booking-viewport.png",
+              alt: "Så bokar du hos UniClean, fyra steg från klick till städning",
+            },
           },
           {
-            src: "/projects/uniclean/mobile-2.png",
-            alt: "UniClean mobil, utmärkelse och bild på städare i skolsal",
+            kind: "phones",
+            copy: {
+              eyebrow: "Mobil",
+              heading: "Så ser det ut i telefonen",
+              support: "Scrolla i sidled för att se fler vyer.",
+            },
+            images: [
+              {
+                src: "/projects/uniclean/mobile-1.png",
+                alt: "UniClean mobil startsida, hero med offertformulär och Google-betyg",
+              },
+              {
+                src: "/projects/uniclean/mobile-2.png",
+                alt: "UniClean mobil, utmärkelse och bild på städare i skolsal",
+              },
+              {
+                src: "/projects/uniclean/mobile-3.png",
+                alt: "UniClean mobil, mission och vision med fönsterputsning i bild",
+              },
+            ],
           },
           {
-            src: "/projects/uniclean/mobile-3.png",
-            alt: "UniClean mobil, mission och vision med fönsterputsning i bild",
+            kind: "split",
+            imageSide: "right",
+            copy: {
+              eyebrow: "Förtroende",
+              heading: "Riktiga omdömen, hämtade live från Google.",
+              support: "58 recensioner och 4.9 i snittbetyg syns direkt på hemsidan, utan att någon behöver uppdatera det för hand.",
+            },
+            image: {
+              src: "/projects/uniclean/reviews-viewport.png",
+              alt: "UniClean recensionssektion. 4.9 i betyg från 58 Google-recensioner, hämtat live",
+            },
+          },
+          {
+            kind: "scrollFrame",
+            copy: {
+              eyebrow: "Hela sidan",
+              heading: "Scrolla igenom hela berättelsen.",
+              support: "Dra eller scrolla inne i ramen för att se sidan från topp till botten.",
+            },
+            image: {
+              src: "/projects/uniclean/page-full.png",
+              alt: "Hela UniClean-startsidan från topp till botten",
+            },
           },
         ],
-        fullPage: {
-          src: "/projects/uniclean/page-full.png",
-          alt: "Hela UniClean-startsidan från topp till botten",
-        },
-        fullPageCopy: {
-          eyebrow: "Hela sidan",
-          heading: "Scrolla igenom hela berättelsen.",
-          support:
-            "Dra eller scrolla inne i ramen för att se sidan från topp till botten.",
-        },
-        desktop: {
-          src: "/projects/uniclean/reviews-viewport.png",
-          alt: "UniClean recensionssektion. 4.9 i betyg från 58 Google-recensioner, hämtat live",
-        },
-        desktopCopy: {
-          eyebrow: "Förtroende",
-          heading: "Riktiga omdömen, hämtade live från Google.",
-          support:
-            "58 recensioner och 4.9 i snittbetyg syns direkt på hemsidan, utan att någon behöver uppdatera det för hand.",
-        },
       },
       seo: {
         title: "UniClean. WordPress & Elementor",
-        description:
-          "Case: UniClean, hur en WordPress-hemsida blev en 24/7-informationshub och sparade tid i onboarding.",
+        description: "Case: UniClean, hur en WordPress-hemsida blev en 24/7-informationshub och sparade tid i onboarding.",
       },
     },
   },
   {
     slug: "shanasheel",
     name: "Shanasheel",
-    tagline:
-      "Från första skissen till en tvåspråkig hemsida som berättar om Akkad, och om framtiden i Irak.",
-    description:
-      "Hemsida för Shanasheel Al-Asima: fastighet, hållbarhet och investeringar, byggd i WordPress med Elementor.",
+    tagline: "Från första skissen till en tvåspråkig hemsida som berättar om Akkad, och om framtiden i Irak.",
+    description: "Hemsida för Shanasheel Al-Asima: fastighet, hållbarhet och investeringar, byggd i WordPress med Elementor.",
     siteUrl: "https://shanasheel.se",
     githubUrl: "",
-    tags: ["WordPress", "Elementor", "Fastighet"],
+    tags: [
+      "WordPress",
+      "Elementor",
+      "Fastighet",
+    ],
     year: 2025,
-    stack: ["WordPress", "Elementor", "TranslatePress"],
+    stack: [
+      "WordPress",
+      "Elementor",
+      "TranslatePress",
+    ],
     image: "/projects/shanasheel/hero-viewport.png",
     imageAlt: "Shanasheel startsida med Akkad Residential City i hero",
     theme: {
@@ -1154,49 +1385,72 @@ export const projects: Project[] = [
           src: "/projects/shanasheel/hero-viewport.png",
           alt: "Shanasheel-hero med Akkad Residential City",
         },
-        feature: {
-          src: "/projects/shanasheel/realestate-viewport.png",
-          alt: "Shanasheel fastighetssida. Type A, B och C med planlösningar för Akkad",
-        },
-        mobile: [
+        sections: [
           {
-            src: "/projects/shanasheel/mobile-1.png",
-            alt: "Shanasheel startsida i mobil. Akkad-hero",
+            kind: "split",
+            imageSide: "left",
+            copy: {
+              eyebrow: "Detalj",
+              heading: "En viktig del av UI:t",
+              support: "Shanasheel fastighetssida. Type A, B och C med planlösningar för Akkad",
+            },
+            image: {
+              src: "/projects/shanasheel/realestate-viewport.png",
+              alt: "Shanasheel fastighetssida. Type A, B och C med planlösningar för Akkad",
+            },
           },
           {
-            src: "/projects/shanasheel/mobile-2.png",
-            alt: "Shanasheel mobil. Type A med planlösning och 300 kvm",
+            kind: "phones",
+            copy: {
+              eyebrow: "Mobil",
+              heading: "Så ser det ut i telefonen",
+              support: "Scrolla i sidled för att se fler vyer.",
+            },
+            images: [
+              {
+                src: "/projects/shanasheel/mobile-1.png",
+                alt: "Shanasheel startsida i mobil. Akkad-hero",
+              },
+              {
+                src: "/projects/shanasheel/mobile-2.png",
+                alt: "Shanasheel mobil. Type A med planlösning och 300 kvm",
+              },
+              {
+                src: "/projects/shanasheel/mobile-3.png",
+                alt: "Shanasheel mobil. Om Shanasheel Al-Asima och företagets historia",
+              },
+            ],
           },
           {
-            src: "/projects/shanasheel/mobile-3.png",
-            alt: "Shanasheel mobil. Om Shanasheel Al-Asima och företagets historia",
+            kind: "split",
+            imageSide: "right",
+            copy: {
+              eyebrow: "Verksamheten",
+              heading: "Fyra spår, en gemensam ton.",
+              support: "Fastighet, solenergi, jordbruk och återvinning, samma visuella språk genom hela hemsidan.",
+            },
+            image: {
+              src: "/projects/shanasheel/journey-viewport.png",
+              alt: "Shanasheel, fastighet, solenergi, jordbruk och återvinning i fyra ikoner",
+            },
+          },
+          {
+            kind: "scrollFrame",
+            copy: {
+              eyebrow: "Hela sidan",
+              heading: "Scrolla igenom hela berättelsen.",
+              support: "Startsida från hero till footer, dra eller scrolla inne i ramen.",
+            },
+            image: {
+              src: "/projects/shanasheel/page-home.png",
+              alt: "Hela Shanasheel-startsida från topp till botten",
+            },
           },
         ],
-        fullPage: {
-          src: "/projects/shanasheel/page-home.png",
-          alt: "Hela Shanasheel-startsida från topp till botten",
-        },
-        fullPageCopy: {
-          eyebrow: "Hela sidan",
-          heading: "Scrolla igenom hela berättelsen.",
-          support:
-            "Startsida från hero till footer, dra eller scrolla inne i ramen.",
-        },
-        desktop: {
-          src: "/projects/shanasheel/journey-viewport.png",
-          alt: "Shanasheel, fastighet, solenergi, jordbruk och återvinning i fyra ikoner",
-        },
-        desktopCopy: {
-          eyebrow: "Verksamheten",
-          heading: "Fyra spår, en gemensam ton.",
-          support:
-            "Fastighet, solenergi, jordbruk och återvinning, samma visuella språk genom hela hemsidan.",
-        },
       },
       seo: {
         title: "Shanasheel. WordPress & Elementor",
-        description:
-          "Case: Shanasheel Al-Asima, hur jag designade och byggde en tvåspråkig WordPress-hemsida kring Akkad Residential City.",
+        description: "Case: Shanasheel Al-Asima, hur jag designade och byggde en tvåspråkig WordPress-hemsida kring Akkad Residential City.",
       },
     },
   },
@@ -1204,13 +1458,19 @@ export const projects: Project[] = [
     slug: "fcvaxjo",
     name: "FC Växjö",
     tagline: "En digital hemmaplan för föreningen sedan 1989.",
-    description:
-      "Hemsida för FC Växjö: nyheter, träningstider, galleri och kontakt, med klubbens svart-guld-identitet i centrum.",
+    description: "Hemsida för FC Växjö: nyheter, träningstider, galleri och kontakt, med klubbens svart-guld-identitet i centrum.",
     siteUrl: "https://fcvaxjo.se",
     githubUrl: "",
-    tags: ["Webbdesign", "UX/UI", "Förening"],
+    tags: [
+      "Webbdesign",
+      "UX/UI",
+      "Förening",
+    ],
     year: 2023,
-    stack: ["One.com", "UX & UI-design"],
+    stack: [
+      "One.com",
+      "UX & UI-design",
+    ],
     image: "/projects/fcvaxjo/hero-viewport.png",
     imageAlt: "FC Växjö startsida, hero med klubbmärke och plan",
     theme: {
@@ -1239,39 +1499,60 @@ export const projects: Project[] = [
           src: "/projects/fcvaxjo/hero-viewport.png",
           alt: "FC Växjö startsida, hero med klubbmärke mot gräsplan",
         },
-        feature: {
-          src: "/projects/fcvaxjo/gallery-viewport.png",
-          alt: "FC Växjö galleri, foton från lag, matcher och aktiviteter",
-        },
-        mobile: [
+        sections: [
           {
-            src: "/projects/fcvaxjo/mobile-1.png",
-            alt: "FC Växjö mobil startsida, hero med klubbmärke",
+            kind: "split",
+            imageSide: "left",
+            copy: {
+              eyebrow: "Detalj",
+              heading: "En viktig del av UI:t",
+              support: "FC Växjö galleri, foton från lag, matcher och aktiviteter",
+            },
+            image: {
+              src: "/projects/fcvaxjo/gallery-viewport.png",
+              alt: "FC Växjö galleri, foton från lag, matcher och aktiviteter",
+            },
           },
           {
-            src: "/projects/fcvaxjo/mobile-2.png",
-            alt: "FC Växjö mobil. Om FC Växjö med klubbens historia",
+            kind: "phones",
+            copy: {
+              eyebrow: "Mobil",
+              heading: "Så ser det ut i telefonen",
+              support: "Scrolla i sidled för att se fler vyer.",
+            },
+            images: [
+              {
+                src: "/projects/fcvaxjo/mobile-1.png",
+                alt: "FC Växjö mobil startsida, hero med klubbmärke",
+              },
+              {
+                src: "/projects/fcvaxjo/mobile-2.png",
+                alt: "FC Växjö mobil. Om FC Växjö med klubbens historia",
+              },
+              {
+                src: "/projects/fcvaxjo/mobile-3.png",
+                alt: "FC Växjö mobil, kontaktuppgifter och klubbledare",
+              },
+            ],
           },
           {
-            src: "/projects/fcvaxjo/mobile-3.png",
-            alt: "FC Växjö mobil, kontaktuppgifter och klubbledare",
+            kind: "split",
+            imageSide: "right",
+            copy: {
+              eyebrow: "Identitet",
+              heading: "Historia och utmärkelser, synliga på riktigt.",
+              support: "Från PARS och ARYO till FC Växjö 2008, plus stipendier och integrationspris i en tydlig berättelse.",
+            },
+            image: {
+              src: "/projects/fcvaxjo/about-viewport.png",
+              alt: "Om FC Växjö, klubbmärke, historia och utmärkelser",
+            },
           },
         ],
-        desktop: {
-          src: "/projects/fcvaxjo/about-viewport.png",
-          alt: "Om FC Växjö, klubbmärke, historia och utmärkelser",
-        },
-        desktopCopy: {
-          eyebrow: "Identitet",
-          heading: "Historia och utmärkelser, synliga på riktigt.",
-          support:
-            "Från PARS och ARYO till FC Växjö 2008, plus stipendier och integrationspris i en tydlig berättelse.",
-        },
       },
       seo: {
         title: "FC Växjö. Webbdesign",
-        description:
-          "Case: FC Växjö, hur en klubbhemsida med svart-guld-identitet blev digital hemmaplan för nyheter, träning och gemenskap.",
+        description: "Case: FC Växjö, hur en klubbhemsida med svart-guld-identitet blev digital hemmaplan för nyheter, träning och gemenskap.",
       },
     },
   },

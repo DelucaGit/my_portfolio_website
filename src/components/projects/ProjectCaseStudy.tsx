@@ -1,6 +1,11 @@
 import Link from "next/link";
 import { site } from "@/data/site";
 import type { Project } from "@/lib/projects";
+import type {
+  MediaSection,
+  MediaSectionCopy,
+  ProjectImage,
+} from "@/data/projects";
 import { getAdjacentProjects } from "@/lib/projects";
 import { asset } from "@/lib/asset";
 import styles from "./ProjectCaseStudy.module.css";
@@ -156,155 +161,14 @@ export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
           </section>
         )}
 
-        {/* 5. Feature / media blocks */}
-        {media.feature && (
-          <section className={styles.featureRow}>
-            <figure className={styles.featureMedia}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={asset(media.feature.src)} alt={media.feature.alt} />
-            </figure>
-            <div className={styles.featureCopy}>
-              <p className={styles.eyebrow}>Detalj</p>
-              <h2 className={styles.featureHeading}>En viktig del av UI:t</h2>
-              <p className={styles.featureText}>{media.feature.alt}</p>
-            </div>
-          </section>
-        )}
-
-        {media.mobile.length > 0 && (
-          <section
-            className={styles.mediaSection}
-            aria-labelledby="mobile-heading"
-          >
-            <div className={styles.mediaIntro}>
-              <p className={styles.eyebrow}>Mobil</p>
-              <h2 id="mobile-heading" className={styles.sectionHeading}>
-                Så ser det ut i telefonen
-              </h2>
-              <p className={styles.mediaSupport}>
-                Scrolla i sidled för att se fler vyer.
-              </p>
-            </div>
-
-            <div className={styles.mobileScroll} tabIndex={0}>
-              <ul className={styles.mobileList}>
-                {media.mobile.map((image) => (
-                  <li key={image.src} className={styles.phone}>
-                    <div className={styles.phoneNotch} aria-hidden="true" />
-                    <div className={styles.phoneScreen}>
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={asset(image.src)} alt={image.alt} />
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </section>
-        )}
-
-        {media.desktop && (
-          <section
-            className={`${styles.featureRow} ${styles.featureRowFlip}`}
-          >
-            <div className={styles.featureCopy}>
-              <p className={styles.eyebrow}>
-                {media.desktopCopy?.eyebrow ?? "Desktop"}
-              </p>
-              <h2 className={styles.featureHeading}>
-                {media.desktopCopy?.heading ?? "Desktop-vyn"}
-              </h2>
-              <p className={styles.featureText}>
-                {media.desktopCopy?.support ?? media.desktop.alt}
-              </p>
-            </div>
-            <figure className={styles.featureMedia}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={asset(media.desktop.src)} alt={media.desktop.alt} />
-            </figure>
-          </section>
-        )}
-
-        {media.fullPage && (
-          <section
-            className={styles.mediaSection}
-            aria-labelledby="fullpage-heading"
-          >
-            <div className={styles.mediaIntroWide}>
-              <p className={styles.eyebrow}>
-                {media.fullPageCopy?.eyebrow ?? "Hela sidan"}
-              </p>
-              <h2 id="fullpage-heading" className={styles.sectionHeading}>
-                {media.fullPageCopy?.heading ?? "Scrolla igenom hela flödet"}
-              </h2>
-              <p className={styles.mediaSupport}>
-                {media.fullPageCopy?.support ??
-                  "Scrolla inne i ramen för att se layouten från topp till botten."}
-              </p>
-            </div>
-
-            <div className={styles.fullPageFrame} tabIndex={0}>
-              <div className={styles.fullPageChrome} aria-hidden="true">
-                <span />
-                <span />
-                <span />
-              </div>
-              <div className={styles.fullPageScroll}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={asset(media.fullPage.src)} alt={media.fullPage.alt} />
-              </div>
-            </div>
-          </section>
-        )}
-
-        {media.gallery && media.gallery.length > 0 && (
-          <section
-            className={styles.mediaSection}
-            aria-labelledby="gallery-heading"
-          >
-            <div className={styles.mediaIntroWide}>
-              <p className={styles.eyebrow}>
-                {media.galleryCopy?.eyebrow ?? "Fler bilder"}
-              </p>
-              <h2 id="gallery-heading" className={styles.sectionHeading}>
-                {media.galleryCopy?.heading ?? "Fler vyer från projektet"}
-              </h2>
-              {media.galleryCopy?.support && (
-                <p className={styles.mediaSupport}>{media.galleryCopy.support}</p>
-              )}
-            </div>
-
-            <ul className={styles.gallery}>
-              {media.gallery.map((image) => (
-                <li key={image.src}>
-                  <figure className={styles.galleryItem}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={asset(image.src)} alt={image.alt} />
-                  </figure>
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
-
-        {media.closing && (
-          <section className={styles.featureRow}>
-            <figure className={styles.featureMedia}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={asset(media.closing.src)} alt={media.closing.alt} />
-            </figure>
-            <div className={styles.featureCopy}>
-              <p className={styles.eyebrow}>
-                {media.closingCopy?.eyebrow ?? "Detalj"}
-              </p>
-              <h2 className={styles.featureHeading}>
-                {media.closingCopy?.heading ?? "En viktig del av UI:t"}
-              </h2>
-              <p className={styles.featureText}>
-                {media.closingCopy?.support ?? media.closing.alt}
-              </p>
-            </div>
-          </section>
-        )}
+        {/* 5. Media sections, in the order the project lists them */}
+        {media.sections.map((section, index) => (
+          <MediaSectionBlock
+            key={`${section.kind}-${index}`}
+            section={section}
+            headingId={`media-${index}-heading`}
+          />
+        ))}
 
         {/* 6. Next project */}
         <nav className={styles.nextNav} aria-label="Nästa projekt">
@@ -345,5 +209,125 @@ export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
         </div>
       </section>
     </article>
+  );
+}
+
+function MediaSectionBlock({
+  section,
+  headingId,
+}: {
+  section: MediaSection;
+  headingId: string;
+}) {
+  const { copy } = section;
+
+  switch (section.kind) {
+    case "split":
+      return (
+        <section
+          className={`${styles.featureRow} ${
+            section.imageSide === "right" ? styles.featureRowFlip : ""
+          }`}
+          aria-labelledby={headingId}
+        >
+          {section.imageSide === "left" && <SplitFigure image={section.image} />}
+          <div className={styles.featureCopy}>
+            <p className={styles.eyebrow}>{copy.eyebrow}</p>
+            <h2 id={headingId} className={styles.featureHeading}>
+              {copy.heading}
+            </h2>
+            {copy.support && (
+              <p className={styles.featureText}>{copy.support}</p>
+            )}
+          </div>
+          {section.imageSide === "right" && (
+            <SplitFigure image={section.image} />
+          )}
+        </section>
+      );
+
+    case "phones":
+      return (
+        <section className={styles.mediaSection} aria-labelledby={headingId}>
+          <SectionIntro copy={copy} headingId={headingId} wide={false} />
+          <div className={styles.mobileScroll} tabIndex={0}>
+            <ul className={styles.mobileList}>
+              {section.images.map((image) => (
+                <li key={image.src} className={styles.phone}>
+                  <div className={styles.phoneNotch} aria-hidden="true" />
+                  <div className={styles.phoneScreen}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={asset(image.src)} alt={image.alt} />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      );
+
+    case "scrollFrame":
+      return (
+        <section className={styles.mediaSection} aria-labelledby={headingId}>
+          <SectionIntro copy={copy} headingId={headingId} wide />
+          <div className={styles.fullPageFrame} tabIndex={0}>
+            <div className={styles.fullPageChrome} aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </div>
+            <div className={styles.fullPageScroll}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={asset(section.image.src)} alt={section.image.alt} />
+            </div>
+          </div>
+        </section>
+      );
+
+    case "gallery":
+      return (
+        <section className={styles.mediaSection} aria-labelledby={headingId}>
+          <SectionIntro copy={copy} headingId={headingId} wide />
+          <ul className={styles.gallery}>
+            {section.images.map((image) => (
+              <li key={image.src}>
+                <figure className={styles.galleryItem}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={asset(image.src)} alt={image.alt} />
+                </figure>
+              </li>
+            ))}
+          </ul>
+        </section>
+      );
+  }
+}
+
+function SectionIntro({
+  copy,
+  headingId,
+  wide,
+}: {
+  copy: MediaSectionCopy;
+  headingId: string;
+  wide: boolean;
+}) {
+  return (
+    <div className={wide ? styles.mediaIntroWide : styles.mediaIntro}>
+      <p className={styles.eyebrow}>{copy.eyebrow}</p>
+      <h2 id={headingId} className={styles.sectionHeading}>
+        {copy.heading}
+      </h2>
+      {copy.support && <p className={styles.mediaSupport}>{copy.support}</p>}
+    </div>
+  );
+}
+
+function SplitFigure({ image }: { image: ProjectImage }) {
+  return (
+    <figure className={styles.featureMedia}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={asset(image.src)} alt={image.alt} />
+    </figure>
   );
 }
