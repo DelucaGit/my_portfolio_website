@@ -1,15 +1,13 @@
 import { Fragment } from "react";
 import { site } from "@/data/site";
 import { asset } from "@/lib/asset";
+import { fillPlaceholders } from "@/lib/placeholders";
 import { getFeaturedProject, getProjectView } from "@/lib/projects";
 import shared from "@/styles/shared.module.css";
 import section from "@/styles/homeSection.module.css";
 import SiteLink from "./SiteLink";
 import WordFill, { Words } from "./WordFill";
 import styles from "./About.module.css";
-
-/** Where the featured project's name goes in a text from the data. */
-const FEATURED = "{featured}";
 
 /**
  * Om mig: a portrait and a short text that fills in word by word on scroll.
@@ -42,19 +40,19 @@ export default function About() {
           </h2>
           {about.paragraphs.map((paragraph) => (
             <p key={paragraph}>
-              {paragraph.split(FEATURED).map((text, index) => (
-                <Fragment key={index}>
-                  {index > 0 && (
-                    <SiteLink
-                      href={featured.caseHref}
-                      className={styles.link}
-                    >
-                      <Words text={featured.name} />
-                    </SiteLink>
-                  )}
-                  <Words text={text} />
-                </Fragment>
-              ))}
+              {fillPlaceholders(paragraph, {
+                featured: { text: featured.name, href: featured.caseHref },
+              }).map((part, index) =>
+                part.kind === "link" ? (
+                  <SiteLink key={index} href={part.href} className={styles.link}>
+                    <Words text={part.text} />
+                  </SiteLink>
+                ) : (
+                  <Fragment key={index}>
+                    <Words text={part.text} />
+                  </Fragment>
+                ),
+              )}
             </p>
           ))}
         </WordFill>
