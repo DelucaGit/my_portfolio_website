@@ -4,12 +4,16 @@ import {
   type ProjectSlug,
 } from "@/data/projects";
 import { site } from "@/data/site";
-import { asset } from "@/lib/asset";
 import { getAdjacent } from "./adjacent";
 import { getBuildInputs } from "./build-inputs";
 import { withoutProtocol } from "./contact";
+import {
+  getProjectFiles,
+  type ProjectPreview,
+  type WalkthroughFilms,
+} from "./project-files";
 
-export type { Project, ProjectSlug };
+export type { Project, ProjectSlug, ProjectPreview };
 
 /**
  * The slug of the featured project: `featuredProject` in src/data/site.ts.
@@ -45,26 +49,6 @@ export function getHomeProjects(): Project[] {
     .slice(0, site.homeProjectCount - 1);
 }
 
-/** A project's screenshot in the preview format: 2:1, in two sizes. */
-export type ProjectPreview = {
-  /** 1280 x 640 */
-  large: string;
-  /** 640 x 320 */
-  small: string;
-};
-
-/**
- * The project's 2:1 screenshot for the split view. The files are in
- * public/previews/, named by the slug: `<slug>.webp` and `<slug>-sm.webp`.
- * (`project.image` has another shape for every project.)
- */
-function getProjectPreview(project: Project): ProjectPreview {
-  return {
-    large: `/previews/${project.slug}.webp`,
-    small: `/previews/${project.slug}-sm.webp`,
-  };
-}
-
 /** The project `featuredProject` in src/data/site.ts points at. */
 export function getFeaturedProject(): Project {
   const slug = featuredSlug();
@@ -76,11 +60,7 @@ export function getFeaturedProject(): Project {
 }
 
 /** A recorded walkthrough, ready to play: the files plus what happens when. */
-export type Walkthrough = {
-  webm: string;
-  mp4: string;
-  /** The still image shown before the film plays, and instead of it when motion is not wanted */
-  poster: string;
+export type Walkthrough = WalkthroughFilms & {
   /** Seconds */
   duration: number;
   steps: WalkthroughStep[];
@@ -94,15 +74,15 @@ export type WalkthroughStep = {
 
 /**
  * The project's recorded walkthrough, or null when it has none (the caller
- * then shows the project's screenshot). The films are in public/walkthroughs/.
+ * then shows the project's screenshot).
  */
-function getProjectWalkthrough(project: Project): Walkthrough | null {
-  if (!project.walkthrough) return null;
-  const base = `/walkthroughs/${project.slug}`;
+function getProjectWalkthrough(
+  project: Project,
+  films: WalkthroughFilms | null,
+): Walkthrough | null {
+  if (!project.walkthrough || !films) return null;
   return {
-    webm: `${base}.webm`,
-    mp4: `${base}.mp4`,
-    poster: `${base}.webp`,
+    ...films,
     duration: project.walkthrough.duration,
     steps: project.walkthrough.steps.map(([at, text]) => ({ at, text })),
   };
@@ -221,8 +201,7 @@ export type ProjectView = {
 
 /** The one place a project is put together for a page. */
 export function getProjectView(project: Project): ProjectView {
-  const preview = getProjectPreview(project);
-  const walkthrough = getProjectWalkthrough(project);
+  const files = getProjectFiles(project);
   return {
     slug: project.slug,
     name: project.name,
@@ -232,14 +211,9 @@ export function getProjectView(project: Project): ProjectView {
     host: getProjectHost(project),
     site: getProjectSite(project),
     githubUrl: project.githubUrl,
-    preview: { large: asset(preview.large), small: asset(preview.small) },
-    image: { src: asset(project.image), alt: project.imageAlt },
-    walkthrough: walkthrough && {
-      ...walkthrough,
-      webm: asset(walkthrough.webm),
-      mp4: asset(walkthrough.mp4),
-      poster: asset(walkthrough.poster),
-    },
+    preview: files.preview,
+    image: { src: files.image, alt: project.imageAlt },
+    walkthrough: getProjectWalkthrough(project, files.films),
     facts: {
       type: project.tags.join(" · "),
       builtWith: project.stack.join(" · "),
