@@ -1,10 +1,9 @@
 import Link from "next/link";
-import type { Service } from "@/lib/services";
-import { getAllServices } from "@/lib/services";
+import { serviceCatalog, type Service } from "@/lib/services";
 import styles from "./Services.module.css";
 
 export default function Services() {
-  const services = getAllServices();
+  const services = serviceCatalog.all();
 
   return (
     <section
@@ -55,7 +54,7 @@ function ServiceCard({ service }: { service: Service }) {
       </ul>
 
       {!service.comingSoon && (
-        <Link href={`/services/${service.slug}`} className={styles.cta}>
+        <Link href={serviceCatalog.href(service)} className={styles.cta}>
           Läs mer <span aria-hidden="true">→</span>
         </Link>
       )}

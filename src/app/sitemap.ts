@@ -1,23 +1,20 @@
 import type { MetadataRoute } from "next";
 import { site } from "@/data/site";
-import { getProjectSlugs } from "@/lib/projects";
-import { getServiceSlugs } from "@/lib/services";
+import { projectCatalog } from "@/lib/projects";
+import { serviceCatalog } from "@/lib/services";
 
 export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = site.url;
+  const lastModified = new Date();
 
-  const projectUrls = getProjectSlugs().map((slug) => ({
-    url: `${baseUrl}/projects/${slug}/`,
-    lastModified: new Date(),
-    changeFrequency: "monthly" as const,
-    priority: 0.8,
-  }));
-
-  const serviceUrls = getServiceSlugs().map((slug) => ({
-    url: `${baseUrl}/services/${slug}/`,
-    lastModified: new Date(),
+  const entryUrls = [
+    ...projectCatalog.all().map((project) => projectCatalog.href(project)),
+    ...serviceCatalog.all().map((service) => serviceCatalog.href(service)),
+  ].map((path) => ({
+    url: `${baseUrl}${path}`,
+    lastModified,
     changeFrequency: "monthly" as const,
     priority: 0.8,
   }));
@@ -25,17 +22,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
       url: `${baseUrl}/`,
-      lastModified: new Date(),
+      lastModified,
       changeFrequency: "weekly",
       priority: 1,
     },
     {
-      url: `${baseUrl}/projects/`,
-      lastModified: new Date(),
+      url: `${baseUrl}${projectCatalog.indexHref}`,
+      lastModified,
       changeFrequency: "weekly",
       priority: 0.9,
     },
-    ...projectUrls,
-    ...serviceUrls,
+    ...entryUrls,
   ];
 }

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Project } from "@/lib/projects";
+import { projectCatalog, type Project } from "@/lib/projects";
 import { asset } from "@/lib/asset";
 import styles from "./ProjectCard.module.css";
 
@@ -33,7 +33,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
       </span>
 
       <Link
-        href={`/projects/${project.slug}`}
+        href={projectCatalog.href(project)}
         className={styles.link}
         aria-label={`${project.name}. Läs mer`}
       />

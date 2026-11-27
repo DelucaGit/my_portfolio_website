@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { site } from "@/data/site";
 import type { Service } from "@/lib/services";
-import { getAdjacentServices } from "@/lib/services";
+import { serviceCatalog } from "@/lib/services";
 import { asset } from "@/lib/asset";
 import styles from "./ServiceCaseStudy.module.css";
 
@@ -12,7 +12,7 @@ type ServiceCaseStudyProps = {
 export function ServiceCaseStudy({ service }: ServiceCaseStudyProps) {
   const { detail } = service;
   const { media } = detail;
-  const { prev, next } = getAdjacentServices(service.slug);
+  const { prev, next } = serviceCatalog.adjacent(service.slug);
   const processPreview = detail.process.slice(0, 3);
 
   return (
@@ -127,7 +127,7 @@ export function ServiceCaseStudy({ service }: ServiceCaseStudyProps) {
           <nav className={styles.adjacent} aria-label="Andra tjänster">
             {prev ? (
               <Link
-                href={`/services/${prev.slug}`}
+                href={serviceCatalog.href(prev)}
                 className={styles.adjacentLink}
               >
                 <span className={styles.adjacentLabel}>Föregående</span>
@@ -138,7 +138,7 @@ export function ServiceCaseStudy({ service }: ServiceCaseStudyProps) {
             )}
             {next ? (
               <Link
-                href={`/services/${next.slug}`}
+                href={serviceCatalog.href(next)}
                 className={`${styles.adjacentLink} ${styles.adjacentNext}`}
               >
                 <span className={styles.adjacentLabel}>Nästa</span>

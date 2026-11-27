@@ -6,7 +6,7 @@ import type {
   MediaSectionCopy,
   ProjectImage,
 } from "@/data/projects";
-import { getAdjacentProjects } from "@/lib/projects";
+import { projectCatalog } from "@/lib/projects";
 import { asset } from "@/lib/asset";
 import styles from "./ProjectCaseStudy.module.css";
 
@@ -17,7 +17,7 @@ type ProjectCaseStudyProps = {
 export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
   const { detail } = project;
   const { media } = detail;
-  const { next } = getAdjacentProjects(project.slug);
+  const { next } = projectCatalog.adjacent(project.slug);
 
   const metaBits = [
     detail.client,
@@ -29,7 +29,7 @@ export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
     <article className={styles.page}>
       <div className={styles.inner}>
         <p className={styles.back}>
-          <Link href="/projects">← Tillbaka till projekt</Link>
+          <Link href={projectCatalog.indexHref}>← Tillbaka till projekt</Link>
         </p>
 
         {/* 1. Header */}
@@ -173,14 +173,14 @@ export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
         {/* 6. Next project */}
         <nav className={styles.nextNav} aria-label="Nästa projekt">
           {next ? (
-            <Link href={`/projects/${next.slug}`} className={styles.nextLink}>
+            <Link href={projectCatalog.href(next)} className={styles.nextLink}>
               <span className={styles.nextLabel}>Nästa projekt</span>
               <span className={styles.nextName}>
                 {next.name} <span aria-hidden="true">→</span>
               </span>
             </Link>
           ) : (
-            <Link href="/projects" className={styles.nextLink}>
+            <Link href={projectCatalog.indexHref} className={styles.nextLink}>
               <span className={styles.nextLabel}>Portfolio</span>
               <span className={styles.nextName}>
                 Se alla projekt <span aria-hidden="true">→</span>

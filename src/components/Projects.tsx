@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { ProjectCard } from "@/components/projects/ProjectCard";
-import { getFeaturedProjects } from "@/lib/projects";
+import { projectCatalog } from "@/lib/projects";
 import styles from "./Projects.module.css";
 
 export default function Projects() {
-  const projects = getFeaturedProjects(4);
+  const projects = projectCatalog.all().slice(0, 4);
 
   return (
     <section
@@ -31,7 +31,7 @@ export default function Projects() {
         </ul>
 
         <div className={styles.footer}>
-          <Link href="/projects" className={styles.allLink}>
+          <Link href={projectCatalog.indexHref} className={styles.allLink}>
             Se alla projekt <span aria-hidden="true">→</span>
           </Link>
         </div>

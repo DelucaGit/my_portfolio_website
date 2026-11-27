@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { site } from "@/data/site";
-import type { Project } from "@/data/projects";
-import type { Service } from "@/data/services";
+import { projectCatalog, type Project } from "@/lib/projects";
+import { serviceCatalog, type Service } from "@/lib/services";
 
 const siteUrl = new URL(site.url);
 
@@ -60,53 +60,53 @@ export function getProjectsIndexMetadata(): Metadata {
 }
 
 export function getProjectMetadata(project: Project): Metadata {
-  const title = project.detail.seo.title ?? project.name;
-  const description = project.detail.seo.description;
-
-  return {
-    title,
-    description,
-    openGraph: {
-      title,
-      description,
-      url: `/projects/${project.slug}`,
-      type: "article",
-      images: [{ url: project.image, alt: project.imageAlt }],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: [project.image],
-    },
-    alternates: {
-      canonical: `/projects/${project.slug}`,
-    },
-  };
+  return getEntryMetadata({
+    title: project.detail.seo.title ?? project.name,
+    description: project.detail.seo.description,
+    path: projectCatalog.href(project),
+    image: { src: project.image, alt: project.imageAlt },
+  });
 }
 
 export function getServiceMetadata(service: Service): Metadata {
-  const title = service.detail.seo.title ?? service.title;
-  const description = service.detail.seo.description;
+  return getEntryMetadata({
+    title: service.detail.seo.title ?? service.title,
+    description: service.detail.seo.description,
+    path: serviceCatalog.href(service),
+    image: { src: service.image, alt: service.imageAlt },
+  });
+}
 
+/** Metadata for one catalog entry's page (a Project or a Service). */
+function getEntryMetadata({
+  title,
+  description,
+  path,
+  image,
+}: {
+  title: string;
+  description: string;
+  path: string;
+  image: { src: string; alt: string };
+}): Metadata {
   return {
     title,
     description,
     openGraph: {
       title,
       description,
-      url: `/services/${service.slug}`,
+      url: path,
       type: "article",
-      images: [{ url: service.image, alt: service.imageAlt }],
+      images: [{ url: image.src, alt: image.alt }],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [service.image],
+      images: [image.src],
     },
     alternates: {
-      canonical: `/services/${service.slug}`,
+      canonical: path,
     },
   };
 }

@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { ProjectCard } from "@/components/projects/ProjectCard";
-import { getAllProjects } from "@/lib/projects";
+import { projectCatalog } from "@/lib/projects";
 import styles from "./ProjectsArchive.module.css";
 
 export function ProjectsArchive() {
-  const projects = getAllProjects();
+  const projects = projectCatalog.all();
 
   return (
     <div className={styles.page}>
