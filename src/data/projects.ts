@@ -1,10 +1,19 @@
+/**
+ * A picture or film of a project is named by its file name alone
+ * ("hero-viewport.png"): the file sits in the project's folder in
+ * public/projects/, and src/lib/project-files.ts is the one place that knows
+ * which folder that is.
+ */
 export type ProjectImage = {
+  /** A file name in the project's folder */
   src: string;
   alt: string;
 };
 
 export type ProjectVideo = {
+  /** A file name in the project's folder */
   src: string;
+  /** A file name in the project's folder */
   poster: string;
   /** Describes what the recording shows, for screen readers */
   alt: string;
@@ -53,6 +62,7 @@ export type Project = {
   year: number;
   stack: string[];
 
+  /** The main picture: a file name in the project's folder */
   image: string;
   imageAlt: string;
 
@@ -77,8 +87,9 @@ export type Project = {
 
 /**
  * A recorded walkthrough of the live site, made with
- * `npm run record:walkthrough -- <slug>`. The films live in
- * public/walkthroughs/<slug>.webm, .mp4 and .webp (the still image).
+ * `npm run record:walkthrough -- <slug>`, which visits the project's
+ * `siteUrl`. The films live in public/walkthroughs/<slug>.webm, .mp4 and
+ * .webp (the still image), see src/lib/project-files.ts.
  */
 export type ProjectWalkthrough = {
   /** Length of the film in seconds */
@@ -112,7 +123,7 @@ export const projects = defineProjects([
     tags: ["Next.js", "Tailwind", "Lokalt"],
     year: 2026,
     stack: ["Next.js", "TypeScript", "Tailwind CSS", "Hostinger"],
-    image: "/projects/uniclean-partners/studio-hero.webp",
+    image: "studio-hero.webp",
     imageAlt:
       "UniCleans nya startsida i ett webbläsarfönster och i en telefon",
     detail: {
@@ -140,12 +151,12 @@ export const projects = defineProjects([
       industry: "Lokal service",
       media: {
         hero: {
-          src: "/projects/uniclean-partners/studio-hero.webp",
+          src: "studio-hero.webp",
           alt: "Startsidan på dator och mobil, med knappar för att boka städning och bli partner",
         },
         video: {
-          src: "/projects/uniclean-partners/walkthrough.mp4",
-          poster: "/projects/uniclean-partners/walkthrough-poster.jpg",
+          src: "walkthrough.mp4",
+          poster: "walkthrough-poster.jpg",
           alt: "Inspelning där någon klickar sig igenom hemsidan: tjänster, de fyra stegen i Så funkar det och Jobba hos oss",
         },
         videoCopy: {
@@ -156,28 +167,28 @@ export const projects = defineProjects([
         },
         mobile: [
           {
-            src: "/projects/uniclean-partners/mobile-top.webp",
+            src: "mobile-top.webp",
             alt: "Mobil startsida med rubriken Städning när du behöver den och knappar för att boka och bli partner",
           },
           {
-            src: "/projects/uniclean-partners/mobile-tjanster.webp",
+            src: "mobile-tjanster.webp",
             alt: "Tjänsterna i mobilen: hemstäd, storstäd, flyttstäd och fönsterputs",
           },
           {
-            src: "/projects/uniclean-partners/mobile-sa-funkar-det.webp",
+            src: "mobile-sa-funkar-det.webp",
             alt: "Så funkar det i mobilen, med en skärmbild från appen",
           },
           {
-            src: "/projects/uniclean-partners/mobile-trygghet.webp",
+            src: "mobile-trygghet.webp",
             alt: "Avsnittet om att alla städare är verifierade med BankID",
           },
           {
-            src: "/projects/uniclean-partners/mobile-partner.webp",
+            src: "mobile-partner.webp",
             alt: "Jobba som städare hos UniClean, med knapp för att ansöka som partner",
           },
         ],
         desktop: {
-          src: "/projects/uniclean-partners/studio-wall.webp",
+          src: "studio-wall.webp",
           alt: "Hemsidans avsnitt bredvid varandra, sedda snett uppifrån",
         },
         desktopCopy: {
@@ -188,11 +199,11 @@ export const projects = defineProjects([
         },
         gallery: [
           {
-            src: "/projects/uniclean-partners/studio-steps.webp",
+            src: "studio-steps.webp",
             alt: "Så funkar det på dator och mobil, fyra steg från vald städning till betalning",
           },
           {
-            src: "/projects/uniclean-partners/studio-phones.webp",
+            src: "studio-phones.webp",
             alt: "Tre telefoner med tjänsterna, startsidan och Så funkar det",
           },
         ],
@@ -203,7 +214,7 @@ export const projects = defineProjects([
             "Jag gjorde stegen i ”Så funkar det” klickbara. När du klickar på ett steg byter telefonen bild.",
         },
         closing: {
-          src: "/projects/uniclean-partners/studio-partner.webp",
+          src: "studio-partner.webp",
           alt: "Avsnittet Jobba som städare hos UniClean på dator och mobil",
         },
         closingCopy: {
@@ -239,7 +250,7 @@ export const projects = defineProjects([
       "Vitest",
       "Claude Code",
     ],
-    image: "/projects/sabaah-al-wuruud/hero.png",
+    image: "hero.png",
     imageAlt:
       "Tre telefoner med adhkar-appen Sabaah Al-Wuruud i lavendel, i ljust och mörkt läge",
     detail: {
@@ -270,41 +281,41 @@ export const projects = defineProjects([
       industry: "Personlig Android-app",
       media: {
         hero: {
-          src: "/projects/sabaah-al-wuruud/hero.png",
+          src: "hero.png",
           alt: "Dagens adhkar, nästa bön och dagens reflektion, i ljust och mörkt läge",
         },
         mobile: [
           {
-            src: "/projects/sabaah-al-wuruud/today.png",
+            src: "today.png",
             alt: "Today: nästa bön, dagens bönetider och dagens reflektion med vers och tafsir",
           },
           {
-            src: "/projects/sabaah-al-wuruud/adhkar.png",
+            src: "adhkar.png",
             alt: "Adhkar: dagen som tidslinje med morgon-, kvälls- och sovadhkar mellan bönerna",
           },
           {
-            src: "/projects/sabaah-al-wuruud/morning.png",
+            src: "morning.png",
             alt: "Läsaren för morgonadhkar, en dhikr i taget med räknare",
           },
           {
-            src: "/projects/sabaah-al-wuruud/quran.png",
+            src: "quran.png",
             alt: "Qur'an: memorering sida för sida, här med första sidan markerad",
           },
           {
-            src: "/projects/sabaah-al-wuruud/istikhara.png",
+            src: "istikhara.png",
             alt: "Istikhara-bönen med markerade ord där man nämner sitt ärende",
           },
           {
-            src: "/projects/sabaah-al-wuruud/settings.png",
+            src: "settings.png",
             alt: "Me: namn, färg, utseende, arabisk textstorlek och påminnelser",
           },
           {
-            src: "/projects/sabaah-al-wuruud/today-dark.png",
+            src: "today-dark.png",
             alt: "Today i mörkt läge",
           },
         ],
         closing: {
-          src: "/projects/sabaah-al-wuruud/review.jpg",
+          src: "review.jpg",
           alt: "Chatt där min fru svarar på skärmbilderna av appen: Du skojar, jag älskar den",
         },
         closingCopy: {
@@ -333,7 +344,7 @@ export const projects = defineProjects([
     tags: ["Next.js", "Underhåll", "Förening"],
     year: 2026,
     stack: ["Next.js", "TypeScript", "Tailwind", "Vercel"],
-    image: "/projects/zenith-kampsport/hero-viewport.png",
+    image: "hero-viewport.png",
     imageAlt: "Zenith Kampsport startsida med hero och knappar för medlemskap",
     detail: {
       overview: [
@@ -359,12 +370,12 @@ export const projects = defineProjects([
       industry: "Kampsportsklubb",
       media: {
         hero: {
-          src: "/projects/zenith-kampsport/hero-viewport.png",
+          src: "hero-viewport.png",
           alt: "Startsida med hero, logotyp och knappar för medlemskap och klasser",
         },
         mobile: [],
         desktop: {
-          src: "/projects/zenith-kampsport/schema-viewport.png",
+          src: "schema-viewport.png",
           alt: "Veckoschema med färgade pass för boxning, BJJ och brottning",
         },
         desktopCopy: {
@@ -375,11 +386,11 @@ export const projects = defineProjects([
         },
         gallery: [
           {
-            src: "/projects/zenith-kampsport/schema-laptop.png",
+            src: "schema-laptop.png",
             alt: "Samma schema på en mindre laptopbredd, 1280 pixlar",
           },
           {
-            src: "/projects/zenith-kampsport/om-oss-viewport.png",
+            src: "om-oss-viewport.png",
             alt: "Om oss-sidan med hero och klubbens berättelse",
           },
         ],
@@ -390,7 +401,7 @@ export const projects = defineProjects([
             "Många surfar på 13–14 tum. Sidan ska kännas lugn där också, inte bara på stor skärm.",
         },
         closing: {
-          src: "/projects/zenith-kampsport/medlemskap-viewport.png",
+          src: "medlemskap-viewport.png",
           alt: "Medlemskapssidan med priser och knappar för att bli medlem",
         },
         closingCopy: {
@@ -419,7 +430,7 @@ export const projects = defineProjects([
     tags: ["Next.js", "Förening", "CI/CD"],
     year: 2026,
     stack: ["Next.js", "GitHub", "Hostinger"],
-    image: "/projects/fcvaxjo-reborn/news-viewport.png",
+    image: "news-viewport.png",
     imageAlt:
       "FC Växjö Reborn: nyheter och träningstider i Next.js-layout",
     walkthrough: {
@@ -460,12 +471,12 @@ export const projects = defineProjects([
       industry: "Fotbollsförening",
       media: {
         hero: {
-          src: "/projects/fcvaxjo-reborn/hero-viewport.png",
+          src: "hero-viewport.png",
           alt: "Startsida med hero, statistik och knappar för träningstider",
         },
         mobile: [],
         desktop: {
-          src: "/projects/fcvaxjo-reborn/news-viewport.png",
+          src: "news-viewport.png",
           alt: "Nyhetskort och träningstider på samma sida",
         },
         desktopCopy: {
@@ -476,7 +487,7 @@ export const projects = defineProjects([
         },
         gallery: [
           {
-            src: "/projects/fcvaxjo-reborn/training-viewport.png",
+            src: "training-viewport.png",
             alt: "Träningsschema i kortlayout, förberett för uppdateringar från mobil",
           },
         ],
@@ -487,7 +498,7 @@ export const projects = defineProjects([
             "Hemsidan kan senare ta emot träningstider från en app och API, utan att byggas om från grunden.",
         },
         closing: {
-          src: "/projects/fcvaxjo-reborn/email-layout.png",
+          src: "email-layout.png",
           alt: "Eget HTML-mejl till klubben med FC Växjö-header och sponsorförfrågan",
         },
         closingCopy: {
@@ -515,7 +526,7 @@ export const projects = defineProjects([
     tags: ["React", "Firebase", "Kalender"],
     year: 2026,
     stack: ["React", "Firebase", "Hostinger"],
-    image: "/projects/andalus-calendar/hero-viewport.png",
+    image: "hero-viewport.png",
     imageAlt:
       "The Andalus Calendar i månadsvy, bönetider till vänster, hijri-datum i rutnätet och uppgifter till höger",
     walkthrough: {
@@ -548,16 +559,16 @@ export const projects = defineProjects([
       industry: "Kalender / produktivitet",
       media: {
         hero: {
-          src: "/projects/andalus-calendar/hero-viewport.png",
+          src: "hero-viewport.png",
           alt: "Månadsvy med nedräkning till Maghrib, hijri-datum och uppgifter i sidopanelen",
         },
         feature: {
-          src: "/projects/andalus-calendar/day-overlay.png",
+          src: "day-overlay.png",
           alt: "Dagsvy där Dhuhr, Asr, Maghrib och Isha ritas som linjer i tidsschemat",
         },
         mobile: [],
         desktop: {
-          src: "/projects/andalus-calendar/settings.png",
+          src: "settings.png",
           alt: "Inställningar för ljust/mörkt läge, gregoriansk eller hijri-kalender och böneräkningsmetod",
         },
         desktopCopy: {
@@ -568,23 +579,23 @@ export const projects = defineProjects([
         },
         gallery: [
           {
-            src: "/projects/andalus-calendar/landing-hero.png",
+            src: "landing-hero.png",
             alt: "Andalus landningssida. Version 2026.1 now live",
           },
           {
-            src: "/projects/andalus-calendar/landing-dual-calendar.png",
+            src: "landing-dual-calendar.png",
             alt: "Landningssida, dual-calendar med hijri, helgdagar och sol/måne-spårning",
           },
           {
-            src: "/projects/andalus-calendar/landing-prayer.png",
+            src: "landing-prayer.png",
             alt: "Landningssida, bönetider som överlägg i dagsvyn",
           },
           {
-            src: "/projects/andalus-calendar/landing-tasks.png",
+            src: "landing-tasks.png",
             alt: "Landningssida, uppgifter för vardag och andliga vanor i samma yta",
           },
           {
-            src: "/projects/andalus-calendar/landing-privacy.png",
+            src: "landing-privacy.png",
             alt: "Landningssida, integritet: säker molnlagring och ingen dataförsäljning",
           },
         ],
@@ -613,7 +624,7 @@ export const projects = defineProjects([
     tags: ["WordPress", "Lokalt", "Leadgen"],
     year: 2025,
     stack: ["WordPress", "Elementor"],
-    image: "/projects/takkoll/hero-viewport.jpg",
+    image: "hero-viewport.jpg",
     imageAlt: "TakKoll startsida, professionella taklösningar",
     detail: {
       overview: [
@@ -634,29 +645,29 @@ export const projects = defineProjects([
       industry: "Tak & fastighetsservice",
       media: {
         hero: {
-          src: "/projects/takkoll/hero-viewport.jpg",
+          src: "hero-viewport.jpg",
           alt: "TakKoll-hero med takarbetare och tydlig CTA",
         },
         feature: {
-          src: "/projects/takkoll/services-viewport.jpg",
+          src: "services-viewport.jpg",
           alt: "TakKolls tjänstekort, målning, omläggning, service och isolering",
         },
         mobile: [
           {
-            src: "/projects/takkoll/mobile-1.png",
+            src: "mobile-1.png",
             alt: "TakKoll mobil hero med ROT-avdrag på takrenovering",
           },
           {
-            src: "/projects/takkoll/mobile-2.png",
+            src: "mobile-2.png",
             alt: "TakKoll mobil tjänstekort, takmålning och takomläggning",
           },
           {
-            src: "/projects/takkoll/mobile-3.png",
+            src: "mobile-3.png",
             alt: "TakKoll mobil, därför väljer husägare TakKoll, med kostnadsfri offert",
           },
         ],
         fullPage: {
-          src: "/projects/takkoll/page-home.png",
+          src: "page-home.png",
           alt: "Hela TakKoll-startsida från topp till botten",
         },
         fullPageCopy: {
@@ -666,7 +677,7 @@ export const projects = defineProjects([
             "Från hero och ROT till tjänster, FAQ och bokning, dra eller scrolla inne i ramen.",
         },
         desktop: {
-          src: "/projects/takkoll/safety-viewport.png",
+          src: "safety-viewport.png",
           alt: "TakKoll taksäkerhet, utrustning enligt Boverkets regler",
         },
         desktopCopy: {
@@ -694,7 +705,7 @@ export const projects = defineProjects([
     tags: ["WordPress", "Lokalt", "Leadgen"],
     year: 2025,
     stack: ["WordPress", "Elementor"],
-    image: "/projects/bilservicekoll/hero-viewport.png",
+    image: "hero-viewport.png",
     imageAlt: "BilserviceKoll startsida, hero med bilservice och biluppämtning",
     detail: {
       overview: [
@@ -715,16 +726,16 @@ export const projects = defineProjects([
       industry: "Bilverkstad",
       media: {
         hero: {
-          src: "/projects/bilservicekoll/hero-viewport.png",
+          src: "hero-viewport.png",
           alt: "BilserviceKoll startsida, hero med bilservice och biluppämtning",
         },
         feature: {
-          src: "/projects/bilservicekoll/services-viewport.png",
+          src: "services-viewport.png",
           alt: "BilserviceKoll tjänster, bilservice, oljebyte, besiktning, däckbyte och däckhotell",
         },
         mobile: [],
         fullPage: {
-          src: "/projects/bilservicekoll/page-home.webp",
+          src: "page-home.webp",
           alt: "Hela BilserviceKoll-startsida från topp till botten",
         },
         fullPageCopy: {
@@ -734,7 +745,7 @@ export const projects = defineProjects([
             "Dra eller scrolla inne i ramen för att se sidan från topp till botten.",
         },
         desktop: {
-          src: "/projects/bilservicekoll/booking-calendar.webp",
+          src: "booking-calendar.webp",
           alt: "Bokningskalender, välj tjänst, datum och tid direkt på hemsidan",
         },
         desktopCopy: {
@@ -762,7 +773,7 @@ export const projects = defineProjects([
     tags: ["Frontend", "UX/UI", "Leadgen"],
     year: 2025,
     stack: ["Frontend", "UX & UI-design"],
-    image: "/projects/stadkoll/hero-viewport.webp",
+    image: "hero-viewport.webp",
     imageAlt: "Städkoll startsida, hero med flyttstädning till fast pris",
     detail: {
       overview: [
@@ -783,12 +794,12 @@ export const projects = defineProjects([
       industry: "Flyttstädning",
       media: {
         hero: {
-          src: "/projects/stadkoll/hero-viewport.webp",
+          src: "hero-viewport.webp",
           alt: "Städkoll startsida, hero med flyttstädning till fast pris",
         },
         mobile: [],
         fullPage: {
-          src: "/projects/stadkoll/page-home.webp",
+          src: "page-home.webp",
           alt: "Hela Städkoll-startsida från topp till botten",
         },
         fullPageCopy: {
@@ -816,7 +827,7 @@ export const projects = defineProjects([
     tags: ["Frontend", "UX/UI", "Leadgen"],
     year: 2025,
     stack: ["Frontend", "UX & UI-design"],
-    image: "/projects/brand-sakerhetskoll/hero-viewport.webp",
+    image: "hero-viewport.webp",
     imageAlt: "Brand & Säkerhetskoll startsida, hero med brandsläckare och trygghet i hemmet",
     detail: {
       overview: [
@@ -837,12 +848,12 @@ export const projects = defineProjects([
       industry: "Brandskydd",
       media: {
         hero: {
-          src: "/projects/brand-sakerhetskoll/hero-viewport.webp",
+          src: "hero-viewport.webp",
           alt: "Brand & Säkerhetskoll startsida, hero med brandsläckare och trygghet i hemmet",
         },
         mobile: [],
         fullPage: {
-          src: "/projects/brand-sakerhetskoll/page-home.webp",
+          src: "page-home.webp",
           alt: "Hela Brand & Säkerhetskoll-startsida från topp till botten",
         },
         fullPageCopy: {
@@ -870,7 +881,7 @@ export const projects = defineProjects([
     tags: ["Frontend", "UX/UI", "SEO"],
     year: 2025,
     stack: ["SEO", "Frontend", "UX & UI-design"],
-    image: "/projects/scooterkoll/hero-viewport.webp",
+    image: "hero-viewport.webp",
     imageAlt: "Scooterkoll startsida, hero med offertformulär och 365+ reparerade scootrar",
     detail: {
       overview: [
@@ -891,12 +902,12 @@ export const projects = defineProjects([
       industry: "Elscooter-reparation",
       media: {
         hero: {
-          src: "/projects/scooterkoll/hero-viewport.webp",
+          src: "hero-viewport.webp",
           alt: "Scooterkoll startsida, hero med offertformulär och 365+ reparerade scootrar",
         },
         mobile: [],
         fullPage: {
-          src: "/projects/scooterkoll/page-home.webp",
+          src: "page-home.webp",
           alt: "Hela Scooterkoll-startsida från topp till botten",
         },
         fullPageCopy: {
@@ -924,7 +935,7 @@ export const projects = defineProjects([
     tags: ["GoHighLevel", "UX/UI", "Varumärke"],
     year: 2025,
     stack: ["GoHighLevel", "UX & UI-design"],
-    image: "/projects/halimapearl/hero-viewport.webp",
+    image: "hero-viewport.webp",
     imageAlt: "HalimaPearl startsida, hero med Modesty Is Fashion mot sidentyg",
     detail: {
       overview: [
@@ -945,12 +956,12 @@ export const projects = defineProjects([
       industry: "Mode & varumärke",
       media: {
         hero: {
-          src: "/projects/halimapearl/hero-viewport.webp",
+          src: "hero-viewport.webp",
           alt: "HalimaPearl startsida, hero med Modesty Is Fashion mot sidentyg",
         },
         mobile: [],
         fullPage: {
-          src: "/projects/halimapearl/page-collection.webp",
+          src: "page-collection.webp",
           alt: "HalimaPearl kimono-kollektion, produktlista från topp till botten",
         },
         fullPageCopy: {
@@ -978,7 +989,7 @@ export const projects = defineProjects([
     tags: ["Frontend", "UX/UI", "SEO"],
     year: 2025,
     stack: ["SEO", "Frontend", "UX & UI-design"],
-    image: "/projects/ventilationskoll/hero-viewport.webp",
+    image: "hero-viewport.webp",
     imageAlt: "Ventilationskoll startsida, hero med pris från 2095 kr och kundomdömen",
     detail: {
       overview: [
@@ -998,12 +1009,12 @@ export const projects = defineProjects([
       industry: "Ventilation",
       media: {
         hero: {
-          src: "/projects/ventilationskoll/hero-viewport.webp",
+          src: "hero-viewport.webp",
           alt: "Ventilationskoll startsida, hero med pris från 2095 kr och kundomdömen",
         },
         mobile: [],
         fullPage: {
-          src: "/projects/ventilationskoll/page-home.webp",
+          src: "page-home.webp",
           alt: "Hela Ventilationskoll-startsida från topp till botten",
         },
         fullPageCopy: {
@@ -1031,7 +1042,7 @@ export const projects = defineProjects([
     tags: ["Shopify", "E-handel", "Varumärke"],
     year: 2026,
     stack: ["Shopify"],
-    image: "/projects/premium-honey-blends/hero-viewport.png",
+    image: "hero-viewport.png",
     imageAlt:
       "Premium Honey Blends startsida, mörk hero med honungsburkar och Handla nu-knapp",
     detail: {
@@ -1053,29 +1064,29 @@ export const projects = defineProjects([
       industry: "E-handel / Livsmedel",
       media: {
         hero: {
-          src: "/projects/premium-honey-blends/hero-viewport.png",
+          src: "hero-viewport.png",
           alt: "Premium Honey Blends startsida i desktop, hero med honungsburkar mot blomsteräng",
         },
         feature: {
-          src: "/projects/premium-honey-blends/feature-product.png",
+          src: "feature-product.png",
           alt: "Produktsektion med Power Honey Blend-burk i naturmiljö och text om naturlig honung och örter",
         },
         mobile: [
           {
-            src: "/projects/premium-honey-blends/mobile-1.png",
+            src: "mobile-1.png",
             alt: "Mobil startsida, hero med honungsburkar och bästsäljare under",
           },
           {
-            src: "/projects/premium-honey-blends/mobile-2.png",
+            src: "mobile-2.png",
             alt: "Mobil produktsida, alla honungsblends listade med pris",
           },
           {
-            src: "/projects/premium-honey-blends/mobile-3.png",
+            src: "mobile-3.png",
             alt: "Mobil kontaktsida. Vi svarar på allt, med kontaktformulär",
           },
         ],
         fullPage: {
-          src: "/projects/premium-honey-blends/page-full.png",
+          src: "page-full.png",
           alt: "Premium Honey Blends-sidan från topp till botten",
         },
         fullPageCopy: {
@@ -1085,7 +1096,7 @@ export const projects = defineProjects([
             "Dra eller scrolla inne i ramen för att se sidan från topp till botten.",
         },
         desktop: {
-          src: "/projects/premium-honey-blends/products-viewport.png",
+          src: "products-viewport.png",
           alt: "Produktsidan i desktop, tre honungsblends med produktkort under",
         },
         desktopCopy: {
@@ -1114,7 +1125,7 @@ export const projects = defineProjects([
     tags: ["WooCommerce", "Polylang", "B2B"],
     year: 2026,
     stack: ["WooCommerce", "Polylang", "PHP"],
-    image: "/projects/alkama/hero-viewport.png",
+    image: "hero-viewport.png",
     imageAlt: "ALKAMA startsida, hero med bästsäljare i webbutiken",
     detail: {
       overview: [
@@ -1135,12 +1146,12 @@ export const projects = defineProjects([
       industry: "B2B / Industri",
       media: {
         hero: {
-          src: "/projects/alkama/hero-viewport.png",
+          src: "hero-viewport.png",
           alt: "ALKAMA startsida, hero med bästsäljare i webbutiken",
         },
         mobile: [],
         desktop: {
-          src: "/projects/alkama/hero-viewport.png",
+          src: "hero-viewport.png",
           alt: "ALKAMA startsida i desktop, bästsäljare och företagskonto-CTA",
         },
         desktopCopy: {
@@ -1168,7 +1179,7 @@ export const projects = defineProjects([
     tags: ["WordPress", "Elementor", "Lokalt"],
     year: 2026,
     stack: ["WordPress", "Elementor"],
-    image: "/projects/uniclean/hero-viewport.png",
+    image: "hero-viewport.png",
     imageAlt: "UniClean startsida, hero med prisoffertformulär",
     detail: {
       overview: [
@@ -1190,29 +1201,29 @@ export const projects = defineProjects([
       industry: "Lokal service",
       media: {
         hero: {
-          src: "/projects/uniclean/hero-viewport.png",
+          src: "hero-viewport.png",
           alt: "UniClean startsida, hero med prisoffertformulär",
         },
         feature: {
-          src: "/projects/uniclean/booking-viewport.png",
+          src: "booking-viewport.png",
           alt: "Så bokar du hos UniClean, fyra steg från klick till städning",
         },
         mobile: [
           {
-            src: "/projects/uniclean/mobile-1.png",
+            src: "mobile-1.png",
             alt: "UniClean mobil startsida, hero med offertformulär och Google-betyg",
           },
           {
-            src: "/projects/uniclean/mobile-2.png",
+            src: "mobile-2.png",
             alt: "UniClean mobil, utmärkelse och bild på städare i skolsal",
           },
           {
-            src: "/projects/uniclean/mobile-3.png",
+            src: "mobile-3.png",
             alt: "UniClean mobil, mission och vision med fönsterputsning i bild",
           },
         ],
         fullPage: {
-          src: "/projects/uniclean/page-full.png",
+          src: "page-full.png",
           alt: "Hela UniClean-startsidan från topp till botten",
         },
         fullPageCopy: {
@@ -1222,7 +1233,7 @@ export const projects = defineProjects([
             "Dra eller scrolla inne i ramen för att se sidan från topp till botten.",
         },
         desktop: {
-          src: "/projects/uniclean/reviews-viewport.png",
+          src: "reviews-viewport.png",
           alt: "UniClean recensionssektion. 4.9 i betyg från 58 Google-recensioner, hämtat live",
         },
         desktopCopy: {
@@ -1251,7 +1262,7 @@ export const projects = defineProjects([
     tags: ["WordPress", "Elementor", "Fastighet"],
     year: 2025,
     stack: ["WordPress", "Elementor", "TranslatePress"],
-    image: "/projects/shanasheel/hero-viewport.png",
+    image: "hero-viewport.png",
     imageAlt: "Shanasheel startsida med Akkad Residential City i hero",
     detail: {
       overview: [
@@ -1272,29 +1283,29 @@ export const projects = defineProjects([
       industry: "Fastighet & hållbarhet",
       media: {
         hero: {
-          src: "/projects/shanasheel/hero-viewport.png",
+          src: "hero-viewport.png",
           alt: "Shanasheel-hero med Akkad Residential City",
         },
         feature: {
-          src: "/projects/shanasheel/realestate-viewport.png",
+          src: "realestate-viewport.png",
           alt: "Shanasheel fastighetssida. Type A, B och C med planlösningar för Akkad",
         },
         mobile: [
           {
-            src: "/projects/shanasheel/mobile-1.png",
+            src: "mobile-1.png",
             alt: "Shanasheel startsida i mobil. Akkad-hero",
           },
           {
-            src: "/projects/shanasheel/mobile-2.png",
+            src: "mobile-2.png",
             alt: "Shanasheel mobil. Type A med planlösning och 300 kvm",
           },
           {
-            src: "/projects/shanasheel/mobile-3.png",
+            src: "mobile-3.png",
             alt: "Shanasheel mobil. Om Shanasheel Al-Asima och företagets historia",
           },
         ],
         fullPage: {
-          src: "/projects/shanasheel/page-home.png",
+          src: "page-home.png",
           alt: "Hela Shanasheel-startsida från topp till botten",
         },
         fullPageCopy: {
@@ -1304,7 +1315,7 @@ export const projects = defineProjects([
             "Startsida från hero till footer, dra eller scrolla inne i ramen.",
         },
         desktop: {
-          src: "/projects/shanasheel/journey-viewport.png",
+          src: "journey-viewport.png",
           alt: "Shanasheel, fastighet, solenergi, jordbruk och återvinning i fyra ikoner",
         },
         desktopCopy: {
@@ -1332,7 +1343,7 @@ export const projects = defineProjects([
     tags: ["Webbdesign", "UX/UI", "Förening"],
     year: 2023,
     stack: ["One.com", "UX & UI-design"],
-    image: "/projects/fcvaxjo/hero-viewport.png",
+    image: "hero-viewport.png",
     imageAlt: "FC Växjö startsida, hero med klubbmärke och plan",
     detail: {
       overview: [
@@ -1353,29 +1364,29 @@ export const projects = defineProjects([
       industry: "Fotbollsförening",
       media: {
         hero: {
-          src: "/projects/fcvaxjo/hero-viewport.png",
+          src: "hero-viewport.png",
           alt: "FC Växjö startsida, hero med klubbmärke mot gräsplan",
         },
         feature: {
-          src: "/projects/fcvaxjo/gallery-viewport.png",
+          src: "gallery-viewport.png",
           alt: "FC Växjö galleri, foton från lag, matcher och aktiviteter",
         },
         mobile: [
           {
-            src: "/projects/fcvaxjo/mobile-1.png",
+            src: "mobile-1.png",
             alt: "FC Växjö mobil startsida, hero med klubbmärke",
           },
           {
-            src: "/projects/fcvaxjo/mobile-2.png",
+            src: "mobile-2.png",
             alt: "FC Växjö mobil. Om FC Växjö med klubbens historia",
           },
           {
-            src: "/projects/fcvaxjo/mobile-3.png",
+            src: "mobile-3.png",
             alt: "FC Växjö mobil, kontaktuppgifter och klubbledare",
           },
         ],
         desktop: {
-          src: "/projects/fcvaxjo/about-viewport.png",
+          src: "about-viewport.png",
           alt: "Om FC Växjö, klubbmärke, historia och utmärkelser",
         },
         desktopCopy: {

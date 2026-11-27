@@ -364,17 +364,16 @@ test.describe("Projektsidornas metadata", () => {
       await expect(meta.og("title")).toHaveAttribute("content", title);
       await expect(meta.og("url")).toHaveAttribute("content", address);
       await expect(meta.og("type")).toHaveAttribute("content", "article");
-      await expect(meta.og("image")).toHaveAttribute(
-        "content",
-        versioned(`${SITE}${project.image}`),
-      );
-      await expect(meta.twitter("image")).toHaveAttribute(
-        "content",
-        versioned(`${SITE}${project.image}`),
-      );
+      // The data names the main picture by its file name in the project's
+      // folder in public/projects/.
+      const shared = (await meta.og("image").getAttribute("content")) ?? "";
+      const path = new URL(shared).pathname;
+      expect(shared).toMatch(versioned(`${SITE}${path}`));
+      expect(path).toMatch(new RegExp(`^/projects/[^/]+/${escaped(project.image)}$`));
+      await expect(meta.twitter("image")).toHaveAttribute("content", shared);
       // The share picture is a file the site really serves
-      const picture = await page.request.get(project.image);
-      expect(picture.ok(), `${project.image} is served`).toBe(true);
+      const picture = await page.request.get(path);
+      expect(picture.ok(), `${path} is served`).toBe(true);
       titles.add(await page.title());
     }
     expect(titles.size).toBe(projects.length);

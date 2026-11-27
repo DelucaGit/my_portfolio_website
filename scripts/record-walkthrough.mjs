@@ -26,8 +26,11 @@ import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
-/** Where the site serves the films from. src/lib/projects.ts reads the same folder. */
+/** Where the site serves the films from. src/lib/project-files.ts reads the same folder. */
 const PUBLIC_DIR = fileURLToPath(new URL('../public/walkthroughs', import.meta.url));
+
+/** A `url` for a click that leads back to the site's start page, on any host. */
+const START_PAGE = /^https?:\/\/[^/]+\/$/;
 
 // ───────────────────────────── Data: edit here ─────────────────────────────
 
@@ -42,8 +45,9 @@ const FFMPEG = process.env.FFMPEG || 'ffmpeg';
  *   ['rest', ms]                         stand still so the viewer can read
  *   ['scroll', dy, ms]                   smooth wheel scroll by dy pixels
  *   ['click', selector, { url, rest }]   move to the element, pause, click;
- *                                        `url` = glob to wait for when the click
- *                                        changes page, `rest` = ms to wait after
+ *                                        `url` = glob (or RegExp) to wait for when
+ *                                        the click changes page, `rest` = ms to
+ *                                        wait after
  *   ['move', x, y]                       move the pointer to a viewport point
  *   ['hover', selector, ms]              move to the element and stay there for
  *                                        ms without clicking (shows hover states)
@@ -53,10 +57,11 @@ const FFMPEG = process.env.FFMPEG || 'ffmpeg';
  * step must bring the page back to the start state so the loop is seamless.
  * `prepare` (optional) lists selectors clicked before the take starts, for
  * example a cookie banner's "reject" button; it never appears in the video.
+ * The address the take starts at is the project's `siteUrl` in
+ * src/data/projects.ts, so it cannot drift from the site's own link.
  */
 const SITES = {
   'fcvaxjo-reborn': {
-    url: 'https://fcvaxjo.se/',
     start: { x: 660, y: 610 },
     prepare: [],
     steps: [
@@ -66,7 +71,7 @@ const SITES = {
       { text: 'Växlar till spelade matcher och resultat', do: [['click', 'role=tab[name=/spelade/i]', { rest: 1000 }]] },
       { text: 'Skrollar bland resultaten', do: [['scroll', 420, 1100], ['rest', 900]] },
       { text: 'Öppnar Träningstider', do: [['click', 'header a[href="/traningstider/"]', { url: '**/traningstider/', rest: 1500 }]] },
-      { text: 'Går tillbaka till startsidan', do: [['click', 'header nav a[href="/"]', { url: 'https://fcvaxjo.se/', rest: 300 }], ['move', 660, 610], ['rest', 1100]] },
+      { text: 'Går tillbaka till startsidan', do: [['click', 'header nav a[href="/"]', { url: START_PAGE, rest: 300 }], ['move', 660, 610], ['rest', 1100]] },
     ],
   },
   /*
@@ -76,7 +81,6 @@ const SITES = {
    * container; the scroll amounts put each 450 px section in the middle.
    */
   'andalus-calendar': {
-    url: 'https://andaluscalendar.com/',
     start: { x: 800, y: 700 },
     prepare: [],
     steps: [
@@ -331,8 +335,18 @@ function usage() {
     '',
     'Needs ffmpeg on the PATH (or FFMPEG=<path>). Behind a proxy, set HTTPS_PROXY.',
     'Afterwards, copy the duration and steps from walk.json into the project data.',
-    'Sites, steps and limits are plain data at the top of this file.',
+    'Steps and limits are plain data at the top of this file; the address is the',
+    "project's siteUrl in src/data/projects.ts.",
   ].join('\n'));
+}
+
+/**
+ * The project's live address, from the data the site itself links to.
+ * Needs Node 22.18 or newer (it imports the TypeScript data file directly).
+ */
+async function siteUrlOf(slug) {
+  const { projects } = await import('../src/data/projects.ts');
+  return projects.find((project) => project.slug === slug)?.siteUrl || '';
 }
 
 async function main() {
@@ -341,8 +355,13 @@ async function main() {
   const outDir = path.resolve(flag('--out', PUBLIC_DIR));
   const workDir = path.resolve(flag('--work', path.join(os.tmpdir(), 'walkthrough')));
   const slug = args[0];
-  const site = SITES[slug];
-  if (!site) { usage(); process.exit(slug ? 1 : 0); }
+  if (!SITES[slug]) { usage(); process.exit(slug ? 1 : 0); }
+  const url = await siteUrlOf(slug);
+  if (!url) {
+    console.error(`${slug} has no siteUrl in src/data/projects.ts, so there is no site to record.`);
+    process.exit(1);
+  }
+  const site = { ...SITES[slug], url };
   fs.mkdirSync(outDir, { recursive: true });
   fs.mkdirSync(workDir, { recursive: true });
 

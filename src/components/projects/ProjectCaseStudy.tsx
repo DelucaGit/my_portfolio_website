@@ -3,8 +3,8 @@ import { ArrowOut } from "@/components/ui/ArrowOut";
 import { BrowserWindow } from "@/components/ui/BrowserWindow";
 import { PaintedScene, type PaintingPalette } from "@/components/ui/Painting";
 import { site } from "@/data/site";
-import { asset } from "@/lib/asset";
 import { mailHref } from "@/lib/contact";
+import { getProjectFiles } from "@/lib/project-files";
 import {
   getAdjacentProjects,
   getAllProjects,
@@ -77,7 +77,7 @@ function PictureRow({
       </div>
       <figure className={styles.frame}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={asset(picture.src)} alt={picture.alt} />
+        <img src={picture.src} alt={picture.alt} />
       </figure>
     </section>
   );
@@ -90,7 +90,8 @@ function PictureRow({
  */
 export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
   const { detail } = project;
-  const { media } = detail;
+  // The pictures and films with full, versioned paths.
+  const media = getProjectFiles(project).caseMedia;
   const { prev, next } = getAdjacentProjects(project.slug);
   const text = site.projectPage;
   const buttons = site.projects.buttons;
@@ -146,7 +147,7 @@ export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
           <BrowserWindow title={host}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={asset(media.hero.src)}
+              src={media.hero.src}
               alt={media.hero.alt}
               className={styles.heroImage}
             />
@@ -229,8 +230,8 @@ export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
           <BrowserWindow title={host}>
             <video
               className={styles.video}
-              src={asset(media.video.src)}
-              poster={asset(media.video.poster)}
+              src={media.video.src}
+              poster={media.video.poster}
               aria-label={media.video.alt}
               controls
               autoPlay
@@ -267,7 +268,7 @@ export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
                   <div className={styles.phoneNotch} aria-hidden="true" />
                   <div className={styles.phoneScreen}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={asset(image.src)} alt={image.alt} />
+                    <img src={image.src} alt={image.alt} />
                   </div>
                 </li>
               ))}
@@ -298,7 +299,7 @@ export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
             {/* data-lenis-prevent: the wheel scrolls the picture, not the page */}
             <div className={styles.fullPage} tabIndex={0} data-lenis-prevent>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={asset(media.fullPage.src)} alt={media.fullPage.alt} />
+              <img src={media.fullPage.src} alt={media.fullPage.alt} />
             </div>
           </BrowserWindow>
         </section>
@@ -317,7 +318,7 @@ export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
               <li key={image.src}>
                 <figure className={styles.frame}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={asset(image.src)} alt={image.alt} />
+                  <img src={image.src} alt={image.alt} />
                 </figure>
               </li>
             ))}
