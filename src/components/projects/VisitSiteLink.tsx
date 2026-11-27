@@ -9,7 +9,7 @@ type VisitSiteLinkProps = {
   name: string;
   /**
    * The state of the project's live site, from the project layer
-   * (`getProjectView(project).site` or `getProjectSite(project)`). With no
+   * (`getProjectView(project).site`). With no
    * site nothing is rendered.
    */
   site: ProjectSite;

@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { getProjectWalkthrough } from "@/lib/projects";
+import { getProjectView } from "@/lib/projects";
 import {
   expectFilmPlaying,
   expectFilmStill,
@@ -10,7 +10,7 @@ import {
 } from "./support/site";
 
 const project = featuredProject();
-const walkthrough = getProjectWalkthrough(project);
+const { walkthrough } = getProjectView(project);
 
 /** "03/07 · Tittar på bönetiderna i vyn": the line under the film. */
 const STEP_LINE = /^\d\d\/\d\d · \S/;

@@ -15,6 +15,10 @@ const pageOf = (slug: string) => `/projects/${slug}/`;
 
 const escaped = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
+/** The address with the site's version query on the end ("…webp?v=…"). */
+const versioned = (address: string) =>
+  new RegExp(`^${escaped(address)}\\?v=\\w+$`);
+
 /** The links to the projects before and after, at the foot of a project page. */
 const adjacent = (page: Page) =>
   page.getByRole("navigation", { name: "Fler projekt" });
@@ -318,7 +322,8 @@ test.describe("Projektsidornas metadata", () => {
     const description =
       "Case: UniClean Partners. Ny hemsida i Next.js som vägleder kunder och städare till UniCleans nya app.";
     const address = `${SITE}/projects/uniclean-partners/`;
-    const image = `${SITE}/projects/uniclean-partners/studio-hero.webp`;
+    // Versioned like every other picture on the site, so no stale copy is shared
+    const image = versioned(`${SITE}/projects/uniclean-partners/studio-hero.webp`);
 
     await expect(page).toHaveTitle(`${title} | Marcel Deluca`);
     await expect(meta.description).toHaveAttribute("content", description);
@@ -361,7 +366,11 @@ test.describe("Projektsidornas metadata", () => {
       await expect(meta.og("type")).toHaveAttribute("content", "article");
       await expect(meta.og("image")).toHaveAttribute(
         "content",
-        `${SITE}${project.image}`,
+        versioned(`${SITE}${project.image}`),
+      );
+      await expect(meta.twitter("image")).toHaveAttribute(
+        "content",
+        versioned(`${SITE}${project.image}`),
       );
       // The share picture is a file the site really serves
       const picture = await page.request.get(project.image);

@@ -1,4 +1,4 @@
-import { getProjectWalkthrough, type Project } from "@/lib/projects";
+import { getProjectView, type Project } from "@/lib/projects";
 import { FEATURED_PORT } from "./ports";
 import { allProjects, homeProjects } from "./site";
 
@@ -21,7 +21,7 @@ export const FEATURED_SITE = `http://127.0.0.1:${FEATURED_PORT}`;
  */
 export function otherFeaturedProject(): Project {
   const other = homeProjects().find(
-    (project) => !getProjectWalkthrough(project),
+    (project) => !getProjectView(project).walkthrough,
   );
   if (!other) throw new Error("featured-site: every project has a walkthrough");
   return other;

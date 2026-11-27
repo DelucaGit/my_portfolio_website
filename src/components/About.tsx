@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { site } from "@/data/site";
 import { asset } from "@/lib/asset";
-import { getFeaturedProject } from "@/lib/projects";
+import { getFeaturedProject, getProjectView } from "@/lib/projects";
 import shared from "@/styles/shared.module.css";
 import section from "@/styles/homeSection.module.css";
 import SiteLink from "./SiteLink";
@@ -17,7 +17,7 @@ const FEATURED = "{featured}";
  */
 export default function About() {
   const { about } = site;
-  const featured = getFeaturedProject();
+  const featured = getProjectView(getFeaturedProject());
 
   return (
     <section
@@ -46,7 +46,7 @@ export default function About() {
                 <Fragment key={index}>
                   {index > 0 && (
                     <SiteLink
-                      href={`/projects/${featured.slug}`}
+                      href={featured.caseHref}
                       className={styles.link}
                     >
                       <Words text={featured.name} />

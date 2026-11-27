@@ -1,4 +1,4 @@
-import { type Project } from "@/lib/projects";
+import { getProjectView, type Project } from "@/lib/projects";
 import { ENDED_PORT } from "./ports";
 import { featuredProject, homeProjects } from "./site";
 
@@ -30,11 +30,16 @@ function pick(projects: Project[], part: string): Project {
 export function endedCast() {
   const featured = featuredProject();
   const others = homeProjects().filter(
-    (project) => project.siteUrl && project.siteUrl !== featured.siteUrl,
+    (project) =>
+      getProjectView(project).site.state === "live" &&
+      project.siteUrl !== featured.siteUrl,
   );
   return {
     /** Marked as ended by hand. The featured project, so the card shows it. */
-    markedEnded: pick(featured.siteUrl ? [featured] : [], "marked as ended"),
+    markedEnded: pick(
+      getProjectView(featured).site.state === "live" ? [featured] : [],
+      "marked as ended",
+    ),
     /** The link check found its site gone. In the start page's split view. */
     foundEnded: pick(others, "found ended"),
     /** The link check could not reach its site: the button must stay. */

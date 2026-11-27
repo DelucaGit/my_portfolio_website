@@ -8,8 +8,7 @@ import { mailHref } from "@/lib/contact";
 import {
   getAdjacentProjects,
   getAllProjects,
-  getProjectHost,
-  getProjectSite,
+  getProjectView,
   type Project,
 } from "@/lib/projects";
 import shared from "@/styles/shared.module.css";
@@ -95,7 +94,8 @@ export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
   const { prev, next } = getAdjacentProjects(project.slug);
   const text = site.projectPage;
   const buttons = site.projects.buttons;
-  const host = getProjectHost(project);
+  const view = getProjectView(project);
+  const { host } = view;
 
   const facts = [detail.client, detail.role, String(project.year)].filter(
     Boolean,
@@ -119,15 +119,12 @@ export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
           )}
         </div>
 
-        {(project.siteUrl || project.githubUrl) && (
+        {(view.site.state !== "none" || view.githubUrl) && (
           <p className={styles.actions}>
-            <VisitSiteLink
-              name={project.name}
-              site={getProjectSite(project)}
-            />
-            {project.githubUrl && (
+            <VisitSiteLink name={view.name} site={view.site} />
+            {view.githubUrl && (
               <SiteLink
-                href={project.githubUrl}
+                href={view.githubUrl}
                 external
                 className={`${shared.pill} ${shared.pillLine}`}
                 aria-label={`${buttons.code}: ${project.name}`}
@@ -339,7 +336,7 @@ export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
 
       <nav className={styles.adjacent} aria-label={text.adjacent.label}>
         {prev && (
-          <SiteLink href={`/projects/${prev.slug}`} className={styles.neighbour}>
+          <SiteLink href={prev.caseHref} className={styles.neighbour}>
             <span className={styles.label}>
               <span aria-hidden="true">← </span>
               {text.adjacent.previous}
@@ -349,7 +346,7 @@ export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
         )}
         {next ? (
           <SiteLink
-            href={`/projects/${next.slug}`}
+            href={next.caseHref}
             className={`${styles.neighbour} ${styles.neighbourNext}`}
           >
             <span className={styles.label}>
