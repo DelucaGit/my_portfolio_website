@@ -6,6 +6,7 @@ import {
   type ProjectSlug,
 } from "@/data/projects";
 import { site } from "@/data/site";
+import { asset } from "@/lib/asset";
 
 export type { Project, ProjectSlug };
 
@@ -185,5 +186,79 @@ export function getAdjacentProjects(slug: string): {
   return {
     prev: index > 0 ? ordered[index - 1] : null,
     next: index < ordered.length - 1 ? ordered[index + 1] : null,
+  };
+}
+
+/**
+ * Where a project's live site stands, as one value: live at an address, ended
+ * by the customer, or no site at all. Asking for this instead of reading
+ * `siteUrl` means no caller can forget to ask whether the site has ended.
+ */
+export type ProjectSite =
+  | { state: "live"; url: string }
+  | { state: "ended" }
+  | { state: "none" };
+
+/** The state of the project's live site. See `hasEndedSite` for "ended". */
+export function getProjectSite(project: Project): ProjectSite {
+  if (!project.siteUrl) return { state: "none" };
+  if (hasEndedSite(project)) return { state: "ended" };
+  return { state: "live", url: project.siteUrl };
+}
+
+/**
+ * A project as a visitor sees it, put together in one place: where its case
+ * page is, what stands in the address bar, its site, its code, its pictures
+ * and its facts. Every file path is already versioned with `asset()`, so the
+ * value can go straight into the HTML or to a client component.
+ */
+export type ProjectView = {
+  slug: string;
+  name: string;
+  year: number;
+  tagline: string;
+  /** The project's case page */
+  caseHref: string;
+  /** The text in a browser window's address bar, see `getProjectHost` */
+  host: string;
+  site: ProjectSite;
+  /** Empty when the project has no public code */
+  githubUrl: string;
+  /** The 2:1 screenshot, versioned */
+  preview: ProjectPreview;
+  /** The recorded walkthrough with versioned files, or null without one */
+  walkthrough: Walkthrough | null;
+  facts: {
+    /** The project's tags: "Next.js · Tailwind · Lokalt" */
+    type: string;
+    /** The project's stack: "Next.js · TypeScript · Tailwind CSS" */
+    builtWith: string;
+  };
+};
+
+/** The one place a project is put together for a page. */
+export function getProjectView(project: Project): ProjectView {
+  const preview = getProjectPreview(project);
+  const walkthrough = getProjectWalkthrough(project);
+  return {
+    slug: project.slug,
+    name: project.name,
+    year: project.year,
+    tagline: project.tagline,
+    caseHref: `/projects/${project.slug}`,
+    host: getProjectHost(project),
+    site: getProjectSite(project),
+    githubUrl: project.githubUrl,
+    preview: { large: asset(preview.large), small: asset(preview.small) },
+    walkthrough: walkthrough && {
+      ...walkthrough,
+      webm: asset(walkthrough.webm),
+      mp4: asset(walkthrough.mp4),
+      poster: asset(walkthrough.poster),
+    },
+    facts: {
+      type: project.tags.join(" · "),
+      builtWith: project.stack.join(" · "),
+    },
   };
 }
