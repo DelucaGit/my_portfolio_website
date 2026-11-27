@@ -14,35 +14,14 @@ import { ArrowOut } from "@/components/ui/ArrowOut";
 import { BrowserWindow } from "@/components/ui/BrowserWindow";
 import { PaintedScene } from "@/components/ui/Painting";
 import { site } from "@/data/site";
+import type { ProjectView } from "@/lib/projects";
 import shared from "@/styles/shared.module.css";
 import styles from "./ProjectSplitView.module.css";
 import VisitSiteLink from "./VisitSiteLink";
 
-/** What the split view shows of one project. */
-export type SplitViewProject = {
-  slug: string;
-  name: string;
-  year: number;
-  tagline: string;
-  /** The text in the preview window's address bar */
-  host: string;
-  type: string;
-  builtWith: string;
-  caseHref: string;
-  /** Empty when the project has no live site */
-  siteUrl: string;
-  /** The customer has closed the site: the button to it is unavailable */
-  siteEnded: boolean;
-  /** Empty when the project has no public code */
-  githubUrl: string;
-  /** The 2:1 screenshot, 1280 px wide */
-  image: string;
-  /** The same screenshot, 640 px wide */
-  imageSmall: string;
-};
-
 type ProjectSplitViewClientProps = {
-  projects: SplitViewProject[];
+  /** The project layer's view of each project, see `getProjectView`. */
+  projects: ProjectView[];
   label: string;
   header?: ReactNode;
   footer?: ReactNode;
@@ -108,10 +87,10 @@ function useHydrating(): boolean {
 
 const twoDigits = (n: number) => String(n).padStart(2, "0");
 
-const srcSet = (project: SplitViewProject) =>
-  `${project.imageSmall} 640w, ${project.image} 1280w`;
+const srcSet = (project: ProjectView) =>
+  `${project.preview.small} 640w, ${project.preview.large} 1280w`;
 
-const screenshotAlt = (project: SplitViewProject) =>
+const screenshotAlt = (project: ProjectView) =>
   `${site.projects.splitView.screenshot} ${project.name}`;
 
 /**
@@ -297,7 +276,7 @@ function useRoomForLastProject(
 }
 
 type PreviewShotProps = {
-  projects: SplitViewProject[];
+  projects: ProjectView[];
   active: number;
   /** False below the split view: nothing is shown, so nothing is fetched. */
   on: boolean;
@@ -341,7 +320,7 @@ function PreviewShot({ projects, active, on }: PreviewShotProps) {
       const image = new Image();
       image.sizes = SHOT_SIZES;
       image.srcset = srcSet(near);
-      image.src = near.image;
+      image.src = near.preview.large;
       fetched.current.set(n, image);
     }
 
@@ -372,7 +351,7 @@ function PreviewShot({ projects, active, on }: PreviewShotProps) {
     } else {
       state.holds[back] = active;
       backImage.srcset = srcSet(project);
-      backImage.src = project.image;
+      backImage.src = project.preview.large;
     }
   }, [projects, active, on]);
 
@@ -384,7 +363,7 @@ function PreviewShot({ projects, active, on }: PreviewShotProps) {
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         ref={layerA}
-        src={first.image}
+        src={first.preview.large}
         srcSet={srcSet(first)}
         sizes={SHOT_SIZES}
         width={1280}
@@ -490,7 +469,7 @@ export default function ProjectSplitViewClient({
               <span className={styles.thumb}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={item.imageSmall}
+                  src={item.preview.small}
                   width={640}
                   height={320}
                   alt=""
@@ -530,11 +509,11 @@ export default function ProjectSplitViewClient({
           </div>
           <div>
             <dt>{copy.type}</dt>
-            <dd>{project.type}</dd>
+            <dd>{project.facts.type}</dd>
           </div>
           <div className={styles.twoLines}>
             <dt>{copy.builtWith}</dt>
-            <dd>{project.builtWith}</dd>
+            <dd>{project.facts.builtWith}</dd>
           </div>
         </dl>
         <p className={styles.actions}>
@@ -546,11 +525,7 @@ export default function ProjectSplitViewClient({
             {buttons.readCase}
             <ArrowOut />
           </SiteLink>
-          <VisitSiteLink
-            name={project.name}
-            siteUrl={project.siteUrl}
-            ended={project.siteEnded}
-          />
+          <VisitSiteLink name={project.name} site={project.site} />
           {project.githubUrl && (
             <SiteLink
               href={project.githubUrl}

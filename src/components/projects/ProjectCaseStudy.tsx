@@ -9,7 +9,7 @@ import {
   getAdjacentProjects,
   getAllProjects,
   getProjectHost,
-  hasEndedSite,
+  getProjectSite,
   type Project,
 } from "@/lib/projects";
 import shared from "@/styles/shared.module.css";
@@ -123,8 +123,7 @@ export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
           <p className={styles.actions}>
             <VisitSiteLink
               name={project.name}
-              siteUrl={project.siteUrl}
-              ended={hasEndedSite(project)}
+              site={getProjectSite(project)}
             />
             {project.githubUrl && (
               <SiteLink

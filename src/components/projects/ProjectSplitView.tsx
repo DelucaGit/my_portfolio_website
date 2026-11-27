@@ -1,14 +1,6 @@
 import type { ReactNode } from "react";
-import { asset } from "@/lib/asset";
-import {
-  getProjectHost,
-  getProjectPreview,
-  hasEndedSite,
-  type Project,
-} from "@/lib/projects";
-import ProjectSplitViewClient, {
-  type SplitViewProject,
-} from "./ProjectSplitViewClient";
+import { getProjectView, type Project } from "@/lib/projects";
+import ProjectSplitViewClient from "./ProjectSplitViewClient";
 
 type ProjectSplitViewProps = {
   /** The projects, in the order they are listed. */
@@ -21,26 +13,6 @@ type ProjectSplitViewProps = {
   footer?: ReactNode;
 };
 
-/** Only what the view shows of a project, so the rest stays out of the browser. */
-function toSplitViewProject(project: Project): SplitViewProject {
-  const preview = getProjectPreview(project);
-  return {
-    slug: project.slug,
-    name: project.name,
-    year: project.year,
-    tagline: project.tagline,
-    host: getProjectHost(project),
-    type: project.tags.join(" · "),
-    builtWith: project.stack.join(" · "),
-    caseHref: `/projects/${project.slug}`,
-    siteUrl: project.siteUrl,
-    siteEnded: hasEndedSite(project),
-    githubUrl: project.githubUrl,
-    image: asset(preview.large),
-    imageSmall: asset(preview.small),
-  };
-}
-
 /**
  * The split view: a list of projects and a preview window.
  *
@@ -51,7 +23,8 @@ function toSplitViewProject(project: Project): SplitViewProject {
  *
  * It knows nothing about the page it is on: give it any ordered list of
  * projects. The names and links are in the HTML from the start, so the list
- * works without JavaScript.
+ * works without JavaScript. Each project reaches the browser as the project
+ * layer's view of it (`getProjectView`), never as the whole project.
  */
 export default function ProjectSplitView({
   projects,
@@ -62,7 +35,7 @@ export default function ProjectSplitView({
   if (projects.length === 0) return null;
   return (
     <ProjectSplitViewClient
-      projects={projects.map(toSplitViewProject)}
+      projects={projects.map(getProjectView)}
       label={label}
       header={header}
       footer={footer}

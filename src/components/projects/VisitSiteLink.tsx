@@ -1,18 +1,18 @@
 import SiteLink from "@/components/SiteLink";
 import { ArrowOut } from "@/components/ui/ArrowOut";
-import { site } from "@/data/site";
+import { site as copy } from "@/data/site";
+import type { ProjectSite } from "@/lib/projects";
 import shared from "@/styles/shared.module.css";
 
 type VisitSiteLinkProps = {
   /** The project's name, read out with the button: "Besök sidan: TakKoll". */
   name: string;
-  /** The live site. Empty when the project has none: then nothing is rendered. */
-  siteUrl: string;
   /**
-   * The customer has closed the site. Ask the project layer:
-   * `hasEndedSite(project)` in src/lib/projects.ts.
+   * The state of the project's live site, from the project layer
+   * (`getProjectView(project).site` or `getProjectSite(project)`). With no
+   * site nothing is rendered.
    */
-  ended?: boolean;
+  site: ProjectSite;
   className?: string;
 };
 
@@ -29,14 +29,13 @@ type VisitSiteLinkProps = {
  */
 export default function VisitSiteLink({
   name,
-  siteUrl,
-  ended = false,
+  site,
   className,
 }: VisitSiteLinkProps) {
-  if (!siteUrl) return null;
-  const { visitSite, siteEnded } = site.projects.buttons;
+  if (site.state === "none") return null;
+  const { visitSite, siteEnded } = copy.projects.buttons;
 
-  if (ended) {
+  if (site.state === "ended") {
     return (
       <span
         role="link"
@@ -53,7 +52,7 @@ export default function VisitSiteLink({
 
   return (
     <SiteLink
-      href={siteUrl}
+      href={site.url}
       external
       className={[shared.pill, shared.pillSoft, className]
         .filter(Boolean)
