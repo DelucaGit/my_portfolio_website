@@ -65,7 +65,7 @@ Every page has the sticky menu with a theme switcher (system, light, dark; remem
 | `scripts/` | The link check and the recording script |
 | `tests/e2e/` | The Playwright suite |
 
-A new project needs an entry in `src/data/projects.ts` and its two files in `public/previews/`. Nothing checks that the preview files exist.
+A new project needs an entry in `src/data/projects.ts` and its two files in `public/previews/`. `tests/e2e/project-files.spec.ts` checks that every project's preview files, `image` and the pictures and films on its case page are in the built site, and names the project and the file that is missing.
 
 ## Change the featured project
 
