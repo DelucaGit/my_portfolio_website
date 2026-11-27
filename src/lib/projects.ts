@@ -1,5 +1,3 @@
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
 import {
   projects,
   type Project,
@@ -7,14 +5,10 @@ import {
 } from "@/data/projects";
 import { site } from "@/data/site";
 import { getAdjacent } from "./adjacent";
+import { getBuildInputs } from "./build-inputs";
 import { withoutProtocol } from "./contact";
 
 export type { Project, ProjectSlug };
-
-/** See `hasEndedSite` and next.config.ts. Never set in a real build. */
-const ENDED_FOR_TEST = process.env.E2E_ENDED_PROJECT;
-/** See `featuredSlug` and next.config.ts. Never set in a real build. */
-const FEATURED_FOR_TEST = process.env.E2E_FEATURED_PROJECT;
 
 /**
  * The slug of the featured project: `featuredProject` in src/data/site.ts.
@@ -23,7 +17,8 @@ const FEATURED_FOR_TEST = process.env.E2E_FEATURED_PROJECT;
 function featuredSlug(): string {
   // Only for the tests' own build, which next.config.ts sends to
   // out-featured/ and never to out/: it stands in for a changed line.
-  if (FEATURED_FOR_TEST) return FEATURED_FOR_TEST;
+  const { featuredForTest } = getBuildInputs();
+  if (featuredForTest) return featuredForTest;
   const slug: ProjectSlug = site.featuredProject;
   return slug;
 }
@@ -121,46 +116,23 @@ export function getProjectHost(project: Project): string {
   return withoutProtocol(project.siteUrl).replace(/\/.*$/, "");
 }
 
-/** What the link check (scripts/check-sites.mjs) wrote about one address. */
-type CheckedSite = { status?: string };
-
-let checkedSites: Record<string, CheckedSite> | undefined;
-
-/**
- * The link check's result file. It is written before the build in the deploy
- * workflow and is not in git: without the file no site counts as ended.
- * SITE_CHECK_FILE points at another file (the tests use that).
- */
-function getCheckedSites(): Record<string, CheckedSite> {
-  if (checkedSites) return checkedSites;
-  const file =
-    process.env.SITE_CHECK_FILE || join(process.cwd(), "site-check.json");
-  try {
-    const result = JSON.parse(readFileSync(file, "utf8")) as {
-      sites?: Record<string, CheckedSite>;
-    };
-    checkedSites = result.sites ?? {};
-  } catch {
-    // No file, or a broken one: nothing is known, so every button stays.
-    checkedSites = {};
-  }
-  return checkedSites;
-}
-
 /**
  * True when the customer has closed the project's site, so the button to it
  * must not be a link. This is the one answer for the whole site:
  *  1. `siteStatus: "ended"` on the project in src/data/projects.ts always wins.
- *  2. Otherwise the link check decides: ended only when the domain does not
+ *  2. Otherwise, in the tests' own build only, E2E_ENDED_PROJECT.
+ *  3. Otherwise the link check decides: ended only when the domain does not
  *     exist or answers 404 or 410. Unknown (timeout, 5xx …) is not ended.
+ * Both come in through getBuildInputs (src/lib/build-inputs.ts).
  */
 export function hasEndedSite(project: Project): boolean {
   if (project.siteStatus === "ended") return true;
+  const { endedForTest, checkedSites } = getBuildInputs();
   // Only for the tests' own build, which next.config.ts sends to out-ended/
   // and never to out/: it stands in for `siteStatus: "ended"` on one project.
-  if (ENDED_FOR_TEST && project.slug === ENDED_FOR_TEST) return true;
+  if (endedForTest && project.slug === endedForTest) return true;
   if (!project.siteUrl) return false;
-  return getCheckedSites()[project.siteUrl]?.status === "ended";
+  return checkedSites[project.siteUrl]?.status === "ended";
 }
 
 export function getProjectBySlug(slug: string): Project | undefined {
