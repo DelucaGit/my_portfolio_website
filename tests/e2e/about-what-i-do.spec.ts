@@ -6,6 +6,7 @@ import {
   expectTheme,
   featuredProject,
   returningVisitor,
+  scrollSettled,
   scrollUntilShowing,
   THEMES,
   WIDTHS,
@@ -89,6 +90,8 @@ test.describe("Om mig", () => {
   });
 
   test("texten fylls i ord för ord när man skrollar", async ({ page }) => {
+    // Many small notches, each waiting for the page to stop.
+    test.slow();
     await page.goto("/");
     const ink = await inkColour(page);
     const text = about(page).getByText(ABOUT_TEXT[0]);
@@ -98,9 +101,12 @@ test.describe("Om mig", () => {
     await expect.poll(() => colourOf(firstWord(page))).not.toBe(ink);
     expect(await colourOf(lastWord(page))).not.toBe(ink);
 
-    // The visitor scrolls on with the wheel: the beginning fills in first
+    // The visitor scrolls on with the wheel: the beginning fills in first.
+    // Every notch waits for the page to stop before the colours are read, so
+    // a busy machine cannot glide the text off screen between two looks.
     await expect(async () => {
       await page.mouse.wheel(0, 60);
+      await scrollSettled(page);
       expect(await colourOf(firstWord(page))).toBe(ink);
     }).toPass({ intervals: [100] });
     expect(await colourOf(lastWord(page))).not.toBe(ink);
@@ -108,6 +114,7 @@ test.describe("Om mig", () => {
     // … and further on the whole text is filled in, while it is still on screen
     await expect(async () => {
       await page.mouse.wheel(0, 60);
+      await scrollSettled(page);
       expect(await colourOf(lastWord(page))).toBe(ink);
     }).toPass({ intervals: [100] });
     expect(await colourOf(firstWord(page))).toBe(ink);
@@ -117,11 +124,13 @@ test.describe("Om mig", () => {
     // Scrolling back empties it again
     await expect(async () => {
       await page.mouse.wheel(0, -60);
+      await scrollSettled(page);
       expect(await colourOf(lastWord(page))).not.toBe(ink);
     }).toPass({ intervals: [100] });
     expect(await colourOf(firstWord(page))).toBe(ink);
     await expect(async () => {
       await page.mouse.wheel(0, -60);
+      await scrollSettled(page);
       expect(await colourOf(firstWord(page))).not.toBe(ink);
     }).toPass({ intervals: [100] });
   });

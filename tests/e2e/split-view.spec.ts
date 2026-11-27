@@ -73,12 +73,13 @@ async function tabIntoList(page: Page) {
 }
 
 /*
- * LONG_JOURNEY: two tests below scroll a long way a notch of the wheel at a
- * time (one of them the whole start page, down and up again) and wait for
- * the smooth scroll to come to rest several times on the way. In a full run
- * they take 15 to 25 seconds, and a busy moment on the machine has pushed
- * one of them past the normal limit of 30. So they get three times the
- * normal time limit (`test.slow()`). What they check is unchanged.
+ * LONG_JOURNEY: the tests below that scroll to a project a notch of the
+ * wheel at a time (`wheelToProject`, or the whole start page down and up
+ * again) wait for the smooth scroll to come to rest several times on the
+ * way. In a full run they take 15 to 25 seconds, and a busy machine (another
+ * checkout running the suite) has pushed them past the normal limit of 30.
+ * So they get three times the normal time limit (`test.slow()`). What they
+ * check is unchanged.
  */
 
 test.describe("Fler projekt på startsidan", () => {
@@ -226,6 +227,7 @@ test.describe("Delad vy: skroll", () => {
   test("efter en omladdning längre ner visas projektet där man är", async ({
     page,
   }) => {
+    test.slow(); // See LONG_JOURNEY.
     await page.goto("/");
     await wheelToProject(page, projects[5]);
     const here = await previewed(page);
@@ -240,6 +242,7 @@ test.describe("Delad vy: skroll", () => {
   test("skärmbilderna för de närmaste projekten hämtas i förväg", async ({
     page,
   }) => {
+    test.slow(); // See LONG_JOURNEY.
     const fetched = new Set<string>();
     page.on("request", (request) => {
       const match = /\/previews\/(.+?)(-sm)?\.webp/.exec(request.url());
@@ -264,6 +267,7 @@ test.describe("Delad vy: peka", () => {
   test("pekaren tar över, och skrollen tar tillbaka först efter en bit", async ({
     page,
   }) => {
+    test.slow(); // See LONG_JOURNEY.
     await page.goto("/");
     await wheelToProject(page, projects[3]);
     const scrolledTo = await previewed(page);
@@ -292,6 +296,7 @@ test.describe("Delad vy: peka", () => {
   test("ett projekt som skrollas in under en stilla pekare räknas inte som utpekat", async ({
     page,
   }) => {
+    test.slow(); // See LONG_JOURNEY.
     await page.goto("/");
     await wheelToProject(page, projects[1]);
 
@@ -427,6 +432,7 @@ test.describe("Delad vy: fönstret", () => {
   test("krymper på en låg skärm så att fakta och knappar får plats", async ({
     page,
   }) => {
+    test.slow(); // See LONG_JOURNEY.
     await page.setViewportSize({ width: 1280, height: 560 });
     await page.goto("/");
     await wheelToProject(page, projects[4]);
