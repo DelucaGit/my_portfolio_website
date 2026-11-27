@@ -20,9 +20,10 @@ import { otherFeaturedProject } from "./featured-site";
  * Each is one extra `next build`, about a minute, and it only runs when the
  * folder is missing, older than out/ or built from other inputs.
  *
- * Neither build can end up in production: the variable that changes the site
- * also makes next.config.ts write to the copy's own folder instead of out/,
- * and the deploy only uploads out/.
+ * Neither build can end up in production: Hostinger runs its own build from
+ * the repository, where these variables are not set. The variable that
+ * changes the site also makes next.config.ts write to the copy's own folder,
+ * so the copies never overwrite out/.
  */
 const ROOT = process.cwd();
 const OUT = join(ROOT, "out");

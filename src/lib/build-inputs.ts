@@ -10,15 +10,15 @@ import type { CheckedSite, SiteCheckResult } from "./site-check";
  */
 export type BuildInputs = {
   /**
-   * E2E_ENDED_PROJECT: a slug that counts as ended, standing in for
-   * `siteStatus: "ended"`. Only the tests' build to out-ended/ sets it
-   * (next.config.ts); never set in a real build.
+   * E2E_ENDED_PROJECT: a slug that gets `siteStatus: "ended"` (see the top of
+   * src/lib/projects.ts). Only the tests' build to out-ended/ sets it
+   * (next.config.ts). Hostinger's build never does.
    */
   endedForTest?: string;
   /**
    * E2E_FEATURED_PROJECT: a slug that stands in for `featuredProject` in
    * src/data/site.ts. Only the tests' build to out-featured/ sets it
-   * (next.config.ts); never set in a real build.
+   * (next.config.ts). Hostinger's build never does.
    */
   featuredForTest?: string;
   /** What the link check wrote, keyed by address. Empty without a file. */
@@ -38,8 +38,9 @@ export function getBuildInputs(): BuildInputs {
 }
 
 /**
- * The link check's result file. It is written before the build in the deploy
- * workflow and is not in git: without the file no site counts as ended.
+ * The link check's result file, written by `npm run check:sites`. It is not
+ * in git, so Hostinger's build never has it: there no site counts as ended
+ * through the check, only through `siteStatus: "ended"`.
  * SITE_CHECK_FILE points at another file (the tests use that).
  */
 function readCheckedSites(): Record<string, CheckedSite> {
