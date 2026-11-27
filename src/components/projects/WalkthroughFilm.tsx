@@ -12,8 +12,6 @@ type WalkthroughFilmProps = {
   label: string;
   /** What happens in the film, in order. */
   steps: { at: number; text: string }[];
-  /** Who is clicking around, shown before the step ("Agenten"). */
-  narrator: string;
 };
 
 /** The film starts when this much of it is on screen. */
@@ -52,7 +50,6 @@ export default function WalkthroughFilm({
   poster,
   label,
   steps,
-  narrator,
 }: WalkthroughFilmProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canPlay = useSyncExternalStore(
@@ -176,7 +173,6 @@ export default function WalkthroughFilm({
         >
           <span className={styles.captionLine}>
             <i className={styles.captionDot} />
-            <span className={styles.captionWho}>{narrator} ·</span>
             <span className={styles.captionStep}>
               {step >= 0 &&
                 `${two(step + 1)}/${two(steps.length)} · ${steps[step].text}`}

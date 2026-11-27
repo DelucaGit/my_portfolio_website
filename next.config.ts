@@ -1,10 +1,12 @@
 import type { NextConfig } from "next";
 
 /**
- * Only the Playwright suite sets these two. It builds two more copies of the
- * site, and neither can end up in out/, which is the only folder deployed:
- *  - E2E_ENDED_PROJECT: one project counts as ended (see hasEndedSite in
- *    src/lib/projects.ts). Written to out-ended/.
+ * Only the Playwright suite sets these two, for two extra copies of the site
+ * that it builds. Hostinger runs its own build from the repository, where
+ * neither is set, so they never reach the published site. Each copy is
+ * written to its own folder, so it never overwrites a local out/:
+ *  - E2E_ENDED_PROJECT: one project gets `siteStatus: "ended"` (see the top
+ *    of src/lib/projects.ts). Written to out-ended/.
  *  - E2E_FEATURED_PROJECT: another project is the featured one (see
  *    featuredSlug in src/lib/projects.ts). Written to out-featured/.
  * Here they only pick the folder; the site itself reads them in

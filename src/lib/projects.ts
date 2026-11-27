@@ -1,5 +1,5 @@
 import {
-  projects,
+  projects as projectData,
   type Project,
   type ProjectSlug,
 } from "@/data/projects";
@@ -25,14 +25,29 @@ export type {
 };
 
 /**
+ * The projects in src/data/projects.ts. In the tests' build with an ended
+ * project (E2E_ENDED_PROJECT, see src/lib/build-inputs.ts), that project
+ * carries `siteStatus: "ended"`, as if the line were in the data file, so the
+ * real field is what the test exercises.
+ */
+const projects: Project[] = (() => {
+  const { endedForTest } = getBuildInputs();
+  if (!endedForTest) return projectData;
+  return projectData.map((project) =>
+    project.slug === endedForTest
+      ? { ...project, siteStatus: "ended" as const }
+      : project,
+  );
+})();
+
+/**
  * The slug of the featured project: `featuredProject` in src/data/site.ts.
  * This is the only place that reads that line.
  */
 function featuredSlug(): ProjectSlug {
-  // Only for the tests' own build, which next.config.ts sends to
-  // out-featured/ and never to out/: it stands in for a changed line. The
-  // type cannot check it, so `getProject` stops the build if it names no
-  // project.
+  // Only in the tests' own build to out-featured/: it stands in for a
+  // changed line. The type cannot check it, so `getProject` stops the build
+  // if it names no project.
   const { featuredForTest } = getBuildInputs();
   if (featuredForTest) return featuredForTest as ProjectSlug;
   return site.featuredProject;
@@ -106,17 +121,13 @@ function getProjectHost(project: Project): string {
  * True when the customer has closed the project's site, so the button to it
  * must not be a link. This is the one answer for the whole site:
  *  1. `siteStatus: "ended"` on the project in src/data/projects.ts always wins.
- *  2. Otherwise, in the tests' own build only, E2E_ENDED_PROJECT.
- *  3. Otherwise the link check decides: ended only when the domain does not
+ *  2. Otherwise the link check decides: ended only when the domain does not
  *     exist or answers 404 or 410. Unknown (timeout, 5xx …) is not ended.
- * Both come in through getBuildInputs (src/lib/build-inputs.ts).
+ *     Hostinger's build has no check file, so there only rule 1 applies.
  */
 function hasEndedSite(project: Project): boolean {
   if (project.siteStatus === "ended") return true;
-  const { endedForTest, checkedSites } = getBuildInputs();
-  // Only for the tests' own build, which next.config.ts sends to out-ended/
-  // and never to out/: it stands in for `siteStatus: "ended"` on one project.
-  if (endedForTest && project.slug === endedForTest) return true;
+  const { checkedSites } = getBuildInputs();
   if (!project.siteUrl) return false;
   return checkedSites[project.siteUrl]?.status === "ended";
 }

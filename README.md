@@ -2,7 +2,7 @@
 
 The portfolio at [marceldeluca.se](https://marceldeluca.se). It is written for recruiters: who Marcel is, what he has built and how to reach him. The site is in Swedish. The design is called **Tyngdlös**: a paper-coloured page, a light and a dark theme, and painted landscapes behind browser windows that show the projects.
 
-Built with Next.js 16 (App Router) as a static export and published to Hostinger over FTP by GitHub Actions.
+Built with Next.js 16 (App Router) as a static export. Hostinger builds and publishes it straight from this repository.
 
 `JOURNEY.md` is the log of what was built and why.
 
@@ -19,7 +19,7 @@ Built with Next.js 16 (App Router) as a static export and published to Hostinger
 | `npm run check:sites` | Asks every project's live site if it is still there |
 | `npm run record:walkthrough -- <slug>` | Records a walkthrough film of a project's live site |
 
-Node 22.18 or newer is needed (`check:sites` imports a TypeScript file directly). The deploy uses Node 24.
+Node 22.18 or newer is needed (`check:sites` imports a TypeScript file directly). The GitHub workflow uses Node 24.
 
 ### Why `--webpack`
 
@@ -122,18 +122,18 @@ The film is only shown for the featured project. It plays muted and without cont
 
 When a customer closes their site, the button "Besök sidan" must not lead to a broken page. It is then shown switched off with the text "Kunden har avslutat projektet": on the start page, in the archive and on the project's page.
 
-**It happens by itself.** `npm run check:sites` asks every project's `siteUrl` and writes the answers to `site-check.json` (not in git), which the build reads. A site counts as ended only when its domain no longer exists or it answers 404 or 410. A timeout, a server error or anything else unclear counts as unknown, and the button stays. The check can never stop a deploy.
-
-**The deploy runs it** (`.github/workflows/deploy.yml`): on every push to `main`, when started by hand, and at 05:17 UTC on the 1st of every month, so the buttons stay right when nothing is published. Every run checks the sites, builds and uploads `out/`. GitHub switches scheduled workflows off after 60 days without activity in the repository and sends a mail first.
-
-**By hand,** when the check cannot know. For example when someone else has taken over the old domain, so the address still answers:
+**On the published site it only happens by hand.** Add one line to the project in `src/data/projects.ts`:
 
 ```ts
 siteUrl: "https://example.se",
 siteStatus: "ended",
 ```
 
-Add the line to the project in `src/data/projects.ts`. It always wins over the check. Keep `siteUrl`: a project with an empty `siteUrl` has no button at all. Remove the line to undo.
+Keep `siteUrl`: a project with an empty `siteUrl` has no button at all. Remove the line to undo. The line always wins over the link check below, so it also covers a domain someone else has taken over, where the address still answers.
+
+**The link check does not reach the published site.** `npm run check:sites` asks every project's `siteUrl` and writes the answers to `site-check.json`. A site counts as ended only when its domain no longer exists or it answers 404 or 410. A timeout, a server error or anything else unclear counts as unknown, and the button stays. A build that finds the file uses it. But the file is not in git, and Hostinger builds from the repository, so Hostinger's build never has it. Use the check to find sites that are gone, then add `siteStatus: "ended"` to them.
+
+The GitHub workflow (`.github/workflows/deploy.yml`) runs the check and a build on every push to `main` and when started by hand. It is only a check: its result is printed in the run's log and goes nowhere else.
 
 If you run `npm run check:sites` on your own machine, `site-check.json` stays in the folder and the next local build uses it. Delete the file afterwards, or the tests that expect a working button for every project can fail.
 
@@ -150,7 +150,7 @@ npx playwright test split-view        # one file
 The first time: `npx playwright install chromium webkit`.
 
 - Chromium runs everything. WebKit (Safari's engine) runs the tests tagged `@webkit`: a small set that checks each part of the site once.
-- The suite builds two more copies of the site before it starts (about a minute each, and only when `out/` is newer): `out-ended/`, in which two projects have ended, and `out-featured/`, in which another project is the featured one. They are built by the real `next build` with one environment variable each, and that same variable sends the build to its own folder. Only `out/` is deployed.
+- The suite builds two more copies of the site before it starts (about a minute each, and only when `out/` is newer): `out-ended/`, in which two projects have ended, and `out-featured/`, in which another project is the featured one. They are built by the real `next build` with one environment variable each, and that same variable sends the build to its own folder, so `out/` is never overwritten. Hostinger's build does not set the variables, so they never reach the published site.
 - Three small static servers are started on port 4173 and the two after it. `E2E_PORT=<port>` moves them, for example when two checkouts run the suite at the same time. A server left over from an earlier run on the same port is reused; if the tests see an old page, look for a stale `node` process there.
 - The copies do not notice changes in the source. Run `npm run build` (or `npm run test:e2e`) after a change and they follow.
 
@@ -166,6 +166,8 @@ A test that times out under load and passes when it runs alone is a timing probl
 
 ## Deploy
 
-A push to `main` runs `.github/workflows/deploy.yml`: `npm ci`, the link check, `npm run build`, then `out/` is uploaded to Hostinger over FTP (the secrets `FTP_SERVER`, `FTP_USERNAME` and `FTP_PASSWORD`). The upload replaces everything on the server.
+Hostinger builds and publishes the site itself, straight from this repository. Nothing is uploaded from GitHub. The `FTP_*` secrets in the repository's GitHub settings are no longer used and can be deleted.
+
+A push to `main` also runs `.github/workflows/deploy.yml`: `npm ci`, the link check and `npm run build`. It only shows whether the check and the build still work; nothing from it reaches the published site.
 
 Every piece of work starts as a GitHub issue and is built on a branch (see `AGENTS.md`).
