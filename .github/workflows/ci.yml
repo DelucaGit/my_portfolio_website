@@ -1,6 +1,6 @@
 name: Pull request checks
 
-# Lint, build and the Playwright suite on every pull request.
+# Lint, type check the scripts, build and the Playwright suite on every pull request.
 on:
   pull_request:
 
@@ -24,6 +24,11 @@ jobs:
 
       - name: Lint
         run: npm run lint
+
+      # The .mjs scripts are not part of the Next build's type check, so
+      # check them on their own against the shared formats in src/lib.
+      - name: Type check scripts
+        run: npm run typecheck:scripts
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium webkit

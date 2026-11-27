@@ -1,0 +1,13 @@
+// Type-checks the plain .mjs scripts against the shared formats in src/lib:
+//   npm run typecheck:scripts
+// The Next build does not see these files, so CI runs this check on its own.
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "checkJs": true,
+    "incremental": false,
+    "plugins": []
+  },
+  "include": ["check-sites.mjs"]
+}
