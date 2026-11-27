@@ -2,10 +2,11 @@ import type { ReactNode } from "react";
 import { site } from "@/data/site";
 import {
   getFeaturedProject,
-  getProjectBySlug,
+  getProject,
   getProjectView,
   type Project,
 } from "@/lib/projects";
+import { fillText } from "@/lib/placeholders";
 import shared from "@/styles/shared.module.css";
 import section from "@/styles/homeSection.module.css";
 import SiteLink from "./SiteLink";
@@ -66,7 +67,7 @@ function ProjectWindow({
 }
 
 const caseLink = (template: string, project: Project) => ({
-  name: template.replace("{project}", project.name),
+  name: fillText(template, { project: { text: project.name } }),
   href: getProjectView(project).caseHref,
 });
 
@@ -101,8 +102,8 @@ export default function WhatIDo() {
   const { whatIDo } = site;
   const { clients, products, backend } = whatIDo;
   const featured = getFeaturedProject();
-  const clientProject = getProjectBySlug(clients.project) as Project;
-  const second = getProjectBySlug(products.second) as Project;
+  const clientProject = getProject(clients.project);
+  const second = getProject(products.second);
 
   const builtWith = featured.stack.slice(0, 2).join(` ${products.and} `);
   const featuredWithStack = builtWith
@@ -134,7 +135,9 @@ export default function WhatIDo() {
         <Card
           id="vad-jag-gor-produkter"
           heading={products.heading}
-          text={products.text.replace("{featured}", featuredWithStack)}
+          text={fillText(products.text, {
+            featured: { text: featuredWithStack },
+          })}
           link={caseLink(products.link, featured)}
           palette="kvall"
         >
