@@ -1,3 +1,4 @@
+// @ts-check
 // The link check: asks every project's live site if it is still there and
 // writes the answers to a file that the build reads (src/lib/projects.ts).
 //
@@ -38,7 +39,12 @@ const ENDED_ANSWERS = [404, 410];
 /** @typedef {import("../src/lib/site-check.ts").CheckedSite} CheckedSite */
 /** @typedef {import("../src/lib/site-check.ts").SiteCheckResult} SiteCheckResult */
 
+/**
+ * @param {string[]} argv
+ * @returns {{ out: string; timeout: number; urls: string[] }}
+ */
 function readArgs(argv) {
+  /** @type {{ out: string; timeout: number; urls: string[] }} */
   const args = { out: DEFAULT_OUT, timeout: DEFAULT_TIMEOUT, urls: [] };
   for (let i = 0; i < argv.length; i++) {
     if (argv[i] === "--out") args.out = resolve(argv[++i]);
@@ -57,7 +63,11 @@ async function projectSites() {
   return [...new Set(projects.map((project) => project.siteUrl).filter(Boolean))];
 }
 
-/** The error code at the bottom of a failed fetch ("ENOTFOUND", "ECONNREFUSED" …). */
+/**
+ * The error code at the bottom of a failed fetch ("ENOTFOUND", "ECONNREFUSED" …).
+ * @param {any} error
+ * @returns {string}
+ */
 function errorCode(error) {
   for (let e = error; e; e = e.cause) {
     if (typeof e.code === "string") return e.code;
@@ -69,6 +79,8 @@ function errorCode(error) {
  * True only when the name servers answer "no such domain" for the host.
  * A lookup that fails for any other reason (no network, a slow name server)
  * is not an answer, and then the domain is not counted as gone.
+ * @param {string} hostname
+ * @param {number} timeout
  */
 async function domainIsGone(hostname, timeout) {
   const resolver = new Resolver({ timeout, tries: 2 });
@@ -140,7 +152,7 @@ try {
   await main();
 } catch (error) {
   // Never stop the deploy: without a result file every button stays.
-  console.error(`check-sites: the check did not finish (${error?.message ?? error}).`);
+  console.error(`check-sites: the check did not finish (${error instanceof Error ? error.message : error}).`);
   console.error("check-sites: no result was written, so no site is marked as ended.");
 }
 // No process.exit() here: on Windows it can crash Node while fetch is closing

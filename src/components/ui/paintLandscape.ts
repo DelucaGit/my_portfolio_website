@@ -2,6 +2,9 @@
  * The painted landscapes of the Tyngdlös design: a few thousand short brush
  * strokes drawn from a seed, so a painting looks the same on every visit.
  */
+import type { PaintingPalette } from "@/lib/painting-palettes";
+
+export type { PaintingPalette };
 
 type Hsl = [hue: number, saturation: number, lightness: number];
 
@@ -48,9 +51,7 @@ export const PAINTING_PALETTES = {
     near: [128, 22, 32],
     field: [78, 30, 46],
   },
-} satisfies Record<string, Palette>;
-
-export type PaintingPalette = keyof typeof PAINTING_PALETTES;
+} satisfies Record<PaintingPalette, Palette>;
 
 /** The canvas is painted at this size and stretched with CSS. */
 const WIDTH = 760;

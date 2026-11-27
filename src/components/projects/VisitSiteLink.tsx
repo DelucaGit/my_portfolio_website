@@ -1,6 +1,6 @@
 import SiteLink from "@/components/SiteLink";
 import { ArrowOut } from "@/components/ui/ArrowOut";
-import { site as copy } from "@/data/site";
+import { site } from "@/data/site";
 import type { ProjectSite } from "@/lib/projects";
 import shared from "@/styles/shared.module.css";
 
@@ -12,7 +12,7 @@ type VisitSiteLinkProps = {
    * (`getProjectView(project).site`). With no
    * site nothing is rendered.
    */
-  site: ProjectSite;
+  siteState: ProjectSite;
   className?: string;
 };
 
@@ -29,13 +29,13 @@ type VisitSiteLinkProps = {
  */
 export default function VisitSiteLink({
   name,
-  site,
+  siteState,
   className,
 }: VisitSiteLinkProps) {
-  if (site.state === "none") return null;
-  const { visitSite, siteEnded } = copy.projects.buttons;
+  if (siteState.state === "none") return null;
+  const { visitSite, siteEnded } = site.projects.buttons;
 
-  if (site.state === "ended") {
+  if (siteState.state === "ended") {
     return (
       <span
         role="link"
@@ -52,7 +52,7 @@ export default function VisitSiteLink({
 
   return (
     <SiteLink
-      href={site.url}
+      href={siteState.url}
       external
       className={[shared.pill, shared.pillSoft, className]
         .filter(Boolean)

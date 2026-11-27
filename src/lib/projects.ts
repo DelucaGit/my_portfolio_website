@@ -6,26 +6,36 @@ import {
 import { site } from "@/data/site";
 import { getAdjacent } from "./adjacent";
 import { getBuildInputs } from "./build-inputs";
+import { buildCasePage, type CasePage, type CaseSection } from "./case-page";
 import { withoutProtocol } from "./contact";
 import {
   getProjectFiles,
+  type Picture,
   type ProjectPreview,
   type WalkthroughFilms,
 } from "./project-files";
 
-export type { Project, ProjectSlug, ProjectPreview };
+export type {
+  CasePage,
+  CaseSection,
+  Picture,
+  Project,
+  ProjectSlug,
+  ProjectPreview,
+};
 
 /**
  * The slug of the featured project: `featuredProject` in src/data/site.ts.
  * This is the only place that reads that line.
  */
-function featuredSlug(): string {
+function featuredSlug(): ProjectSlug {
   // Only for the tests' own build, which next.config.ts sends to
-  // out-featured/ and never to out/: it stands in for a changed line.
+  // out-featured/ and never to out/: it stands in for a changed line. The
+  // type cannot check it, so `getProject` stops the build if it names no
+  // project.
   const { featuredForTest } = getBuildInputs();
-  if (featuredForTest) return featuredForTest;
-  const slug: ProjectSlug = site.featuredProject;
-  return slug;
+  if (featuredForTest) return featuredForTest as ProjectSlug;
+  return site.featuredProject;
 }
 
 /** Newest year first; keep original order within the same year. */
@@ -51,12 +61,7 @@ export function getHomeProjects(): Project[] {
 
 /** The project `featuredProject` in src/data/site.ts points at. */
 export function getFeaturedProject(): Project {
-  const slug = featuredSlug();
-  const project = projects.find((candidate) => candidate.slug === slug);
-  // The type of `featuredProject` only allows slugs that exist, so the real
-  // line always finds one. This stops a test build that names a wrong slug.
-  if (!project) throw new Error(`No project has the slug "${slug}"`);
-  return project;
+  return getProject(featuredSlug());
 }
 
 /** A recorded walkthrough, ready to play: the files plus what happens when. */
@@ -131,10 +136,6 @@ export function getProjectBySlug(slug: string): Project | undefined {
   return projects.find((project) => project.slug === slug);
 }
 
-export function getProjectSlugs(): string[] {
-  return getProjectsNewestFirst().map((project) => project.slug);
-}
-
 /** The projects before and after one in the archive's order, as views. */
 export function getAdjacentProjects(slug: string): {
   prev: ProjectView | null;
@@ -188,7 +189,7 @@ export type ProjectView = {
    * The project's main picture, versioned: shown where it has no film, and
    * the picture a share preview uses
    */
-  image: { src: string; alt: string };
+  image: Picture;
   /** The recorded walkthrough with versioned files, or null without one */
   walkthrough: Walkthrough | null;
   facts: {
@@ -219,4 +220,16 @@ export function getProjectView(project: Project): ProjectView {
       builtWith: project.stack.join(" · "),
     },
   };
+}
+
+/**
+ * What the project's case page (/projects/<slug>) shows, part by part: see
+ * src/lib/case-page.ts. Its place in the archive's order picks the landscape
+ * behind the first picture, so neighbouring pages get different ones.
+ */
+export function getCasePage(project: Project): CasePage {
+  const position = getProjectsNewestFirst().findIndex(
+    (candidate) => candidate.slug === project.slug,
+  );
+  return buildCasePage(project, position);
 }

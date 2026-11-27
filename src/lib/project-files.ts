@@ -6,7 +6,7 @@ import { asset } from "@/lib/asset";
  * src/data/projects.ts names pictures by file name alone; everything else
  * follows from the slug:
  *
- *   public/projects/<folder>/<file>     the main picture and the case's pictures
+ *   public/projects/<slug>/<file>       the main picture and the case's pictures
  *   public/previews/<slug>.webp         the 2:1 screenshot, 1280 x 640
  *   public/previews/<slug>-sm.webp      the same, 640 x 320
  *   public/walkthroughs/<slug>.webm     the recorded walkthrough,
@@ -16,17 +16,13 @@ import { asset } from "@/lib/asset";
  * straight into the HTML.
  */
 
-/**
- * The folder in public/projects/ is the slug, except where the files were put
- * in place before the slug got its final spelling.
- */
-const FOLDER_NOT_SLUG: Record<string, string> = {
-  brandsakerhetskoll: "brand-sakerhetskoll",
-};
-
+/** The project's folder in public/projects/: always its slug. */
 function folderOf(project: Project): string {
-  return `/projects/${FOLDER_NOT_SLUG[project.slug] ?? project.slug}`;
+  return `/projects/${project.slug}`;
 }
+
+/** A picture with a versioned path and its text for screen readers. */
+export type Picture = { src: string; alt: string };
 
 /** A project's screenshot in the preview format: 2:1, in two sizes. */
 export type ProjectPreview = {
@@ -82,7 +78,7 @@ function resolveCaseMedia(project: Project): ProjectMedia {
 
 export function getProjectFiles(project: Project): ProjectFiles {
   const folder = folderOf(project);
-  const films = `/walkthroughs/${project.slug}`;
+  const filmBase = `/walkthroughs/${project.slug}`;
   return {
     preview: {
       large: asset(`/previews/${project.slug}.webp`),
@@ -91,9 +87,9 @@ export function getProjectFiles(project: Project): ProjectFiles {
     image: asset(`${folder}/${project.image}`),
     films: project.walkthrough
       ? {
-          webm: asset(`${films}.webm`),
-          mp4: asset(`${films}.mp4`),
-          poster: asset(`${films}.webp`),
+          webm: asset(`${filmBase}.webm`),
+          mp4: asset(`${filmBase}.mp4`),
+          poster: asset(`${filmBase}.webp`),
         }
       : null,
     caseMedia: resolveCaseMedia(project),

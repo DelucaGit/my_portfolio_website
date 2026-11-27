@@ -70,7 +70,7 @@ export default function FeaturedProject() {
             {buttons.readCase}
             <ArrowOut />
           </SiteLink>
-          <VisitSiteLink name={project.name} site={view.site} />
+          <VisitSiteLink name={project.name} siteState={view.site} />
         </p>
       </div>
     </article>
