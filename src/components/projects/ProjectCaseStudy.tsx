@@ -4,6 +4,7 @@ import { BrowserWindow } from "@/components/ui/BrowserWindow";
 import { PaintedScene, type PaintingPalette } from "@/components/ui/Painting";
 import { site } from "@/data/site";
 import { asset } from "@/lib/asset";
+import { mailHref } from "@/lib/contact";
 import {
   getAdjacentProjects,
   getAllProjects,
@@ -383,7 +384,7 @@ export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
         <p>{text.contact.text}</p>
         <div className={styles.panelActions}>
           <SiteLink
-            href={`mailto:${site.email}`}
+            href={mailHref(site.email)}
             className={`${shared.pill} ${styles.pillLight}`}
           >
             {site.email}
