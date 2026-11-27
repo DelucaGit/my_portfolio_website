@@ -1,4 +1,5 @@
 import { site } from "@/data/site";
+import { mailHref, phoneHref } from "@/lib/contact";
 import shared from "@/styles/shared.module.css";
 import section from "@/styles/homeSection.module.css";
 import CopyField from "./CopyField";
@@ -8,7 +9,7 @@ import styles from "./Contact.module.css";
 /** Kontakt: mail, call, copy the address, and the profiles. */
 export default function Contact() {
   const { contact } = site;
-  const tel = `tel:${site.phone.replace(/\s/g, "")}`;
+  const tel = phoneHref(site.phone);
 
   return (
     <section
@@ -22,7 +23,7 @@ export default function Contact() {
           <p>{contact.text}</p>
           <div className={styles.buttons}>
             <SiteLink
-              href={`mailto:${site.email}`}
+              href={mailHref(site.email)}
               className={`${shared.pill} ${styles.pillLight}`}
             >
               {contact.mailButton}

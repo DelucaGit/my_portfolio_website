@@ -1,29 +1,41 @@
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
 import {
   projects,
   type Project,
   type ProjectSlug,
 } from "@/data/projects";
 import { site } from "@/data/site";
+import { getAdjacent } from "./adjacent";
+import { getBuildInputs } from "./build-inputs";
+import { buildCasePage, type CasePage, type CaseSection } from "./case-page";
+import { withoutProtocol } from "./contact";
+import {
+  getProjectFiles,
+  type Picture,
+  type ProjectPreview,
+  type WalkthroughFilms,
+} from "./project-files";
 
-export type { Project, ProjectSlug };
-
-/** See `hasEndedSite` and next.config.ts. Never set in a real build. */
-const ENDED_FOR_TEST = process.env.E2E_ENDED_PROJECT;
-/** See `featuredSlug` and next.config.ts. Never set in a real build. */
-const FEATURED_FOR_TEST = process.env.E2E_FEATURED_PROJECT;
+export type {
+  CasePage,
+  CaseSection,
+  Picture,
+  Project,
+  ProjectSlug,
+  ProjectPreview,
+};
 
 /**
  * The slug of the featured project: `featuredProject` in src/data/site.ts.
  * This is the only place that reads that line.
  */
-function featuredSlug(): string {
+function featuredSlug(): ProjectSlug {
   // Only for the tests' own build, which next.config.ts sends to
-  // out-featured/ and never to out/: it stands in for a changed line.
-  if (FEATURED_FOR_TEST) return FEATURED_FOR_TEST;
-  const slug: ProjectSlug = site.featuredProject;
-  return slug;
+  // out-featured/ and never to out/: it stands in for a changed line. The
+  // type cannot check it, so `getProject` stops the build if it names no
+  // project.
+  const { featuredForTest } = getBuildInputs();
+  if (featuredForTest) return featuredForTest as ProjectSlug;
+  return site.featuredProject;
 }
 
 /** Newest year first; keep original order within the same year. */
@@ -47,42 +59,13 @@ export function getHomeProjects(): Project[] {
     .slice(0, site.homeProjectCount - 1);
 }
 
-/** A project's screenshot in the preview format: 2:1, in two sizes. */
-export type ProjectPreview = {
-  /** 1280 x 640 */
-  large: string;
-  /** 640 x 320 */
-  small: string;
-};
-
-/**
- * The project's 2:1 screenshot for the split view. The files are in
- * public/previews/, named by the slug: `<slug>.webp` and `<slug>-sm.webp`.
- * (`project.image` has another shape for every project.)
- */
-export function getProjectPreview(project: Project): ProjectPreview {
-  return {
-    large: `/previews/${project.slug}.webp`,
-    small: `/previews/${project.slug}-sm.webp`,
-  };
-}
-
 /** The project `featuredProject` in src/data/site.ts points at. */
 export function getFeaturedProject(): Project {
-  const slug = featuredSlug();
-  const project = projects.find((candidate) => candidate.slug === slug);
-  // The type of `featuredProject` only allows slugs that exist, so the real
-  // line always finds one. This stops a test build that names a wrong slug.
-  if (!project) throw new Error(`No project has the slug "${slug}"`);
-  return project;
+  return getProject(featuredSlug());
 }
 
 /** A recorded walkthrough, ready to play: the files plus what happens when. */
-export type Walkthrough = {
-  webm: string;
-  mp4: string;
-  /** The still image shown before the film plays, and instead of it when motion is not wanted */
-  poster: string;
+export type Walkthrough = WalkthroughFilms & {
   /** Seconds */
   duration: number;
   steps: WalkthroughStep[];
@@ -96,15 +79,15 @@ export type WalkthroughStep = {
 
 /**
  * The project's recorded walkthrough, or null when it has none (the caller
- * then shows the project's screenshot). The films are in public/walkthroughs/.
+ * then shows the project's screenshot).
  */
-export function getProjectWalkthrough(project: Project): Walkthrough | null {
-  if (!project.walkthrough) return null;
-  const base = `/walkthroughs/${project.slug}`;
+function getProjectWalkthrough(
+  project: Project,
+  films: WalkthroughFilms | null,
+): Walkthrough | null {
+  if (!project.walkthrough || !films) return null;
   return {
-    webm: `${base}.webm`,
-    mp4: `${base}.mp4`,
-    poster: `${base}.webp`,
+    ...films,
     duration: project.walkthrough.duration,
     steps: project.walkthrough.steps.map(([at, text]) => ({ at, text })),
   };
@@ -114,76 +97,139 @@ export function getProjectWalkthrough(project: Project): Walkthrough | null {
  * What stands in a browser window's address bar for the project:
  * "andaluscalendar.com", or the project's name when it has no live site.
  */
-export function getProjectHost(project: Project): string {
+function getProjectHost(project: Project): string {
   if (!project.siteUrl) return project.name;
-  return project.siteUrl
-    .replace(/^https?:\/\/(www\.)?/, "")
-    .replace(/\/.*$/, "");
-}
-
-/** What the link check (scripts/check-sites.mjs) wrote about one address. */
-type CheckedSite = { status?: string };
-
-let checkedSites: Record<string, CheckedSite> | undefined;
-
-/**
- * The link check's result file. It is written before the build in the deploy
- * workflow and is not in git: without the file no site counts as ended.
- * SITE_CHECK_FILE points at another file (the tests use that).
- */
-function getCheckedSites(): Record<string, CheckedSite> {
-  if (checkedSites) return checkedSites;
-  const file =
-    process.env.SITE_CHECK_FILE || join(process.cwd(), "site-check.json");
-  try {
-    const result = JSON.parse(readFileSync(file, "utf8")) as {
-      sites?: Record<string, CheckedSite>;
-    };
-    checkedSites = result.sites ?? {};
-  } catch {
-    // No file, or a broken one: nothing is known, so every button stays.
-    checkedSites = {};
-  }
-  return checkedSites;
+  return withoutProtocol(project.siteUrl).replace(/\/.*$/, "");
 }
 
 /**
  * True when the customer has closed the project's site, so the button to it
  * must not be a link. This is the one answer for the whole site:
  *  1. `siteStatus: "ended"` on the project in src/data/projects.ts always wins.
- *  2. Otherwise the link check decides: ended only when the domain does not
+ *  2. Otherwise, in the tests' own build only, E2E_ENDED_PROJECT.
+ *  3. Otherwise the link check decides: ended only when the domain does not
  *     exist or answers 404 or 410. Unknown (timeout, 5xx …) is not ended.
+ * Both come in through getBuildInputs (src/lib/build-inputs.ts).
  */
-export function hasEndedSite(project: Project): boolean {
+function hasEndedSite(project: Project): boolean {
   if (project.siteStatus === "ended") return true;
+  const { endedForTest, checkedSites } = getBuildInputs();
   // Only for the tests' own build, which next.config.ts sends to out-ended/
   // and never to out/: it stands in for `siteStatus: "ended"` on one project.
-  if (ENDED_FOR_TEST && project.slug === ENDED_FOR_TEST) return true;
+  if (endedForTest && project.slug === endedForTest) return true;
   if (!project.siteUrl) return false;
-  return getCheckedSites()[project.siteUrl]?.status === "ended";
+  return checkedSites[project.siteUrl]?.status === "ended";
 }
 
+/**
+ * The project a slug in src/data names. The type only lets through slugs
+ * that are in src/data/projects.ts, so there is always a project.
+ */
+export function getProject(slug: ProjectSlug): Project {
+  const project = getProjectBySlug(slug);
+  if (!project) throw new Error(`No project with the slug "${slug}"`);
+  return project;
+}
+
+/** The project for a slug from outside the code, such as a page address. */
 export function getProjectBySlug(slug: string): Project | undefined {
   return projects.find((project) => project.slug === slug);
 }
 
-export function getProjectSlugs(): string[] {
-  return getProjectsNewestFirst().map((project) => project.slug);
+/** The projects before and after one in the archive's order, as views. */
+export function getAdjacentProjects(slug: string): {
+  prev: ProjectView | null;
+  next: ProjectView | null;
+} {
+  const { prev, next } = getAdjacent(getProjectsNewestFirst(), slug);
+  return {
+    prev: prev && getProjectView(prev),
+    next: next && getProjectView(next),
+  };
 }
 
-export function getAdjacentProjects(slug: string): {
-  prev: Project | null;
-  next: Project | null;
-} {
-  const ordered = getProjectsNewestFirst();
-  const index = ordered.findIndex((project) => project.slug === slug);
+/**
+ * Where a project's live site stands, as one value: live at an address, ended
+ * by the customer, or no site at all. Asking for this instead of reading
+ * `siteUrl` means no caller can forget to ask whether the site has ended.
+ */
+export type ProjectSite =
+  | { state: "live"; url: string }
+  | { state: "ended" }
+  | { state: "none" };
 
-  if (index === -1) {
-    return { prev: null, next: null };
-  }
+/** The state of the project's live site. See `hasEndedSite` for "ended". */
+function getProjectSite(project: Project): ProjectSite {
+  if (!project.siteUrl) return { state: "none" };
+  if (hasEndedSite(project)) return { state: "ended" };
+  return { state: "live", url: project.siteUrl };
+}
 
-  return {
-    prev: index > 0 ? ordered[index - 1] : null,
-    next: index < ordered.length - 1 ? ordered[index + 1] : null,
+/**
+ * A project as a visitor sees it, put together in one place: where its case
+ * page is, what stands in the address bar, its site, its code, its pictures
+ * and its facts. Every file path is already versioned with `asset()`, so the
+ * value can go straight into the HTML or to a client component.
+ */
+export type ProjectView = {
+  slug: string;
+  name: string;
+  year: number;
+  tagline: string;
+  /** The project's case page */
+  caseHref: string;
+  /** The text in a browser window's address bar, see `getProjectHost` */
+  host: string;
+  site: ProjectSite;
+  /** Empty when the project has no public code */
+  githubUrl: string;
+  /** The 2:1 screenshot, versioned */
+  preview: ProjectPreview;
+  /**
+   * The project's main picture, versioned: shown where it has no film, and
+   * the picture a share preview uses
+   */
+  image: Picture;
+  /** The recorded walkthrough with versioned files, or null without one */
+  walkthrough: Walkthrough | null;
+  facts: {
+    /** The project's tags: "Next.js · Tailwind · Lokalt" */
+    type: string;
+    /** The project's stack: "Next.js · TypeScript · Tailwind CSS" */
+    builtWith: string;
   };
+};
+
+/** The one place a project is put together for a page. */
+export function getProjectView(project: Project): ProjectView {
+  const files = getProjectFiles(project);
+  return {
+    slug: project.slug,
+    name: project.name,
+    year: project.year,
+    tagline: project.tagline,
+    caseHref: `/projects/${project.slug}`,
+    host: getProjectHost(project),
+    site: getProjectSite(project),
+    githubUrl: project.githubUrl,
+    preview: files.preview,
+    image: { src: files.image, alt: project.imageAlt },
+    walkthrough: getProjectWalkthrough(project, files.films),
+    facts: {
+      type: project.tags.join(" · "),
+      builtWith: project.stack.join(" · "),
+    },
+  };
+}
+
+/**
+ * What the project's case page (/projects/<slug>) shows, part by part: see
+ * src/lib/case-page.ts. Its place in the archive's order picks the landscape
+ * behind the first picture, so neighbouring pages get different ones.
+ */
+export function getCasePage(project: Project): CasePage {
+  const position = getProjectsNewestFirst().findIndex(
+    (candidate) => candidate.slug === project.slug,
+  );
+  return buildCasePage(project, position);
 }

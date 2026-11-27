@@ -1,14 +1,44 @@
 import type { ReactNode } from "react";
-import { asset } from "@/lib/asset";
 import {
-  getProjectHost,
-  getProjectPreview,
-  hasEndedSite,
+  getProjectView,
   type Project,
+  type ProjectView,
 } from "@/lib/projects";
-import ProjectSplitViewClient, {
-  type SplitViewProject,
-} from "./ProjectSplitViewClient";
+import ProjectSplitViewClient from "./ProjectSplitViewClient";
+
+/**
+ * What the split view shows of a project, and so all of it that reaches the
+ * browser: no walkthrough, no main picture.
+ */
+export type SplitViewProject = Pick<
+  ProjectView,
+  | "slug"
+  | "name"
+  | "year"
+  | "tagline"
+  | "caseHref"
+  | "host"
+  | "site"
+  | "githubUrl"
+  | "preview"
+  | "facts"
+>;
+
+function toSplitViewProject(project: Project): SplitViewProject {
+  const view = getProjectView(project);
+  return {
+    slug: view.slug,
+    name: view.name,
+    year: view.year,
+    tagline: view.tagline,
+    caseHref: view.caseHref,
+    host: view.host,
+    site: view.site,
+    githubUrl: view.githubUrl,
+    preview: view.preview,
+    facts: view.facts,
+  };
+}
 
 type ProjectSplitViewProps = {
   /** The projects, in the order they are listed. */
@@ -21,26 +51,6 @@ type ProjectSplitViewProps = {
   footer?: ReactNode;
 };
 
-/** Only what the view shows of a project, so the rest stays out of the browser. */
-function toSplitViewProject(project: Project): SplitViewProject {
-  const preview = getProjectPreview(project);
-  return {
-    slug: project.slug,
-    name: project.name,
-    year: project.year,
-    tagline: project.tagline,
-    host: getProjectHost(project),
-    type: project.tags.join(" · "),
-    builtWith: project.stack.join(" · "),
-    caseHref: `/projects/${project.slug}`,
-    siteUrl: project.siteUrl,
-    siteEnded: hasEndedSite(project),
-    githubUrl: project.githubUrl,
-    image: asset(preview.large),
-    imageSmall: asset(preview.small),
-  };
-}
-
 /**
  * The split view: a list of projects and a preview window.
  *
@@ -51,7 +61,9 @@ function toSplitViewProject(project: Project): SplitViewProject {
  *
  * It knows nothing about the page it is on: give it any ordered list of
  * projects. The names and links are in the HTML from the start, so the list
- * works without JavaScript.
+ * works without JavaScript. Each project reaches the browser as only the
+ * part of the project layer's view (`getProjectView`) the split view shows,
+ * never as the whole project.
  */
 export default function ProjectSplitView({
   projects,

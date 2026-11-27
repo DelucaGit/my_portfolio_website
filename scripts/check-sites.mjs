@@ -1,3 +1,4 @@
+// @ts-check
 // The link check: asks every project's live site if it is still there and
 // writes the answers to a file that the build reads (src/lib/projects.ts).
 //
@@ -18,6 +19,9 @@
 // The script never fails: whatever goes wrong, it says so and exits with 0,
 // so a failed check cannot stop a deploy. No result file = nothing ended.
 //
+// The file's format is defined once, in src/lib/site-check.ts; the JSDoc
+// types below refer to it.
+//
 // Needs Node 22.18 or newer (it imports the TypeScript data file directly).
 import { Resolver } from "node:dns/promises";
 import { mkdir, writeFile } from "node:fs/promises";
@@ -32,7 +36,15 @@ const DEFAULT_TIMEOUT = 15_000;
 const USER_AGENT = "site-link-check/1.0 (automated check of outgoing links)";
 const ENDED_ANSWERS = [404, 410];
 
+/** @typedef {import("../src/lib/site-check.ts").CheckedSite} CheckedSite */
+/** @typedef {import("../src/lib/site-check.ts").SiteCheckResult} SiteCheckResult */
+
+/**
+ * @param {string[]} argv
+ * @returns {{ out: string; timeout: number; urls: string[] }}
+ */
 function readArgs(argv) {
+  /** @type {{ out: string; timeout: number; urls: string[] }} */
   const args = { out: DEFAULT_OUT, timeout: DEFAULT_TIMEOUT, urls: [] };
   for (let i = 0; i < argv.length; i++) {
     if (argv[i] === "--out") args.out = resolve(argv[++i]);
@@ -51,7 +63,11 @@ async function projectSites() {
   return [...new Set(projects.map((project) => project.siteUrl).filter(Boolean))];
 }
 
-/** The error code at the bottom of a failed fetch ("ENOTFOUND", "ECONNREFUSED" …). */
+/**
+ * The error code at the bottom of a failed fetch ("ENOTFOUND", "ECONNREFUSED" …).
+ * @param {any} error
+ * @returns {string}
+ */
 function errorCode(error) {
   for (let e = error; e; e = e.cause) {
     if (typeof e.code === "string") return e.code;
@@ -63,6 +79,8 @@ function errorCode(error) {
  * True only when the name servers answer "no such domain" for the host.
  * A lookup that fails for any other reason (no network, a slow name server)
  * is not an answer, and then the domain is not counted as gone.
+ * @param {string} hostname
+ * @param {number} timeout
  */
 async function domainIsGone(hostname, timeout) {
   const resolver = new Resolver({ timeout, tries: 2 });
@@ -76,6 +94,11 @@ async function domainIsGone(hostname, timeout) {
   );
 }
 
+/**
+ * @param {string} url
+ * @param {number} timeout
+ * @returns {Promise<CheckedSite>}
+ */
 async function checkSite(url, timeout) {
   try {
     const response = await fetch(url, {
@@ -119,10 +142,9 @@ async function main() {
   }
 
   await mkdir(dirname(args.out), { recursive: true });
-  await writeFile(
-    args.out,
-    JSON.stringify({ checkedAt: new Date().toISOString(), sites }, null, 2) + "\n",
-  );
+  /** @type {SiteCheckResult} */
+  const result = { checkedAt: new Date().toISOString(), sites };
+  await writeFile(args.out, JSON.stringify(result, null, 2) + "\n");
   console.log(`Wrote ${args.out}`);
 }
 
@@ -130,7 +152,7 @@ try {
   await main();
 } catch (error) {
   // Never stop the deploy: without a result file every button stays.
-  console.error(`check-sites: the check did not finish (${error?.message ?? error}).`);
+  console.error(`check-sites: the check did not finish (${error instanceof Error ? error.message : error}).`);
   console.error("check-sites: no result was written, so no site is marked as ended.");
 }
 // No process.exit() here: on Windows it can crash Node while fetch is closing

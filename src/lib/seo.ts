@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { site } from "@/data/site";
-import type { Project } from "@/data/projects";
+import { getProjectView, type Project } from "@/lib/projects";
 import type { Service } from "@/data/services";
 
 const siteUrl = new URL(site.url);
@@ -62,6 +62,9 @@ export function getProjectsIndexMetadata(): Metadata {
 export function getProjectMetadata(project: Project): Metadata {
   const title = project.detail.seo.title ?? project.name;
   const description = project.detail.seo.description;
+  // The case address and the share picture (versioned like every other
+  // picture) come from the project layer, like everywhere else on the site.
+  const { caseHref, image } = getProjectView(project);
 
   return {
     title,
@@ -69,18 +72,18 @@ export function getProjectMetadata(project: Project): Metadata {
     openGraph: {
       title,
       description,
-      url: `/projects/${project.slug}`,
+      url: caseHref,
       type: "article",
-      images: [{ url: project.image, alt: project.imageAlt }],
+      images: [{ url: image.src, alt: image.alt }],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [project.image],
+      images: [image.src],
     },
     alternates: {
-      canonical: `/projects/${project.slug}`,
+      canonical: caseHref,
     },
   };
 }

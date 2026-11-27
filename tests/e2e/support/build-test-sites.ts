@@ -8,6 +8,7 @@ import {
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import type { SiteCheckResult } from "@/lib/site-check";
 import { endedCast } from "./ended-site";
 import { otherFeaturedProject } from "./featured-site";
 
@@ -73,7 +74,7 @@ export default function buildTestSites() {
 
   // The site with ended projects.
   const { markedEnded, foundEnded, unreachable } = endedCast();
-  const sites = {
+  const sites: SiteCheckResult["sites"] = {
     [foundEnded.siteUrl]: { status: "ended", detail: "HTTP 404" },
     [unreachable.siteUrl]: { status: "unknown", detail: "HTTP 503" },
   };
@@ -82,7 +83,10 @@ export default function buildTestSites() {
   const checkFile = join(tmp, "site-check.json");
   writeFileSync(
     checkFile,
-    JSON.stringify({ checkedAt: new Date().toISOString(), sites }),
+    JSON.stringify({
+      checkedAt: new Date().toISOString(),
+      sites,
+    } satisfies SiteCheckResult),
   );
   buildCopy(
     "out-ended",

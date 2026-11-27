@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { getProjectWalkthrough } from "@/lib/projects";
+import { getProjectView } from "@/lib/projects";
 import { allProjects } from "./support/site";
 
 /**
@@ -8,7 +8,7 @@ import { allProjects } from "./support/site";
  * has to fit the film.
  */
 const recorded = allProjects().flatMap((project) => {
-  const walkthrough = getProjectWalkthrough(project);
+  const { walkthrough } = getProjectView(project);
   return walkthrough ? [{ project, walkthrough }] : [];
 });
 

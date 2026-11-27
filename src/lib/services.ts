@@ -1,4 +1,5 @@
 import { services, type Service } from "@/data/services";
+import { getAdjacent } from "./adjacent";
 
 export type { Service };
 
@@ -14,14 +15,5 @@ export function getAdjacentServices(slug: string): {
   prev: Service | null;
   next: Service | null;
 } {
-  const index = services.findIndex((service) => service.slug === slug);
-
-  if (index === -1) {
-    return { prev: null, next: null };
-  }
-
-  return {
-    prev: index > 0 ? services[index - 1] : null,
-    next: index < services.length - 1 ? services[index + 1] : null,
-  };
+  return getAdjacent(services, slug);
 }

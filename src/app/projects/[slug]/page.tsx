@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { ProjectCaseStudy } from "@/components/projects/ProjectCaseStudy";
-import { getProjectBySlug, getProjectSlugs } from "@/lib/projects";
+import { getAllProjects, getProjectBySlug } from "@/lib/projects";
 import { getProjectMetadata } from "@/lib/seo";
 
 type ProjectPageProps = {
@@ -8,7 +8,7 @@ type ProjectPageProps = {
 };
 
 export async function generateStaticParams() {
-  return getProjectSlugs().map((slug) => ({ slug }));
+  return getAllProjects().map(({ slug }) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: ProjectPageProps) {

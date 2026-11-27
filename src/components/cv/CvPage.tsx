@@ -1,6 +1,7 @@
 import SiteLink from "@/components/SiteLink";
 import { site } from "@/data/site";
 import { asset } from "@/lib/asset";
+import { mailHref, phoneHref, withoutProtocol } from "@/lib/contact";
 import shared from "@/styles/shared.module.css";
 import styles from "./CvPage.module.css";
 
@@ -15,15 +16,10 @@ function IconGitHub() {
   );
 }
 
-/** "https://www.linkedin.com/in/x" -> "linkedin.com/in/x", for the printed CV. */
-function withoutProtocol(url: string) {
-  return url.replace(/^https?:\/\/(www\.)?/, "");
-}
-
 export default function CvPage() {
   const { cv, cvPage: text } = site;
-  const mailHref = `mailto:${site.email}`;
-  const phoneHref = `tel:${site.phone.replace(/\s/g, "")}`;
+  const mailLink = mailHref(site.email);
+  const phoneLink = phoneHref(site.phone);
 
   return (
     <div className={`${shared.wrap} ${styles.page}`}>
@@ -85,13 +81,13 @@ export default function CvPage() {
         <div>
           <dt className={styles.label}>{text.facts.email}</dt>
           <dd>
-            <SiteLink href={mailHref}>{site.email}</SiteLink>
+            <SiteLink href={mailLink}>{site.email}</SiteLink>
           </dd>
         </div>
         <div>
           <dt className={styles.label}>{text.facts.phone}</dt>
           <dd>
-            <SiteLink href={phoneHref}>{site.phone}</SiteLink>
+            <SiteLink href={phoneLink}>{site.phone}</SiteLink>
             <span className={styles.note}>{site.phoneNote}</span>
           </dd>
         </div>
@@ -180,13 +176,13 @@ export default function CvPage() {
         <p>{text.contact.text}</p>
         <div className={styles.panelActions}>
           <SiteLink
-            href={mailHref}
+            href={mailLink}
             className={`${shared.pill} ${styles.pillLight}`}
           >
             {site.email}
           </SiteLink>
           <SiteLink
-            href={phoneHref}
+            href={phoneLink}
             className={`${shared.pill} ${styles.pillGhost}`}
           >
             {site.phone}
