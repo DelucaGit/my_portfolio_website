@@ -18,6 +18,9 @@
 // The script never fails: whatever goes wrong, it says so and exits with 0,
 // so a failed check cannot stop a deploy. No result file = nothing ended.
 //
+// The file's format is defined once, in src/lib/site-check.ts; the JSDoc
+// types below refer to it.
+//
 // Needs Node 22.18 or newer (it imports the TypeScript data file directly).
 import { Resolver } from "node:dns/promises";
 import { mkdir, writeFile } from "node:fs/promises";
@@ -31,6 +34,9 @@ const DEFAULT_TIMEOUT = 15_000;
 /** A generic name: it tells the site what is asking, nothing about who. */
 const USER_AGENT = "site-link-check/1.0 (automated check of outgoing links)";
 const ENDED_ANSWERS = [404, 410];
+
+/** @typedef {import("../src/lib/site-check.ts").CheckedSite} CheckedSite */
+/** @typedef {import("../src/lib/site-check.ts").SiteCheckResult} SiteCheckResult */
 
 function readArgs(argv) {
   const args = { out: DEFAULT_OUT, timeout: DEFAULT_TIMEOUT, urls: [] };
@@ -76,6 +82,11 @@ async function domainIsGone(hostname, timeout) {
   );
 }
 
+/**
+ * @param {string} url
+ * @param {number} timeout
+ * @returns {Promise<CheckedSite>}
+ */
 async function checkSite(url, timeout) {
   try {
     const response = await fetch(url, {
@@ -119,10 +130,9 @@ async function main() {
   }
 
   await mkdir(dirname(args.out), { recursive: true });
-  await writeFile(
-    args.out,
-    JSON.stringify({ checkedAt: new Date().toISOString(), sites }, null, 2) + "\n",
-  );
+  /** @type {SiteCheckResult} */
+  const result = { checkedAt: new Date().toISOString(), sites };
+  await writeFile(args.out, JSON.stringify(result, null, 2) + "\n");
   console.log(`Wrote ${args.out}`);
 }
 
