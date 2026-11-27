@@ -1,5 +1,6 @@
 import { site } from "@/data/site";
 import type { Service } from "@/lib/services";
+import { mailHref } from "@/lib/contact";
 import { getAdjacentServices } from "@/lib/services";
 import { asset } from "@/lib/asset";
 import SiteLink from "@/components/SiteLink";
@@ -25,7 +26,7 @@ export function ServiceCaseStudy({ service }: ServiceCaseStudyProps) {
         <header className={styles.hero}>
           <h1 className={styles.title}>{service.title}</h1>
           <p className={styles.subtitle}>{service.description}</p>
-          <SiteLink href={`mailto:${site.email}`} className={styles.heroCta}>
+          <SiteLink href={mailHref(site.email)} className={styles.heroCta}>
             Hör av dig
           </SiteLink>
 
@@ -157,7 +158,7 @@ export function ServiceCaseStudy({ service }: ServiceCaseStudyProps) {
           <h2 id="service-cta-heading" className={styles.ctaHeading}>
             Redo att komma igång med {service.title.toLowerCase()}?
           </h2>
-          <SiteLink href={`mailto:${site.email}`} className={styles.ctaBtn}>
+          <SiteLink href={mailHref(site.email)} className={styles.ctaBtn}>
             Mejla mig
           </SiteLink>
         </div>

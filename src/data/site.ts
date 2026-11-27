@@ -1,3 +1,4 @@
+import { mailHref } from "@/lib/contact";
 import type { ProjectSlug } from "./projects";
 
 const email = "malakdeluca@gmail.com";
@@ -474,7 +475,7 @@ POST /api/posts/7/comments 201`,
         links: [
           { name: "LinkedIn", href: linkedin, external: true },
           { name: "GitHub", href: github, external: true },
-          { name: "E-post", href: `mailto:${email}`, external: false },
+          { name: "E-post", href: mailHref(email), external: false },
         ],
       },
     ],

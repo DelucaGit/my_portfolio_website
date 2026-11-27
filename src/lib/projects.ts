@@ -6,6 +6,8 @@ import {
   type ProjectSlug,
 } from "@/data/projects";
 import { site } from "@/data/site";
+import { getAdjacent } from "./adjacent";
+import { withoutProtocol } from "./contact";
 
 export type { Project, ProjectSlug };
 
@@ -116,9 +118,7 @@ export function getProjectWalkthrough(project: Project): Walkthrough | null {
  */
 export function getProjectHost(project: Project): string {
   if (!project.siteUrl) return project.name;
-  return project.siteUrl
-    .replace(/^https?:\/\/(www\.)?/, "")
-    .replace(/\/.*$/, "");
+  return withoutProtocol(project.siteUrl).replace(/\/.*$/, "");
 }
 
 /** What the link check (scripts/check-sites.mjs) wrote about one address. */
@@ -175,15 +175,5 @@ export function getAdjacentProjects(slug: string): {
   prev: Project | null;
   next: Project | null;
 } {
-  const ordered = getProjectsNewestFirst();
-  const index = ordered.findIndex((project) => project.slug === slug);
-
-  if (index === -1) {
-    return { prev: null, next: null };
-  }
-
-  return {
-    prev: index > 0 ? ordered[index - 1] : null,
-    next: index < ordered.length - 1 ? ordered[index + 1] : null,
-  };
+  return getAdjacent(getProjectsNewestFirst(), slug);
 }
