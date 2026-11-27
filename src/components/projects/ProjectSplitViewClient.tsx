@@ -14,14 +14,14 @@ import { ArrowOut } from "@/components/ui/ArrowOut";
 import { BrowserWindow } from "@/components/ui/BrowserWindow";
 import { PaintedScene } from "@/components/ui/Painting";
 import { site } from "@/data/site";
-import type { ProjectView } from "@/lib/projects";
 import shared from "@/styles/shared.module.css";
 import styles from "./ProjectSplitView.module.css";
+import type { SplitViewProject } from "./ProjectSplitView";
 import VisitSiteLink from "./VisitSiteLink";
 
 type ProjectSplitViewClientProps = {
-  /** The project layer's view of each project, see `getProjectView`. */
-  projects: ProjectView[];
+  /** What the split view shows of each project, see `SplitViewProject`. */
+  projects: SplitViewProject[];
   label: string;
   header?: ReactNode;
   footer?: ReactNode;
@@ -87,10 +87,10 @@ function useHydrating(): boolean {
 
 const twoDigits = (n: number) => String(n).padStart(2, "0");
 
-const srcSet = (project: ProjectView) =>
+const srcSet = (project: SplitViewProject) =>
   `${project.preview.small} 640w, ${project.preview.large} 1280w`;
 
-const screenshotAlt = (project: ProjectView) =>
+const screenshotAlt = (project: SplitViewProject) =>
   `${site.projects.splitView.screenshot} ${project.name}`;
 
 /**
@@ -276,7 +276,7 @@ function useRoomForLastProject(
 }
 
 type PreviewShotProps = {
-  projects: ProjectView[];
+  projects: SplitViewProject[];
   active: number;
   /** False below the split view: nothing is shown, so nothing is fetched. */
   on: boolean;
@@ -525,7 +525,7 @@ export default function ProjectSplitViewClient({
             {buttons.readCase}
             <ArrowOut />
           </SiteLink>
-          <VisitSiteLink name={project.name} site={project.site} />
+          <VisitSiteLink name={project.name} siteState={project.site} />
           {project.githubUrl && (
             <SiteLink
               href={project.githubUrl}

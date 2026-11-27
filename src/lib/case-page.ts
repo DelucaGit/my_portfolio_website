@@ -1,19 +1,21 @@
 import type { MediaSectionCopy, Project } from "@/data/projects";
 import { site } from "@/data/site";
-import type { PaintingPalette } from "@/components/ui/paintLandscape";
-import { getProjectFiles } from "./project-files";
-import { getAllProjects } from "./projects";
+import {
+  PAINTING_PALETTE_NAMES,
+  type PaintingPalette,
+} from "./painting-palettes";
+import { getProjectFiles, type Picture } from "./project-files";
 
 /**
  * What a project's case page (/projects/<slug>) shows, part by part, with
  * every content rule already applied: which parts the project has, their
  * order, the shared texts from `site.projectPage` where the project has none
- * of its own, and the landscape behind the first picture. The page only draws
- * each kind of section.
+ * of its own, the facts line at the top and the landscape behind the first
+ * picture. The page only draws each kind of section.
+ *
+ * Pages ask for it through `getCasePage` in src/lib/projects.ts, which knows
+ * the project's place in the list.
  */
-
-/** A picture with a versioned path. */
-export type CasePicture = { src: string; alt: string };
 
 /** The texts every section starts with. */
 type SectionTop = {
@@ -38,32 +40,31 @@ export type CaseSection = SectionTop &
         video: { src: string; poster: string; alt: string };
       }
     /** A picture beside its text; `flip` puts the text first on wide screens */
-    | { kind: "row"; support: string; picture: CasePicture; flip: boolean }
-    | { kind: "phones"; pictures: CasePicture[] }
-    | { kind: "fullPage"; picture: CasePicture }
-    | { kind: "gallery"; pictures: CasePicture[] }
+    | { kind: "row"; support: string; picture: Picture; flip: boolean }
+    | { kind: "phones"; pictures: Picture[] }
+    | { kind: "fullPage"; picture: Picture }
+    | { kind: "gallery"; pictures: Picture[] }
   );
 
 export type CasePage = {
+  /** The line above the name: client · role · year, without the empty parts */
+  facts: string;
   /** The landscape behind the first picture */
   palette: PaintingPalette;
   /** The first picture, shown in a browser window */
-  hero: CasePicture;
+  hero: Picture;
   sections: CaseSection[];
 };
 
-const PALETTES: PaintingPalette[] = ["morgon", "hav", "kvall", "skog"];
-
 /** Neighbouring projects get different landscapes behind their first picture. */
-function paletteFor(project: Project): PaintingPalette {
-  const position = getAllProjects().findIndex(
-    (candidate) => candidate.slug === project.slug,
-  );
-  return PALETTES[Math.max(position, 0) % PALETTES.length];
+function paletteFor(position: number): PaintingPalette {
+  return PAINTING_PALETTE_NAMES[
+    Math.max(position, 0) % PAINTING_PALETTE_NAMES.length
+  ];
 }
 
 /** The project's own texts for a section, else the shared ones. */
-function top(
+function sectionTexts(
   own: MediaSectionCopy | undefined,
   shared: { eyebrow: string; heading: string },
 ): { label: string; heading: string } {
@@ -73,7 +74,11 @@ function top(
   };
 }
 
-export function getCasePage(project: Project): CasePage {
+/**
+ * The case page for the project at `position` in the archive's order (the
+ * position picks the landscape).
+ */
+export function buildCasePage(project: Project, position: number): CasePage {
   const { detail } = project;
   const media = getProjectFiles(project).caseMedia;
   const text = site.projectPage;
@@ -112,7 +117,7 @@ export function getCasePage(project: Project): CasePage {
   if (media.video) {
     sections.push({
       kind: "video",
-      ...top(media.videoCopy, text.video),
+      ...sectionTexts(media.videoCopy, text.video),
       support: media.videoCopy?.support,
       video: media.video,
     });
@@ -142,7 +147,7 @@ export function getCasePage(project: Project): CasePage {
   if (media.desktop) {
     sections.push({
       kind: "row",
-      ...top(media.desktopCopy, text.desktop),
+      ...sectionTexts(media.desktopCopy, text.desktop),
       support: media.desktopCopy?.support ?? media.desktop.alt,
       picture: media.desktop,
       flip: true,
@@ -152,7 +157,7 @@ export function getCasePage(project: Project): CasePage {
   if (media.fullPage) {
     sections.push({
       kind: "fullPage",
-      ...top(media.fullPageCopy, text.fullPage),
+      ...sectionTexts(media.fullPageCopy, text.fullPage),
       support: media.fullPageCopy?.support ?? text.fullPage.support,
       picture: media.fullPage,
     });
@@ -161,7 +166,7 @@ export function getCasePage(project: Project): CasePage {
   if (media.gallery && media.gallery.length > 0) {
     sections.push({
       kind: "gallery",
-      ...top(media.galleryCopy, text.gallery),
+      ...sectionTexts(media.galleryCopy, text.gallery),
       support: media.galleryCopy?.support,
       pictures: media.gallery,
     });
@@ -172,12 +177,21 @@ export function getCasePage(project: Project): CasePage {
   if (media.closing) {
     sections.push({
       kind: "row",
-      ...top(media.closingCopy, text.feature),
+      ...sectionTexts(media.closingCopy, text.feature),
       support: media.closingCopy?.support ?? media.closing.alt,
       picture: media.closing,
       flip: false,
     });
   }
 
-  return { palette: paletteFor(project), hero: media.hero, sections };
+  const facts = [detail.client, detail.role, String(project.year)]
+    .filter(Boolean)
+    .join(" · ");
+
+  return {
+    facts,
+    palette: paletteFor(position),
+    hero: media.hero,
+    sections,
+  };
 }

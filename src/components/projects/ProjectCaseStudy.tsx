@@ -3,11 +3,12 @@ import { ArrowOut } from "@/components/ui/ArrowOut";
 import { BrowserWindow } from "@/components/ui/BrowserWindow";
 import { PaintedScene } from "@/components/ui/Painting";
 import { site } from "@/data/site";
-import { getCasePage, type CaseSection } from "@/lib/case-page";
 import { mailHref } from "@/lib/contact";
 import {
   getAdjacentProjects,
+  getCasePage,
   getProjectView,
+  type CaseSection,
   type Project,
 } from "@/lib/projects";
 import shared from "@/styles/shared.module.css";
@@ -228,17 +229,13 @@ function Section({ section, host }: { section: CaseSection; host: string }) {
  * gives (see `getCasePage`), and the way on to the neighbouring projects.
  */
 export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
-  const { detail } = project;
+  const { overview } = project.detail;
   const casePage = getCasePage(project);
   const { prev, next } = getAdjacentProjects(project.slug);
   const text = site.projectPage;
   const buttons = site.projects.buttons;
   const view = getProjectView(project);
   const { host } = view;
-
-  const facts = [detail.client, detail.role, String(project.year)].filter(
-    Boolean,
-  );
 
   return (
     <article className={`${shared.wrap} ${styles.page}`}>
@@ -250,23 +247,21 @@ export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
 
       <header className={styles.top}>
         <div className={styles.intro}>
-          <p className={styles.label}>{facts.join(" · ")}</p>
-          <h1 className={styles.name}>{project.name}</h1>
-          <p className={styles.tagline}>{project.tagline}</p>
-          {detail.overview[0] && (
-            <p className={styles.summary}>{detail.overview[0]}</p>
-          )}
+          <p className={styles.label}>{casePage.facts}</p>
+          <h1 className={styles.name}>{view.name}</h1>
+          <p className={styles.tagline}>{view.tagline}</p>
+          {overview[0] && <p className={styles.summary}>{overview[0]}</p>}
         </div>
 
         {(view.site.state !== "none" || view.githubUrl) && (
           <p className={styles.actions}>
-            <VisitSiteLink name={view.name} site={view.site} />
+            <VisitSiteLink name={view.name} siteState={view.site} />
             {view.githubUrl && (
               <SiteLink
                 href={view.githubUrl}
                 external
                 className={`${shared.pill} ${shared.pillLine}`}
-                aria-label={`${buttons.code}: ${project.name}`}
+                aria-label={`${buttons.code}: ${view.name}`}
               >
                 {buttons.code}
                 <ArrowOut />

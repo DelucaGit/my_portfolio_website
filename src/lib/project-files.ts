@@ -21,6 +21,9 @@ function folderOf(project: Project): string {
   return `/projects/${project.slug}`;
 }
 
+/** A picture with a versioned path and its text for screen readers. */
+export type Picture = { src: string; alt: string };
+
 /** A project's screenshot in the preview format: 2:1, in two sizes. */
 export type ProjectPreview = {
   /** 1280 x 640 */
