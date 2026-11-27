@@ -1,10 +1,9 @@
 import type { ReactNode } from "react";
 import { site } from "@/data/site";
-import { asset } from "@/lib/asset";
 import {
   getFeaturedProject,
   getProjectBySlug,
-  getProjectHost,
+  getProjectView,
   type Project,
 } from "@/lib/projects";
 import shared from "@/styles/shared.module.css";
@@ -49,14 +48,15 @@ function ProjectWindow({
   project: Project;
   className: string;
 }) {
+  const { host, image } = getProjectView(project);
   return (
     <div className={className}>
-      <BrowserWindow title={getProjectHost(project)} size="compact">
+      <BrowserWindow title={host} size="compact">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           className={styles.shot}
-          src={asset(project.image)}
-          alt={project.imageAlt}
+          src={image.src}
+          alt={image.alt}
           loading="lazy"
           decoding="async"
         />
@@ -67,7 +67,7 @@ function ProjectWindow({
 
 const caseLink = (template: string, project: Project) => ({
   name: template.replace("{project}", project.name),
-  href: `/projects/${project.slug}`,
+  href: getProjectView(project).caseHref,
 });
 
 /** Colours for the Java example: annotations, strings and keywords. */

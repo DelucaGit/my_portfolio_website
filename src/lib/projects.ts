@@ -58,7 +58,7 @@ export type ProjectPreview = {
  * public/previews/, named by the slug: `<slug>.webp` and `<slug>-sm.webp`.
  * (`project.image` has another shape for every project.)
  */
-export function getProjectPreview(project: Project): ProjectPreview {
+function getProjectPreview(project: Project): ProjectPreview {
   return {
     large: `/previews/${project.slug}.webp`,
     small: `/previews/${project.slug}-sm.webp`,
@@ -96,7 +96,7 @@ export type WalkthroughStep = {
  * The project's recorded walkthrough, or null when it has none (the caller
  * then shows the project's screenshot). The films are in public/walkthroughs/.
  */
-export function getProjectWalkthrough(project: Project): Walkthrough | null {
+function getProjectWalkthrough(project: Project): Walkthrough | null {
   if (!project.walkthrough) return null;
   const base = `/walkthroughs/${project.slug}`;
   return {
@@ -112,7 +112,7 @@ export function getProjectWalkthrough(project: Project): Walkthrough | null {
  * What stands in a browser window's address bar for the project:
  * "andaluscalendar.com", or the project's name when it has no live site.
  */
-export function getProjectHost(project: Project): string {
+function getProjectHost(project: Project): string {
   if (!project.siteUrl) return project.name;
   return withoutProtocol(project.siteUrl).replace(/\/.*$/, "");
 }
@@ -126,7 +126,7 @@ export function getProjectHost(project: Project): string {
  *     exist or answers 404 or 410. Unknown (timeout, 5xx …) is not ended.
  * Both come in through getBuildInputs (src/lib/build-inputs.ts).
  */
-export function hasEndedSite(project: Project): boolean {
+function hasEndedSite(project: Project): boolean {
   if (project.siteStatus === "ended") return true;
   const { endedForTest, checkedSites } = getBuildInputs();
   // Only for the tests' own build, which next.config.ts sends to out-ended/
@@ -144,11 +144,16 @@ export function getProjectSlugs(): string[] {
   return getProjectsNewestFirst().map((project) => project.slug);
 }
 
+/** The projects before and after one in the archive's order, as views. */
 export function getAdjacentProjects(slug: string): {
-  prev: Project | null;
-  next: Project | null;
+  prev: ProjectView | null;
+  next: ProjectView | null;
 } {
-  return getAdjacent(getProjectsNewestFirst(), slug);
+  const { prev, next } = getAdjacent(getProjectsNewestFirst(), slug);
+  return {
+    prev: prev && getProjectView(prev),
+    next: next && getProjectView(next),
+  };
 }
 
 /**
@@ -162,7 +167,7 @@ export type ProjectSite =
   | { state: "none" };
 
 /** The state of the project's live site. See `hasEndedSite` for "ended". */
-export function getProjectSite(project: Project): ProjectSite {
+function getProjectSite(project: Project): ProjectSite {
   if (!project.siteUrl) return { state: "none" };
   if (hasEndedSite(project)) return { state: "ended" };
   return { state: "live", url: project.siteUrl };
@@ -188,6 +193,11 @@ export type ProjectView = {
   githubUrl: string;
   /** The 2:1 screenshot, versioned */
   preview: ProjectPreview;
+  /**
+   * The project's main picture, versioned: shown where it has no film, and
+   * the picture a share preview uses
+   */
+  image: { src: string; alt: string };
   /** The recorded walkthrough with versioned files, or null without one */
   walkthrough: Walkthrough | null;
   facts: {
@@ -212,6 +222,7 @@ export function getProjectView(project: Project): ProjectView {
     site: getProjectSite(project),
     githubUrl: project.githubUrl,
     preview: { large: asset(preview.large), small: asset(preview.small) },
+    image: { src: asset(project.image), alt: project.imageAlt },
     walkthrough: walkthrough && {
       ...walkthrough,
       webm: asset(walkthrough.webm),

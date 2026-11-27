@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { getProjectPreview, type Project } from "@/lib/projects";
+import { getProjectView, type Project } from "@/lib/projects";
 import { allProjects } from "./support/site";
 
 /**
@@ -21,7 +21,7 @@ function caseFiles(media: unknown): string[] {
 }
 
 function projectFiles(project: Project): string[] {
-  const preview = getProjectPreview(project);
+  const { preview } = getProjectView(project);
   return [
     ...new Set([
       preview.large,

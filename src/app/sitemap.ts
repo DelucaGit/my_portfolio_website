@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { site } from "@/data/site";
-import { getProjectSlugs } from "@/lib/projects";
+import { getAllProjects, getProjectView } from "@/lib/projects";
 import { getServiceSlugs } from "@/lib/services";
 
 export const dynamic = "force-static";
@@ -8,8 +8,8 @@ export const dynamic = "force-static";
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = site.url;
 
-  const projectUrls = getProjectSlugs().map((slug) => ({
-    url: `${baseUrl}/projects/${slug}/`,
+  const projectUrls = getAllProjects().map((project) => ({
+    url: `${baseUrl}${getProjectView(project).caseHref}/`,
     lastModified: new Date(),
     changeFrequency: "monthly" as const,
     priority: 0.8,
