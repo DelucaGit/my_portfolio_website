@@ -7,6 +7,8 @@ import type { NextConfig } from "next";
  *    src/lib/projects.ts). Written to out-ended/.
  *  - E2E_FEATURED_PROJECT: another project is the featured one (see
  *    featuredSlug in src/lib/projects.ts). Written to out-featured/.
+ * Here they only pick the folder; the site itself reads them in
+ * src/lib/build-inputs.ts.
  */
 const testBuildDir = process.env.E2E_ENDED_PROJECT
   ? "out-ended"

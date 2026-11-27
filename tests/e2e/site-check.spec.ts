@@ -7,6 +7,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { promisify } from "node:util";
 import { expect, test } from "@playwright/test";
+import type { SiteCheckResult } from "@/lib/site-check";
 
 /**
  * The link check (scripts/check-sites.mjs), run the way the deploy runs it:
@@ -15,11 +16,6 @@ import { expect, test } from "@playwright/test";
  */
 
 const run = promisify(execFile);
-
-type Result = {
-  checkedAt: string;
-  sites: Record<string, { status: "ok" | "ended" | "unknown"; detail: string }>;
-};
 
 let server: Server;
 let origin: string;
@@ -51,7 +47,7 @@ test.afterAll(async () => {
 });
 
 /** Runs the check on these addresses and returns the file it wrote. */
-async function check(name: string, urls: string[]): Promise<Result> {
+async function check(name: string, urls: string[]): Promise<SiteCheckResult> {
   const out = join(dir, `${name}.json`);
   await run(process.execPath, [
     "scripts/check-sites.mjs",
@@ -61,7 +57,7 @@ async function check(name: string, urls: string[]): Promise<Result> {
     "1500",
     ...urls,
   ]);
-  return JSON.parse(await readFile(out, "utf8")) as Result;
+  return JSON.parse(await readFile(out, "utf8")) as SiteCheckResult;
 }
 
 test("only a site that answers 404 or 410 counts as ended", async () => {
