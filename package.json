@@ -10,6 +10,7 @@
     "typecheck:scripts": "tsc -p scripts --noEmit",
     "test:e2e": "npm run build && playwright test",
     "test:e2e:run": "playwright test",
+    "test:e2e:specs": "playwright test --project=chromium",
     "check:sites": "node scripts/check-sites.mjs",
     "record:walkthrough": "node scripts/record-walkthrough.mjs"
   },

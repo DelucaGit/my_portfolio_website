@@ -15,6 +15,7 @@ Built with Next.js 16 (App Router) as a static export and published to Hostinger
 | `npm run lint` | ESLint |
 | `npm run test:e2e` | Builds the site, then runs the whole Playwright suite |
 | `npm run test:e2e:run` | Runs the suite against the `out/` that is already built |
+| `npm run test:e2e:specs -- <specs>` | Runs only the named specs, in Chromium, against the `out/` that is already built |
 | `npm run check:sites` | Asks every project's live site if it is still there |
 | `npm run record:walkthrough -- <slug>` | Records a walkthrough film of a project's live site |
 
@@ -152,6 +153,16 @@ The first time: `npx playwright install chromium webkit`.
 - The suite builds two more copies of the site before it starts (about a minute each, and only when `out/` is newer): `out-ended/`, in which two projects have ended, and `out-featured/`, in which another project is the featured one. They are built by the real `next build` with one environment variable each, and that same variable sends the build to its own folder. Only `out/` is deployed.
 - Three small static servers are started on port 4173 and the two after it. `E2E_PORT=<port>` moves them, for example when two checkouts run the suite at the same time. A server left over from an earlier run on the same port is reused; if the tests see an old page, look for a stale `node` process there.
 - The copies do not notice changes in the source. Run `npm run build` (or `npm run test:e2e`) after a change and they follow.
+
+### Testing while you work
+
+The whole suite builds the site three times and runs WebKit too: about five minutes alone, and several times that when other checkouts run it at the same time. On a working branch:
+
+1. `npm run build` once after your change.
+2. `E2E_PORT=<port> npm run test:e2e:specs -- <the specs your change touches>`, in one invocation. Give every checkout or worktree its own port, at least three apart (4200, 4210, …).
+3. Run the whole suite (`npm run test:e2e`) once, on the branch that goes to `main`, with nothing else running.
+
+A test that times out under load and passes when it runs alone is a timing problem in the test: note it, and fix the test on its own issue.
 
 ## Deploy
 
